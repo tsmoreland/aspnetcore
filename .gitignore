@@ -348,3 +348,13 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+
+# client side libraries restored via libman
+**/wwroot/lib/
+
+# vs-code and Jetbrains cache
+.dccache
+.idea
+
+/BethanysPieShopHRM/src/BethanysPieShopHRM.App/wwwroot/lib

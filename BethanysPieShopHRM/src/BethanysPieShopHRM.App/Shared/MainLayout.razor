@@ -1,0 +1,42 @@
+﻿@inherits LayoutComponentBase
+
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-primary px-5"
+     aria-label="Bethany's Pie Shop navigation header">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">
+            <img src="images/bethanylogo.png" width="151" height="47" class="d-inline-block align-top mb-2 mt-1"
+                 alt="Bethany's Pie Shop Logo">
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <h3 class="navbar-brand me-auto ms-5">Bethany's Pie Shop HRM </h3>
+
+            <ul class="navbar-nav mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <div class="nav-link">
+                        
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div class="nav-link">
+                        
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid h-100">
+    <div class="row h-100">
+        <NavMenu></NavMenu>
+        <div id="page-content-wrapper">
+            @Body
+        </div>
+    </div>
+</div>
