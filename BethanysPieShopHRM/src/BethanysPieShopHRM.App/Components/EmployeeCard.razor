@@ -1,0 +1,14 @@
+﻿<div class="col">
+    <div class="card rounded-3 employee-card">
+        <div class="card-header py-3">
+            <h4>@Employee.FullName</h4>
+        </div>
+        <div class="card-body employee-card text-center">
+            <div class="mb-3">
+                <img src="@($"https://gillcleerenpluralsight.blob.core.windows.net/person/{Employee.EmployeeId}.jpg")" alt="@Employee.FullName" class="employee-img" />
+            </div>
+            <button class="btn btn-primary btn-sm mb-1" @onclick="@(async () => await EmployeeQuickViewCLicked.InvokeAsync(Employee))">Quick View</button>
+            <button class="btn btn-outline-primary btn-sm mb-1" @onclick="(() => NavigateToDetails(Employee))">Full Details</button>
+        </div>
+    </div>
+</div>
