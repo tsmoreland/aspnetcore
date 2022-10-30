@@ -1,4 +1,4 @@
-# Blazor Example, Sample or Demo Applications using Blazor Server or Blazor wasm
+# Sample or Demo Applications using Blazor Server or Blazor wasm
 
 ## Bethany's Pie Shop HRM
 
