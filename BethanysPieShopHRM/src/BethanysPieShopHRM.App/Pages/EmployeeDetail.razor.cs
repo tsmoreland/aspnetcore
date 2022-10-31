@@ -11,12 +11,12 @@ public partial class EmployeeDetail
 
     public Employee? Employee { get; set; } = new();
 
-    /// <inheritdoc />
-    protected override Task OnInitializedAsync()
-    {
-        Employee =  MockDataService.Employees
-            .FirstOrDefault(e => e.EmployeeId == int.Parse(EmployeeId));
+    [Inject]
+    public IEmployeeDataService EmployeeDataService { get; set; } = default!;
 
-        return base.OnInitializedAsync();
+    /// <inheritdoc />
+    protected override async Task OnInitializedAsync()
+    {
+        Employee = await EmployeeDataService.GetEmployeeDetails(int.Parse(EmployeeId));
     }
 }
