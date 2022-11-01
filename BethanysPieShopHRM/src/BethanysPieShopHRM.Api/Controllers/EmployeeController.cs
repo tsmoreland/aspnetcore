@@ -9,14 +9,14 @@ namespace BethanysPieShopHRM.Api.Controllers;
 public class EmployeeController : Controller
 {
     private readonly IEmployeeRepository _employeeRepository;
-    //private readonly IWebHostEnvironment _webHostEnvironment;
-    //private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IWebHostEnvironment _webHostEnvironment;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public EmployeeController(IEmployeeRepository employeeRepository)//, IWebHostEnvironment webHostEnvironment, IHttpContextAccessor httpContextAccessor)
+    public EmployeeController(IEmployeeRepository employeeRepository, IWebHostEnvironment webHostEnvironment, IHttpContextAccessor httpContextAccessor)
     {
         _employeeRepository = employeeRepository;
-        //_webHostEnvironment = webHostEnvironment;
-        //_httpContextAccessor = httpContextAccessor;
+        _webHostEnvironment = webHostEnvironment;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     [HttpGet]
@@ -49,14 +49,26 @@ public class EmployeeController : Controller
             return BadRequest(ModelState);
         }
 
-        //handle image upload
-        //string currentUrl = _httpContextAccessor.HttpContext.Request.Host.Value;
-        //var path = $"{_webHostEnvironment.WebRootPath}\\uploads\\{employee.ImageName}";
-        //var fileStream = System.IO.File.Create(path);
-        //fileStream.Write(employee.ImageContent, 0, employee.ImageContent.Length);
-        //fileStream.Close();
+        // handle image upload
+        if (employee.ImageContent is not null)
+        {
+            HttpContext? context = _httpContextAccessor.HttpContext;
+            if (context is null)
+            {
+                return new ObjectResult("Internal service error - context not found") { StatusCode = StatusCodes.Status500InternalServerError };
+            }
 
-        // employee.ImageName = $"https://{currentUrl}/uploads/{employee.ImageName}";
+            string currentUrl = context.Request.Host.Value;
+            string path = $"{_webHostEnvironment.WebRootPath}\\uploads\\{employee.ImageName}";
+            using (FileStream fileStream = System.IO.File.Create(path))
+            {
+                fileStream.Write(employee.ImageContent, 0, employee.ImageContent.Length);
+                fileStream.Close();
+            }
+
+            employee.ImageName = $"https://{currentUrl}/uploads/{employee.ImageName}";
+        }
+
 
         Employee createdEmployee = _employeeRepository.AddEmployee(employee);
 

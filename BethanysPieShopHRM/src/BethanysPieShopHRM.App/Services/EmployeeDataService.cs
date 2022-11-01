@@ -2,6 +2,7 @@
 using BethanysPieShopHRM.Shared.Domain;
 using BethanysPieShopHRM.App.Infrastructure;
 using Blazored.LocalStorage;
+using System.Net.Http.Json;
 
 namespace BethanysPieShopHRM.App.Services;
 
@@ -50,20 +51,33 @@ public sealed class EmployeeDataService : IEmployeeDataService
     }
 
     /// <inheritdoc />
-    public Task<Employee> AddEmployee(Employee employee)
+    public async Task<Employee?> AddEmployee(Employee employee)
     {
-        throw new NotImplementedException();
+        HttpResponseMessage response = await _httpClient.PostAsJsonAsync<Employee>("api/employee", employee, default);
+        if (!response.IsSuccessStatusCode)
+        {
+            return null;
+        }
+        return await JsonSerializer.DeserializeAsync<Employee>(await response.Content.ReadAsStreamAsync());
     }
 
     /// <inheritdoc />
-    public Task UpdateEmployee(Employee employee)
+    public async Task UpdateEmployee(Employee employee)
     {
-        throw new NotImplementedException();
+        HttpResponseMessage response = await _httpClient.PutAsJsonAsync<Employee>($"api/employee/{employee.EmployeeId}", employee, default);
+        if (!response.IsSuccessStatusCode)
+        {
+            // log error... and ideally return something that represents an error - even if that means throwing an exception
+        }
     }
 
     /// <inheritdoc />
-    public Task DeleteEmployee(int employeeId)
+    public async Task DeleteEmployee(int employeeId)
     {
-        throw new NotImplementedException();
+        HttpResponseMessage response = await _httpClient.DeleteAsync($"api/employee/{employeeId}", default);
+        if (!response.IsSuccessStatusCode)
+        {
+            // log error... and ideally return something that represents an error - even if that means throwing an exception
+        }
     }
 }

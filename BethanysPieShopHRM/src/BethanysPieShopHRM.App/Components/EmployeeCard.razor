@@ -5,7 +5,7 @@
         </div>
         <div class="card-body employee-card text-center">
             <div class="mb-3">
-                <img src="@($"https://gillcleerenpluralsight.blob.core.windows.net/person/{Employee.EmployeeId}.jpg")" alt="@Employee.FullName" class="employee-img" />
+                <img src="@Employee.ImageName" alt="@Employee.FullName" class="employee-img rounded-circle img-fluid" />
             </div>
             <button class="btn btn-primary btn-sm mb-1" @onclick="@(async () => await EmployeeQuickViewCLicked.InvokeAsync(Employee))">Quick View</button>
             <button class="btn btn-outline-primary btn-sm mb-1" @onclick="(() => NavigateToDetails(Employee))">Full Details</button>
