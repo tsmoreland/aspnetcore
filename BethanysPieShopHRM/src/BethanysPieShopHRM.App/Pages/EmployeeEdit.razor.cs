@@ -72,23 +72,22 @@ public partial class EmployeeEdit
 
     private async Task AddAsync()
     {
+        if (_selectedFile is not null)
+        {
+            IBrowserFile file = _selectedFile;
+            using MemoryStream memory = new();
+            await using (Stream fileStream = file.OpenReadStream())
+            {
+                await fileStream.CopyToAsync(memory);
+            }
+
+            Employee.ImageName = file.Name;
+            Employee.ImageContent = memory.ToArray();
+        }
+
         Employee? added = await EmployeeDataService.AddEmployee(Employee);
         if (added is not null)
         {
-            if (_selectedFile is not null)
-            {
-                IBrowserFile file = _selectedFile;
-                using MemoryStream memory = new();
-                await using (Stream fileStream = file.OpenReadStream())
-                {
-                    await fileStream.CopyToAsync(memory);
-                }
-
-                Employee.ImageName = file.Name;
-                Employee.ImageContent = memory.ToArray();
-
-            }
-
             StatusClass = "alert-success";
             Message = "New employee saved successfully";
             Saved = true;

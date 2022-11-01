@@ -1,12 +1,12 @@
 ﻿using BethanysPieShopHRM.Api.Shared;
 using BethanysPieShopHRM.Shared.Domain;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace BethanysPieShopHRM.Api.Infrastructure;
 
 public class EmployeeRepository : IEmployeeRepository
 {
     private readonly AppDbContext _appDbContext;
-    //private readonly RandomNumberGenerator _random = RandomNumberGenerator.Create();
 
     public EmployeeRepository(AppDbContext appDbContext)
     {
@@ -15,7 +15,8 @@ public class EmployeeRepository : IEmployeeRepository
 
     public IEnumerable<Employee> GetAllEmployees()
     {
-        return _appDbContext.Employees;
+        IEnumerable<Employee> employees = _appDbContext.Employees.AsEnumerable();
+        return employees;
     }
 
     public Employee? GetEmployeeById(int employeeId)
@@ -26,7 +27,7 @@ public class EmployeeRepository : IEmployeeRepository
 
     public Employee AddEmployee(Employee employee)
     {
-        var addedEntity = _appDbContext.Employees.Add(employee);
+        EntityEntry<Employee> addedEntity = _appDbContext.Employees.Add(employee);
         _appDbContext.SaveChanges();
         return addedEntity.Entity;
     }
@@ -35,33 +36,34 @@ public class EmployeeRepository : IEmployeeRepository
     {
         Employee? foundEmployee = _appDbContext.Employees.Find(employee.EmployeeId);
 
-        if (foundEmployee != null)
+        if (foundEmployee == null)
         {
-            foundEmployee.CountryId = employee.CountryId;
-            foundEmployee.MaritalStatus = employee.MaritalStatus;
-            foundEmployee.BirthDate = employee.BirthDate;
-            foundEmployee.City = employee.City;
-            foundEmployee.Email = employee.Email;
-            foundEmployee.FirstName = employee.FirstName;
-            foundEmployee.LastName = employee.LastName;
-            foundEmployee.Gender = employee.Gender;
-            foundEmployee.PhoneNumber = employee.PhoneNumber;
-            foundEmployee.Smoker = employee.Smoker;
-            foundEmployee.Street = employee.Street;
-            foundEmployee.Zip = employee.Zip;
-            foundEmployee.JobCategoryId = employee.JobCategoryId;
-            foundEmployee.Comment = employee.Comment;
-            foundEmployee.ExitDate = employee.ExitDate;
-            foundEmployee.JoinedDate = employee.JoinedDate;
-            //foundEmployee.ImageContent = employee.ImageContent;
-            //foundEmployee.ImageName = employee.ImageName;
-
-            _appDbContext.SaveChanges();
-
-            return foundEmployee;
+            return null;
         }
 
-        return null;
+        foundEmployee.CountryId = employee.CountryId;
+        foundEmployee.MaritalStatus = employee.MaritalStatus;
+        foundEmployee.BirthDate = employee.BirthDate;
+        foundEmployee.City = employee.City;
+        foundEmployee.Email = employee.Email;
+        foundEmployee.FirstName = employee.FirstName;
+        foundEmployee.LastName = employee.LastName;
+        foundEmployee.Gender = employee.Gender;
+        foundEmployee.PhoneNumber = employee.PhoneNumber;
+        foundEmployee.Smoker = employee.Smoker;
+        foundEmployee.Street = employee.Street;
+        foundEmployee.Zip = employee.Zip;
+        foundEmployee.JobCategoryId = employee.JobCategoryId;
+        foundEmployee.Comment = employee.Comment;
+        foundEmployee.ExitDate = employee.ExitDate;
+        foundEmployee.JoinedDate = employee.JoinedDate;
+        //foundEmployee.ImageContent = employee.ImageContent;
+        //foundEmployee.ImageName = employee.ImageName;
+
+        _appDbContext.SaveChanges();
+
+        return foundEmployee;
+
     }
 
     public void DeleteEmployee(int employeeId)

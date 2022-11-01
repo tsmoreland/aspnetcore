@@ -361,3 +361,4 @@ MigrationBackup/
 *.db-wal
 *.db-shm
 *.db
+/BethanysPieShopHRM/src/BethanysPieShopHRM.Api/wwwroot/uploads

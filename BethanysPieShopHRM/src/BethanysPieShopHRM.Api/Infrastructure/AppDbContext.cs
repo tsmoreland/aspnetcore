@@ -61,7 +61,8 @@ public class AppDbContext : DbContext
             ExitDate = null,
             JoinedDate = new DateTime(2015, 3, 1),
             Latitude = 50.8503, 
-            Longitude = 4.3517
+            Longitude = 4.3517,
+            ImageName = "/uploads/526DF7F0-63EC-49FB-B3B0-6B1AF2547E7C.jpg",
         });
     }
 }

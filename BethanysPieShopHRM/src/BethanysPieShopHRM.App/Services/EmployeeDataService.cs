@@ -58,7 +58,18 @@ public sealed class EmployeeDataService : IEmployeeDataService
         {
             return null;
         }
-        return await JsonSerializer.DeserializeAsync<Employee>(await response.Content.ReadAsStreamAsync());
+        Employee? addedEmployee = await JsonSerializer.DeserializeAsync<Employee>(await response.Content.ReadAsStreamAsync());
+        if (addedEmployee is null)
+        {
+            return null;
+        }
+
+        if (await _localStorage.ContainKeyAsync(LocalStorageContants.EmployeesListExpirationKey))
+        {
+            await _localStorage.RemoveItemAsync(LocalStorageContants.EmployeesListExpirationKey);
+        }
+
+        return addedEmployee;
     }
 
     /// <inheritdoc />
