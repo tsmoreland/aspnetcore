@@ -358,3 +358,6 @@ MigrationBackup/
 .idea
 
 /BethanysPieShopHRM/src/BethanysPieShopHRM.App/wwwroot/lib
+*.db-wal
+*.db-shm
+*.db
