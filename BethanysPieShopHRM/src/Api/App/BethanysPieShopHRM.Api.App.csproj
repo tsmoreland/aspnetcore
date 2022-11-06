@@ -17,13 +17,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\BethanysPieShopHRM.App\BethanysPieShopHRM.App.csproj" />
-		<ProjectReference Include="..\BethanysPieShopHRM.Shared\BethanysPieShopHRM.Shared.csproj" />
+		<Folder Include="Migrations\" />
+		<Folder Include="wwwroot\Uploads\" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Migrations\" />
-		<Folder Include="wwwroot\Uploads\" />
+	  <ProjectReference Include="..\..\Shared\BethanysPieShopHRM.Shared.csproj" />
+	  <ProjectReference Include="..\..\Web\App\BethanysPieShopHRM.Web.App.csproj" />
 	</ItemGroup>
 
 </Project>

@@ -1,7 +1,7 @@
 ﻿using BethanysPieShopHRM.Shared.Domain;
 using Microsoft.EntityFrameworkCore;
 
-namespace BethanysPieShopHRM.Api.Infrastructure;
+namespace BethanysPieShopHRM.Api.App.Infrastructure;
 
 public class AppDbContext : DbContext
 {

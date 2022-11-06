@@ -1,6 +1,6 @@
 ﻿using BethanysPieShopHRM.Shared.Domain;
 
-namespace BethanysPieShopHRM.Api.Shared;
+namespace BethanysPieShopHRM.Api.App.Shared;
 
 public interface ICountryRepository
 {
