@@ -1,4 +1,8 @@
-﻿<Router AppAssembly="@typeof(App).Assembly">
+﻿@using Microsoft.AspNetCore.Components.WebAssembly.Services
+@using System.Reflection
+@inject LazyAssemblyLoader LazyAssemblyLoader
+
+<Router AppAssembly="@typeof(App).Assembly" AdditionalAssemblies="@LazyLoadedAssemblies" OnNavigateAsync="OnNavigateAsync">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
@@ -10,3 +14,19 @@
         </LayoutView>
     </NotFound>
 </Router>
+
+@code {
+    private List<Assembly> LazyLoadedAssemblies { get; } = new();
+
+
+    private async Task OnNavigateAsync(NavigationContext context)
+    {
+        if (context.Path.Contains("employeedetail"))
+        {
+            var assemblies = await LazyAssemblyLoader.LoadAssembliesAsync(new[] { "BethanysPieShopHRM.Web.Components.dll" });
+            LazyLoadedAssemblies.AddRange(assemblies);
+
+        }
+    }
+
+}

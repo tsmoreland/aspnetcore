@@ -24,4 +24,8 @@
     <ProjectReference Include="..\Components\BethanysPieShopHRM.Web.Components.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <BlazorWebAssemblyLazyLoad Include="BethanysPieShopHRM.Web.Components.dll"/>
+  </ItemGroup>
+
 </Project>
