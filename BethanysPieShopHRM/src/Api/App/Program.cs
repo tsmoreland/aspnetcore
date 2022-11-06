@@ -1,5 +1,5 @@
-using BethanysPieShopHRM.Api.Infrastructure;
-using BethanysPieShopHRM.Api.Shared;
+using BethanysPieShopHRM.Api.App.Infrastructure;
+using BethanysPieShopHRM.Api.App.Shared;
 using Microsoft.EntityFrameworkCore;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);

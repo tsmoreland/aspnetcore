@@ -1,8 +1,8 @@
-﻿using BethanysPieShopHRM.Api.Shared;
+﻿using BethanysPieShopHRM.Api.App.Shared;
 using BethanysPieShopHRM.Shared.Domain;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace BethanysPieShopHRM.Api.Infrastructure;
+namespace BethanysPieShopHRM.Api.App.Infrastructure;
 
 public class EmployeeRepository : IEmployeeRepository
 {

@@ -1,8 +1,8 @@
-﻿using BethanysPieShopHRM.Api.Shared;
+﻿using BethanysPieShopHRM.Api.App.Shared;
 using BethanysPieShopHRM.Shared.Domain;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BethanysPieShopHRM.Api.Controllers;
+namespace BethanysPieShopHRM.Api.App.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

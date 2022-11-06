@@ -1,4 +1,4 @@
-using BethanysPieShopHRM.App;
+using BethanysPieShopHRM.Web.App;
 using BethanysPieShopHRM.Web.App.Infrastructure;
 using BethanysPieShopHRM.Web.App.Services;
 using Blazored.LocalStorage;
