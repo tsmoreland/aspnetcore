@@ -1,8 +1,8 @@
 ﻿using System.Security.Cryptography;
-using BethanysPieShopHRM.App.Infrastructure;
+using BethanysPieShopHRM.Web.App.Infrastructure;
 using Microsoft.AspNetCore.Components;
 
-namespace BethanysPieShopHRM.App.Components;
+namespace BethanysPieShopHRM.Web.App.Components;
 
 public partial class InboxCounter
 {

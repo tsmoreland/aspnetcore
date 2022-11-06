@@ -1,9 +1,9 @@
-﻿using BethanysPieShopHRM.App.Services;
-using BethanysPieShopHRM.Shared.Domain;
+﻿using BethanysPieShopHRM.Shared.Domain;
+using BethanysPieShopHRM.Web.App.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 
-namespace BethanysPieShopHRM.App.Pages;
+namespace BethanysPieShopHRM.Web.App.Pages;
 
 public partial class EmployeeEdit
 {

@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using BethanysPieShopHRM.Shared.Domain;
 
-namespace BethanysPieShopHRM.App.Services;
+namespace BethanysPieShopHRM.Web.App.Services;
 
 public sealed class JobCategoryDataService : IJobCategoryDataService
 {

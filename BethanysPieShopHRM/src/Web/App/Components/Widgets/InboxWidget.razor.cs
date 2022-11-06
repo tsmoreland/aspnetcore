@@ -1,7 +1,7 @@
-﻿using BethanysPieShopHRM.App.Infrastructure;
+﻿using BethanysPieShopHRM.Web.App.Infrastructure;
 using Microsoft.AspNetCore.Components;
 
-namespace BethanysPieShopHRM.App.Components.Widgets
+namespace BethanysPieShopHRM.Web.App.Components.Widgets
 {
     public partial class InboxWidget
     {

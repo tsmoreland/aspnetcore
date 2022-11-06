@@ -1,10 +1,10 @@
-﻿using System.Text.Json;
+﻿using System.Net.Http.Json;
+using System.Text.Json;
 using BethanysPieShopHRM.Shared.Domain;
-using BethanysPieShopHRM.App.Infrastructure;
+using BethanysPieShopHRM.Web.App.Infrastructure;
 using Blazored.LocalStorage;
-using System.Net.Http.Json;
 
-namespace BethanysPieShopHRM.App.Services;
+namespace BethanysPieShopHRM.Web.App.Services;
 
 public sealed class EmployeeDataService : IEmployeeDataService
 {
