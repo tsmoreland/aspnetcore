@@ -1,6 +1,6 @@
-﻿using BethanysPieShopHRM.App.Services;
+﻿using BethanysPieShopHRM.Web.App.Services;
 
-namespace BethanysPieShopHRM.App.Components.Widgets
+namespace BethanysPieShopHRM.Web.App.Components.Widgets
 {
     public partial class EmployeeCountWidget
     {

@@ -1,6 +1,6 @@
 using BethanysPieShopHRM.App;
-using BethanysPieShopHRM.App.Infrastructure;
-using BethanysPieShopHRM.App.Services;
+using BethanysPieShopHRM.Web.App.Infrastructure;
+using BethanysPieShopHRM.Web.App.Services;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;

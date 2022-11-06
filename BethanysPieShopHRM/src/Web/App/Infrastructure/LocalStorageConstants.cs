@@ -1,4 +1,4 @@
-﻿namespace BethanysPieShopHRM.App.Infrastructure;
+﻿namespace BethanysPieShopHRM.Web.App.Infrastructure;
 
 public sealed class LocalStorageContants
 {
