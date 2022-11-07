@@ -1,0 +1,13 @@
+﻿<AuthorizeView>
+    <Authorized>
+        <h4>
+            Hello @context.User.Identity!.Name!
+            <a class="text-white text-decoration-none d-inline-block" href="#" @onclick="@BeginSignOut">Log out</a>
+        </h4>
+    </Authorized>
+    <NotAuthorized>
+        <h4>
+            <a class="text-white text-decoration-none d-inline-block" href="authentication/login">Log in</a>
+        </h4>
+    </NotAuthorized>
+</AuthorizeView>
