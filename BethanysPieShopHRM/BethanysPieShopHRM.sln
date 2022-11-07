@@ -16,6 +16,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BethanysPieShopHRM.Api.App"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BethanysPieShopHRM.Web.Components", "src\Web\Components\BethanysPieShopHRM.Web.Components.csproj", "{00DDFD83-8D5E-4923-A660-DA3E33D02809}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{BA3EFF84-3162-4110-AE82-2579A32E7C00}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{D8818283-CA12-42DE-8467-244D18A2463E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{9B99BD31-FF2F-4792-B910-B4507180836C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +47,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B4A0022C-98B2-4814-BC84-93E11B803BBD} = {9B99BD31-FF2F-4792-B910-B4507180836C}
+		{9089E1A6-0F0C-4FC2-B6FC-B07DB9CA0601} = {BA3EFF84-3162-4110-AE82-2579A32E7C00}
+		{1ABA2A7E-175B-4201-8495-DB80C8B6E60C} = {D8818283-CA12-42DE-8467-244D18A2463E}
+		{00DDFD83-8D5E-4923-A660-DA3E33D02809} = {BA3EFF84-3162-4110-AE82-2579A32E7C00}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FD84B7F4-DAD5-4DAA-BA45-AF936FCCC876}
