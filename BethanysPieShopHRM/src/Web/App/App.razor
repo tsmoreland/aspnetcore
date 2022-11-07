@@ -2,18 +2,28 @@
 @using System.Reflection
 @inject LazyAssemblyLoader LazyAssemblyLoader
 
-<Router AppAssembly="@typeof(App).Assembly" AdditionalAssemblies="@LazyLoadedAssemblies" OnNavigateAsync="OnNavigateAsync">
-    <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
-        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
-    </Found>
-    <NotFound>
-        <PageTitle>Not found</PageTitle>
-        <LayoutView Layout="@typeof(MainLayout)">
-            <p role="alert">Sorry, there's nothing at this address.</p>
-        </LayoutView>
-    </NotFound>
-</Router>
+<CascadingAuthenticationState>
+    <Router AppAssembly="@typeof(App).Assembly" AdditionalAssemblies="@LazyLoadedAssemblies" OnNavigateAsync="OnNavigateAsync">
+        <Found Context="routeData">
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+                <Authorizing>
+                    <p>Determining Session state...</p>
+                </Authorizing>
+                <NotAuthorized>
+                    <h1>Sorry</h1>
+                    <p>You are not authorized to view this page.  You need to <a href="/authentication/login">log in.</a</p>
+                </NotAuthorized>
+            </AuthorizeRouteView>
+            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+        </Found>
+        <NotFound>
+            <PageTitle>Not found</PageTitle>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <p role="alert">Sorry, there's nothing at this address.</p>
+            </LayoutView>
+        </NotFound>
+    </Router>
+</CascadingAuthenticationState>
 
 @code {
     private List<Assembly> LazyLoadedAssemblies { get; } = new();
