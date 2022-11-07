@@ -1,4 +1,5 @@
 using BethanysPieShopHRM.Web.App;
+using BethanysPieShopHRM.Web.App.Extensions;
 using BethanysPieShopHRM.Web.App.Infrastructure;
 using BethanysPieShopHRM.Web.App.Services;
 using Blazored.LocalStorage;
@@ -9,9 +10,11 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-builder.Services.AddHttpClient<IEmployeeDataService, EmployeeDataService>(c => c.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
-builder.Services.AddHttpClient<ICountryDataService, CountryDataService>(c => c.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
-builder.Services.AddHttpClient<IJobCategoryDataService, JobCategoryDataService>(c => c.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
+builder
+    .AddHttpClientToServices<IEmployeeDataService, EmployeeDataService>()
+    .AddHttpClientToServices<ICountryDataService, CountryDataService>()
+    .AddHttpClientToServices<IJobCategoryDataService, JobCategoryDataService>();
+
 builder.Services
     .AddScoped<ApplicationState>()
     .AddBlazoredLocalStorage()
@@ -19,6 +22,10 @@ builder.Services
     {
         builder.Configuration.Bind("Auth0", options.ProviderOptions);
         options.ProviderOptions.ResponseType = "code";
+        options.ProviderOptions.AdditionalProviderParameters
+            .Add("audience", builder.Configuration["Auth0:Audience"]);
+
     });
 
 await builder.Build().RunAsync();
+
