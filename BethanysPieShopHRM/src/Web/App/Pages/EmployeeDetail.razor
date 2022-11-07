@@ -1,7 +1,7 @@
 ﻿@page "/employeedetail/{EmployeeId}"
 
 <section class="employee-detail">
-    if (Employee is not null)
+    @if (Employee is not null)
     {
         <h1 class="page-title">Details for @Employee.FullName</h1>
         <br />
