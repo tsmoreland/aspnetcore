@@ -16,6 +16,6 @@ public partial class AuthenticationStatus
     {
         _ = e;
         await SessionManager.SetSignOutState();
-        Navigation.NavigateTo("authentication/login");
+        Navigation.NavigateTo("authentication/logout");
     }
 }
