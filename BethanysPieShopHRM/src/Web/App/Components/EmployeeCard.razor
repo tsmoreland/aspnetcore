@@ -9,7 +9,7 @@
             </div>
             <button class="btn btn-primary btn-sm mb-1" @onclick="@(async () => await EmployeeQuickViewCLicked.InvokeAsync(Employee))">Quick View</button>
             <button class="btn btn-outline-primary btn-sm mb-1" @onclick="(() => NavigateToDetails(Employee))">Full Details</button>
-            <a href="@($"employeeedit/{Employee.EmployeeId}")" class="btn btn-outline-primary btn-sm mb-1">Edit employee</a>
+            <a id="employee-edit-link" href="@($"employeeedit/{Employee.EmployeeId}")" class="btn btn-outline-primary btn-sm mb-1">Edit employee</a>
         </div>
     </div>
 </div>
