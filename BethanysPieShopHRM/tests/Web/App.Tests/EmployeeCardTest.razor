@@ -1,0 +1,45 @@
+﻿@using BethanysPieShopHRM.Shared.Domain
+@using BethanysPieShopHRM.Web.App.Components;
+@inherits TestContext
+
+@code {
+    private Employee _employee;
+
+
+    public EmployeeCardTest()
+    {
+        JobCategory category = new() { JobCategoryId = 1, JobCategoryName = "Tester" };
+        Country country = new() { CountryId = 404, Name = "NotFoundland" };
+
+        _employee = new Employee
+        {
+            FirstName = "John",
+            LastName = "Doe",
+            JobCategoryId = category.JobCategoryId,
+            JobCategory = category,
+            Email = "john.doe@notfound.com",
+            BirthDate = new DateTime(1975, 7, 5),
+            PhoneNumber = "5053141234",
+            Street = "404 NotFound Lane",
+            Zip = "NOT-FOUND",
+            CountryId = country.CountryId,
+            Country = country,
+            Gender = Gender.Male,
+            Smoker = false,
+            MaritalStatus = MaritalStatus.Single,
+            JoinedDate = new DateTime(2022, 11, 7),
+            Latitude = 42.0,
+            Longitude = 3.14,
+            ImageName = null,
+        };
+    }
+
+
+    [Fact]
+    public void Render_ShouldDisplayEditLink_WhenEmployeeIsNotNull()
+    {
+        var cut = Render(@<EmployeeCard Employee="_employee"/>);
+
+        cut.Find("#employee-edit-link").MarkupMatches(@<a id="employee-edit-link" href="@($"employeeedit/{_employee.EmployeeId}")" class="btn btn-outline-primary btn-sm mb-1">Edit employee</a>);
+    }
+}
