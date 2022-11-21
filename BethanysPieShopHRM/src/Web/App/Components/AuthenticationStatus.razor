@@ -3,6 +3,8 @@
         <h4>
             Hello @context.User.Identity!.Name!
             <a class="text-white text-decoration-none d-inline-block" href="#" @onclick="@BeginSignOut">Log out</a>
+            <NavigationLock OnBeforeInternalNavigation="ConfirmLogout"
+                            ConfirmExternalNavigation/>
         </h4>
     </Authorized>
     <NotAuthorized>
