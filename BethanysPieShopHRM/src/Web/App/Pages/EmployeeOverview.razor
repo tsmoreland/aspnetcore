@@ -12,6 +12,23 @@ else
 {
     <QuickViewPopup Employee="_selectedEmployee"/>
 
+    <div class="row mb-3">
+        <div class="col-md-8">
+        @{
+            /*
+            * https://github.com/dotnet/core/blob/main/release-notes/7.0/known-issues.md#70-bind-get-set-after-cant-be-used-in-70-blazor-applications
+            * when above is addressed this should allow per key notification to LoadEmployeesAsync which will allow
+             * Search Term to filter the returned collection
+            <input class="form-control col-md-8"
+                   @bind="SearchTerm"
+                   @bind:after="LoadEmployeesAsync"
+                   @bind:event="oninput"
+                   placeholder="Search..."/>
+             */
+        }
+
+        </div>
+    </div>
     <div class="row">
         @foreach (var employee in Employees)
         {

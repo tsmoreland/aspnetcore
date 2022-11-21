@@ -12,11 +12,18 @@ public partial class EmployeeOverview
 
     public string Title { get; set; } = "Employee Overview";
 
+    public string SearchTerm { get; set; } = string.Empty;
+
     [Inject]
     public IEmployeeDataService EmployeeDataService { get; set; } = default!;
 
     /// <inheritdoc />
-    protected override async Task OnInitializedAsync()
+    protected override Task OnInitializedAsync()
+    {
+        return LoadEmployeesAsync();
+    }
+
+    public async Task LoadEmployeesAsync()
     {
         Employees = (await EmployeeDataService.GetAllEmployees()).ToList();
     }
