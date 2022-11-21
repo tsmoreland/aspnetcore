@@ -5,6 +5,11 @@
     {
       "library": "bootstrap@5.2.2",
       "destination": "wwwroot/lib/bootstrap/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "open-iconic@1.1.1",
+      "destination": "wwwroot/css/open-iconic/"
     }
   ]
 }

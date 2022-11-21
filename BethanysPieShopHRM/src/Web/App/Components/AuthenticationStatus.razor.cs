@@ -12,7 +12,7 @@ public partial class AuthenticationStatus
     public NavigationManager Navigation { get; set; } = default!;
 
     [Inject]
-    public JSRuntime JavaScript { get; set; } = default!;
+    public IJSRuntime JavaScript { get; set; } = default!;
 
     private void BeginSignOut(MouseEventArgs e)
     {
@@ -22,6 +22,11 @@ public partial class AuthenticationStatus
 
     private async Task ConfirmLogout(LocationChangingContext context)
     {
+        if (context.TargetLocation != "authentication/logout")
+        {
+            return;
+        }
+
         // prompt if the user is sure via a quick show pop up like component
         bool confirmed = await JavaScript.InvokeAsync<bool>("window.confirm", "Are you sure?");
         if (!confirmed)

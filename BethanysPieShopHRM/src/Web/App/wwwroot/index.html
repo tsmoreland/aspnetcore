@@ -11,13 +11,19 @@
     <link href="BethanysPieShopHRM.App.styles.css" rel="stylesheet" />
     -->
     <script src="https://kit.fontawesome.com/273d0585ea.js" crossorigin="anonymous"></script>
-    <link href="https://fonts.googleapis.com/css?family=Ubuntu&display=swap" rel="stylesheet"/>
-    <link href="_content/BethanysPieShopHRM.Web.Components/leaflet/leaflet.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu&display=swap" rel="stylesheet" />
+    <link href="_content/BethanysPieShopHRM.Web.Components/leaflet/leaflet.css" rel="stylesheet" />
 
 </head>
 
 <body>
-    <div id="app" class="h-100" >Loading...</div>
+    <div id="app" class="h-100">
+        <svg class="loading-progress">
+            <circle r="40%" cx="50%" cy="50%" />
+            <circle r="40%" cx="50%" cy="50%" />
+        </svg>
+        <div class="loading-progress-text"></div>
+    </div>
 
     <div id="blazor-error-ui">
         An unhandled error has occurred.
@@ -32,3 +38,4 @@
 </body>
 
 </html>
+
