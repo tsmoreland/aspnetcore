@@ -1,4 +1,4 @@
-﻿namespace WiredBrainCoffee.EmployeeManager.App.Shared;
+﻿namespace WiredBrainCoffee.EmployeeManager.Server.App.Shared;
 
 public partial class NavMenu
 {

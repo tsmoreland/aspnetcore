@@ -20,16 +20,53 @@ public static class EmployeeEntityConverter
 {
     public static Employee Convert(EmployeeEntity entity)
     {
-        return null!;
+        ArgumentNullException.ThrowIfNull(entity);
+        if (entity.Department is null)
+        {
+            throw new ArgumentException("invalid entity, Department cannot be null.", nameof(entity));
+        }
+
+        Employee employee = new(entity.Id, entity.FirstName, entity.LastName, entity.IsDeveloper, DepartmentEntityConverter.Convert(entity.Department, false));
+        return employee;
     }
 
     public static EmployeeEntity Convert(Employee model)
     {
-        return null!;
+        ArgumentNullException.ThrowIfNull(model);
+
+        EmployeeEntity entity = new()
+        {
+            Id = model.Id,
+            FirstName = model.FirstName,
+            LastName = model.LastName,
+            IsDeveloper = model.IsDeveloper,
+            DepartmentId = model.Department.Id,
+        };
+
+        return entity;
     }
 
-    public static EmployeeEntity Convert(EmployeeEntity existingEntity, Employee model)
+    public static EmployeeEntity Convert(EmployeeEntity entity, Employee model)
     {
-        return null!;
+        ArgumentNullException.ThrowIfNull(entity);
+        ArgumentNullException.ThrowIfNull(model);
+
+        if (entity.Id != model.Id)
+        {
+            throw new ArgumentException("entity and model id must match", nameof(model));
+        }
+
+        if (model.Department is null)
+        {
+            throw new ArgumentException("model has null department");
+        }
+
+        entity.FirstName = model.FirstName;
+        entity.LastName = model.LastName;
+        entity.IsDeveloper = model.IsDeveloper;
+        entity.DepartmentId = model.Department.Id;
+
+
+        return entity;
     }
 }

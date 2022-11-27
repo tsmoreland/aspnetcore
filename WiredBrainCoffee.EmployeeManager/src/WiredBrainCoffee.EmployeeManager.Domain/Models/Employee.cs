@@ -6,8 +6,8 @@ public sealed class Employee
     private string _firstName;
     private string _lastName;
 
-    public Employee(int id, string firstName, string lastName, Department department)
-        : this(firstName, lastName, department)
+    public Employee(int id, string firstName, string lastName, bool isDeveloper, Department department)
+        : this(firstName, lastName, isDeveloper, department)
     {
         if (id <= 0)
         {
@@ -17,22 +17,23 @@ public sealed class Employee
         Id = id;
     }
 
-    public Employee(string firstName, string lastName, Department department)
+    public Employee(string firstName, string lastName, bool isDeveloper, Department department)
     {
         Id = 0;
 
-        if (firstName is not {Length: > 0 and <= 100})
+        if (firstName is not { Length: > 0 and <= 100 })
         {
             throw new ArgumentException("Name cannot be empty or more than 100 characters in length");
         }
         _firstName = firstName;
 
-        if (lastName is not {Length: > 0 and <= 100})
+        if (lastName is not { Length: > 0 and <= 100 })
         {
             throw new ArgumentException("Name cannot be empty or more than 100 characters in length");
         }
         _lastName = lastName;
         _department = department ?? throw new ArgumentNullException(nameof(department));
+        IsDeveloper = isDeveloper;
     }
 
     public int Id { get; }
@@ -72,4 +73,6 @@ public sealed class Employee
             _department = value;
         }
     }
+
+    public bool IsDeveloper { get; set; }
 }

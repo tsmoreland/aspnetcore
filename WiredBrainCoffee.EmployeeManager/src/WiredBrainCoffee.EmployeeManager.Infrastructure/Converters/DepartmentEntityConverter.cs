@@ -20,10 +20,16 @@ public static class DepartmentEntityConverter
 {
     public static Department Convert(DepartmentEntity entity)
     {
+        return Convert(entity, true);
+    }
+
+    public static Department Convert(DepartmentEntity entity, bool includeEmployees)
+    {
         ArgumentNullException.ThrowIfNull(entity);
 
-        Department department = new(entity.Id, entity.Name, entity.Employees.Select(EmployeeEntityConverter.Convert));
-
+        Department department = includeEmployees
+            ? new Department(entity.Id, entity.Name, entity.Employees.Select(EmployeeEntityConverter.Convert))
+            : new Department(entity.Id, entity.Name);
         return department;
     }
 
@@ -34,8 +40,11 @@ public static class DepartmentEntityConverter
         DepartmentEntity entity = new()
         {
             Name = model.Name,
-            Employees = model.Employees.Select(EmployeeEntityConverter.Convert).ToList(),
         };
+        if (model.IncludesEmployees)
+        {
+            entity.Employees = model.Employees.Select(EmployeeEntityConverter.Convert).ToList();
+        }
 
         if (model.Id != 0)
         {
@@ -45,7 +54,7 @@ public static class DepartmentEntityConverter
         return entity;
     }
 
-    public static DepartmentEntity Convert(DepartmentEntity entity, Department model, bool includeChildren)
+    public static DepartmentEntity Convert(DepartmentEntity entity, Department model)
     {
         ArgumentNullException.ThrowIfNull(entity);
         ArgumentNullException.ThrowIfNull(model);
@@ -57,22 +66,43 @@ public static class DepartmentEntityConverter
 
         entity.Name = model.Name;
 
-        if (!includeChildren)
+        if (!model.IncludesEmployees)
         {
             return entity;
         }
 
         var employeesById = model.Employees.Select(EmployeeEntityConverter.Convert).ToDictionary(e => e.Id, e => e);
 
-        Dictionary<int, int> employeePositionById = new();
+        Dictionary<int, int> employeeEntityPositionById = new();
         foreach ((EmployeeEntity employee, int position) in entity.Employees.Select((value, index) => (value, index)))
+        {
+            employeeEntityPositionById[employee.Id] = position;
+        }
+        Dictionary<int, int> employeePositionById = new();
+        foreach ((Employee employee, int position) in model.Employees.Select((value, index) => (value, index)))
         {
             employeePositionById[employee.Id] = position;
         }
 
-        // loop through model employess updating anything in entity employees or add if not found
-        // then loop through entity models and track indices of items not found in model Employees
+        List<EmployeeEntity> added = new();
+        foreach (Employee employee in model.Employees)
+        {
+            if (employeeEntityPositionById.TryGetValue(employee.Id, out int index))
+            {
+                EmployeeEntityConverter.Convert(entity.Employees[index], employee);
+            }
+            else
+            {
+                added.Add(EmployeeEntityConverter.Convert(employee));
+            }
+        }
 
+        List<EmployeeEntity> removed = entity.Employees
+            .Where(employeeEntity => !employeePositionById.ContainsKey(employeeEntity.Id))
+            .ToList();
+
+        entity.Employees.RemoveAll(removed.Contains);
+        entity.Employees.AddRange(added);
 
         return null!;
     }

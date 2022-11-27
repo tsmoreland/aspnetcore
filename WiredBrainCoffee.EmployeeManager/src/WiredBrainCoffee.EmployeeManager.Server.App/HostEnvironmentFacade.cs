@@ -13,7 +13,7 @@
 
 using WiredBrainCoffee.EmployeeManager.Shared.Contracts;
 
-namespace WiredBrainCoffee.EmployeeManager.App;
+namespace WiredBrainCoffee.EmployeeManager.Server.App;
 
 public class HostEnvironmentFacade : IHostEnvironmentFacade
 {

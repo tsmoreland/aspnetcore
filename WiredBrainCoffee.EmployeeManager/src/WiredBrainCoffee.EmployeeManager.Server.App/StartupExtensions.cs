@@ -15,7 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using WiredBrainCoffee.EmployeeManager.Infrastructure;
 using WiredBrainCoffee.EmployeeManager.Shared.Contracts;
 
-namespace WiredBrainCoffee.EmployeeManager.App;
+namespace WiredBrainCoffee.EmployeeManager.Server.App;
 
 internal static class StartupExtensions
 {
