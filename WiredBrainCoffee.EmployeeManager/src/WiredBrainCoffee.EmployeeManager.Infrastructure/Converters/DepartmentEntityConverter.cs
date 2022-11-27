@@ -20,16 +20,60 @@ public static class DepartmentEntityConverter
 {
     public static Department Convert(DepartmentEntity entity)
     {
-        return null!;
+        ArgumentNullException.ThrowIfNull(entity);
+
+        Department department = new(entity.Id, entity.Name, entity.Employees.Select(EmployeeEntityConverter.Convert));
+
+        return department;
     }
 
     public static DepartmentEntity Convert(Department model)
     {
-        return null!;
+        ArgumentNullException.ThrowIfNull(model);
+
+        DepartmentEntity entity = new()
+        {
+            Name = model.Name,
+            Employees = model.Employees.Select(EmployeeEntityConverter.Convert).ToList(),
+        };
+
+        if (model.Id != 0)
+        {
+            entity.Id = model.Id;
+        }
+
+        return entity;
     }
 
-    public static DepartmentEntity Convert(DepartmentEntity existingEntity, Department model)
+    public static DepartmentEntity Convert(DepartmentEntity entity, Department model, bool includeChildren)
     {
+        ArgumentNullException.ThrowIfNull(entity);
+        ArgumentNullException.ThrowIfNull(model);
+
+        if (entity.Id != model.Id)
+        {
+            throw new ArgumentException("Ids do not match", nameof(model));
+        }
+
+        entity.Name = model.Name;
+
+        if (!includeChildren)
+        {
+            return entity;
+        }
+
+        var employeesById = model.Employees.Select(EmployeeEntityConverter.Convert).ToDictionary(e => e.Id, e => e);
+
+        Dictionary<int, int> employeePositionById = new();
+        foreach ((EmployeeEntity employee, int position) in entity.Employees.Select((value, index) => (value, index)))
+        {
+            employeePositionById[employee.Id] = position;
+        }
+
+        // loop through model employess updating anything in entity employees or add if not found
+        // then loop through entity models and track indices of items not found in model Employees
+
+
         return null!;
     }
 }
