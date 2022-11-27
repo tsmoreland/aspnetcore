@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright © 2022 Terry Moreland
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
@@ -11,31 +11,25 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using WiredBrainCoffee.EmployeeManager.App;
-using WiredBrainCoffee.EmployeeManager.Infrastructure;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using WiredBrainCoffee.EmployeeManager.Infrastructure.Entities;
 
-WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Configuration;
 
-// Add services to the container.
-builder.Services.ConfigureServices();
-
-WebApplication app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+public sealed class EmployeeEntityTypeConfiguration : IEntityTypeConfiguration<EmployeeEntity>
 {
-    app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    /// <inheritdoc />
+    public void Configure(EntityTypeBuilder<EmployeeEntity> builder)
+    {
+        builder.HasKey(e => e.Id);
+
+        builder.Property(e => e.FirstName).IsRequired().HasMaxLength(100);
+        builder.Property(e => e.LastName).IsRequired().HasMaxLength(100);
+        builder.Property(e => e.IsDeveloper).HasDefaultValue(false);
+        builder
+            .HasOne(e => e.Department)
+            .WithMany(e => e.Employees)
+            .HasForeignKey(e => e.DepartmentId);
+    }
 }
-
-app.UseHttpsRedirection();
-
-app.UseStaticFiles();
-
-app.UseRouting();
-
-app.MapBlazorHub();
-app.MapFallbackToPage("/_Host");
-
-app.Run();
