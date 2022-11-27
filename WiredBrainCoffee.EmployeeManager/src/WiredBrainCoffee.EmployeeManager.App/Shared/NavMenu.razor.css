@@ -3,12 +3,19 @@
 }
 
 .top-row {
-    height: 3.5rem;
+    height: 140px;
     background-color: rgba(0,0,0,0.4);
+}
+
+.logo {
+    height: 80px;
+    display: block;
+    margin: auto;
 }
 
 .navbar-brand {
     font-size: 1.1rem;
+    font-weight: bold;
 }
 
 .oi {
