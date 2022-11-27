@@ -11,6 +11,7 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using Microsoft.EntityFrameworkCore;
 using WiredBrainCoffee.EmployeeManager.Infrastructure;
 using WiredBrainCoffee.EmployeeManager.Shared.Contracts;
 
@@ -30,7 +31,15 @@ internal static class StartupExtensions
         return services;
     }
 
-    public static void BuildPipeline(this WebApplication app)
+    public static async Task EnsureDatabaseIsMigrated(this WebApplication app)
+    {
+        using IServiceScope scope = app.Services.CreateScope();
+        await using EmployeeManagerDbContext context = scope.ServiceProvider.GetRequiredService<EmployeeManagerDbContext>();
+        await context.Database.MigrateAsync();
+    }
+
+
+    public static Task BuildPipeline(this WebApplication app)
     {
         // Configure the HTTP request pipeline.
         if (!app.Environment.IsDevelopment())
@@ -49,6 +58,6 @@ internal static class StartupExtensions
         app.MapBlazorHub();
         app.MapFallbackToPage("/_Host");
 
-        app.Run();
+        return app.RunAsync();
     }
 }

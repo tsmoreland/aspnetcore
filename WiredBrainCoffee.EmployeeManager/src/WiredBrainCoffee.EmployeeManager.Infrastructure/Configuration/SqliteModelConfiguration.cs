@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using WiredBrainCoffee.EmployeeManager.Infrastructure.Contracts;
+using WiredBrainCoffee.EmployeeManager.Infrastructure.Entities;
 using WiredBrainCoffee.EmployeeManager.Shared;
 using WiredBrainCoffee.EmployeeManager.Shared.Contracts;
 
@@ -43,6 +44,23 @@ public sealed class SqliteModelConfiguration : IModelConfiguration
     public void ConfigureModel(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(SqliteModelConfiguration).Assembly);
+
+        modelBuilder.Entity<DepartmentEntity>().HasData(
+            new DepartmentEntity { Id = 1, Name = "Finance" },
+            new DepartmentEntity { Id = 2, Name = "Sales" },
+            new DepartmentEntity { Id = 3, Name = "Marketing" },
+            new DepartmentEntity { Id = 4, Name = "HR" },
+            new DepartmentEntity { Id = 5, Name = "IT" },
+            new DepartmentEntity { Id = 6, Name = "Research and Development" });
+
+        modelBuilder.Entity<EmployeeEntity>().HasData(
+            new EmployeeEntity { Id = 1, FirstName = "John", LastName = "Smith", DepartmentId = 1 },
+            new EmployeeEntity { Id = 2, FirstName = "Jessica", LastName = "Jones", DepartmentId = 2 },
+            new EmployeeEntity { Id = 3, FirstName = "Tony", LastName = "Stark", DepartmentId = 3 },
+            new EmployeeEntity { Id = 4, FirstName = "Bruce", LastName = "Wayne", DepartmentId = 4 },
+            new EmployeeEntity { Id = 5, FirstName = "Brenda", LastName = "Moore", DepartmentId = 5 },
+            new EmployeeEntity { Id = 6, FirstName = "Bruce", LastName = "Wayne", DepartmentId = 6 });
+
     }
 
     /// <inheritdoc />
