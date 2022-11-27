@@ -10,6 +10,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiredBrainCoffee.EmployeeManager.Shared", "src\WiredBrainCoffee.EmployeeManager.Shared\WiredBrainCoffee.EmployeeManager.Shared.csproj", "{02F018EF-9E4C-4B98-A53F-FCD46EAE5E1C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiredBrainCoffee.EmployeeManager.Domain", "src\WiredBrainCoffee.EmployeeManager.Domain\WiredBrainCoffee.EmployeeManager.Domain.csproj", "{95EF0CB3-FB09-4ACE-AED9-53D842AFAF8B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiredBrainCoffee.EmployeeManager.Infrastructure", "src\WiredBrainCoffee.EmployeeManager.Infrastructure\WiredBrainCoffee.EmployeeManager.Infrastructure.csproj", "{D0388CAB-3431-49C9-84E7-FFF7388F53D0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,6 +26,18 @@ Global
 		{71235386-7AFB-4F86-B2FA-D734869774C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71235386-7AFB-4F86-B2FA-D734869774C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71235386-7AFB-4F86-B2FA-D734869774C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02F018EF-9E4C-4B98-A53F-FCD46EAE5E1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02F018EF-9E4C-4B98-A53F-FCD46EAE5E1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02F018EF-9E4C-4B98-A53F-FCD46EAE5E1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02F018EF-9E4C-4B98-A53F-FCD46EAE5E1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95EF0CB3-FB09-4ACE-AED9-53D842AFAF8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95EF0CB3-FB09-4ACE-AED9-53D842AFAF8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95EF0CB3-FB09-4ACE-AED9-53D842AFAF8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95EF0CB3-FB09-4ACE-AED9-53D842AFAF8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0388CAB-3431-49C9-84E7-FFF7388F53D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0388CAB-3431-49C9-84E7-FFF7388F53D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0388CAB-3431-49C9-84E7-FFF7388F53D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0388CAB-3431-49C9-84E7-FFF7388F53D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

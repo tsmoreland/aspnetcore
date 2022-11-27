@@ -1,14 +1,13 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-    <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\WiredBrainCoffee.EmployeeManager.Domain\WiredBrainCoffee.EmployeeManager.Domain.csproj" />
-    <ProjectReference Include="..\WiredBrainCoffee.EmployeeManager.Infrastructure\WiredBrainCoffee.EmployeeManager.Infrastructure.csproj" />
     <ProjectReference Include="..\WiredBrainCoffee.EmployeeManager.Shared\WiredBrainCoffee.EmployeeManager.Shared.csproj" />
   </ItemGroup>
 
