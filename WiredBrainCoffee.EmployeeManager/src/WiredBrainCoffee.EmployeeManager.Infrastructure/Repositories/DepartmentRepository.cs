@@ -38,7 +38,7 @@ public sealed class DepartmentRepository : IDepartmentRepository
     }
 
     /// <inheritdoc />
-    public IAsyncEnumerable<Department> FindInPagesAsync(int pageNumber, int pageSize,
+    public IAsyncEnumerable<Department> FindPageAsync(int pageNumber, int pageSize,
         bool includeEmployees, bool ascending,
         CancellationToken cancellationToken)
     {

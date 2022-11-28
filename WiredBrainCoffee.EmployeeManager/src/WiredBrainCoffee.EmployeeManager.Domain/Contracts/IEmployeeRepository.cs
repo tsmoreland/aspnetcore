@@ -19,5 +19,6 @@ namespace WiredBrainCoffee.EmployeeManager.Domain.Contracts;
 public interface IEmployeeRepository : IDisposable, IAsyncDisposable
 {
     Task<Employee?> FindByIdAsync(int id, CancellationToken cancellationToken);
-    IAsyncEnumerable<Employee> FindAllAsync(CancellationToken cancellationToken);
+    Task<int> GetTotalCount(CancellationToken cancellationToken);
+    IAsyncEnumerable<Employee> FindPageAsync(int pageNumber, int pageSize, CancellationToken cancellationToken);
 }

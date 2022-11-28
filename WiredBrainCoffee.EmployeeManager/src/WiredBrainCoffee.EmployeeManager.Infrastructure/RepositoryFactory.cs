@@ -13,6 +13,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using WiredBrainCoffee.EmployeeManager.Domain.Contracts;
+using WiredBrainCoffee.EmployeeManager.Infrastructure.Contracts;
 using WiredBrainCoffee.EmployeeManager.Infrastructure.Repositories;
 
 namespace WiredBrainCoffee.EmployeeManager.Infrastructure;

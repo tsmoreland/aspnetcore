@@ -39,7 +39,7 @@ public interface IDepartmentRepository : IDisposable, IAsyncDisposable
     /// <param name="ascending">sort directory, results will be orded by name</param>
     /// <param name="cancellationToken">A cancelation token.</param>
     /// <returns><see cref="IAsyncEnumerable{Department}"/> containing at most <paramref name="pageSize"/> objects.</returns>
-    IAsyncEnumerable<Department> FindInPagesAsync(int pageNumber, int pageSize,
+    IAsyncEnumerable<Department> FindPageAsync(int pageNumber, int pageSize,
         bool includeEmployees, bool ascending,
         CancellationToken cancellationToken);
 }

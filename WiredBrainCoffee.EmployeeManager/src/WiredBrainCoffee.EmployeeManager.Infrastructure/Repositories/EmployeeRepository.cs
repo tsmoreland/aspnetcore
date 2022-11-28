@@ -53,9 +53,27 @@ public sealed class EmployeeRepository : IEmployeeRepository
     }
 
     /// <inheritdoc />
-    public async IAsyncEnumerable<Employee> FindAllAsync([EnumeratorCancellation] CancellationToken cancellationToken)
+    public Task<int> GetTotalCount(CancellationToken cancellationToken)
     {
+        return _dbContext.Employees.CountAsync(cancellationToken);
+    }
+
+    /// <inheritdoc />
+    public async IAsyncEnumerable<Employee> FindPageAsync(int pageNumber, int pageSize, [EnumeratorCancellation] CancellationToken cancellationToken)
+    {
+        if (pageNumber < 1)
+        {
+            throw new ArgumentOutOfRangeException(nameof(pageNumber), "page number must be greater than or equal to 1");
+        }
+        if (pageSize < 1)
+        {
+            throw new ArgumentOutOfRangeException(nameof(pageNumber), "page size must be greater than or equal to 1");
+        }
+
         IAsyncEnumerable<Employee> collection = _dbContext.Employees
+            .OrderBy(e => e.LastName)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
             .Include(e => e.Department)
             .AsAsyncEnumerable()
             .Select(Convert);
