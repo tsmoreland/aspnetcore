@@ -116,16 +116,16 @@ namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Migrations
                             Id = 3,
                             DepartmentId = 3,
                             FirstName = "Tony",
-                            IsDeveloper = false,
+                            IsDeveloper = true,
                             LastName = "Stark"
                         },
                         new
                         {
                             Id = 4,
                             DepartmentId = 4,
-                            FirstName = "Bruce",
+                            FirstName = "Edward",
                             IsDeveloper = false,
-                            LastName = "Wayne"
+                            LastName = "Enigma"
                         },
                         new
                         {
@@ -140,7 +140,7 @@ namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Migrations
                             Id = 6,
                             DepartmentId = 6,
                             FirstName = "Bruce",
-                            IsDeveloper = false,
+                            IsDeveloper = true,
                             LastName = "Wayne"
                         });
                 });

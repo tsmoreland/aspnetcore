@@ -14,6 +14,8 @@ public partial class EmployeeOverview
     [Parameter]
     public int? CurrentPage { get; set; }
 
+    public int TotalPages { get; private set; } = 1;
+
     [Inject]
     private IRepositoryFactory RepositoryFactory { get; set; } = null!;
 
@@ -32,13 +34,13 @@ public partial class EmployeeOverview
 
         await using IEmployeeRepository repository = RepositoryFactory.BuildEmployeeRepository();
         int totalCount = await repository.GetTotalCount(default);
-        int totalPages = totalCount != 0
+        TotalPages = totalCount != 0
             ? (int)Math.Ceiling((double)totalCount / PageSize)
             : 1;
 
-        if (CurrentPage > totalPages)
+        if (CurrentPage > TotalPages)
         {
-            Navigation.NavigateTo($"/employees/list/{totalPages}");
+            Navigation.NavigateTo($"/employees/list/{TotalPages}");
             return;
         }
 

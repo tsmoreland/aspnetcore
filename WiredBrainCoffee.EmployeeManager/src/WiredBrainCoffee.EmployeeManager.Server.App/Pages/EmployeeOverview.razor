@@ -11,6 +11,21 @@
 }
 else
 {
+    <ul class="pagination mt-3">
+        <li class="page-item @(CurrentPage == 1 ? "disabled" : "")">
+            <a class="page-link" href="/employees/list/@(CurrentPage - 1)">Previous</a>
+        </li>
+        @for (int i=1; i<= TotalPages; i++)
+        {
+            <li class="page-item @(CurrentPage == i ? "active" : "")">
+                <a class="page-link" href="/employees/list/@i">@i</a>
+            </li>
+        }
+        <li class="page-item @(CurrentPage == TotalPages ? "disabled" : "")">
+            <a class="page-link" href="/employees/list/@(CurrentPage + 1)">Next</a>
+        </li>
+    </ul>
+
     <table class="table table-striped">
         <thead>
             <tr>

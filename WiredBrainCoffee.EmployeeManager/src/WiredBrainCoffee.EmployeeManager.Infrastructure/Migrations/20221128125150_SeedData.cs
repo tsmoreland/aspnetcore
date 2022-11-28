@@ -31,12 +31,27 @@ namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Migrations
                 values: new object[,]
                 {
                     { 1, 1, "John", "Smith" },
-                    { 2, 2, "Jessica", "Jones" },
-                    { 3, 3, "Tony", "Stark" },
-                    { 4, 4, "Bruce", "Wayne" },
-                    { 5, 5, "Brenda", "Moore" },
-                    { 6, 6, "Bruce", "Wayne" }
+                    { 2, 2, "Jessica", "Jones" }
                 });
+
+            migrationBuilder.InsertData(
+                table: "Employees",
+                columns: new[] { "Id", "DepartmentId", "FirstName", "IsDeveloper", "LastName" },
+                values: new object[] { 3, 3, "Tony", true, "Stark" });
+
+            migrationBuilder.InsertData(
+                table: "Employees",
+                columns: new[] { "Id", "DepartmentId", "FirstName", "LastName" },
+                values: new object[,]
+                {
+                    { 4, 4, "Edward", "Enigma" },
+                    { 5, 5, "Brenda", "Moore" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Employees",
+                columns: new[] { "Id", "DepartmentId", "FirstName", "IsDeveloper", "LastName" },
+                values: new object[] { 6, 6, "Bruce", true, "Wayne" });
         }
 
         /// <inheritdoc />

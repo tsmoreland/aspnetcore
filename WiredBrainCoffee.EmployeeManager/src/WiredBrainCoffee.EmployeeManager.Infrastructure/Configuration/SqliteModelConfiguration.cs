@@ -56,10 +56,10 @@ public sealed class SqliteModelConfiguration : IModelConfiguration
         modelBuilder.Entity<EmployeeEntity>().HasData(
             new EmployeeEntity { Id = 1, FirstName = "John", LastName = "Smith", DepartmentId = 1 },
             new EmployeeEntity { Id = 2, FirstName = "Jessica", LastName = "Jones", DepartmentId = 2 },
-            new EmployeeEntity { Id = 3, FirstName = "Tony", LastName = "Stark", DepartmentId = 3 },
-            new EmployeeEntity { Id = 4, FirstName = "Bruce", LastName = "Wayne", DepartmentId = 4 },
+            new EmployeeEntity { Id = 3, FirstName = "Tony", LastName = "Stark", IsDeveloper = true, DepartmentId = 3 },
+            new EmployeeEntity { Id = 4, FirstName = "Edward", LastName = "Enigma", DepartmentId = 4 },
             new EmployeeEntity { Id = 5, FirstName = "Brenda", LastName = "Moore", DepartmentId = 5 },
-            new EmployeeEntity { Id = 6, FirstName = "Bruce", LastName = "Wayne", DepartmentId = 6 });
+            new EmployeeEntity { Id = 6, FirstName = "Bruce", LastName = "Wayne", IsDeveloper = true, DepartmentId = 6 });
 
     }
 
