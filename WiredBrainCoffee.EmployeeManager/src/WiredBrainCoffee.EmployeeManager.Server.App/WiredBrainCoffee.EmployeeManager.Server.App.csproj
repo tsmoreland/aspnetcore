@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Linq.Async.Queryable" Version="6.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\WiredBrainCoffee.EmployeeManager.Domain\WiredBrainCoffee.EmployeeManager.Domain.csproj" />
     <ProjectReference Include="..\WiredBrainCoffee.EmployeeManager.Infrastructure\WiredBrainCoffee.EmployeeManager.Infrastructure.csproj" />
     <ProjectReference Include="..\WiredBrainCoffee.EmployeeManager.Shared\WiredBrainCoffee.EmployeeManager.Shared.csproj" />
