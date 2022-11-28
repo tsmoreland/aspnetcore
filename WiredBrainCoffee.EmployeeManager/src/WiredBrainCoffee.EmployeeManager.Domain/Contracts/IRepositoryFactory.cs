@@ -11,13 +11,10 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
-using WiredBrainCoffee.EmployeeManager.Domain.Models;
-
 namespace WiredBrainCoffee.EmployeeManager.Domain.Contracts;
 
-public interface IEmployeeRepository : IDisposable, IAsyncDisposable
+public interface IRepositoryFactory
 {
-    Task<Employee?> FindByIdAsync(int id, CancellationToken cancellationToken);
-    IAsyncEnumerable<Employee> FindAllAsync(CancellationToken cancellationToken);
+    IEmployeeRepository BuildEmployeeRepository();
+    IDepartmentRepository BuildDepartmentRepository();
 }

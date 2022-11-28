@@ -11,8 +11,35 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using WiredBrainCoffee.EmployeeManager.Domain.Models;
+
 namespace WiredBrainCoffee.EmployeeManager.Domain.Contracts;
 
-public interface IDepartmentRepository
+public interface IDepartmentRepository : IDisposable, IAsyncDisposable
 {
+
+    /// <summary>
+    /// Returns <see cref="Department"/> matching <paramref name="id"/> if found.
+    /// </summary>
+    /// <param name="id">id of <see cref="Department"/> to find</param>
+    /// <param name="includeEmployees">if <see langword="true"/> then Employees will be include in <see cref="Department"/></param>
+    /// <param name="cancellationToken">A cancellation token.</param>
+    /// <returns>
+    /// An asynchronous task which upon completion will store either the matching <see cref="Department"/> or
+    /// <see langword="null"/> if not found.
+    /// </returns>
+    Task<Department?> FindByIdAsync(int id, bool includeEmployees, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Finds All <see cref="Department"/> in pages of size <paramref name="pageSize"/>
+    /// </summary>
+    /// <param name="pageNumber">page number, used to determine how many records to skip</param>
+    /// <param name="pageSize">maximum number of <see cref="Department"/> objects to return</param>
+    /// <param name="includeEmployees">if <see langword="true"/> then Employees will be include in <see cref="Department"/></param>
+    /// <param name="ascending">sort directory, results will be orded by name</param>
+    /// <param name="cancellationToken">A cancelation token.</param>
+    /// <returns><see cref="IAsyncEnumerable{Department}"/> containing at most <paramref name="pageSize"/> objects.</returns>
+    IAsyncEnumerable<Department> FindInPagesAsync(int pageNumber, int pageSize,
+        bool includeEmployees, bool ascending,
+        CancellationToken cancellationToken);
 }
