@@ -11,33 +11,30 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 using WiredBrainCoffee.EmployeeManager.Domain.Contracts;
-using WiredBrainCoffee.EmployeeManager.Infrastructure.Configuration;
-using WiredBrainCoffee.EmployeeManager.Infrastructure.Contracts;
 using WiredBrainCoffee.EmployeeManager.Infrastructure.Repositories;
 
 namespace WiredBrainCoffee.EmployeeManager.Infrastructure;
 
-public static class ServiceCollectionExtensions
+public sealed class RepositoryFactory : IRepositoryFactory
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services)
+    private readonly IDbContextFactory<EmployeeManagerDbContext> _dbContextFactory;
+
+    public RepositoryFactory(IDbContextFactory<EmployeeManagerDbContext> dbContextFactory)
     {
-        ArgumentNullException.ThrowIfNull(services);
+        _dbContextFactory = dbContextFactory ?? throw new ArgumentNullException(nameof(dbContextFactory));
+    }
 
+    /// <inheritdoc />
+    public IEmployeeRepository BuildEmployeeRepository()
+    {
+        return new EmployeeRepository(_dbContextFactory.CreateDbContext(), true);
+    }
 
-        services
-            .AddDbContext<EmployeeManagerDbContext>(optionsLifetime: ServiceLifetime.Singleton)
-            .AddDbContextFactory<EmployeeManagerDbContext>();
-
-        services
-            .AddScoped<IEmployeeRepository, EmployeeRepository>()
-            .AddScoped<IDepartmentRepository, DepartmentRepository>();
-
-        services
-            .AddSingleton<IModelConfiguration, SqliteModelConfiguration>()
-            .AddSingleton<IRepositoryFactory, RepositoryFactory>();
-
-        return services;
+    /// <inheritdoc />
+    public IDepartmentRepository BuildDepartmentRepository()
+    {
+        return new DepartmentRepository(_dbContextFactory.CreateDbContext(), true);
     }
 }
