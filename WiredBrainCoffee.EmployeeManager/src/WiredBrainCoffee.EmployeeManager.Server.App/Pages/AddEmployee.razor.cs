@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Forms;
 using WiredBrainCoffee.EmployeeManager.Domain.Contracts;
 using WiredBrainCoffee.EmployeeManager.Domain.DataTramsferObjects;
 using WiredBrainCoffee.EmployeeManager.Domain.Models;
@@ -13,7 +12,6 @@ public partial class AddEmployee
     private string? ErrorMessage { get; set; }
     private bool IsBusy { get; set; }
 
-    // TODO: add AddEmployeeDto to replace Employee 
     private AddEmployeeDto? Employee { get; set; }
 
     private List<Department>? Departments { get; set; }
@@ -34,9 +32,8 @@ public partial class AddEmployee
 
     }
 
-    private async Task OnValidSubmit(EditContext context)
+    private async Task OnValidSubmit()
     {
-        _ = context;
         if (Employee is null || IsBusy)
         {
             return;
@@ -51,11 +48,10 @@ public partial class AddEmployee
             SuccessMessage = $"Successfully added {Employee.FirstName} {Employee.LastName}";
             ErrorMessage = null;
 
-            const string placeholder = "(placeholder)";
             Employee = new AddEmployeeDto() { DepartmentId = Employee.DepartmentId };
 
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             SuccessMessage = null;
             ErrorMessage = "An Error occurred adding the employee";
@@ -70,6 +66,19 @@ public partial class AddEmployee
     {
         SuccessMessage = null;
         ErrorMessage = null;
+    }
+
+    private Task OnSubmit(bool valid)
+    {
+        if (valid)
+        {
+            return OnValidSubmit();
+        }
+        else
+        {
+            OnInvalidSubmit();
+            return Task.CompletedTask;
+        }
     }
 }
 

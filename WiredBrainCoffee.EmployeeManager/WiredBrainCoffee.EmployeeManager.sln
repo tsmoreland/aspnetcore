@@ -24,6 +24,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WiredBrainCoffee.EmployeeManager.Server.App", "src\WiredBrainCoffee.EmployeeManager.Server.App\WiredBrainCoffee.EmployeeManager.Server.App.csproj", "{DB75C498-995A-4832-AD68-574839237D45}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WiredBrainCoffee.EmployeeManager.Components", "src\Components\WiredBrainCoffee.EmployeeManager.Components.csproj", "{8317D52D-0ECF-494D-8080-CF668C06F3F8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +48,10 @@ Global
 		{DB75C498-995A-4832-AD68-574839237D45}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB75C498-995A-4832-AD68-574839237D45}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB75C498-995A-4832-AD68-574839237D45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8317D52D-0ECF-494D-8080-CF668C06F3F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8317D52D-0ECF-494D-8080-CF668C06F3F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8317D52D-0ECF-494D-8080-CF668C06F3F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8317D52D-0ECF-494D-8080-CF668C06F3F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,6 +61,7 @@ Global
 		{95EF0CB3-FB09-4ACE-AED9-53D842AFAF8B} = {7DF7183E-EBD3-4ECF-A883-ACB80EA0FFC7}
 		{D0388CAB-3431-49C9-84E7-FFF7388F53D0} = {B354C68E-F010-422B-BC7E-548E5EE8E7E7}
 		{DB75C498-995A-4832-AD68-574839237D45} = {6841BD9A-92F0-44D6-BF04-4926A8D7F70C}
+		{8317D52D-0ECF-494D-8080-CF668C06F3F8} = {6841BD9A-92F0-44D6-BF04-4926A8D7F70C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {65480C15-9ED2-4151-8351-442F6485A174}
