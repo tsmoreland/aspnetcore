@@ -363,3 +363,4 @@ MigrationBackup/
 *.db
 /BethanysPieShopHRM/src/BethanysPieShopHRM.Api/wwwroot/uploads
 /BethanysPieShopHRM/src/Web/App/wwwroot/css/open-iconic
+**/wwwroot/lib
