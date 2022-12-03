@@ -36,14 +36,14 @@ public sealed class DepartmentRepository : IDepartmentRepository
     }
 
     /// <inheritdoc />
-    public Task<Department?> FindByIdAsync(int id, bool includeEmployees, CancellationToken cancellationToken)
+    public Task<Department?> FindByIdAsync(int id, bool includeEmployees, bool track, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
 
     /// <inheritdoc />
     public async IAsyncEnumerable<Department> FindPageAsync(int pageNumber, int pageSize,
-        bool includeEmployees, bool ascending,
+        bool includeEmployees, bool ascending, bool track,
         [EnumeratorCancellation] CancellationToken cancellationToken)
     {
         // TODO: add flag for tracking
@@ -64,6 +64,11 @@ public sealed class DepartmentRepository : IDepartmentRepository
         if (includeEmployees)
         {
             departmentsQuery = departmentsQuery.Include(e => e.Employees);
+        }
+
+        if (!track)
+        {
+            departmentsQuery = departmentsQuery.AsNoTracking();
         }
 
         IAsyncEnumerable<Department> departments = departmentsQuery

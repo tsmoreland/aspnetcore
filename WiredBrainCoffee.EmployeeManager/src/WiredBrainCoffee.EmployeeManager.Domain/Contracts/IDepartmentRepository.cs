@@ -17,18 +17,18 @@ namespace WiredBrainCoffee.EmployeeManager.Domain.Contracts;
 
 public interface IDepartmentRepository : IDisposable, IAsyncDisposable
 {
-
     /// <summary>
     /// Returns <see cref="Department"/> matching <paramref name="id"/> if found.
     /// </summary>
     /// <param name="id">id of <see cref="Department"/> to find</param>
+    /// <param name="track">if <see langword="true"/> then the departments will be tracked so that changes made can be applied</param>
     /// <param name="includeEmployees">if <see langword="true"/> then Employees will be include in <see cref="Department"/></param>
     /// <param name="cancellationToken">A cancellation token.</param>
     /// <returns>
     /// An asynchronous task which upon completion will store either the matching <see cref="Department"/> or
     /// <see langword="null"/> if not found.
     /// </returns>
-    Task<Department?> FindByIdAsync(int id, bool includeEmployees, CancellationToken cancellationToken);
+    Task<Department?> FindByIdAsync(int id, bool includeEmployees, bool track, CancellationToken cancellationToken);
 
     /// <summary>
     /// Finds All <see cref="Department"/> in pages of size <paramref name="pageSize"/>
@@ -37,9 +37,10 @@ public interface IDepartmentRepository : IDisposable, IAsyncDisposable
     /// <param name="pageSize">maximum number of <see cref="Department"/> objects to return</param>
     /// <param name="includeEmployees">if <see langword="true"/> then Employees will be include in <see cref="Department"/></param>
     /// <param name="ascending">sort directory, results will be orded by name</param>
+    /// <param name="track">if <see langword="true"/> then the departments will be tracked so that changes made can be applied</param>
     /// <param name="cancellationToken">A cancelation token.</param>
     /// <returns><see cref="IAsyncEnumerable{Department}"/> containing at most <paramref name="pageSize"/> objects.</returns>
     IAsyncEnumerable<Department> FindPageAsync(int pageNumber, int pageSize,
-        bool includeEmployees, bool ascending,
+        bool includeEmployees, bool ascending, bool track,
         CancellationToken cancellationToken);
 }

@@ -13,6 +13,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using WiredBrainCoffee.EmployeeManager.Infrastructure;
+using WiredBrainCoffee.EmployeeManager.Server.App.Shared;
 using WiredBrainCoffee.EmployeeManager.Shared.Contracts;
 
 namespace WiredBrainCoffee.EmployeeManager.Server.App;
@@ -27,6 +28,7 @@ internal static class StartupExtensions
         services.AddServerSideBlazor();
         services.AddInfrastructure();
         services.AddSingleton<IHostEnvironmentFacade, HostEnvironmentFacade>();
+        services.AddScoped<StateContainer>();
 
         return services;
     }

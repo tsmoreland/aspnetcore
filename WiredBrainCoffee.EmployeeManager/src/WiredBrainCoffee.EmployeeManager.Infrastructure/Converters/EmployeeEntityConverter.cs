@@ -47,7 +47,7 @@ public static class EmployeeEntityConverter
         return entity;
     }
 
-    public static EmployeeEntity Convert(AddEmployeeDto dataTransferObject)
+    public static EmployeeEntity Convert(ChangableEmployeeDto dataTransferObject)
     {
         ArgumentNullException.ThrowIfNull(dataTransferObject);
         if (!dataTransferObject.IsValid())

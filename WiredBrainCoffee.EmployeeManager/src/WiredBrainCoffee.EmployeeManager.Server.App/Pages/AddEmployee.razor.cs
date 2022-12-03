@@ -25,7 +25,7 @@ public partial class AddEmployee
         await using IDepartmentRepository repository = RepositoryFactory.BuildDepartmentRepository();
 
         Departments = await repository
-            .FindPageAsync(1, int.MaxValue, false, true, default)
+            .FindPageAsync(1, int.MaxValue, false, true, false, default)
             .ToListAsync(default);
 
         Employee = new AddEmployeeDto() { DepartmentId = Departments.FirstOrDefault()?.Id ?? 0 };

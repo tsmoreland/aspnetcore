@@ -11,20 +11,29 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using System.ComponentModel.DataAnnotations;
 
-using WiredBrainCoffee.EmployeeManager.Domain.DataTramsferObjects;
-using WiredBrainCoffee.EmployeeManager.Domain.Models;
+namespace WiredBrainCoffee.EmployeeManager.Domain.DataTramsferObjects;
 
-namespace WiredBrainCoffee.EmployeeManager.Domain.Contracts;
-
-public interface IEmployeeRepository : IDisposable, IAsyncDisposable
+/// <summary>
+/// Base class for add/edit, not really needed but nice to establish intent 
+/// </summary>
+public class ChangableEmployeeDto
 {
-    Task<Employee?> FindByIdAsync(int id, bool includeDepartment, bool track, CancellationToken cancellationToken);
-    Task<int> GetTotalCount(CancellationToken cancellationToken);
-    IAsyncEnumerable<Employee> FindPageAsync(int pageNumber, int pageSize, bool includeDepartment, bool track, CancellationToken cancellationToken);
+    [Required]
+    [MaxLength(100)]
+    public string? FirstName { get; set; }
+    [Required]
+    [MaxLength(100)]
+    public string? LastName { get; set; }
 
-    Task AddEmployeeAsync(AddEmployeeDto employeeDto, CancellationToken cancellationToken);
-    Task AddEmployeeAsync(Employee employee, CancellationToken cancellationToken);
-    Task UpdateEmployeeAsync(EditEmployeeDto employeeDto, CancellationToken cancellationToken);
-    Task UpdateEmployeeAsync(Employee employee, CancellationToken cancellationToken);
+    public bool IsDeveloper { get; set; }
+
+    [Required]
+    public int DepartmentId { get; set; }
+
+    public bool IsValid()
+    {
+        return FirstName is { Length: > 0 } && LastName is { Length: > 0 } && DepartmentId > 0;
+    }
 }

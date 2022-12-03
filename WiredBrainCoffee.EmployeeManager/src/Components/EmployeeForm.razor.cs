@@ -11,13 +11,19 @@ public partial class EmployeeForm
     public bool IsBusy { get; set; }
 
     [Parameter]
-    public AddEmployeeDto? Employee { get; set; }
+    public bool IsEdit { get; set; }
+
+    [Parameter]
+    public ChangableEmployeeDto? Employee { get; set; }
 
     [Parameter]
     public List<Department>? Departments { get; set; }
 
     [Parameter] 
     public EventCallback<bool> OnSubmit { get; set; }
+
+    [Parameter] 
+    public EventCallback<bool> OnCancel { get; set; }
 
     private async Task OnValidSubmit()
     {
@@ -32,6 +38,14 @@ public partial class EmployeeForm
         if (OnSubmit.HasDelegate)
         {
             await OnSubmit.InvokeAsync(false);
+        }
+    }
+
+    private async Task OnCancelRequested()
+    {
+        if (OnCancel.HasDelegate)
+        {
+            await OnCancel.InvokeAsync();
         }
     }
 }

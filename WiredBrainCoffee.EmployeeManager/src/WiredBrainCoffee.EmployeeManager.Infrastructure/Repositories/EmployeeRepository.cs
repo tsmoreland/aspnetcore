@@ -37,20 +37,36 @@ public sealed class EmployeeRepository : IEmployeeRepository
     }
 
     /// <inheritdoc />
-    public async Task<Employee?> FindByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<Employee?> FindByIdAsync(int id, bool includeDepartment, bool track, CancellationToken cancellationToken)
     {
-        EmployeeEntity? employeeEntity = await _dbContext.Employees.FindAsync(new object[] { id }, cancellationToken);
-        if (employeeEntity is null)
+        EmployeeEntity? employeeEntity = null;
+        if (track)
         {
-            return null;
+            employeeEntity = await _dbContext.Employees.FindAsync(new object[] {id}, cancellationToken);
+            if (employeeEntity is null)
+            {
+                return null;
+            }
+
+            if (includeDepartment)
+            {
+                await _dbContext.Entry(employeeEntity)
+                    .Reference(e => e.Department)
+                    .LoadAsync(cancellationToken);
+            }
+        }
+        else
+        {
+            employeeEntity = includeDepartment
+                ? await _dbContext.Employees.Include(e => e.Department).FirstOrDefaultAsync(e => e.Id == id, cancellationToken)
+                : await _dbContext.Employees.FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
+            if (employeeEntity is null)
+            {
+                return null;
+            }
         }
 
-        await _dbContext.Entry(employeeEntity)
-            .Reference(e => e.Department)
-            .LoadAsync(cancellationToken);
-
         return Convert(employeeEntity);
-
     }
 
     /// <inheritdoc />
@@ -60,7 +76,7 @@ public sealed class EmployeeRepository : IEmployeeRepository
     }
 
     /// <inheritdoc />
-    public async IAsyncEnumerable<Employee> FindPageAsync(int pageNumber, int pageSize, [EnumeratorCancellation] CancellationToken cancellationToken)
+    public async IAsyncEnumerable<Employee> FindPageAsync(int pageNumber, int pageSize, bool includeDepartment, bool track, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
         if (pageNumber < 1)
         {
@@ -71,11 +87,22 @@ public sealed class EmployeeRepository : IEmployeeRepository
             throw new ArgumentOutOfRangeException(nameof(pageNumber), "page size must be greater than or equal to 1");
         }
 
-        IAsyncEnumerable<Employee> collection = _dbContext.Employees
+        IQueryable<EmployeeEntity> employeesQuery = _dbContext.Employees
             .OrderBy(e => e.LastName)
             .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
-            .Include(e => e.Department)
+            .Take(pageSize);
+        if (!track)
+        {
+            employeesQuery = employeesQuery.AsNoTracking();
+        }
+
+        if (includeDepartment)
+        {
+            employeesQuery = employeesQuery.Include(e => e.Department);
+        }
+
+
+        IAsyncEnumerable<Employee> collection = employeesQuery
             .AsAsyncEnumerable()
             .Select(Convert);
 
@@ -91,6 +118,40 @@ public sealed class EmployeeRepository : IEmployeeRepository
         EmployeeEntity entity = Convert(employeeDto);
 
         _dbContext.Employees.Add(entity);
+        await _dbContext.SaveChangesAsync(cancellationToken);
+    }
+
+    /// <inheritdoc />
+    public async Task AddEmployeeAsync(Employee employee, CancellationToken cancellationToken)
+    {
+        EmployeeEntity entity = Convert(employee);
+
+        _dbContext.Employees.Add(entity);
+        await _dbContext.SaveChangesAsync(cancellationToken);
+    }
+
+    /// <inheritdoc />
+    public async Task UpdateEmployeeAsync(EditEmployeeDto employeeDto, CancellationToken cancellationToken)
+    {
+        EmployeeEntity entity = Convert(employeeDto);
+
+        if (_dbContext.Entry(entity).State == EntityState.Detached)
+        {
+            _dbContext.Employees.Update(entity);
+        }
+        await _dbContext.SaveChangesAsync(cancellationToken);
+    }
+
+    /// <inheritdoc />
+    public async Task UpdateEmployeeAsync(Employee employee, CancellationToken cancellationToken)
+    {
+        EmployeeEntity entity = Convert(employee);
+
+        if (_dbContext.Entry(entity).State == EntityState.Detached)
+        {
+            _dbContext.Employees.Update(entity);
+        }
+
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
 

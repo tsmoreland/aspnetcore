@@ -11,27 +11,8 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System.ComponentModel.DataAnnotations;
-using WiredBrainCoffee.EmployeeManager.Domain.Models;
-
 namespace WiredBrainCoffee.EmployeeManager.Domain.DataTramsferObjects;
 
-public sealed class AddEmployeeDto
+public sealed class AddEmployeeDto : ChangableEmployeeDto
 {
-    [Required]
-    [MaxLength(100)]
-    public string? FirstName { get; set; }
-    [Required]
-    [MaxLength(100)]
-    public string? LastName { get; set; }
-
-    public bool IsDeveloper { get; set; }
-
-    [Required]
-    public int DepartmentId { get; set; }
-
-    public bool IsValid()
-    {
-        return FirstName is { Length: > 0 } && LastName is { Length: > 0 } && DepartmentId > 0;
-    }
 }

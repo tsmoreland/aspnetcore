@@ -33,7 +33,15 @@
             <ValidationMessage For="() => Employee.IsDeveloper"/>
         </div>
 
-        <button type="submit" class="btn-primary" disabled="@IsBusy">Add</button>
+        @if (IsEdit)
+        {
+            <button type="submit" class="btn-primary" disabled="@IsBusy">Update</button>
+            <button type="button" class="btn-secondary" disabled="@IsBusy" @onclick="OnCancelRequested">Cancel</button>
+        }
+        else
+        {
+            <button type="submit" class="btn-primary" disabled="@IsBusy">Add</button>
+        }
     </EditForm>
 }
 

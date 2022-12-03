@@ -2,6 +2,7 @@
 using WiredBrainCoffee.EmployeeManager.Domain.Contracts;
 using WiredBrainCoffee.EmployeeManager.Domain.Models;
 using WiredBrainCoffee.EmployeeManager.Infrastructure.Contracts;
+using WiredBrainCoffee.EmployeeManager.Server.App.Shared;
 
 namespace WiredBrainCoffee.EmployeeManager.Server.App.Pages;
 
@@ -22,6 +23,9 @@ public partial class EmployeeOverview
     [Inject]
     private NavigationManager Navigation { get; set; } = null!;
     
+    [Inject]
+    private StateContainer SharedState { get; set; } = null!;
+
 
     /// <inheritdoc />
     protected override async Task OnParametersSetAsync()
@@ -44,8 +48,9 @@ public partial class EmployeeOverview
             return;
         }
 
+        SharedState.EmployeeOverviewPage = CurrentPage.Value;
 
-        List<Employee> employees = await repository.FindPageAsync(CurrentPage.Value, PageSize, default).ToListAsync(default);
+        List<Employee> employees = await repository.FindPageAsync(CurrentPage.Value, PageSize, true, false, default).ToListAsync(default);
         Employees = employees.AsReadOnly();
     }
 }

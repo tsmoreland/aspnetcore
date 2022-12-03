@@ -33,6 +33,7 @@ else
                 <th>Last Name</th>
                 <th>Is Developer</th>
                 <th>Department</th>
+                <th>#</th>
             </tr>
         </thead>
         <tbody>
@@ -43,6 +44,11 @@ else
                     <td>@employee.LastName</td>
                     <td>@employee.IsDeveloper</td>
                     <td>@employee.Department.Name</td>
+                    <td>
+                        <a href="/employees/edit/@employee.Id" class="btn btn-outline-primary">
+                            Edit
+                        </a>
+                    </td>
                 </tr>
             }
         </tbody>
