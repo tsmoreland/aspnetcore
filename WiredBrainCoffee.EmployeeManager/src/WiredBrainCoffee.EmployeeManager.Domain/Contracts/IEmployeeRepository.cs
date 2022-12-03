@@ -27,4 +27,7 @@ public interface IEmployeeRepository : IDisposable, IAsyncDisposable
     Task AddEmployeeAsync(Employee employee, CancellationToken cancellationToken);
     Task UpdateEmployeeAsync(EditEmployeeDto employeeDto, CancellationToken cancellationToken);
     Task UpdateEmployeeAsync(Employee employee, CancellationToken cancellationToken);
+
+    Task DeleteEmployeeAsync(Employee employee, CancellationToken cancellationToken);
+    Task DeleteEmployeeAsync(int id, CancellationToken cancellationToken);
 }

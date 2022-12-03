@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using WiredBrainCoffee.EmployeeManager.Domain.Contracts;
 using WiredBrainCoffee.EmployeeManager.Domain.Models;
 using WiredBrainCoffee.EmployeeManager.Infrastructure.Contracts;
@@ -26,9 +27,39 @@ public partial class EmployeeOverview
     [Inject]
     private StateContainer SharedState { get; set; } = null!;
 
+    [Inject]
+    private IJSRuntime JavaScriptRuntime { get; set; } = null!;
 
     /// <inheritdoc />
-    protected override async Task OnParametersSetAsync()
+    protected override Task OnParametersSetAsync()
+    {
+        return LoadDataAsync();
+    }
+
+    private async Task OnDelete(Employee employee)
+    {
+        bool isOk = await JavaScriptRuntime.InvokeAsync<bool>("confirm", $"Delete Empployee {employee.FirstName} {employee.LastName}?");
+        if (!isOk)
+        {
+            return;
+        }
+
+        try
+        {
+            await using IEmployeeRepository repository = RepositoryFactory.BuildEmployeeRepository();
+            await repository.DeleteEmployeeAsync(employee, default);
+        }
+        catch (Exception)
+        {
+            // log the error, display error to the user
+        }
+        finally
+        {
+            await LoadDataAsync();
+        }
+    }
+
+    private async Task LoadDataAsync()
     {
         if (CurrentPage is null or < 1)
         {

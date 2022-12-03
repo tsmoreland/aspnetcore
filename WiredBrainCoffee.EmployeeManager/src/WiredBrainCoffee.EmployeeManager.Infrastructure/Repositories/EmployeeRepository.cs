@@ -42,7 +42,7 @@ public sealed class EmployeeRepository : IEmployeeRepository
         EmployeeEntity? employeeEntity = null;
         if (track)
         {
-            employeeEntity = await _dbContext.Employees.FindAsync(new object[] {id}, cancellationToken);
+            employeeEntity = await _dbContext.Employees.FindAsync(new object[] { id }, cancellationToken);
             if (employeeEntity is null)
             {
                 return null;
@@ -152,6 +152,30 @@ public sealed class EmployeeRepository : IEmployeeRepository
             _dbContext.Employees.Update(entity);
         }
 
+        await _dbContext.SaveChangesAsync(cancellationToken);
+    }
+
+    /// <inheritdoc />
+    public Task DeleteEmployeeAsync(Employee employee, CancellationToken cancellationToken)
+    {
+        if (employee == null!)
+        {
+            return Task.FromException(new ArgumentNullException(nameof(employee)));
+        }
+
+        return DeleteEmployeeAsync(employee.Id, cancellationToken);
+    }
+
+    /// <inheritdoc />
+    public async Task DeleteEmployeeAsync(int id, CancellationToken cancellationToken)
+    {
+        EmployeeEntity? entity = await _dbContext.Employees.FindAsync(new object?[] { id }, cancellationToken);
+        if (entity is null)
+        {
+            return;
+        }
+
+        _dbContext.Employees.Remove(entity);
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
