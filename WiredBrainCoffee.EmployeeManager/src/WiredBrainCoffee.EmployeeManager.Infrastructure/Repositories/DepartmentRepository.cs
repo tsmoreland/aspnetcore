@@ -11,8 +11,12 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using System.Runtime.CompilerServices;
+using Microsoft.EntityFrameworkCore;
 using WiredBrainCoffee.EmployeeManager.Domain.Contracts;
 using WiredBrainCoffee.EmployeeManager.Domain.Models;
+using WiredBrainCoffee.EmployeeManager.Infrastructure.Entities;
+using static WiredBrainCoffee.EmployeeManager.Infrastructure.Converters.DepartmentEntityConverter;
 
 namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Repositories;
 
@@ -38,11 +42,38 @@ public sealed class DepartmentRepository : IDepartmentRepository
     }
 
     /// <inheritdoc />
-    public IAsyncEnumerable<Department> FindPageAsync(int pageNumber, int pageSize,
+    public async IAsyncEnumerable<Department> FindPageAsync(int pageNumber, int pageSize,
         bool includeEmployees, bool ascending,
-        CancellationToken cancellationToken)
+        [EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        // TODO: add flag for tracking
+        // TODO: add class to store page number/size that includes a method like ThrowIfInvalid
+        if (pageNumber < 1)
+        {
+            throw new ArgumentOutOfRangeException(nameof(pageNumber), "page number must be greater than or equal to 1");
+        }
+        if (pageSize < 1)
+        {
+            throw new ArgumentOutOfRangeException(nameof(pageNumber), "page size must be greater than or equal to 1");
+        }
+
+        IQueryable<DepartmentEntity> departmentsQuery = _dbContext.Departments
+            .OrderBy(e => e.Name)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize);
+        if (includeEmployees)
+        {
+            departmentsQuery = departmentsQuery.Include(e => e.Employees);
+        }
+
+        IAsyncEnumerable<Department> departments = departmentsQuery
+            .AsAsyncEnumerable()
+            .Select(Convert);
+
+        await foreach (Department department in departments.WithCancellation(cancellationToken))
+        {
+            yield return department;
+        }
     }
 
     /// <inheritdoc />

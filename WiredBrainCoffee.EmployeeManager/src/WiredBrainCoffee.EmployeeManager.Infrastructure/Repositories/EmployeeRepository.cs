@@ -14,6 +14,7 @@
 using System.Runtime.CompilerServices;
 using Microsoft.EntityFrameworkCore;
 using WiredBrainCoffee.EmployeeManager.Domain.Contracts;
+using WiredBrainCoffee.EmployeeManager.Domain.DataTramsferObjects;
 using WiredBrainCoffee.EmployeeManager.Domain.Models;
 using WiredBrainCoffee.EmployeeManager.Infrastructure.Entities;
 using static WiredBrainCoffee.EmployeeManager.Infrastructure.Converters.EmployeeEntityConverter;
@@ -82,6 +83,15 @@ public sealed class EmployeeRepository : IEmployeeRepository
         {
             yield return employee;
         }
+    }
+
+    /// <inheritdoc />
+    public async Task AddEmployeeAsync(AddEmployeeDto employeeDto, CancellationToken cancellationToken)
+    {
+        EmployeeEntity entity = Convert(employeeDto);
+
+        _dbContext.Employees.Add(entity);
+        await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
     /// <inheritdoc />

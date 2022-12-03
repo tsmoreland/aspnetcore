@@ -1,0 +1,57 @@
+﻿@page "/employees/add"
+
+<PageTitle>Add Employee</PageTitle>
+
+<h1>Add Employee</h1>
+
+@if (Employee is not null)
+{
+    <EditForm Model="@Employee" OnValidSubmit="OnValidSubmit" OnInvalidSubmit="OnInvalidSubmit">
+        <DataAnnotationsValidator/>
+        <ValidationSummary/>
+
+        <div class="mb-3">
+            <label for="firstname" class="form-label">First name:</label>
+            <InputText id="firstname" class="form-control" @bind-Value="Employee.FirstName"/>
+            <ValidationMessage For="() => Employee.FirstName"/>
+        </div>
+        <div class="mb-3">
+            <label for="lastname" class="form-label">Last name:</label>
+            <InputText id="lastname" class="form-control" @bind-Value="Employee.LastName"/>
+            <ValidationMessage For="() => Employee.LastName"/>
+        </div>
+        <div class="mb-3">
+            <label for="department" class="form-label">Department:</label>
+            <InputSelect id="department" @bind-Value="Employee.DepartmentId" class="form-select">
+                @if (Departments is not null)
+                {
+                    foreach (var department in Departments)
+                    {
+                        <option value="@department.Id">@department.Name</option>
+                    }
+                }
+            </InputSelect>
+            <ValidationMessage For="() => Employee.DepartmentId"/>
+        </div>
+        <div class="mb-3">
+            <label for="isdeveloper" class="form-label">Developer:</label>
+            <InputCheckbox id="isdeveloper" @bind-Value="Employee.IsDeveloper" class="form-check-input"/>
+            <ValidationMessage For="() => Employee.IsDeveloper"/>
+        </div>
+
+        <button type="submit" class="btn-primary" disabled="@IsBusy">Add</button>
+    </EditForm>
+
+    @if (SuccessMessage is not null)
+    {
+        <div class="alert alert-success">@SuccessMessage</div>
+    }        
+    @if (ErrorMessage is not null)
+    {
+        <div class="alert alert-danger">@ErrorMessage</div>
+    }        
+}
+else
+{
+
+}

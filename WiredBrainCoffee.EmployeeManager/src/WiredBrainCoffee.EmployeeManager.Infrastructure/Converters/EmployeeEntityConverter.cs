@@ -11,6 +11,7 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using WiredBrainCoffee.EmployeeManager.Domain.DataTramsferObjects;
 using WiredBrainCoffee.EmployeeManager.Domain.Models;
 using WiredBrainCoffee.EmployeeManager.Infrastructure.Entities;
 
@@ -43,6 +44,24 @@ public static class EmployeeEntityConverter
             DepartmentId = model.Department.Id,
         };
 
+        return entity;
+    }
+
+    public static EmployeeEntity Convert(AddEmployeeDto dataTransferObject)
+    {
+        ArgumentNullException.ThrowIfNull(dataTransferObject);
+        if (!dataTransferObject.IsValid())
+        {
+            throw new ArgumentException("Invalid DTO", nameof(dataTransferObject));
+        }
+
+        EmployeeEntity entity = new()
+        {
+            FirstName = dataTransferObject.FirstName!,
+            LastName = dataTransferObject.LastName!,
+            IsDeveloper = dataTransferObject.IsDeveloper,
+            DepartmentId = dataTransferObject.DepartmentId,
+        };
         return entity;
     }
 
