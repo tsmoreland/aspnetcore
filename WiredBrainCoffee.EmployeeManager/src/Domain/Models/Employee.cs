@@ -29,13 +29,13 @@ public sealed class Employee
 
         if (firstName is not { Length: > 0 and <= 100 })
         {
-            throw new ArgumentException("Name cannot be empty or more than 100 characters in length");
+            throw new ArgumentException("Name cannot be empty or more than 100 characters in length", nameof(firstName));
         }
         _firstName = firstName;
 
         if (lastName is not { Length: > 0 and <= 100 })
         {
-            throw new ArgumentException("Name cannot be empty or more than 100 characters in length");
+            throw new ArgumentException("Name cannot be empty or more than 100 characters in length", nameof(lastName));
         }
         _lastName = lastName;
         _department = department ?? throw new ArgumentNullException(nameof(department));
