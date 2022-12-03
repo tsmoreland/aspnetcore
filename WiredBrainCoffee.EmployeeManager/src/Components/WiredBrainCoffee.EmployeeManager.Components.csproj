@@ -16,7 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WiredBrainCoffee.EmployeeManager.Domain\WiredBrainCoffee.EmployeeManager.Domain.csproj" />
+    <ProjectReference Include="..\Domain\WiredBrainCoffee.EmployeeManager.Domain.csproj" />
+    <ProjectReference Include="..\Shared\WiredBrainCoffee.EmployeeManager.Shared.csproj" />
   </ItemGroup>
 
 </Project>

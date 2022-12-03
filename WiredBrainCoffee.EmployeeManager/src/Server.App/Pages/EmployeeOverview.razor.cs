@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.JSInterop;
 using WiredBrainCoffee.EmployeeManager.Domain.Contracts;
 using WiredBrainCoffee.EmployeeManager.Domain.Models;
-using WiredBrainCoffee.EmployeeManager.Infrastructure.Contracts;
 using WiredBrainCoffee.EmployeeManager.Server.App.Shared;
+using WiredBrainCoffee.EmployeeManager.Shared;
 
 namespace WiredBrainCoffee.EmployeeManager.Server.App.Pages;
 
@@ -48,6 +49,10 @@ public partial class EmployeeOverview
         {
             await using IEmployeeRepository repository = RepositoryFactory.BuildEmployeeRepository();
             await repository.DeleteEmployeeAsync(employee, default);
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            // occurs if employee was deleted already by a separate user
         }
         catch (Exception)
         {

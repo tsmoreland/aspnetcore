@@ -17,6 +17,12 @@ public sealed class Employee
         Id = id;
     }
 
+    public Employee(int id, string firstName, string lastName, bool isDeveloper, Department department, object? dataBacking)
+        : this(id, firstName, lastName, isDeveloper, department)
+    {
+        Databacking = dataBacking;
+    }
+
     public Employee(string firstName, string lastName, bool isDeveloper, Department department)
     {
         Id = 0;
@@ -35,6 +41,7 @@ public sealed class Employee
         _department = department ?? throw new ArgumentNullException(nameof(department));
         IsDeveloper = isDeveloper;
     }
+
 
     public int Id { get; }
 
@@ -75,4 +82,10 @@ public sealed class Employee
     }
 
     public bool IsDeveloper { get; set; }
+
+    /// <summary>
+    /// Underlying entity used to store the object
+    /// </summary>
+    public object? Databacking { get; init; }
+
 }

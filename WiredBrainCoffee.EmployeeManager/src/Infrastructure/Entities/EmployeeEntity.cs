@@ -7,5 +7,5 @@ public sealed class EmployeeEntity : Entity<int>
     public bool IsDeveloper { get; set; }
 
     public int DepartmentId { get; set; }
-    public DepartmentEntity? Department { get; set; } 
+    public DepartmentEntity? Department { get; set; }
 }

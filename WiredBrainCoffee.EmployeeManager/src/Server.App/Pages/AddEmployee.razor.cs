@@ -2,7 +2,6 @@
 using WiredBrainCoffee.EmployeeManager.Domain.Contracts;
 using WiredBrainCoffee.EmployeeManager.Domain.DataTramsferObjects;
 using WiredBrainCoffee.EmployeeManager.Domain.Models;
-using WiredBrainCoffee.EmployeeManager.Infrastructure.Contracts;
 
 namespace WiredBrainCoffee.EmployeeManager.Server.App.Pages;
 

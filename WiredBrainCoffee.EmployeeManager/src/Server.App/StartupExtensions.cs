@@ -13,7 +13,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using WiredBrainCoffee.EmployeeManager.Infrastructure;
-using WiredBrainCoffee.EmployeeManager.Server.App.Shared;
+using WiredBrainCoffee.EmployeeManager.Shared;
 using WiredBrainCoffee.EmployeeManager.Shared.Contracts;
 
 namespace WiredBrainCoffee.EmployeeManager.Server.App;

@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WiredBrainCoffee.EmployeeManager.Shared\WiredBrainCoffee.EmployeeManager.Shared.csproj" />
+    <ProjectReference Include="..\Shared\WiredBrainCoffee.EmployeeManager.Shared.csproj" />
   </ItemGroup>
 
 </Project>

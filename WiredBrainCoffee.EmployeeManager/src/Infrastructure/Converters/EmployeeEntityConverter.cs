@@ -27,7 +27,7 @@ public static class EmployeeEntityConverter
             throw new ArgumentException("invalid entity, Department cannot be null.", nameof(entity));
         }
 
-        Employee employee = new(entity.Id, entity.FirstName, entity.LastName, entity.IsDeveloper, DepartmentEntityConverter.Convert(entity.Department, false));
+        Employee employee = new(entity.Id, entity.FirstName, entity.LastName, entity.IsDeveloper, DepartmentEntityConverter.Convert(entity.Department, false), entity);
         return employee;
     }
 
@@ -35,7 +35,12 @@ public static class EmployeeEntityConverter
     {
         ArgumentNullException.ThrowIfNull(model);
 
-        EmployeeEntity entity = new()
+        if (model.Databacking is EmployeeEntity entity)
+        {
+            return Convert(entity, model);
+        }
+
+        entity = new EmployeeEntity()
         {
             Id = model.Id,
             FirstName = model.FirstName,
