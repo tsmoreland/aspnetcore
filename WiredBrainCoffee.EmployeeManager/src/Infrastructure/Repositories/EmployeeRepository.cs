@@ -87,10 +87,15 @@ public sealed class EmployeeRepository : IEmployeeRepository
             throw new ArgumentOutOfRangeException(nameof(pageNumber), "page size must be greater than or equal to 1");
         }
 
-        IQueryable<EmployeeEntity> employeesQuery = _dbContext.Employees
-            .OrderBy(e => e.LastName)
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize);
+        IQueryable<EmployeeEntity> employeesQuery = _dbContext.Employees;
+        if (!track)
+        {
+            employeesQuery = employeesQuery.AsNoTracking();
+        }
+
+
+        employeesQuery = employeesQuery
+            .OrderBy(e => e.LastName);
         if (!track)
         {
             employeesQuery = employeesQuery.AsNoTracking();
@@ -101,6 +106,9 @@ public sealed class EmployeeRepository : IEmployeeRepository
             employeesQuery = employeesQuery.Include(e => e.Department);
         }
 
+        employeesQuery = employeesQuery
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize);
 
         IAsyncEnumerable<Employee> collection = employeesQuery
             .AsAsyncEnumerable()

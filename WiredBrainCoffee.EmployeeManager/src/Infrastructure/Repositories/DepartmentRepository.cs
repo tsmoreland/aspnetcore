@@ -57,19 +57,22 @@ public sealed class DepartmentRepository : IDepartmentRepository
             throw new ArgumentOutOfRangeException(nameof(pageNumber), "page size must be greater than or equal to 1");
         }
 
-        IQueryable<DepartmentEntity> departmentsQuery = _dbContext.Departments
-            .OrderBy(e => e.Name)
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize);
+        IQueryable<DepartmentEntity> departmentsQuery = _dbContext.Departments;
+        if (!track)
+        {
+            departmentsQuery = departmentsQuery.AsNoTracking();
+        }
+
+        departmentsQuery = departmentsQuery
+            .OrderBy(e => e.Name);
         if (includeEmployees)
         {
             departmentsQuery = departmentsQuery.Include(e => e.Employees);
         }
 
-        if (!track)
-        {
-            departmentsQuery = departmentsQuery.AsNoTracking();
-        }
+        departmentsQuery = departmentsQuery
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize);
 
         IAsyncEnumerable<Department> departments = departmentsQuery
             .AsAsyncEnumerable()
