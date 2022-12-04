@@ -11,44 +11,18 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Entities;
+namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Converters;
 
-public abstract class Entity<TId> : Entity, IEquatable<Entity<TId>>
-    where TId : notnull, IEquatable<TId> 
+public sealed class ByteArrayToLongConverter : ValueConverter<byte[], long>
 {
-
-    protected Entity()
+    /// <inheritdoc />
+    public ByteArrayToLongConverter()
+        : base(
+            v =>  BitConverter.ToInt64(v, 0),
+            v => BitConverter.GetBytes(v))
     {
     }
-
-    public TId Id { get; set; } = default!;
-
-    /// <inheritdoc />
-    public bool Equals(Entity<TId>? other)
-    {
-        return other is not null && other.GetType() == GetType() && other.Id.Equals(Id);
-    }
-
-    /// <inheritdoc />
-    public override bool Equals(object? obj)
-    {
-        return obj is Entity<TId> entity && Equals(entity);
-    }
-
-    /// <inheritdoc />
-    public override int GetHashCode() =>
-        // ReSharper disable once NonReadonlyMemberInGetHashCode
-        Id.GetHashCode();
 }
 
-public abstract class Entity 
-{
-
-    protected Entity()
-    {
-    }
-
-    public DateTimeOffset LastModifiedTime { get; set; } = DateTimeOffset.MinValue;
-    public byte[]? Version { get; set; } 
-}

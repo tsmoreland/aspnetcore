@@ -12,7 +12,10 @@
 //
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using WiredBrainCoffee.EmployeeManager.Infrastructure.Comparers;
+using WiredBrainCoffee.EmployeeManager.Infrastructure.Converters;
 using WiredBrainCoffee.EmployeeManager.Infrastructure.Entities;
 
 namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Configuration;
@@ -32,6 +35,17 @@ public sealed class EmployeeEntityTypeConfiguration : IEntityTypeConfiguration<E
             .WithMany(e => e.Employees)
             .HasForeignKey(e => e.DepartmentId);
         builder.Property(e => e.LastModifiedTime).IsRequired();
-        builder.Property(e => e.ConcurrencyToken).IsRequired();
+
+        ValueComparer<byte[]> versionComparer = new(
+            (l, r) => BitConverter.ToInt64(l) == BitConverter.ToInt64(r),
+            v => BitConverter.ToInt64(v).GetHashCode());
+
+        builder
+            .Property(e => e.Version)
+            .HasConversion<ByteArrayToLongConverter, VersionComparer>()
+            .HasColumnType("integer")
+            .HasDefaultValue(BitConverter.GetBytes(0L))
+            .IsRowVersion();
+
     }
 }

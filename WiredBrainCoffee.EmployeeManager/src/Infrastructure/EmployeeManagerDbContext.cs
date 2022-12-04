@@ -1,6 +1,5 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using WiredBrainCoffee.EmployeeManager.Infrastructure.Contracts;
 using WiredBrainCoffee.EmployeeManager.Infrastructure.Converters;
 using WiredBrainCoffee.EmployeeManager.Infrastructure.Entities;

@@ -10,8 +10,8 @@ using WiredBrainCoffee.EmployeeManager.Infrastructure;
 namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Migrations
 {
     [DbContext(typeof(EmployeeManagerDbContext))]
-    [Migration("20221128125150_SeedData")]
-    partial class SeedData
+    [Migration("20221204013158_Concurrency")]
+    partial class Concurrency
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,46 +25,23 @@ namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<long>("LastModifiedTime")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
+                    b.Property<long?>("Version")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(0L);
+
                     b.HasKey("Id");
 
                     b.ToTable("Departments");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Finance"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Sales"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Marketing"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "HR"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "IT"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Name = "Research and Development"
-                        });
                 });
 
             modelBuilder.Entity("WiredBrainCoffee.EmployeeManager.Infrastructure.Entities.EmployeeEntity", b =>
@@ -86,66 +63,25 @@ namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Migrations
                         .HasColumnType("INTEGER")
                         .HasDefaultValue(false);
 
+                    b.Property<long>("LastModifiedTime")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("TEXT");
+
+                    b.Property<long?>("Version")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(0L);
 
                     b.HasKey("Id");
 
                     b.HasIndex("DepartmentId");
 
                     b.ToTable("Employees");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            DepartmentId = 1,
-                            FirstName = "John",
-                            IsDeveloper = false,
-                            LastName = "Smith"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            DepartmentId = 2,
-                            FirstName = "Jessica",
-                            IsDeveloper = false,
-                            LastName = "Jones"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            DepartmentId = 3,
-                            FirstName = "Tony",
-                            IsDeveloper = true,
-                            LastName = "Stark"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            DepartmentId = 4,
-                            FirstName = "Edward",
-                            IsDeveloper = false,
-                            LastName = "Enigma"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            DepartmentId = 5,
-                            FirstName = "Brenda",
-                            IsDeveloper = false,
-                            LastName = "Moore"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            DepartmentId = 6,
-                            FirstName = "Bruce",
-                            IsDeveloper = true,
-                            LastName = "Wayne"
-                        });
                 });
 
             modelBuilder.Entity("WiredBrainCoffee.EmployeeManager.Infrastructure.Entities.EmployeeEntity", b =>

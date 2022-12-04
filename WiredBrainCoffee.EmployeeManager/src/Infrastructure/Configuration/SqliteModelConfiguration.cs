@@ -12,7 +12,6 @@
 //
 
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using WiredBrainCoffee.EmployeeManager.Infrastructure.Contracts;
@@ -101,7 +100,6 @@ public sealed class SqliteModelConfiguration : IModelConfiguration
         foreach (Entity entity in entries)
         {
             entity.LastModifiedTime = DateTimeOffset.UtcNow;
-            entity.ConcurrencyToken = Guid.NewGuid().ToString();
         }
     }
 }

@@ -10,8 +10,8 @@ using WiredBrainCoffee.EmployeeManager.Infrastructure;
 namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Migrations
 {
     [DbContext(typeof(EmployeeManagerDbContext))]
-    [Migration("20221204002053_Concurrency")]
-    partial class Concurrency
+    [Migration("20221204013320_SeedData")]
+    partial class SeedData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,10 +25,6 @@ namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("ConcurrencyToken")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<long>("LastModifiedTime")
                         .HasColumnType("INTEGER");
 
@@ -36,6 +32,12 @@ namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<long?>("Version")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(0L);
 
                     b.HasKey("Id");
 
@@ -45,42 +47,36 @@ namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyToken = "160be889-f4f0-464e-a14e-6bb13686c44a",
                             LastModifiedTime = 0L,
                             Name = "Finance"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyToken = "4e6a2a71-1dba-41b1-99c1-de4832942cff",
                             LastModifiedTime = 0L,
                             Name = "Sales"
                         },
                         new
                         {
                             Id = 3,
-                            ConcurrencyToken = "e6846c79-bbcd-44bd-87ca-6bd219956bdf",
                             LastModifiedTime = 0L,
                             Name = "Marketing"
                         },
                         new
                         {
                             Id = 4,
-                            ConcurrencyToken = "f5aa945f-9a3c-4fc2-a2ff-7d2c2299ca69",
                             LastModifiedTime = 0L,
                             Name = "HR"
                         },
                         new
                         {
                             Id = 5,
-                            ConcurrencyToken = "fa002166-9df3-4221-94c7-27ed8df4c188",
                             LastModifiedTime = 0L,
                             Name = "IT"
                         },
                         new
                         {
                             Id = 6,
-                            ConcurrencyToken = "7a2e4c49-83fe-4f55-8340-002618c42183",
                             LastModifiedTime = 0L,
                             Name = "Research and Development"
                         });
@@ -91,10 +87,6 @@ namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("ConcurrencyToken")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
 
                     b.Property<int>("DepartmentId")
                         .HasColumnType("INTEGER");
@@ -117,6 +109,12 @@ namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
+                    b.Property<long?>("Version")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(0L);
+
                     b.HasKey("Id");
 
                     b.HasIndex("DepartmentId");
@@ -127,7 +125,6 @@ namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyToken = "2e0270ee-a83b-4cdf-ae89-8057fd68b972",
                             DepartmentId = 1,
                             FirstName = "John",
                             IsDeveloper = false,
@@ -137,7 +134,6 @@ namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Migrations
                         new
                         {
                             Id = 2,
-                            ConcurrencyToken = "8b65cdfe-d1e3-4029-83bd-25262d129ead",
                             DepartmentId = 2,
                             FirstName = "Jessica",
                             IsDeveloper = false,
@@ -147,7 +143,6 @@ namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Migrations
                         new
                         {
                             Id = 3,
-                            ConcurrencyToken = "1d4edfae-1ec1-4d32-9f21-77834035a8d6",
                             DepartmentId = 3,
                             FirstName = "Tony",
                             IsDeveloper = true,
@@ -157,7 +152,6 @@ namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Migrations
                         new
                         {
                             Id = 4,
-                            ConcurrencyToken = "263cf54c-4e7a-400b-b216-4e3a4b34800d",
                             DepartmentId = 4,
                             FirstName = "Edward",
                             IsDeveloper = false,
@@ -167,7 +161,6 @@ namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Migrations
                         new
                         {
                             Id = 5,
-                            ConcurrencyToken = "c7d62fda-e896-450f-a572-701b1d69eb67",
                             DepartmentId = 5,
                             FirstName = "Brenda",
                             IsDeveloper = false,
@@ -177,7 +170,6 @@ namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Migrations
                         new
                         {
                             Id = 6,
-                            ConcurrencyToken = "ed4ddc84-cdb6-42d3-a4fb-ef3c24a1e2e4",
                             DepartmentId = 6,
                             FirstName = "Bruce",
                             IsDeveloper = true,
