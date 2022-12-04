@@ -14,7 +14,7 @@
 
 namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Entities;
 
-public abstract class Entity<TId> : IEquatable<Entity<TId>>
+public abstract class Entity<TId> : Entity, IEquatable<Entity<TId>>
     where TId : notnull, IEquatable<TId> 
 {
 
@@ -40,4 +40,16 @@ public abstract class Entity<TId> : IEquatable<Entity<TId>>
     public override int GetHashCode() =>
         // ReSharper disable once NonReadonlyMemberInGetHashCode
         Id.GetHashCode();
+}
+
+public abstract class Entity 
+{
+
+    protected Entity()
+    {
+    }
+
+    public string? ConcurrencyToken { get; set; } = Guid.NewGuid().ToString();
+
+    public DateTimeOffset LastModifiedTime { get; set; } = DateTimeOffset.MinValue;
 }

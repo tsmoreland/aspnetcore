@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.EntityFrameworkCore;
 using WiredBrainCoffee.EmployeeManager.Domain.Contracts;
 using WiredBrainCoffee.EmployeeManager.Domain.DataTramsferObjects;
 using WiredBrainCoffee.EmployeeManager.Domain.Models;
@@ -57,8 +58,15 @@ public partial class EditEmployee
             await repository.UpdateEmployeeAsync(_employee, default);
 
             ErrorMessage = null;
-            NavigationManager.NavigateTo($"/employees/list{SharedState.EmployeeOverviewPage}");
+            NavigationManager.NavigateTo($"/employees/list/{SharedState.EmployeeOverviewPage}");
 
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            // alternative approach - loop around the UpdateEmployee call and load the entity from the db on each pass, then
+            // update the employee with the values we've changed.  Probably something handled in the repository itself, possibly
+            // by a method like ForceUpdate which checks what this one changed and only forces those changes
+            ErrorMessage = "Employee was modified by another user.";
         }
         catch (Exception)
         {
@@ -68,7 +76,7 @@ public partial class EditEmployee
         {
             IsBusy = false;
         }
-        
+
     }
     private Task OnInvalidSubmit()
     {
@@ -85,7 +93,7 @@ public partial class EditEmployee
 
     private void OnCancel()
     {
-        NavigationManager.NavigateTo($"/employees/list{SharedState.EmployeeOverviewPage}");
+        NavigationManager.NavigateTo($"/employees/list/{SharedState.EmployeeOverviewPage}");
     }
 
     private async Task LoadDataAsync()

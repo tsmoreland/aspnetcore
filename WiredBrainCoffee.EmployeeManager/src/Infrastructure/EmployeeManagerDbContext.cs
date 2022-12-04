@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using WiredBrainCoffee.EmployeeManager.Infrastructure.Contracts;
 using WiredBrainCoffee.EmployeeManager.Infrastructure.Converters;
 using WiredBrainCoffee.EmployeeManager.Infrastructure.Entities;
@@ -45,4 +46,17 @@ public sealed class EmployeeManagerDbContext : DbContext
             .HaveConversion<DateTimeOffsetValueConverter>();
     }
 
+    /// <inheritdoc />
+    public override int SaveChanges()
+    {
+        _modelConfiguration.SaveChangesVisitor(this);
+        return base.SaveChanges();
+    }
+
+    /// <inheritdoc />
+    public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+    {
+        _modelConfiguration.SaveChangesVisitor(this);
+        return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+    }
 }

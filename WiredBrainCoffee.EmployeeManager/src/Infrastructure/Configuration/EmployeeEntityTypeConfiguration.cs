@@ -31,5 +31,7 @@ public sealed class EmployeeEntityTypeConfiguration : IEntityTypeConfiguration<E
             .HasOne(e => e.Department)
             .WithMany(e => e.Employees)
             .HasForeignKey(e => e.DepartmentId);
+        builder.Property(e => e.LastModifiedTime).IsRequired();
+        builder.Property(e => e.ConcurrencyToken).IsRequired();
     }
 }

@@ -18,4 +18,6 @@ public interface IModelConfiguration
 {
     void ConfigureModel(ModelBuilder modelBuilder);
     void ConfigureContext(DbContextOptionsBuilder optionsBuilder);
+
+    void SaveChangesVisitor(EmployeeManagerDbContext dbContext);
 }

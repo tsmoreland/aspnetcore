@@ -18,9 +18,18 @@ namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Converters;
 public sealed class DateTimeOffsetValueConverter : ValueConverter<DateTimeOffset, long>
 {
     public DateTimeOffsetValueConverter()
-        : base(dateTime => dateTime.ToUniversalTime().Ticks,
-            ticks => new DateTimeOffset(new DateTime(ticks, DateTimeKind.Utc), TimeSpan.FromSeconds(0)))
+        : base(v => ToTicks(v), v => FromTicks(v))
     {
 
+    }
+
+    private static long ToTicks(DateTimeOffset value)
+    {
+        return value.ToUniversalTime().Ticks;
+    }
+
+    private static DateTimeOffset FromTicks(long value)
+    {
+        return new DateTimeOffset(new DateTime(value, DateTimeKind.Utc), TimeSpan.FromSeconds(0));
     }
 }

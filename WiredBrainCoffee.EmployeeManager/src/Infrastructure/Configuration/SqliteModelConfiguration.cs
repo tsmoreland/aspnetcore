@@ -12,6 +12,7 @@
 //
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using WiredBrainCoffee.EmployeeManager.Infrastructure.Contracts;
@@ -83,7 +84,24 @@ public sealed class SqliteModelConfiguration : IModelConfiguration
 
         if (!_isDevelopment)
         {
-            //optionsBuilder.UseModel(CompiledModels.EmployeeManagementDbContextModel.Instance);
+            //optionsBuilder.UseModel(CompiledModels.EmployeeManagerDbContextModel.Instance);
+        }
+    }
+
+    /// <inheritdoc />
+    public void SaveChangesVisitor(EmployeeManagerDbContext dbContext)
+    {
+        IEnumerable<Entity> entries = dbContext.ChangeTracker
+            .Entries()
+            .Where(e => e.State is EntityState.Modified or EntityState.Added)
+            .Select(e => e.Entity)
+            .OfType<Entity>();
+
+
+        foreach (Entity entity in entries)
+        {
+            entity.LastModifiedTime = DateTimeOffset.UtcNow;
+            entity.ConcurrencyToken = Guid.NewGuid().ToString();
         }
     }
 }
