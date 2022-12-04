@@ -21,6 +21,14 @@ using WiredBrainCoffee.EmployeeManager.Shared.Contracts;
 
 namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Configuration;
 
+/// <summary>
+/// 
+/// </summary>
+/// <remarks>
+/// the migrations fort he model config are tied to SQLite - in the migrations themselves due to the addition of a trigger
+/// to resolve that we can use https://learn.microsoft.com/en-us/ef/core/managing-schemas/migrations/providers?tabs=dotnet-core-cli
+/// which provides a way to use different migraitons depending on db type
+/// </remarks>
 public sealed class SqliteModelConfiguration : IModelConfiguration
 {
     private readonly IConfiguration _configuration;

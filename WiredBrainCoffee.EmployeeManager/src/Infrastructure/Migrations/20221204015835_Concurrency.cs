@@ -60,6 +60,8 @@ namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            const string triggerFormat = "DROP TRIGGER Set{0}RowVersion{1}";
+
             migrationBuilder.DropColumn(
                 name: "LastModifiedTime",
                 table: "Employees");
@@ -75,6 +77,12 @@ namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Migrations
             migrationBuilder.DropColumn(
                 name: "Version",
                 table: "Departments");
+
+            migrationBuilder.Sql(string.Format(triggerFormat, "Employees", "INSERT"));
+            migrationBuilder.Sql(string.Format(triggerFormat, "Employees", "UPDATE"));
+
+            migrationBuilder.Sql(string.Format(triggerFormat, "Departments", "INSERT"));
+            migrationBuilder.Sql(string.Format(triggerFormat, "Departments", "UPDATE"));
         }
     }
 }
