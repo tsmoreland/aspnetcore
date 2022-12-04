@@ -83,7 +83,7 @@ public sealed class SqliteModelConfiguration : IModelConfiguration
 
         if (!_isDevelopment)
         {
-            //optionsBuilder.UseModel(CompiledModels.EmployeeManagerDbContextModel.Instance);
+            optionsBuilder.UseModel(CompiledModels.EmployeeManagerDbContextModel.Instance);
         }
     }
 

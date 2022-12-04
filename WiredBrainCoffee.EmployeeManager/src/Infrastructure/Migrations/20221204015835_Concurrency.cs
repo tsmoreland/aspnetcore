@@ -10,6 +10,16 @@ namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            const string triggerFormat = """
+                CREATE TRIGGER Set{0}RowVersion{1}
+                AFTER {1} ON {0}
+                BEGIN
+                    UPDATE {0}
+                    SET Version = CAST(ROUND((julianday('now') - 2440587.5)*86400000) AS INT)
+                    WHERE rowid = NEW.rowid;
+                END
+                """;
+
             migrationBuilder.AddColumn<long>(
                 name: "LastModifiedTime",
                 table: "Employees",
@@ -17,13 +27,13 @@ namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Migrations
                 nullable: false,
                 defaultValue: 0L);
 
-            migrationBuilder.AddColumn<long>(
+            migrationBuilder.AddColumn<ulong>(
                 name: "Version",
                 table: "Employees",
-                type: "integer",
+                type: "INTEGER",
                 rowVersion: true,
-                nullable: true,
-                defaultValue: 0L);
+                nullable: false,
+                defaultValue: 0ul);
 
             migrationBuilder.AddColumn<long>(
                 name: "LastModifiedTime",
@@ -32,33 +42,19 @@ namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Migrations
                 nullable: false,
                 defaultValue: 0L);
 
-            migrationBuilder.AddColumn<long>(
+            migrationBuilder.AddColumn<ulong>(
                 name: "Version",
                 table: "Departments",
-                type: "integer",
+                type: "INTEGER",
                 rowVersion: true,
-                nullable: true,
-                defaultValue: 0L);
+                nullable: false,
+                defaultValue: 0ul);
 
-            migrationBuilder.Sql("""
-                CREATE TRIGGER UpdateEmployeeVersion
-                AFTER UPDATE ON Employees
-                BEGIN
-                    UPDATE Employees
-                    SET Version = Version + 1
-                    WHERE rowid = NEW.rowid;
-                END;
-                """);
+            migrationBuilder.Sql(string.Format(triggerFormat, "Employees", "INSERT"));
+            migrationBuilder.Sql(string.Format(triggerFormat, "Employees", "UPDATE"));
 
-            migrationBuilder.Sql("""
-                CREATE TRIGGER UpdateDepartmentVersion
-                AFTER UPDATE ON Departments
-                BEGIN
-                    UPDATE Departments
-                    SET Version = Version + 1
-                    WHERE rowid = NEW.rowid;
-                END;
-                """);
+            migrationBuilder.Sql(string.Format(triggerFormat, "Departments", "INSERT"));
+            migrationBuilder.Sql(string.Format(triggerFormat, "Departments", "UPDATE"));
         }
 
         /// <inheritdoc />
@@ -79,14 +75,6 @@ namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Migrations
             migrationBuilder.DropColumn(
                 name: "Version",
                 table: "Departments");
-
-            migrationBuilder.Sql("""
-                DROP TRIGGER UpdateEmployeeVersion
-                """);
-
-            migrationBuilder.Sql("""
-                DROP TRIGGER UpdateDepartmentVersion
-                """);
         }
     }
 }

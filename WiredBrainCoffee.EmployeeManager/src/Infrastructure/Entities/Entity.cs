@@ -50,5 +50,5 @@ public abstract class Entity
     }
 
     public DateTimeOffset LastModifiedTime { get; set; } = DateTimeOffset.MinValue;
-    public byte[]? Version { get; set; } 
+    public ulong Version { get; set; } 
 }

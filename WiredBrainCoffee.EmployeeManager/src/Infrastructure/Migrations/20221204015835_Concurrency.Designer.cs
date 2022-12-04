@@ -10,7 +10,7 @@ using WiredBrainCoffee.EmployeeManager.Infrastructure;
 namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Migrations
 {
     [DbContext(typeof(EmployeeManagerDbContext))]
-    [Migration("20221204013158_Concurrency")]
+    [Migration("20221204015835_Concurrency")]
     partial class Concurrency
     {
         /// <inheritdoc />
@@ -33,11 +33,10 @@ namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
-                    b.Property<long?>("Version")
+                    b.Property<ulong>("Version")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(0L);
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -71,11 +70,10 @@ namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
-                    b.Property<long?>("Version")
+                    b.Property<ulong>("Version")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(0L);
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 

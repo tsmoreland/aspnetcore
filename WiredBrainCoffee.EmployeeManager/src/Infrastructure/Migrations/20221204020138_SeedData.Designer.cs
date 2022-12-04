@@ -10,7 +10,7 @@ using WiredBrainCoffee.EmployeeManager.Infrastructure;
 namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Migrations
 {
     [DbContext(typeof(EmployeeManagerDbContext))]
-    [Migration("20221204013320_SeedData")]
+    [Migration("20221204020138_SeedData")]
     partial class SeedData
     {
         /// <inheritdoc />
@@ -33,11 +33,10 @@ namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
-                    b.Property<long?>("Version")
+                    b.Property<ulong>("Version")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(0L);
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -48,37 +47,43 @@ namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Migrations
                         {
                             Id = 1,
                             LastModifiedTime = 0L,
-                            Name = "Finance"
+                            Name = "Finance",
+                            Version = 0ul
                         },
                         new
                         {
                             Id = 2,
                             LastModifiedTime = 0L,
-                            Name = "Sales"
+                            Name = "Sales",
+                            Version = 0ul
                         },
                         new
                         {
                             Id = 3,
                             LastModifiedTime = 0L,
-                            Name = "Marketing"
+                            Name = "Marketing",
+                            Version = 0ul
                         },
                         new
                         {
                             Id = 4,
                             LastModifiedTime = 0L,
-                            Name = "HR"
+                            Name = "HR",
+                            Version = 0ul
                         },
                         new
                         {
                             Id = 5,
                             LastModifiedTime = 0L,
-                            Name = "IT"
+                            Name = "IT",
+                            Version = 0ul
                         },
                         new
                         {
                             Id = 6,
                             LastModifiedTime = 0L,
-                            Name = "Research and Development"
+                            Name = "Research and Development",
+                            Version = 0ul
                         });
                 });
 
@@ -109,11 +114,10 @@ namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
-                    b.Property<long?>("Version")
+                    b.Property<ulong>("Version")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(0L);
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -129,7 +133,8 @@ namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Migrations
                             FirstName = "John",
                             IsDeveloper = false,
                             LastModifiedTime = 0L,
-                            LastName = "Smith"
+                            LastName = "Smith",
+                            Version = 0ul
                         },
                         new
                         {
@@ -138,7 +143,8 @@ namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Migrations
                             FirstName = "Jessica",
                             IsDeveloper = false,
                             LastModifiedTime = 0L,
-                            LastName = "Jones"
+                            LastName = "Jones",
+                            Version = 0ul
                         },
                         new
                         {
@@ -147,7 +153,8 @@ namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Migrations
                             FirstName = "Tony",
                             IsDeveloper = true,
                             LastModifiedTime = 0L,
-                            LastName = "Stark"
+                            LastName = "Stark",
+                            Version = 0ul
                         },
                         new
                         {
@@ -156,7 +163,8 @@ namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Migrations
                             FirstName = "Edward",
                             IsDeveloper = false,
                             LastModifiedTime = 0L,
-                            LastName = "Enigma"
+                            LastName = "Enigma",
+                            Version = 0ul
                         },
                         new
                         {
@@ -165,7 +173,8 @@ namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Migrations
                             FirstName = "Brenda",
                             IsDeveloper = false,
                             LastModifiedTime = 0L,
-                            LastName = "Moore"
+                            LastName = "Moore",
+                            Version = 0ul
                         },
                         new
                         {
@@ -174,7 +183,8 @@ namespace WiredBrainCoffee.EmployeeManager.Infrastructure.Migrations
                             FirstName = "Bruce",
                             IsDeveloper = true,
                             LastModifiedTime = 0L,
-                            LastName = "Wayne"
+                            LastName = "Wayne",
+                            Version = 0ul
                         });
                 });
 
