@@ -13,11 +13,16 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.175" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Domain\WiredBrainCoffee.EmployeeManager.Domain.csproj" />
     <ProjectReference Include="..\Shared\WiredBrainCoffee.EmployeeManager.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\lib\open-iconic\font\css\" />
   </ItemGroup>
 
 </Project>
