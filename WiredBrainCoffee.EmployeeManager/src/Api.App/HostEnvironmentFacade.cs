@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright © 2022 Terry Moreland
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
@@ -11,9 +11,23 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using WiredBrainCoffee.EmployeeManager.Api.App;
+using WiredBrainCoffee.EmployeeManager.Shared.Contracts;
 
-WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-builder.Services.ConfigureServices();
-WebApplication app = builder.Build().ConfigurePipeline();
-app.Run();
+namespace WiredBrainCoffee.EmployeeManager.Api.App;
+
+// TODO: move to Shared.Web
+public class HostEnvironmentFacade : IHostEnvironmentFacade
+{
+    private readonly IHostEnvironment _environment;
+
+    public HostEnvironmentFacade(IHostEnvironment environment)
+    {
+        _environment = environment ?? throw new ArgumentNullException(nameof(environment));
+    }
+
+    /// <inheritdoc />
+    public bool IsDevelopment() => _environment.IsDevelopment();
+
+    /// <inheritdoc />
+    public bool IsProduction() => _environment.IsProduction();
+}

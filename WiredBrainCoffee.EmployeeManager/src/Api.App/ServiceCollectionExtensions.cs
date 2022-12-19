@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright © 2022 Terry Moreland
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
@@ -11,9 +11,22 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using WiredBrainCoffee.EmployeeManager.Api.App;
+using WiredBrainCoffee.EmployeeManager.Infrastructure;
+using WiredBrainCoffee.EmployeeManager.Shared;
+using WiredBrainCoffee.EmployeeManager.Shared.Contracts;
 
-WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-builder.Services.ConfigureServices();
-WebApplication app = builder.Build().ConfigurePipeline();
-app.Run();
+namespace WiredBrainCoffee.EmployeeManager.Api.App;
+
+public static class ServiceCollectionExtensions
+{
+    public static IServiceCollection ConfigureServices(this IServiceCollection services)
+    {
+        ArgumentNullException.ThrowIfNull(services);
+
+        services.AddInfrastructure();
+        services.AddSingleton<IHostEnvironmentFacade, HostEnvironmentFacade>();
+
+        return services;
+    }
+
+}
