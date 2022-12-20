@@ -11,9 +11,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{3F595291-44E4-
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{DF2A80DD-D66A-4521-9C65-D236D1A6888D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlobalTicket.TicketManagement.Domain", "src\Domain\GlobalTicket.TicketManagement.Domain.csproj", "{9A2D91B6-E8EA-42AA-A658-87188904AEB3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GlobalTicket.TicketManagement.Domain", "src\Domain\GlobalTicket.TicketManagement.Domain.csproj", "{9A2D91B6-E8EA-42AA-A658-87188904AEB3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlobalTicket.TicketManagement.Application", "src\Application\GlobalTicket.TicketManagement.Application.csproj", "{7DA9ABBC-2AF7-492D-95B2-5921CC647D4F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GlobalTicket.TicketManagement.Application", "src\Application\GlobalTicket.TicketManagement.Application.csproj", "{7DA9ABBC-2AF7-492D-95B2-5921CC647D4F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlobalTicket.TicketManagement.Application.Test", "test\Application.Test\GlobalTicket.TicketManagement.Application.Test.csproj", "{97930513-D7A6-4E99-9ACC-C0C36E832579}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +31,10 @@ Global
 		{7DA9ABBC-2AF7-492D-95B2-5921CC647D4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7DA9ABBC-2AF7-492D-95B2-5921CC647D4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7DA9ABBC-2AF7-492D-95B2-5921CC647D4F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97930513-D7A6-4E99-9ACC-C0C36E832579}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97930513-D7A6-4E99-9ACC-C0C36E832579}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97930513-D7A6-4E99-9ACC-C0C36E832579}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97930513-D7A6-4E99-9ACC-C0C36E832579}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -36,6 +42,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{9A2D91B6-E8EA-42AA-A658-87188904AEB3} = {EAACD996-DAEB-4975-848A-AC5AE6874C87}
 		{7DA9ABBC-2AF7-492D-95B2-5921CC647D4F} = {EAACD996-DAEB-4975-848A-AC5AE6874C87}
+		{97930513-D7A6-4E99-9ACC-C0C36E832579} = {EAACD996-DAEB-4975-848A-AC5AE6874C87}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {51F42141-A97D-4172-9ECE-6D21B12AC647}
