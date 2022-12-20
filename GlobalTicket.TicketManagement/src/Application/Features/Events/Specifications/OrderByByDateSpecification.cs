@@ -11,14 +11,14 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-namespace GlobalTicket.TicketManagement.Domain.Common;
+using System.Linq.Expressions;
+using GlobalTicket.TicketManagement.Application.Contracts.Persistence;
+using GlobalTicket.TicketManagement.Domain.Entities;
 
-public sealed record class Page<T>(int PageNumber, int PageSize, int TotalPages, int TotalSize, IReadOnlyList<T> Items)
+namespace GlobalTicket.TicketManagement.Application.Features.Events.Specifications;
+
+public sealed class OrderByByDateSpecification : IOrderBySpecification<Event, DateTime>
 {
-    public Page<TMapped> Select<TMapped>(Func<T, TMapped> selector)
-    {
-        ArgumentNullException.ThrowIfNull(selector);
-        return new Page<TMapped>(PageNumber, PageSize, TotalPages, TotalSize, Items.Select(selector).ToList().AsReadOnly());
-    }
-
+    /// <inheritdoc />
+    public Expression<Func<Event, DateTime>> OrderBy => e => e.Date;
 }

@@ -11,14 +11,23 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-namespace GlobalTicket.TicketManagement.Domain.Common;
+using AutoMapper;
+using GlobalTicket.TicketManagement.Domain.Common;
 
-public sealed record class Page<T>(int PageNumber, int PageSize, int TotalPages, int TotalSize, IReadOnlyList<T> Items)
+namespace GlobalTicket.TicketManagement.Application.Extensions;
+
+internal static class PageExtensions
 {
-    public Page<TMapped> Select<TMapped>(Func<T, TMapped> selector)
+    public static Page<TMapped> Map<T, TMapped>(this Page<T> source, IMapper mapper)
     {
-        ArgumentNullException.ThrowIfNull(selector);
-        return new Page<TMapped>(PageNumber, PageSize, TotalPages, TotalSize, Items.Select(selector).ToList().AsReadOnly());
-    }
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(mapper);
 
+        return new Page<TMapped>(
+            source.PageNumber,
+            source.PageSize,
+            source.TotalPages,
+            source.TotalSize,
+            mapper.Map<List<TMapped>>(source.Items).AsReadOnly());
+    }
 }
