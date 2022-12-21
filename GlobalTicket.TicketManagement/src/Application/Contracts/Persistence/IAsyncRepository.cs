@@ -16,9 +16,9 @@ public interface IAsyncRepository<T> where T : class
         IQuerySpecification<T, TProjection> query,
         CancellationToken cancellationToken = default);
 
-    ValueTask<T> AddAsync(T entity);
+    ValueTask<T> AddAsync(T entity, CancellationToken cancellationToken = default);
 
-    ValueTask<T> UpdateAsync(T entity);
+    ValueTask<T> UpdateAsync(T entity, CancellationToken cancellationToken = default);
 
-    ValueTask DeleteAsync(T entity);
+    ValueTask DeleteAsync(T entity, CancellationToken cancellationToken = default);
 }

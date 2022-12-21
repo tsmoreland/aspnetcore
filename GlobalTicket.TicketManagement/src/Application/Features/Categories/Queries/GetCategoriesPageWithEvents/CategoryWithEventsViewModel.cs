@@ -13,7 +13,7 @@
 
 namespace GlobalTicket.TicketManagement.Application.Features.Categories.Queries.GetCategoriesPageWithEvents;
 
-public sealed class CategoryWithEventsViewModel 
+public sealed class CategoryWithEventsViewModel
 {
     public Guid CategoryId { get; set; }
     public string Name { get; set; } = string.Empty;
