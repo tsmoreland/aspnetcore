@@ -1,27 +1,19 @@
-﻿using GlobalTicket.TicketManagement.Domain.Common;
+﻿using GlobalTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
+using GlobalTicket.TicketManagement.Domain.Common;
 
 namespace GlobalTicket.TicketManagement.Application.Contracts.Persistence;
 
 public interface IAsyncRepository<T> where T : class
 {
     ValueTask<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+    ValueTask<T?> GetProjectionByIdAsync<TProjection>(Guid id, IQuerySpecification<T, TProjection> query, CancellationToken cancellationToken = default);
 
     ValueTask<Page<T>> GetPage(
-        PageRequest pageRequest,
-        IFilterSpecification<T>? filter = null,
+        IQuerySpecification<T> query,
         CancellationToken cancellationToken = default);
 
-    ValueTask<Page<T>> GetPage<TKey>(
-        PageRequest pageRequest,
-        IFilterSpecification<T>? filter = null,
-        IOrderBySpecification<T, TKey>? orderBy = null,
-        CancellationToken cancellationToken = default);
-
-    ValueTask<Page<TProjection>> GetPage<TProjection, TKey>(
-        PageRequest pageRequest,
-        ISelector<T, TProjection>? selector,
-        IFilterSpecification<T>? filter = null,
-        IOrderBySpecification<T, TKey>? orderBy = null,
+    ValueTask<Page<TProjection>> GetPage<TProjection>(
+        IQuerySpecification<T, TProjection> query,
         CancellationToken cancellationToken = default);
 
     ValueTask<T> AddAsync(T entity);

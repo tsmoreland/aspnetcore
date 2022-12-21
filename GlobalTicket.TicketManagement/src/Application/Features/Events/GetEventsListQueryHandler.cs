@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using GlobalTicket.TicketManagement.Application.Contracts.Persistence;
+using GlobalTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
 using GlobalTicket.TicketManagement.Application.Features.Events.Specifications;
 using GlobalTicket.TicketManagement.Domain.Common;
 using GlobalTicket.TicketManagement.Domain.Entities;
@@ -11,17 +12,23 @@ public sealed class GetEventsListQueryHandler : IRequestHandler<GetEventsListQue
 {
     private readonly IMapper _mapper;
     private readonly IAsyncRepository<Event> _eventRepository;
+    private readonly IQuerySpecificationFactory _querySpecificationFactory;
 
-    public GetEventsListQueryHandler(IMapper mapper, IAsyncRepository<Event> eventRepository)
+    public GetEventsListQueryHandler(IMapper mapper, IAsyncRepository<Event> eventRepository, IQuerySpecificationFactory querySpecificationFactory)
     {
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         _eventRepository = eventRepository ?? throw new ArgumentNullException(nameof(eventRepository));
+        _querySpecificationFactory = querySpecificationFactory ?? throw new ArgumentNullException(nameof(querySpecificationFactory));
     }
 
     /// <inheritdoc />
     public async Task<Page<EventViewModel>> Handle(GetEventsListQuery request, CancellationToken cancellationToken)
     {
-        return (await _eventRepository.GetPage(request.PageRequest, orderBy: new OrderByByDateSpecification(), cancellationToken: cancellationToken))
+        IQuerySpecification<Event> query = _querySpecificationFactory.Build<Event>()
+            .WithPaging(request.PageRequest)
+            .WithOrderBy(new OrderByByDateSpecification());
+
+        return (await _eventRepository.GetPage(query, cancellationToken: cancellationToken))
             .Map<Event, EventViewModel>(_mapper);
     }
 }

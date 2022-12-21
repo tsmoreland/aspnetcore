@@ -12,7 +12,7 @@
 //
 
 using System.Linq.Expressions;
-using GlobalTicket.TicketManagement.Application.Contracts.Persistence;
+using GlobalTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
 using GlobalTicket.TicketManagement.Domain.Entities;
 
 namespace GlobalTicket.TicketManagement.Application.Features.Events.Specifications;
@@ -21,4 +21,8 @@ public sealed class OrderByByDateSpecification : IOrderBySpecification<Event, Da
 {
     /// <inheritdoc />
     public Expression<Func<Event, DateTime>> OrderBy => e => e.Date;
+
+    /// <inheritdoc />
+    public IQueryable<Event> ApplyOrder(IQueryable<Event> source) =>
+        source.OrderBy(OrderBy);
 }

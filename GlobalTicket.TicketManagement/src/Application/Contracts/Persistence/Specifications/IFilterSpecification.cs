@@ -14,9 +14,9 @@
 
 using System.Linq.Expressions;
 
-namespace GlobalTicket.TicketManagement.Application.Contracts.Persistence;
+namespace GlobalTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
 
-public interface IFilterSpecification<T>  where T : class
+public interface IFilterSpecification<T> where T : class
 {
     Expression<Func<T, bool>> Predicate { get; }
 }

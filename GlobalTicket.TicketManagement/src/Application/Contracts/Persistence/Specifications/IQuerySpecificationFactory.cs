@@ -10,11 +10,10 @@
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using System.Linq.Expressions;
+namespace GlobalTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
 
-namespace GlobalTicket.TicketManagement.Application.Contracts.Persistence;
-
-public interface ISelector<TEntity, TProjection>  where TEntity : class
+public interface IQuerySpecificationFactory
 {
-    Expression<Func<TEntity, TProjection>> Selector { get; }
+    IQuerySpecification<T> Build<T>() where T : class;
+    IQuerySpecification<T, TProjection> Build<T, TProjection>(ISelectorSpecification<T, TProjection> selectorSpecification) where T : class;
 }
