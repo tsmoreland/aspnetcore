@@ -11,14 +11,11 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System.Linq.Expressions;
-using GlobalTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
-using GlobalTicket.TicketManagement.Domain.Entities;
+namespace GlobalTicket.TicketManagement.Application.Features.Categories.Queries.GetCategoriesPageWithEvents;
 
-namespace GlobalTicket.TicketManagement.Application.Features.Events.Specifications;
-
-public sealed class OrderByByDateSpecification : IOrderBySpecification<Event, DateTime>
+public sealed class CategoryWithEventsViewModel 
 {
-    /// <inheritdoc />
-    public Expression<Func<Event, DateTime>> OrderBy => e => e.Date;
+    public Guid CategoryId { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public ICollection<CategoryEventViewModel>? Events { get; set; }
 }

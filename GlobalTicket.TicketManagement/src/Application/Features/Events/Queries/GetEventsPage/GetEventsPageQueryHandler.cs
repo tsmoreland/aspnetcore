@@ -6,15 +6,15 @@ using GlobalTicket.TicketManagement.Domain.Common;
 using GlobalTicket.TicketManagement.Domain.Entities;
 using MediatR;
 
-namespace GlobalTicket.TicketManagement.Application.Features.Events;
+namespace GlobalTicket.TicketManagement.Application.Features.Events.Queries.GetEventsPage;
 
-public sealed class GetEventsListQueryHandler : IRequestHandler<GetEventsListQuery, Page<EventViewModel>>
+public sealed class GetEventsPageQueryHandler : IRequestHandler<GetEventsPageQuery, Page<EventViewModel>>
 {
     private readonly IMapper _mapper;
     private readonly IAsyncRepository<Event> _eventRepository;
     private readonly IQuerySpecificationFactory _querySpecificationFactory;
 
-    public GetEventsListQueryHandler(IMapper mapper, IAsyncRepository<Event> eventRepository, IQuerySpecificationFactory querySpecificationFactory)
+    public GetEventsPageQueryHandler(IMapper mapper, IAsyncRepository<Event> eventRepository, IQuerySpecificationFactory querySpecificationFactory)
     {
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         _eventRepository = eventRepository ?? throw new ArgumentNullException(nameof(eventRepository));
@@ -22,7 +22,7 @@ public sealed class GetEventsListQueryHandler : IRequestHandler<GetEventsListQue
     }
 
     /// <inheritdoc />
-    public async Task<Page<EventViewModel>> Handle(GetEventsListQuery request, CancellationToken cancellationToken)
+    public async Task<Page<EventViewModel>> Handle(GetEventsPageQuery request, CancellationToken cancellationToken)
     {
         IQuerySpecification<Event> query = _querySpecificationFactory.Build<Event>()
             .WithPaging(request.PageRequest)

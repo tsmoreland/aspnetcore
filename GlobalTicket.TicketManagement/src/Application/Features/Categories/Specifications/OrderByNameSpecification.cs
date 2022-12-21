@@ -15,10 +15,10 @@ using System.Linq.Expressions;
 using GlobalTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
 using GlobalTicket.TicketManagement.Domain.Entities;
 
-namespace GlobalTicket.TicketManagement.Application.Features.Events.Specifications;
+namespace GlobalTicket.TicketManagement.Application.Features.Categories.Specifications;
 
-public sealed class OrderByByDateSpecification : IOrderBySpecification<Event, DateTime>
+public sealed class OrderByNameSpecification : IOrderBySpecification<Category, string>
 {
     /// <inheritdoc />
-    public Expression<Func<Event, DateTime>> OrderBy => e => e.Date;
+    public Expression<Func<Category, string>> OrderBy => c => c.Name;
 }

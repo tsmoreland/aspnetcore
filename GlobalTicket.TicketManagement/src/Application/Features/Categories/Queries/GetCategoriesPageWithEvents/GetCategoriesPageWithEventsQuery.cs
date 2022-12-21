@@ -12,28 +12,8 @@
 //
 
 using GlobalTicket.TicketManagement.Domain.Common;
+using MediatR;
 
-namespace GlobalTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
+namespace GlobalTicket.TicketManagement.Application.Features.Categories.Queries.GetCategoriesPageWithEvents;
 
-public interface IQuerySpecification<T> where T : class
-{
-    IQuerySpecification<T> WithNoTracking();
-    IQuerySpecification<T> WithFilter(IFilterSpecification<T> filterSpecification);
-    IQuerySpecification<T> WithOrderBy<TKey>(IOrderBySpecification<T, TKey> orderBySpecification);
-    IQuerySpecification<T> WithThenBy<TKey>(IOrderBySpecification<T, TKey> orderBySpecification);
-    IQuerySpecification<T> WithPaging(PageRequest pageRequest);
-
-    IQueryable<T> Query();
-}
-
-public interface IQuerySpecification<T, out TProjection>
-    where T : class
-{
-    IQuerySpecification<T, TProjection> WithNoTracking();
-    IQuerySpecification<T, TProjection> WithFilter(IFilterSpecification<T> filterSpecification);
-    IQuerySpecification<T, TProjection> WithOrderBy<TKey>(IOrderBySpecification<T, TKey> orderBySpecification);
-    IQuerySpecification<T, TProjection> WithThenBy<TKey>(IOrderBySpecification<T, TKey> orderBySpecification);
-    IQuerySpecification<T, TProjection> WithPaging(PageRequest pageRequest);
-
-    IQueryable<TProjection> Query();
-}
+public sealed record class GetCategoriesPageWithEventsQuery(PageRequest PageRequest, bool IncludeHistory) : IRequest<Page<CategoryWithEventsViewModel>>;
