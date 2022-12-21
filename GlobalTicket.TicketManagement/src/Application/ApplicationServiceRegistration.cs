@@ -18,7 +18,7 @@ public static class ApplicationServiceRegistration
     {
         ArgumentNullException.ThrowIfNull(services);
 
-        services.AddAutoMapper(Assembly.GetExecutingAssembly()); 
+        services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddMediatR(Assembly.GetExecutingAssembly());
 
         return services;

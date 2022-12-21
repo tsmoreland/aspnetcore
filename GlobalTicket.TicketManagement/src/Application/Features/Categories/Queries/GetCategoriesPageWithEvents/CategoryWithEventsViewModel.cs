@@ -11,12 +11,11 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+namespace GlobalTicket.TicketManagement.Application.Features.Categories.Queries.GetCategoriesPageWithEvents;
 
-using System.Linq.Expressions;
-
-namespace GlobalTicket.TicketManagement.Application.Contracts.Persistence;
-
-public interface IFilterSpecification<T>  where T : class
+public sealed class CategoryWithEventsViewModel
 {
-    Expression<Func<T, bool>> Predicate { get; }
+    public Guid CategoryId { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public ICollection<CategoryEventViewModel>? Events { get; set; }
 }

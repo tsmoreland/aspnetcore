@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright © 2022 Terry Moreland
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
@@ -11,4 +11,14 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-global using Xunit;
+using System.Linq.Expressions;
+using GlobalTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
+using GlobalTicket.TicketManagement.Domain.Entities;
+
+namespace GlobalTicket.TicketManagement.Application.Features.Categories.Specifications;
+
+public sealed class OrderByNameSpecification : IOrderBySpecification<Category, string>
+{
+    /// <inheritdoc />
+    public Expression<Func<Category, string>> OrderBy => c => c.Name;
+}

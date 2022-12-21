@@ -12,7 +12,7 @@
 //
 
 using System.Linq.Expressions;
-using GlobalTicket.TicketManagement.Application.Contracts.Persistence;
+using GlobalTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
 using GlobalTicket.TicketManagement.Domain.Entities;
 
 namespace GlobalTicket.TicketManagement.Application.Features.Events.Specifications;
