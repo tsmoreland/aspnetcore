@@ -17,4 +17,8 @@
     <ProjectReference Include="..\Application\GlobalTicket.TicketManagement.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Specifications\" />
+  </ItemGroup>
+
 </Project>

@@ -12,8 +12,7 @@
 
 namespace GlobalTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
 
-public interface IQuerySpecificationFactory
+public interface IQueryBuilderFactory
 {
     IQueryBuilder<T> Build<T>() where T : class;
-    IQueryBuilder<T, TProjection> Build<T, TProjection>(ISelectorSpecification<T, TProjection> selectorSpecification) where T : class;
 }

@@ -16,13 +16,11 @@ public sealed class OrderRepository : BaseRepository<Order>, IOrderRepository
     /// <inheritdoc />
     public async ValueTask<Page<Order>> GetPagedOrdersForMonth(DateTime date, int pageNumber, int pageSize, CancellationToken cancellationToken)
     {
-        PageRequest pageRequest = new(pageNumber, pageSize);
-
         IQueryable<Order> source = DataSet
             .AsNoTracking()
             .Where(o => o.OrderPlaced.Month == date.Month && o.OrderPlaced.Year == date.Year);
 
-        return await GetPageAsync(source, pageRequest, cancellationToken);
+        return await GetPage(source, pageNumber, pageSize, cancellationToken);
     }
 
     /// <inheritdoc />

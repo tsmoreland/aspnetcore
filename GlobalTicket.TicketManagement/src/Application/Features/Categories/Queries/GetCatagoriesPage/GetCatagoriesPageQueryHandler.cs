@@ -12,9 +12,9 @@ public sealed class GetCatagoriesPageQueryHandler : IRequestHandler<GetCatagorie
 {
     private readonly IMapper _mapper;
     private readonly IAsyncRepository<Category> _categoryRepository;
-    private readonly IQuerySpecificationFactory _querySpecificationFactory;
+    private readonly IQueryBuilderFactory _querySpecificationFactory;
 
-    public GetCatagoriesPageQueryHandler(IMapper mapper, IAsyncRepository<Category> categoryRepository, IQuerySpecificationFactory querySpecificationFactory)
+    public GetCatagoriesPageQueryHandler(IMapper mapper, IAsyncRepository<Category> categoryRepository, IQueryBuilderFactory querySpecificationFactory)
     {
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         _categoryRepository = categoryRepository ?? throw new ArgumentNullException(nameof(categoryRepository));

@@ -12,9 +12,9 @@ public sealed class GetEventsPageQueryHandler : IRequestHandler<GetEventsPageQue
 {
     private readonly IMapper _mapper;
     private readonly IAsyncRepository<Event> _eventRepository;
-    private readonly IQuerySpecificationFactory _querySpecificationFactory;
+    private readonly IQueryBuilderFactory _querySpecificationFactory;
 
-    public GetEventsPageQueryHandler(IMapper mapper, IAsyncRepository<Event> eventRepository, IQuerySpecificationFactory querySpecificationFactory)
+    public GetEventsPageQueryHandler(IMapper mapper, IAsyncRepository<Event> eventRepository, IQueryBuilderFactory querySpecificationFactory)
     {
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         _eventRepository = eventRepository ?? throw new ArgumentNullException(nameof(eventRepository));

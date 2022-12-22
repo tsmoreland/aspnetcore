@@ -37,41 +37,45 @@ public class BaseRepository<T> : IAsyncRepository<T> where T : class
     /// <inheritdoc />
     public virtual async ValueTask<T?> GetByQueryAsync(IQuerySpecification<T> query, CancellationToken cancellationToken = default)
     {
-        return await ApplyQuerySpecification(_dbContext.Set<T>(), query).FirstOrDefaultAsync(cancellationToken);
+        return await query.ApplySpecifications(_dbContext.Set<T>()).FirstOrDefaultAsync(cancellationToken);
     }
 
     /// <inheritdoc />
     public virtual async ValueTask<TProjection?> GetProjectionByQueryAsync<TProjection>(IQuerySpecification<T, TProjection> query, CancellationToken cancellationToken = default)
     {
-        return await ApplyQuerySpecification(_dbContext.Set<T>(), query).FirstOrDefaultAsync(cancellationToken);
+        return await query.ApplySelection(query.ApplySpecifications(_dbContext.Set<T>())).FirstOrDefaultAsync(cancellationToken);
     }
 
     /// <inheritdoc />
-    public ValueTask<Page<T>> GetPage(IQuerySpecification<T> query, CancellationToken cancellationToken = default)
+    public async ValueTask<Page<T>> GetPage(IQuerySpecification<T> query, CancellationToken cancellationToken = default)
     {
         // todo: validate the query
-        return GetPageAsync(ApplyQuerySpecification(_dbContext.Set<T>(), query), query.PageRequest!, cancellationToken);
-    }
-
-    /// <inheritdoc />
-    public ValueTask<Page<TProjection>> GetPage<TProjection>(IQuerySpecification<T, TProjection> query, CancellationToken cancellationToken = default)
-    {
-        return GetPageAsync(ApplyQuerySpecification(_dbContext.Set<T>(), query), query.PageRequest!, cancellationToken);
-    }
-    protected virtual async ValueTask<Page<TValue>> GetPageAsync<TValue>(IQueryable<TValue> source, PageRequest pageRequest, CancellationToken cancellationToken)
-    {
+        IQueryable<T> source = query.ApplySpecifications(DataSet);
         Task<int> countTask = source.CountAsync(cancellationToken);
-        Task<List<TValue>> itemsTask = ApplyPaging(source, pageRequest).AsAsyncEnumerable().ToListAsync(cancellationToken).AsTask();
+        Task<List<T>> itemsTask = query.ApplyPaging(source).AsAsyncEnumerable().ToListAsync(cancellationToken).AsTask();
 
         await Task.WhenAll(countTask, itemsTask);
 
         int count = countTask.Result;
-        List<TValue> items = itemsTask.Result;
+        List<T> items = itemsTask.Result;
 
-        (int pageNumber, int pageSize, int totalPages) = GetPageDetails(pageRequest, count);
-        return new Page<TValue>(pageNumber, pageSize, totalPages, count, items.AsReadOnly());
+        return new Page<T>(query.PageNumberOrZero, query.PageSizeOrZero, query.CalculateTotalPages(count), count, items.AsReadOnly());
     }
 
+    /// <inheritdoc />
+    public async ValueTask<Page<TProjection>> GetPage<TProjection>(IQuerySpecification<T, TProjection> query, CancellationToken cancellationToken = default)
+    {
+        IQueryable<T> source = query.ApplySpecifications(DataSet);
+        Task<int> countTask = source.CountAsync(cancellationToken);
+        Task<List<TProjection>> itemsTask = query.ApplySelection(query.ApplyPaging(source)).AsAsyncEnumerable().ToListAsync(cancellationToken).AsTask();
+
+        await Task.WhenAll(countTask, itemsTask);
+
+        int count = countTask.Result;
+        List<TProjection> items = itemsTask.Result;
+
+        return new Page<TProjection>(query.PageNumberOrZero, query.PageSizeOrZero, query.CalculateTotalPages(count), count, items.AsReadOnly());
+    }
 
     /// <inheritdoc />
     public async ValueTask<T> AddAsync(T entity, CancellationToken cancellationToken = default)
@@ -95,63 +99,21 @@ public class BaseRepository<T> : IAsyncRepository<T> where T : class
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    protected virtual (int PageNumber, int PageSize, int TotalPages) GetPageDetails(PageRequest pageRequest, int totalCount)
+    protected async ValueTask<Page<T>> GetPage(IQueryable<T> source, int pageNumber, int pageSize, CancellationToken cancellationToken = default)
     {
-        int totalPages = (int)Math.Ceiling(totalCount * 1.0 / pageRequest.PageSize);
-        return (pageRequest.PageNumber, pageRequest.PageSize, totalPages);
+        Task<int> countTask =  source.CountAsync(cancellationToken);
+        Task<List<T>> itemsTask = source
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
+
+        await Task.WhenAll(countTask, itemsTask);
+        int count = countTask.Result;
+        List<T> items = itemsTask.Result;
+
+        int totalPages = IQuerySpecification<T>.CalculateTotalPages(pageSize, count);
+
+        return new Page<T>(pageNumber, pageSize, totalPages, count, items.AsReadOnly());
     }
-
-    protected virtual IQueryable<T> ApplyQuerySpecification(IQueryable<T> source, IQuerySpecification<T> query)
-    {
-        if (query.DoNotTrack)
-        {
-            source = source.AsNoTracking();
-        }
-
-        if (query.Filter is not null)
-        {
-            source = source.Where(query.Filter);
-        }
-
-        if (query.OrderBy is not null)
-        {
-            source = source.OrderBy(query.OrderBy);
-        }
-
-        return source;
-    }
-
-    protected virtual IQueryable<T> ApplyQuerySpecificationWithPaging(IQueryable<T> source, IQuerySpecification<T> query)
-    {
-        source = ApplyQuerySpecification(source, query);
-        if (query.PageRequest is not null)
-        {
-            source = source
-                .Skip((query.PageRequest.PageNumber - 1) * query.PageRequest.PageSize)
-                .Take(query.PageRequest.PageSize);
-        }
-        return source;
-    }
-    protected virtual IQueryable<T> ApplyPaging(IQueryable<T> source, IQuerySpecification<T> query)
-    {
-        return ApplyPaging(source, query.PageRequest);
-    }
-    protected virtual IQueryable<TValue> ApplyPaging<TValue>(IQueryable<TValue> source, PageRequest? pageRequest)
-    {
-        if (pageRequest is null)
-        {
-            return source;
-        }
-
-        return source
-            .Skip((pageRequest.PageNumber - 1) * pageRequest.PageSize)
-            .Take(pageRequest.PageSize);
-    }
-    protected virtual IQueryable<TProjection> ApplyQuerySpecification<TProjection>(IQueryable<T> source, IQuerySpecification<T, TProjection> query)
-    {
-        source = ApplyQuerySpecificationWithPaging(source, query);
-        return source.Select(query.Selector);
-    }
-
 
 }
