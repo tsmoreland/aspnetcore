@@ -28,7 +28,7 @@ public sealed class CreateCategoryCommandHandler : IRequestHandler<CreateCategor
             return CreateCategoryCommandResponse.CreateFromValidationError(validationResult);
         }
 
-        Category category = new() {Name = request.Name};
+        Category category = new() { Name = request.Name };
         category = await _categoryRepository.AddAsync(category, cancellationToken);
         return new CreateCategoryCommandResponse(_mapper.Map<CreateCategoryDto>(category));
     }
