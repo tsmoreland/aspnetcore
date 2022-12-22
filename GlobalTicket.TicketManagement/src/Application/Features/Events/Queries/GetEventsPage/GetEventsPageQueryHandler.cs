@@ -24,11 +24,11 @@ public sealed class GetEventsPageQueryHandler : IRequestHandler<GetEventsPageQue
     /// <inheritdoc />
     public async Task<Page<EventViewModel>> Handle(GetEventsPageQuery request, CancellationToken cancellationToken)
     {
-        IQuerySpecification<Event> query = _querySpecificationFactory.Build<Event>()
+        IQueryBuilder<Event> queryBuilder = _querySpecificationFactory.Build<Event>()
             .WithPaging(request.PageRequest)
             .WithOrderBy(new OrderByByDateSpecification());
 
-        return (await _eventRepository.GetPage(query, cancellationToken: cancellationToken))
+        return (await _eventRepository.GetPage(queryBuilder.Query(), cancellationToken: cancellationToken))
             .Map<Event, EventViewModel>(_mapper);
     }
 }

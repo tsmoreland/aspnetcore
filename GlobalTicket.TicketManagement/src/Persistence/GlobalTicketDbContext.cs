@@ -1,4 +1,5 @@
-﻿using GlobalTicket.TicketManagement.Domain.Common;
+﻿using GlobalTicket.TicketManagement.Application.Contracts.Persistence;
+using GlobalTicket.TicketManagement.Domain.Common;
 using GlobalTicket.TicketManagement.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -8,10 +9,14 @@ namespace GlobalTicket.TicketManagement.Persistence;
 
 public sealed class GlobalTicketDbContext : DbContext
 {
+    private readonly IModelConfiguration<ModelBuilder, DbContextOptionsBuilder> _modelConfiguration;
+
     /// <inheritdoc />
-    public GlobalTicketDbContext(DbContextOptions<GlobalTicketDbContext> options)
+    public GlobalTicketDbContext(DbContextOptions<GlobalTicketDbContext> options,
+        IModelConfiguration<ModelBuilder, DbContextOptionsBuilder> modelConfiguration)
         : base(options)
     {
+        _modelConfiguration = modelConfiguration ?? throw new ArgumentNullException(nameof(modelConfiguration));
     }
 
     public DbSet<Event> Events => Set<Event>();
@@ -20,8 +25,14 @@ public sealed class GlobalTicketDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(GlobalTicketDbContext).Assembly);
+        _modelConfiguration.ConfigureModel(modelBuilder);
         SeedData(modelBuilder);
+    }
+
+    /// <inheritdoc />
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        _modelConfiguration.ConfigureContext(optionsBuilder);
     }
 
     private static void SeedData(ModelBuilder modelBuilder)

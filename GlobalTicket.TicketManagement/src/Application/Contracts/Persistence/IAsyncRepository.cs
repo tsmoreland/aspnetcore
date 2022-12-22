@@ -6,7 +6,9 @@ namespace GlobalTicket.TicketManagement.Application.Contracts.Persistence;
 public interface IAsyncRepository<T> where T : class
 {
     ValueTask<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
-    ValueTask<T?> GetProjectionByIdAsync<TProjection>(Guid id, IQuerySpecification<T, TProjection> query, CancellationToken cancellationToken = default);
+
+    ValueTask<T?> GetByQueryAsync(IQuerySpecification<T> query, CancellationToken cancellationToken = default);
+    ValueTask<TProjection?> GetProjectionByQueryAsync<TProjection>(IQuerySpecification<T, TProjection> query, CancellationToken cancellationToken = default);
 
     ValueTask<Page<T>> GetPage(
         IQuerySpecification<T> query,
@@ -18,7 +20,7 @@ public interface IAsyncRepository<T> where T : class
 
     ValueTask<T> AddAsync(T entity, CancellationToken cancellationToken = default);
 
-    ValueTask<T> UpdateAsync(T entity, CancellationToken cancellationToken = default);
+    ValueTask UpdateAsync(T entity, CancellationToken cancellationToken = default);
 
     ValueTask DeleteAsync(T entity, CancellationToken cancellationToken = default);
 }
