@@ -101,7 +101,7 @@ public class BaseRepository<T> : IAsyncRepository<T> where T : class
 
     protected async ValueTask<Page<T>> GetPage(IQueryable<T> source, int pageNumber, int pageSize, CancellationToken cancellationToken = default)
     {
-        Task<int> countTask =  source.CountAsync(cancellationToken);
+        Task<int> countTask = source.CountAsync(cancellationToken);
         Task<List<T>> itemsTask = source
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)

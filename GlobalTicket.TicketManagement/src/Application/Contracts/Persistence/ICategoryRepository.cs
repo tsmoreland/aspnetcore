@@ -5,5 +5,5 @@ namespace GlobalTicket.TicketManagement.Application.Contracts.Persistence;
 
 public interface ICategoryRepository : IAsyncRepository<Category>
 {
-    ValueTask<Page<Category>> GetPage(int pageNumber, int  pageSize, bool includeEvents, CancellationToken cancellationToken);
+    ValueTask<Page<Category>> GetPage(int pageNumber, int pageSize, bool includeEvents, CancellationToken cancellationToken);
 }

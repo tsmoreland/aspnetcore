@@ -25,7 +25,7 @@ public sealed class CategoryRepository : BaseRepository<Category>, ICategoryRepo
             categories = categories.Include(e => e.Events);
         }
 
-        Task<int> countTask =  DataSet.CountAsync(cancellationToken);
+        Task<int> countTask = DataSet.CountAsync(cancellationToken);
         Task<List<Category>> itemsTask = categories.ToListAsync(cancellationToken);
 
         await Task.WhenAll(countTask, itemsTask);
