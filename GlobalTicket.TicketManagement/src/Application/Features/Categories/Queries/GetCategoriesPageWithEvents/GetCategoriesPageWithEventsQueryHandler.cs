@@ -40,11 +40,11 @@ public sealed class GetCategoriesPageWithEventsQueryHandler : IRequestHandler<Ge
     /// <inheritdoc />
     public async Task<Page<CategoryWithEventsViewModel>> Handle(GetCategoriesPageWithEventsQuery request, CancellationToken cancellationToken)
     {
-        IQuerySpecification<Category> query = _querySpecificationFactory.Build<Category>()
+        IQueryBuilder<Category> queryBuilder = _querySpecificationFactory.Build<Category>()
             .WithPaging(request.PageRequest)
             .WithOrderBy(new OrderByNameSpecification());
 
-        return (await _categoryRepository.GetPage(query, request.IncludeHistory, cancellationToken))
+        return (await _categoryRepository.GetPage(queryBuilder.Query(), request.IncludeHistory, cancellationToken))
             .Map<Category, CategoryWithEventsViewModel>(_mapper);
 
     }

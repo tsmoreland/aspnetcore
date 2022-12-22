@@ -19,9 +19,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Contracts\Infrastructure\" />
     <Folder Include="Features\Events\Commands\DeleteEvent\" />
     <Folder Include="Features\Orders\Commands\" />
     <Folder Include="Features\Orders\Queries\" />
+    <Folder Include="Models\Mail\" />
     <Folder Include="Responses\" />
   </ItemGroup>
 

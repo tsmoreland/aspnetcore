@@ -8,13 +8,13 @@ using MediatR;
 
 namespace GlobalTicket.TicketManagement.Application.Features.Categories.Queries.GetCatagoriesPage;
 
-public sealed class GetCatagorieLPageQueryHandler : IRequestHandler<GetCatagoriesPageQuery, Page<CategoryViewModel>>
+public sealed class GetCatagoriesPageQueryHandler : IRequestHandler<GetCatagoriesPageQuery, Page<CategoryViewModel>>
 {
     private readonly IMapper _mapper;
     private readonly IAsyncRepository<Category> _categoryRepository;
     private readonly IQuerySpecificationFactory _querySpecificationFactory;
 
-    public GetCatagorieLPageQueryHandler(IMapper mapper, IAsyncRepository<Category> categoryRepository, IQuerySpecificationFactory querySpecificationFactory)
+    public GetCatagoriesPageQueryHandler(IMapper mapper, IAsyncRepository<Category> categoryRepository, IQuerySpecificationFactory querySpecificationFactory)
     {
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         _categoryRepository = categoryRepository ?? throw new ArgumentNullException(nameof(categoryRepository));
@@ -24,11 +24,11 @@ public sealed class GetCatagorieLPageQueryHandler : IRequestHandler<GetCatagorie
     /// <inheritdoc />
     public async Task<Page<CategoryViewModel>> Handle(GetCatagoriesPageQuery request, CancellationToken cancellationToken)
     {
-        IQuerySpecification<Category> query = _querySpecificationFactory.Build<Category>()
+        IQueryBuilder<Category> queryBuilder = _querySpecificationFactory.Build<Category>()
             .WithPaging(request.PageRequest)
             .WithOrderBy(new OrderByNameSpecification());
 
-        return (await _categoryRepository.GetPage(query, cancellationToken: cancellationToken))
+        return (await _categoryRepository.GetPage(queryBuilder.Query(), cancellationToken: cancellationToken))
             .Map<Category, CategoryViewModel>(_mapper);
 
     }
