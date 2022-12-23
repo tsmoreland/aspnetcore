@@ -1,6 +1,6 @@
 ﻿namespace GlobalTicket.TicketManagement.Application.Responses;
 
-public abstract record class BaseResponse(bool Success, string? Message, IReadOnlyList<string>? ValidationErrors)
+public abstract record class BaseResponse(bool Success, string? Message, IReadOnlyDictionary<string, string>? ValidationErrors)
 {
     protected BaseResponse(bool success)
         : this(success, null, null)

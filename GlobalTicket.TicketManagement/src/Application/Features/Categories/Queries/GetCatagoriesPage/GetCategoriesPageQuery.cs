@@ -16,4 +16,4 @@ using MediatR;
 
 namespace GlobalTicket.TicketManagement.Application.Features.Categories.Queries.GetCatagoriesPage;
 
-public sealed record class GetCatagoriesPageQuery(PageRequest PageRequest) : IRequest<Page<CategoryViewModel>>;
+public sealed record class GetCategoriesPageQuery(PageRequest PageRequest) : IRequest<Page<CategoryViewModel>>;

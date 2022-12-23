@@ -8,7 +8,7 @@ using MediatR;
 
 namespace GlobalTicket.TicketManagement.Application.Features.Categories.Queries.GetCatagoriesPage;
 
-public sealed class GetCatagoriesPageQueryHandler : IRequestHandler<GetCatagoriesPageQuery, Page<CategoryViewModel>>
+public sealed class GetCatagoriesPageQueryHandler : IRequestHandler<GetCategoriesPageQuery, Page<CategoryViewModel>>
 {
     private readonly IMapper _mapper;
     private readonly IAsyncRepository<Category> _categoryRepository;
@@ -22,7 +22,7 @@ public sealed class GetCatagoriesPageQueryHandler : IRequestHandler<GetCatagorie
     }
 
     /// <inheritdoc />
-    public async Task<Page<CategoryViewModel>> Handle(GetCatagoriesPageQuery request, CancellationToken cancellationToken)
+    public async Task<Page<CategoryViewModel>> Handle(GetCategoriesPageQuery request, CancellationToken cancellationToken)
     {
         IQueryBuilder<Category> queryBuilder = _querySpecificationFactory.Build<Category>()
             .WithPaging(request.PageRequest)
