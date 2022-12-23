@@ -11,14 +11,16 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System.Linq.Expressions;
 using GlobalTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
 using GlobalTicket.TicketManagement.Domain.Entities;
 
 namespace GlobalTicket.TicketManagement.Application.Features.Categories.Specifications;
 
-public sealed class OrderByNameSpecification : IOrderBySpecification<Category, string>
+public sealed class OrderByNameSpecification : IOrderBySpecification<Category>
 {
     /// <inheritdoc />
-    public Expression<Func<Category, string>> OrderBy => c => c.Name;
+    public IQueryable<Category> ApplyOrderBy(IQueryable<Category> source)
+    {
+        return source.OrderBy(c => c.Name);
+    }
 }

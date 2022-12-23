@@ -10,10 +10,19 @@
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-namespace GlobalTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
+using GlobalTicket.TicketManagement.Api.Models;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-public interface IQuerySpecificationFactory
+namespace GlobalTicket.TicketManagement.Api.Infrastructure.Filters;
+
+public sealed class AddModelStateFeatureFilter : IAsyncActionFilter
 {
-    IQueryBuilder<T> Build<T>() where T : class;
-    IQueryBuilder<T, TProjection> Build<T, TProjection>(ISelectorSpecification<T, TProjection> selectorSpecification) where T : class;
+    /// <inheritdoc />
+    public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+    {
+        ModelStateDictionary modelState = context.ModelState;
+        context.HttpContext.Features.Set(new ModelStateContainer(modelState));
+        await next();
+    }
 }

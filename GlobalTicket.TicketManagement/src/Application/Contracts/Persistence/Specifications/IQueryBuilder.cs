@@ -19,23 +19,12 @@ public interface IQueryBuilder<T> where T : class
 {
     IQueryBuilder<T> WithNoTracking();
     IQueryBuilder<T> WithFilter(IFilterSpecification<T> filterSpecification);
-    IQueryBuilder<T> WithOrderBy<TKey>(IOrderBySpecification<T, TKey> orderBySpecification);
-    IQueryBuilder<T> WithThenBy<TKey>(IOrderBySpecification<T, TKey> orderBySpecification);
+    IQueryBuilder<T> WithOrderBy(IOrderBySpecification<T> orderBySpecification);
+    IQueryBuilder<T> WithThenBy(IOrderBySpecification<T> orderBySpecification);
     IQueryBuilder<T> WithInclusion(IInclusionSpecification<T> inclusion);
     IQueryBuilder<T> WithPaging(PageRequest pageRequest);
 
     IQuerySpecification<T> Query();
-}
-
-public interface IQueryBuilder<T, TProjection>
-    where T : class
-{
-    IQueryBuilder<T, TProjection> WithNoTracking();
-    IQueryBuilder<T, TProjection> WithFilter(IFilterSpecification<T> filterSpecification);
-    IQueryBuilder<T, TProjection> WithOrderBy<TKey>(IOrderBySpecification<T, TKey> orderBySpecification);
-    IQueryBuilder<T, TProjection> WithThenBy<TKey>(IOrderBySpecification<T, TKey> orderBySpecification);
-    IQueryBuilder<T, TProjection> WithPaging(PageRequest pageRequest);
-
-    IQuerySpecification<T, TProjection> Query();
+    IQuerySpecification<T, TProjection> Query<TProjection>(ISelectorSpecification<T, TProjection> selector);
 }
 

@@ -14,15 +14,26 @@ public sealed class CategoryRepository : BaseRepository<Category>, ICategoryRepo
     }
 
     /// <inheritdoc />
-    public ValueTask<Page<Category>> GetPage(IQuerySpecification<Category> query, bool includeEvents, CancellationToken cancellationToken)
+    public async ValueTask<Page<Category>> GetPage(int pageNumber, int pageSize, bool includeEvents, CancellationToken cancellationToken)
     {
-        IQueryable<Category> source = ApplyQuerySpecification(DataSet, query);
-
+        IQueryable<Category> categories = DataSet
+            .AsNoTracking()
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize);
         if (includeEvents)
         {
-            source = source.Include(e => e.Events);
+            categories = categories.Include(e => e.Events);
         }
 
-        return GetPageAsync(source, query.PageRequest!, cancellationToken);
+        Task<int> countTask = DataSet.CountAsync(cancellationToken);
+        Task<List<Category>> itemsTask = categories.ToListAsync(cancellationToken);
+
+        await Task.WhenAll(countTask, itemsTask);
+        int count = countTask.Result;
+        List<Category> items = itemsTask.Result;
+        int totalPages = IQuerySpecification<Category>.CalculateTotalPages(pageSize, count);
+
+        return new Page<Category>(pageNumber, pageSize, totalPages, count, items.AsReadOnly());
+
     }
 }

@@ -7,13 +7,16 @@ public sealed class ValidationFailureException : Exception
     /// <inheritdoc />
     public ValidationFailureException(ValidationResult validationResult)
     {
-        ValidationErrors = validationResult.Errors
-            .Select(validationError => validationError.ErrorMessage)
-            .ToList()
-            .AsReadOnly();
+        Dictionary<string, string> errorsByProperty = new();
+        foreach (ValidationFailure error in validationResult.Errors)
+        {
+            errorsByProperty[error.PropertyName] = error.ErrorMessage;
+        }
+
+        ValidationErrors = errorsByProperty.AsReadOnly();
     }
 
-    public IReadOnlyList<string> ValidationErrors { get; }
+    public IReadOnlyDictionary<string, string> ValidationErrors { get; }
 
     public static void ThrowIfHasErrors(ValidationResult validationResult)
     {

@@ -14,7 +14,6 @@
 using AutoMapper;
 using GlobalTicket.TicketManagement.Application.Contracts.Persistence;
 using GlobalTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
-using GlobalTicket.TicketManagement.Application.Features.Categories.Queries.GetCatagoriesPage;
 using GlobalTicket.TicketManagement.Application.Features.Categories.Specifications;
 using GlobalTicket.TicketManagement.Domain.Common;
 using GlobalTicket.TicketManagement.Domain.Entities;
@@ -26,11 +25,11 @@ public sealed class GetCategoriesPageWithEventsQueryHandler : IRequestHandler<Ge
 {
     private readonly IMapper _mapper;
     private readonly ICategoryRepository _categoryRepository;
-    private readonly IQuerySpecificationFactory _querySpecificationFactory;
+    private readonly IQueryBuilderFactory _querySpecificationFactory;
 
     public GetCategoriesPageWithEventsQueryHandler(IMapper mapper,
         ICategoryRepository categoryRepository,
-        IQuerySpecificationFactory querySpecificationFactory)
+        IQueryBuilderFactory querySpecificationFactory)
     {
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         _categoryRepository = categoryRepository ?? throw new ArgumentNullException(nameof(categoryRepository));
@@ -44,7 +43,12 @@ public sealed class GetCategoriesPageWithEventsQueryHandler : IRequestHandler<Ge
             .WithPaging(request.PageRequest)
             .WithOrderBy(new OrderByNameSpecification());
 
-        return (await _categoryRepository.GetPage(queryBuilder.Query(), request.IncludeHistory, cancellationToken))
+        if (request.IncludeHistory)
+        {
+            queryBuilder.WithInclusion(new IncludeEventsSpecification());
+        }
+
+        return (await _categoryRepository.GetPage(queryBuilder.Query(), cancellationToken))
             .Map<Category, CategoryWithEventsViewModel>(_mapper);
 
     }

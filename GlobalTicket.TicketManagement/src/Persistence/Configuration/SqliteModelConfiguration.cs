@@ -19,7 +19,7 @@ using Microsoft.Extensions.Logging;
 
 namespace GlobalTicket.TicketManagement.Persistence.Configuration;
 
-public sealed class SqliteModelConfiguration : IModelConfiguration<ModelBuilder , DbContextOptionsBuilder>
+public sealed class SqliteModelConfiguration : IModelConfiguration<ModelBuilder, DbContextOptionsBuilder>
 {
     private readonly IConfiguration _configuration;
     private readonly bool _isDevelopment;
