@@ -45,8 +45,7 @@ public sealed class GetCategoriesPageWithEventsQueryHandler : IRequestHandler<Ge
 
         if (request.IncludeHistory)
         {
-            // TODO: add inclusion implementation, rework the interface so it works the same way orderby does - using visitor pattern
-            //queryBuilder.WithInclusion(nameof(Category.Events));
+            queryBuilder.WithInclusion(new IncludeEventsSpecification());
         }
 
         return (await _categoryRepository.GetPage(queryBuilder.Query(), cancellationToken))
