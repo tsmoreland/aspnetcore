@@ -82,13 +82,17 @@ public sealed class ExceptionHandlerMiddleware
 
         ModelStateDictionary? modelState = context.Features.Get<ModelStateContainer>()?.ModelState;
 
-        ProblemDetails problem = edi.SourceException switch
+        ProblemDetails? problem = edi.SourceException switch
         {
             BadRequestException e =>  e.ToProblemDetails(problemDetailsFactory, context),
             NotFoundException e => e.ToProblemDetails(problemDetailsFactory, context),
             ValidationFailureException e => e.ToProblemDetails(problemDetailsFactory, context, modelState),
-            _ => problemDetailsFactory.CreateProblemDetails(context, StatusCodes.Status500InternalServerError, "Internal server error occurred."),
+            _ => null,
         };
+        if (problem is null)
+        {
+            edi.Throw(); // not one of our known exceptions, forward on to default exception middleware
+        }
 
         context.Response.StatusCode = problem.Status ?? StatusCodes.Status500InternalServerError;
         context.Response.ContentType = "application/problem+json";
