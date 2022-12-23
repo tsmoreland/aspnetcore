@@ -11,17 +11,22 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-namespace GlobalTicket.TicketManagement.Api.Models;
+using GlobalTicket.TicketManagement.Application.Features.Events.Commands.UpdateEvent;
 
-/// <summary>
-/// Grouped Query Parameters for endpoints providing pagable responses
-/// </summary>
-public class CategoryPageQueryParameters : PageQueryParameters
+namespace GlobalTicket.TicketManagement.Api.Models.Events;
+
+public sealed record class UpdateEventDto(
+    string Name,
+    int Price,
+    string? Artist,
+    DateTime Date,
+    string? Description,
+    string? ImageUrl,
+    Guid CategoryId) 
 {
-    /// <summary>
-    /// Flag used to determine if associated events should be included in response
-    /// </summary>
-    /// <example>true</example>
-    public bool IncludeEvents { get; init; }
 
+    public UpdateEventCommand ToCommand(Guid id)
+    {
+        return new UpdateEventCommand(id, Name, Price, Artist, Date, Description, ImageUrl, CategoryId);
+    }
 }
