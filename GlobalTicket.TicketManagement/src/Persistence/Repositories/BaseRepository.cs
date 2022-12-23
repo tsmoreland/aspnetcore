@@ -10,6 +10,7 @@
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+using System.Runtime.CompilerServices;
 using GlobalTicket.TicketManagement.Application.Contracts.Persistence;
 using GlobalTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
 using GlobalTicket.TicketManagement.Domain.Common;
@@ -21,7 +22,10 @@ public class BaseRepository<T> : IAsyncRepository<T> where T : class
 {
     private readonly GlobalTicketDbContext _dbContext;
 
-    protected DbSet<T> DataSet => _dbContext.Set<T>();
+    protected DbSet<T> DataSet
+    {
+        get { return _dbContext.Set<T>(); }
+    }
 
     public BaseRepository(GlobalTicketDbContext dbContext)
     {
@@ -44,6 +48,27 @@ public class BaseRepository<T> : IAsyncRepository<T> where T : class
     public virtual async ValueTask<TProjection?> GetProjectionByQueryAsync<TProjection>(IQuerySpecification<T, TProjection> query, CancellationToken cancellationToken = default)
     {
         return await query.ApplySelection(query.ApplySpecifications(_dbContext.Set<T>())).FirstOrDefaultAsync(cancellationToken);
+    }
+
+    /// <inheritdoc />
+    public async IAsyncEnumerable<T> GetAll([EnumeratorCancellation] CancellationToken cancellationToken = default)
+    {
+        await foreach (T entity in DataSet.AsAsyncEnumerable().WithCancellation(cancellationToken))
+        {
+            yield return entity;
+        }
+    }
+
+    /// <inheritdoc />
+    public async IAsyncEnumerable<TProjection> GetAll<TProjection>(ISelectorSpecification<T, TProjection> selector,
+        [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(selector);
+
+        await foreach (TProjection projection in DataSet.Select(selector.Selector).AsAsyncEnumerable().WithCancellation(cancellationToken))
+        {
+            yield return projection;
+        }
     }
 
     /// <inheritdoc />

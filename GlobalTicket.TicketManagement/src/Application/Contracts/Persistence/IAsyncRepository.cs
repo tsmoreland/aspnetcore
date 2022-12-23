@@ -10,6 +10,9 @@ public interface IAsyncRepository<T> where T : class
     ValueTask<T?> GetByQueryAsync(IQuerySpecification<T> query, CancellationToken cancellationToken = default);
     ValueTask<TProjection?> GetProjectionByQueryAsync<TProjection>(IQuerySpecification<T, TProjection> query, CancellationToken cancellationToken = default);
 
+    IAsyncEnumerable<T> GetAll(CancellationToken cancellationToken = default);
+    IAsyncEnumerable<TProjection> GetAll<TProjection>(ISelectorSpecification<T, TProjection> selector, CancellationToken cancellationToken = default);
+
     ValueTask<Page<T>> GetPage(
         IQuerySpecification<T> query,
         CancellationToken cancellationToken = default);

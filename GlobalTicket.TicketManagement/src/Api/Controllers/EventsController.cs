@@ -1,8 +1,10 @@
-﻿using GlobalTicket.TicketManagement.Api.Models;
+﻿using GlobalTicket.TicketManagement.Api.Infrastructure.Swagger.Attributes;
+using GlobalTicket.TicketManagement.Api.Models;
 using GlobalTicket.TicketManagement.Api.Models.Events;
 using GlobalTicket.TicketManagement.Application.Features.Events.Commands.CreateEvent;
 using GlobalTicket.TicketManagement.Application.Features.Events.Commands.DeleteEvent;
 using GlobalTicket.TicketManagement.Application.Features.Events.Queries.GetEventDetail;
+using GlobalTicket.TicketManagement.Application.Features.Events.Queries.GetEventsExport;
 using GlobalTicket.TicketManagement.Application.Features.Events.Queries.GetEventsPage;
 using GlobalTicket.TicketManagement.Domain.Common;
 using MediatR;
@@ -23,6 +25,7 @@ public class EventsController : ControllerBase
         public const string Create = "AddEvent";
         public const string Update = "UpdateEvent";
         public const string Delete = "DeleteEvent";
+        public const string Export = "ExportEvents";
     };
 
     /// <inheritdoc />
@@ -77,5 +80,16 @@ public class EventsController : ControllerBase
     {
         await _mediator.Send(new DeleteEventCommand(id), cancellationToken);
         return NoContent();
+    }
+
+    [HttpGet("export", Name = RouteNames.Export)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesDefaultResponseType]
+    [FileResultContentType("text/csv")]
+    public async Task<FileResult> ExportEvents()
+    {
+        EventExportFileViewModel fileDto = await _mediator.Send(new GetEventsExportQuery());
+
+        return File(fileDto.Data, fileDto.ContentType, fileDto.EventExportFilename);
     }
 }
