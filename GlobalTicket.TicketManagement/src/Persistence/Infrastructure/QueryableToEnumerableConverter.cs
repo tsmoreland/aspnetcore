@@ -10,13 +10,22 @@
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using System.Linq.Expressions;
+using GlobalTicket.TicketManagement.Application.Contracts.Persistence;
+using Microsoft.EntityFrameworkCore;
 
-namespace GlobalTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
+namespace GlobalTicket.TicketManagement.Persistence.Infrastructure;
 
-public interface ISelectorSpecification<TEntity, TProjection> where TEntity : class
+public sealed class QueryableToEnumerableConverter : IQueryableToEnumerableConverter
 {
-    Expression<Func<TEntity, TProjection>> Selector { get; }
+    /// <inheritdoc />
+    public IAsyncEnumerable<T> ConvertToAsyncEnumerable<T>(IQueryable<T> query)
+    {
+        return query.AsAsyncEnumerable();
+    }
 
-    IAsyncEnumerable<TProjection> ProjectToAsyncEnumerable(IQueryable<TEntity> query, IQueryableToEnumerableConverter queryableConverter);
+    /// <inheritdoc />
+    public IEnumerable<T> ConvertToEnumerable<T>(IQueryable<T> query)
+    {
+        return query.AsEnumerable();
+    }
 }

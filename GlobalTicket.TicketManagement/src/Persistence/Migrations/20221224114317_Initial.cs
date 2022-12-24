@@ -35,6 +35,7 @@ namespace GlobalTicket.TicketManagement.Persistence.Migrations
                 {
                     EventId = table.Column<Guid>(type: "TEXT", nullable: false),
                     UserId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     OrderTotal = table.Column<int>(type: "INTEGER", nullable: false),
                     OrderPlaced = table.Column<DateTime>(type: "TEXT", nullable: false),
                     OrderPaid = table.Column<bool>(type: "INTEGER", nullable: false),
@@ -92,9 +93,9 @@ namespace GlobalTicket.TicketManagement.Persistence.Migrations
                 columns: new[] { "EventId", "Artist", "CategoryId", "CreatedBy", "CreatedDate", "Date", "Description", "ImageUrl", "LastModifiedBy", "LastModifiedDate", "Name", "Price" },
                 values: new object[,]
                 {
-                    { new Guid("2f620341-fa98-48b1-8af4-5418b1e109e1"), "John Egbert", new Guid("2ab3d254-c85a-4232-a061-d0c3f5516d2e"), null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 6, 23, 11, 8, 41, 457, DateTimeKind.Local).AddTicks(7997), "Join John for his farewell tour across 15 continents", "https://example.com/images/example.jpg", null, null, "John Egbert Live", 65 },
-                    { new Guid("9f6ba16e-a130-4ae1-9f0c-07f695636b4b"), "DJ 'The Mike'", new Guid("2ab3d254-c85a-4232-a061-d0c3f5516d2e"), null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 4, 23, 11, 8, 41, 457, DateTimeKind.Local).AddTicks(8210), "DJs from all over the world will complete in this empic battle for eternal fame.", "https://example.com/images/example.jpg", null, null, "Clash of the DJs", 85 },
-                    { new Guid("b5775cca-5533-4be5-88f8-f0edc7be6e04"), "Michael Johnson", new Guid("2ab3d254-c85a-4232-a061-d0c3f5516d2e"), null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 9, 23, 11, 8, 41, 457, DateTimeKind.Local).AddTicks(8185), "Michael Johnson doesn't need an introduction", "https://example.com/images/example.jpg", null, null, "The State of Affairs: Michael Live!", 85 }
+                    { new Guid("2f620341-fa98-48b1-8af4-5418b1e109e1"), "John Egbert", new Guid("2ab3d254-c85a-4232-a061-d0c3f5516d2e"), null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 6, 24, 11, 43, 17, 587, DateTimeKind.Local).AddTicks(1827), "Join John for his farewell tour across 15 continents", "https://example.com/images/example.jpg", null, null, "John Egbert Live", 65 },
+                    { new Guid("9f6ba16e-a130-4ae1-9f0c-07f695636b4b"), "DJ 'The Mike'", new Guid("2ab3d254-c85a-4232-a061-d0c3f5516d2e"), null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 4, 24, 11, 43, 17, 587, DateTimeKind.Local).AddTicks(1915), "DJs from all over the world will complete in this empic battle for eternal fame.", "https://example.com/images/example.jpg", null, null, "Clash of the DJs", 85 },
+                    { new Guid("b5775cca-5533-4be5-88f8-f0edc7be6e04"), "Michael Johnson", new Guid("2ab3d254-c85a-4232-a061-d0c3f5516d2e"), null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 9, 24, 11, 43, 17, 587, DateTimeKind.Local).AddTicks(1905), "Michael Johnson doesn't need an introduction", "https://example.com/images/example.jpg", null, null, "The State of Affairs: Michael Live!", 85 }
                 });
 
             migrationBuilder.CreateIndex(

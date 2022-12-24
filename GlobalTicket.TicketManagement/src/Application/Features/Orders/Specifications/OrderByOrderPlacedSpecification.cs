@@ -10,13 +10,16 @@
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using System.Linq.Expressions;
+using GlobalTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
+using GlobalTicket.TicketManagement.Domain.Entities;
 
-namespace GlobalTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
+namespace GlobalTicket.TicketManagement.Application.Features.Orders.Specifications;
 
-public interface ISelectorSpecification<TEntity, TProjection> where TEntity : class
+public class OrderByOrderPlacedSpecification : IOrderBySpecification<Order>
 {
-    Expression<Func<TEntity, TProjection>> Selector { get; }
-
-    IAsyncEnumerable<TProjection> ProjectToAsyncEnumerable(IQueryable<TEntity> query, IQueryableToEnumerableConverter queryableConverter);
+    /// <inheritdoc />
+    public IQueryable<Order> ApplyOrderBy(IQueryable<Order> source)
+    {
+        return source.OrderBy(e => e.OrderPlaced);
+    }
 }

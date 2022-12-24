@@ -12,6 +12,7 @@
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.4.0" />
     <PackageReference Include="MediatR" Version="11.1.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+    <PackageReference Include="System.Linq.Async" Version="6.0.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,7 +23,8 @@
     <Folder Include="Contracts\Infrastructure\" />
     <Folder Include="Features\Events\Commands\DeleteEvent\" />
     <Folder Include="Features\Orders\Commands\" />
-    <Folder Include="Features\Orders\Queries\" />
+    <Folder Include="Features\Orders\Queries\GetOrdersForMonth\" />
+    <Folder Include="Features\Orders\Specifications\" />
     <Folder Include="Models\Mail\" />
     <Folder Include="Responses\" />
   </ItemGroup>

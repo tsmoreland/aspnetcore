@@ -20,6 +20,7 @@ namespace GlobalTicket.TicketManagement.Persistence.Repositories;
 
 public class BaseRepository<T> : IAsyncRepository<T> where T : class
 {
+    protected IQueryableToEnumerableConverter QueryableToEnumerableConverter { get; }
     private readonly GlobalTicketDbContext _dbContext;
 
     protected DbSet<T> DataSet
@@ -27,8 +28,9 @@ public class BaseRepository<T> : IAsyncRepository<T> where T : class
         get { return _dbContext.Set<T>(); }
     }
 
-    public BaseRepository(GlobalTicketDbContext dbContext)
+    public BaseRepository(GlobalTicketDbContext dbContext, IQueryableToEnumerableConverter queryableToEnumerableConverter)
     {
+        QueryableToEnumerableConverter = queryableToEnumerableConverter ?? throw new ArgumentNullException(nameof(queryableToEnumerableConverter));
         _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
     }
 

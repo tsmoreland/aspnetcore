@@ -98,7 +98,7 @@ public sealed class QueryBuilder<T> : IQueryBuilder<T>
     public IQuerySpecification<T, TProjection> Query<TProjection>(ISelectorSpecification<T, TProjection> selector)
     {
         return new QuerySpecification<T, TProjection>(
-            selector.Selector,
+            selector,
             _doNotTrack,
             _inclusionSpecification.Select(i => i.NavigationPropertyName).ToList(),
             _filterSpecification?.Predicate,

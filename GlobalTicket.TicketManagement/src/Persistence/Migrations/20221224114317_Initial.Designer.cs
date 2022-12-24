@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GlobalTicket.TicketManagement.Persistence.Migrations
 {
     [DbContext(typeof(GlobalTicketDbContext))]
-    [Migration("20221223110841_Initial")]
+    [Migration("20221224114317_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -128,7 +128,7 @@ namespace GlobalTicket.TicketManagement.Persistence.Migrations
                             Artist = "John Egbert",
                             CategoryId = new Guid("2ab3d254-c85a-4232-a061-d0c3f5516d2e"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Date = new DateTime(2023, 6, 23, 11, 8, 41, 457, DateTimeKind.Local).AddTicks(7997),
+                            Date = new DateTime(2023, 6, 24, 11, 43, 17, 587, DateTimeKind.Local).AddTicks(1827),
                             Description = "Join John for his farewell tour across 15 continents",
                             ImageUrl = "https://example.com/images/example.jpg",
                             Name = "John Egbert Live",
@@ -140,7 +140,7 @@ namespace GlobalTicket.TicketManagement.Persistence.Migrations
                             Artist = "Michael Johnson",
                             CategoryId = new Guid("2ab3d254-c85a-4232-a061-d0c3f5516d2e"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Date = new DateTime(2023, 9, 23, 11, 8, 41, 457, DateTimeKind.Local).AddTicks(8185),
+                            Date = new DateTime(2023, 9, 24, 11, 43, 17, 587, DateTimeKind.Local).AddTicks(1905),
                             Description = "Michael Johnson doesn't need an introduction",
                             ImageUrl = "https://example.com/images/example.jpg",
                             Name = "The State of Affairs: Michael Live!",
@@ -152,7 +152,7 @@ namespace GlobalTicket.TicketManagement.Persistence.Migrations
                             Artist = "DJ 'The Mike'",
                             CategoryId = new Guid("2ab3d254-c85a-4232-a061-d0c3f5516d2e"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Date = new DateTime(2023, 4, 23, 11, 8, 41, 457, DateTimeKind.Local).AddTicks(8210),
+                            Date = new DateTime(2023, 4, 24, 11, 43, 17, 587, DateTimeKind.Local).AddTicks(1915),
                             Description = "DJs from all over the world will complete in this empic battle for eternal fame.",
                             ImageUrl = "https://example.com/images/example.jpg",
                             Name = "Clash of the DJs",
@@ -172,6 +172,9 @@ namespace GlobalTicket.TicketManagement.Persistence.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("Id")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("LastModifiedBy")

@@ -11,12 +11,23 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System.Linq.Expressions;
+using GlobalTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
+using GlobalTicket.TicketManagement.Domain.Entities;
 
-namespace GlobalTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
+namespace GlobalTicket.TicketManagement.Application.Features.Orders.Queries.GetOrdersForMonth;
 
-public interface ISelectorSpecification<TEntity, TProjection> where TEntity : class
+public sealed class ForMonthFilterSpecification : IFilterSpecification<Order>
 {
-    Expression<Func<TEntity, TProjection>> Selector { get; }
+    private readonly DateTime _date;
 
-    IAsyncEnumerable<TProjection> ProjectToAsyncEnumerable(IQueryable<TEntity> query, IQueryableToEnumerableConverter queryableConverter);
+    public ForMonthFilterSpecification(DateTime date)
+    {
+        _date = date;
+    }
+
+    /// <inheritdoc />
+    /// <remarks>
+    /// this won't work, we'll need to introduct an interface like IQueryableToEnumerableConverter to expose Database date time functions, in the case of sqlite we'd use the datetime functions of efcore to do this comparison
+    /// </remarks>
+    public Expression<Func<Order, bool>> Predicate => o => o.OrderPlaced.Month == _date.Month;
 }

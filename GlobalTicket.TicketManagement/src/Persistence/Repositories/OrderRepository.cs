@@ -8,8 +8,8 @@ namespace GlobalTicket.TicketManagement.Persistence.Repositories;
 public sealed class OrderRepository : BaseRepository<Order>, IOrderRepository
 {
     /// <inheritdoc />
-    public OrderRepository(GlobalTicketDbContext dbContext)
-        : base(dbContext)
+    public OrderRepository(GlobalTicketDbContext dbContext, IQueryableToEnumerableConverter queryableToEnumerableConverter)
+        : base(dbContext, queryableToEnumerableConverter)
     {
     }
 

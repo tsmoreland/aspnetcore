@@ -9,7 +9,8 @@ namespace GlobalTicket.TicketManagement.Persistence.Repositories;
 public sealed class CategoryRepository : BaseRepository<Category>, ICategoryRepository
 {
     /// <inheritdoc />
-    public CategoryRepository(GlobalTicketDbContext dbContext) : base(dbContext)
+    public CategoryRepository(GlobalTicketDbContext dbContext, IQueryableToEnumerableConverter queryableToEnumerableConverter)
+        : base(dbContext, queryableToEnumerableConverter)
     {
     }
 

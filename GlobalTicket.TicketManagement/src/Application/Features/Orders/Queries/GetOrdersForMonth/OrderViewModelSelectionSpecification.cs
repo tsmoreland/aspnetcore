@@ -11,12 +11,22 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System.Linq.Expressions;
+using GlobalTicket.TicketManagement.Application.Contracts.Persistence;
+using GlobalTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
+using GlobalTicket.TicketManagement.Domain.Entities;
 
-namespace GlobalTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
+namespace GlobalTicket.TicketManagement.Application.Features.Orders.Queries.GetOrdersForMonth;
 
-public interface ISelectorSpecification<TEntity, TProjection> where TEntity : class
+public sealed class OrderViewModelSelectionSpecification : ISelectorSpecification<Order, OrderViewModel>
 {
-    Expression<Func<TEntity, TProjection>> Selector { get; }
+    /// <inheritdoc />
+    public Expression<Func<Order, OrderViewModel>> Selector => e => new OrderViewModel(e.Id, e.OrderTotal, e.OrderPlaced);
 
-    IAsyncEnumerable<TProjection> ProjectToAsyncEnumerable(IQueryable<TEntity> query, IQueryableToEnumerableConverter queryableConverter);
+    /// <inheritdoc />
+    public IAsyncEnumerable<OrderViewModel> ProjectToAsyncEnumerable(IQueryable<Order> query, IQueryableToEnumerableConverter queryableConverter)
+    {
+        return queryableConverter
+            .ConvertToAsyncEnumerable(query.Select(e => new {e.Id, e.OrderTotal, e.OrderPlaced}))
+            .Select(e => new OrderViewModel(e.Id, e.OrderTotal, e.OrderPlaced));
+    }
 }

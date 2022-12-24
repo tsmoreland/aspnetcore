@@ -13,6 +13,7 @@
 using System.Linq.Expressions;
 using GlobalTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
 using GlobalTicket.TicketManagement.Domain.Common;
+using GlobalTicket.TicketManagement.Persistence.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 namespace GlobalTicket.TicketManagement.Persistence.Specifications;
@@ -81,7 +82,7 @@ public record class QuerySpecification<T>(
 }
 
 public sealed record class QuerySpecification<T, TProjection>(
-    Expression<Func<T, TProjection>> Selector,
+    ISelectorSpecification<T, TProjection> SelectorSpecification,
     bool DoNotTrack,
     IReadOnlyList<string> Inclusions,
     Expression<Func<T, bool>>? Filter,
@@ -94,6 +95,13 @@ public sealed record class QuerySpecification<T, TProjection>(
     /// <inheritdoc />
     public IQueryable<TProjection> ApplySelection(IQueryable<T> source)
     {
-        return source.Select(Selector);
+        return source.Select(SelectorSpecification.Selector);
+    }
+
+    /// <inheritdoc />
+    public IAsyncEnumerable<TProjection> ProjectToAsyncEnumerable(IQueryable<T> source)
+    {
+        return SelectorSpecification
+            .ProjectToAsyncEnumerable(source, new QueryableToEnumerableConverter());
     }
 }

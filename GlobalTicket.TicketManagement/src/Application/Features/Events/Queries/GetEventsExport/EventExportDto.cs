@@ -12,7 +12,4 @@
 
 namespace GlobalTicket.TicketManagement.Application.Features.Events.Queries.GetEventsExport;
 
-public class EventExportDto
-{
-    
-}
+public sealed record class EventExportDto(Guid EventId, string Name, DateTime Date);

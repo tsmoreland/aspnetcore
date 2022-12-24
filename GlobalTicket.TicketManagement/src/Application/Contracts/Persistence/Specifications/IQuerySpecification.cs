@@ -29,4 +29,5 @@ public interface IQuerySpecification<T, out TProjection> : IQuerySpecification<T
 
     IQueryable<TProjection> ApplySelection(IQueryable<T> source);
 
+    IAsyncEnumerable<TProjection> ProjectToAsyncEnumerable(IQueryable<T> source);
 }

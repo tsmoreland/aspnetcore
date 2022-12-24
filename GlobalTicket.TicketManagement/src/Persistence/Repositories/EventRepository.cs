@@ -6,7 +6,8 @@ namespace GlobalTicket.TicketManagement.Persistence.Repositories;
 public class EventRepository : BaseRepository<Event>, IEventRepository
 {
     /// <inheritdoc />
-    public EventRepository(GlobalTicketDbContext dbContext) : base(dbContext)
+    public EventRepository(GlobalTicketDbContext dbContext, IQueryableToEnumerableConverter queryableToEnumerableConverter)
+        : base(dbContext, queryableToEnumerableConverter)
     {
     }
 

@@ -11,26 +11,10 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System.Linq.Expressions;
-using GlobalTicket.TicketManagement.Application.Contracts.Persistence;
-using GlobalTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
-using GlobalTicket.TicketManagement.Domain.Entities;
+namespace GlobalTicket.TicketManagement.Application.Contracts.Persistence;
 
-namespace GlobalTicket.TicketManagement.Application.Features.Events.Queries.GetEventsExport;
-
-internal sealed class EventExportDtoSelectionSpecification : ISelectorSpecification<Event, EventExportDto>
+public interface IQueryableToEnumerableConverter
 {
-    /// <inheritdoc />
-    public Expression<Func<Event, EventExportDto>> Selector => e => new EventExportDto(e.EventId, e.Name, e.Date);
-
-    /// <inheritdoc />
-    /// <remarks>
-    /// Not entirely convinced the above selector will work, so this is a fall back mechanism
-    /// </remarks>
-    public IAsyncEnumerable<EventExportDto> ProjectToAsyncEnumerable(IQueryable<Event> query, IQueryableToEnumerableConverter queryableConverter)
-    {
-        return queryableConverter
-            .ConvertToAsyncEnumerable(query.Select(e => new {e.EventId, e.Name, e.Date}))
-            .Select(e => new EventExportDto(e.EventId, e.Name, e.Date));
-    }
+    IAsyncEnumerable<T> ConvertToAsyncEnumerable<T>(IQueryable<T> query);
+    IEnumerable<T> ConvertToEnumerable<T>(IQueryable<T> query);
 }
