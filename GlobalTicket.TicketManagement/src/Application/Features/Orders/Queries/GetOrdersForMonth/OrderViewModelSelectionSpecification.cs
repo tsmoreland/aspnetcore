@@ -26,7 +26,7 @@ public sealed class OrderViewModelSelectionSpecification : ISelectorSpecificatio
     public IAsyncEnumerable<OrderViewModel> ProjectToAsyncEnumerable(IQueryable<Order> query, IQueryableToEnumerableConverter queryableConverter)
     {
         return queryableConverter
-            .ConvertToAsyncEnumerable(query.Select(e => new {e.Id, e.OrderTotal, e.OrderPlaced}))
+            .ConvertToAsyncEnumerable(query.Select(e => new { e.Id, e.OrderTotal, e.OrderPlaced }))
             .Select(e => new OrderViewModel(e.Id, e.OrderTotal, e.OrderPlaced));
     }
 }

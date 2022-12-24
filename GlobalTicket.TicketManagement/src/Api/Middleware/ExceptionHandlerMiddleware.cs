@@ -21,7 +21,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 namespace GlobalTicket.TicketManagement.Api.Middleware;
 
 /// <summary/>
-public sealed class ExceptionHandlerMiddleware 
+public sealed class ExceptionHandlerMiddleware
 {
     private readonly RequestDelegate _next;
 
@@ -72,8 +72,8 @@ public sealed class ExceptionHandlerMiddleware
             edi.Throw();
         }
 
-        ProblemDetailsFactory problemDetailsFactory = context.RequestServices.GetRequiredService<ProblemDetailsFactory>(); 
-        DiagnosticListener? diagnosticListener = context.RequestServices.GetService<DiagnosticListener>(); 
+        ProblemDetailsFactory problemDetailsFactory = context.RequestServices.GetRequiredService<ProblemDetailsFactory>();
+        DiagnosticListener? diagnosticListener = context.RequestServices.GetService<DiagnosticListener>();
 
         if (diagnosticListener is not null && diagnosticListener.IsEnabled() && diagnosticListener.IsEnabled("Microsoft.AspNetCore.Diagnostics.HandledException"))
         {
@@ -84,7 +84,7 @@ public sealed class ExceptionHandlerMiddleware
 
         ProblemDetails? problem = edi.SourceException switch
         {
-            BadRequestException e =>  e.ToProblemDetails(problemDetailsFactory, context),
+            BadRequestException e => e.ToProblemDetails(problemDetailsFactory, context),
             NotFoundException e => e.ToProblemDetails(problemDetailsFactory, context),
             ValidationFailureException e => e.ToProblemDetails(problemDetailsFactory, context, modelState),
             _ => null,

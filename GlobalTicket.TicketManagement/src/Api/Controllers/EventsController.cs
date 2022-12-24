@@ -59,7 +59,7 @@ public class EventsController : ControllerBase
     public async Task<IActionResult> CreateEvent([FromBody] CreateEventCommand command, CancellationToken cancellationToken)
     {
         Guid id = await _mediator.Send(command, cancellationToken);
-        return CreatedAtAction(RouteNames.GetById, new {id}, cancellationToken);
+        return CreatedAtAction(RouteNames.GetById, new { id }, cancellationToken);
     }
 
     [HttpPut("{id}", Name = RouteNames.Update)]

@@ -4,5 +4,5 @@ namespace GlobalTicket.TicketManagement.UI.BlazorWasm.App.Services;
 
 public sealed class EventDataService : IEventDataService
 {
-    
+
 }

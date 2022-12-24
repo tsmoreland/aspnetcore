@@ -30,7 +30,7 @@ internal sealed class EventExportDtoSelectionSpecification : ISelectorSpecificat
     public IAsyncEnumerable<EventExportDto> ProjectToAsyncEnumerable(IQueryable<Event> query, IQueryableToEnumerableConverter queryableConverter)
     {
         return queryableConverter
-            .ConvertToAsyncEnumerable(query.Select(e => new {e.EventId, e.Name, e.Date}))
+            .ConvertToAsyncEnumerable(query.Select(e => new { e.EventId, e.Name, e.Date }))
             .Select(e => new EventExportDto(e.EventId, e.Name, e.Date));
     }
 }

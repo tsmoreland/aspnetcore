@@ -22,7 +22,7 @@ public sealed record class UpdateEventDto(
     DateTime Date,
     string? Description,
     string? ImageUrl,
-    Guid CategoryId) 
+    Guid CategoryId)
 {
 
     public UpdateEventCommand ToCommand(Guid id)
