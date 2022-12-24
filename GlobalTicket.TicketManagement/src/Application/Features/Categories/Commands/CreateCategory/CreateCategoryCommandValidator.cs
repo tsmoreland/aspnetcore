@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace GlobalTicket.TicketManagement.Application.Features.Categories.Commands.CreateCategory;
+namespace GloboTicket.TicketManagement.Application.Features.Categories.Commands.CreateCategory;
 
 public class CreateCategoryCommandValidator : AbstractValidator<CreateCategoryCommand>
 {

@@ -1,8 +1,8 @@
-﻿using GlobalTicket.TicketManagement.Domain.Entities;
+﻿using GloboTicket.TicketManagement.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace GlobalTicket.TicketManagement.Persistence.Configuration;
+namespace GloboTicket.TicketManagement.Persistence.Configuration;
 
 public sealed class CategoryEntityTypeConfiguration : IEntityTypeConfiguration<Category>
 {

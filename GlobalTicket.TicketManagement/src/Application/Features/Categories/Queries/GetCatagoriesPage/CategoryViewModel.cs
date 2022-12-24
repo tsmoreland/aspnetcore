@@ -1,5 +1,5 @@
 ﻿
-namespace GlobalTicket.TicketManagement.Application.Features.Categories.Queries.GetCatagoriesPage;
+namespace GloboTicket.TicketManagement.Application.Features.Categories.Queries.GetCatagoriesPage;
 
 public sealed class CategoryViewModel
 {

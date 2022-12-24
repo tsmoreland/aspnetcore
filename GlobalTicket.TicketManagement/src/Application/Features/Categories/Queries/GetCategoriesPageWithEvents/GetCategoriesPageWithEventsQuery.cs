@@ -11,9 +11,9 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using GlobalTicket.TicketManagement.Domain.Common;
+using GloboTicket.TicketManagement.Domain.Common;
 using MediatR;
 
-namespace GlobalTicket.TicketManagement.Application.Features.Categories.Queries.GetCategoriesPageWithEvents;
+namespace GloboTicket.TicketManagement.Application.Features.Categories.Queries.GetCategoriesPageWithEvents;
 
 public sealed record class GetCategoriesPageWithEventsQuery(PageRequest PageRequest, bool IncludeHistory) : IRequest<Page<CategoryWithEventsViewModel>>;

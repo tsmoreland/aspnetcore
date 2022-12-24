@@ -1,1 +1,1 @@
-﻿global using global::GlobalTicket.TicketManagement.Application.Extensions;
+﻿global using global::GloboTicket.TicketManagement.Application.Extensions;

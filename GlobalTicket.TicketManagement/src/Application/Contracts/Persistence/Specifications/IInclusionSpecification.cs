@@ -12,7 +12,7 @@
 
 using System.Linq.Expressions;
 
-namespace GlobalTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
+namespace GloboTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
 
 public interface IInclusionSpecification<T> where T : class
 {

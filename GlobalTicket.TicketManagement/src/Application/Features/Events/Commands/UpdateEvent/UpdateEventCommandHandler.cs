@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using FluentValidation.Results;
-using GlobalTicket.TicketManagement.Application.Contracts.Exceptions;
-using GlobalTicket.TicketManagement.Application.Contracts.Persistence;
-using GlobalTicket.TicketManagement.Domain.Entities;
+using GloboTicket.TicketManagement.Application.Contracts.Exceptions;
+using GloboTicket.TicketManagement.Application.Contracts.Persistence;
+using GloboTicket.TicketManagement.Domain.Entities;
 using MediatR;
 
-namespace GlobalTicket.TicketManagement.Application.Features.Events.Commands.UpdateEvent;
+namespace GloboTicket.TicketManagement.Application.Features.Events.Commands.UpdateEvent;
 
 public sealed class UpdateEventCommandHandler : IRequestHandler<UpdateEventCommand>
 {

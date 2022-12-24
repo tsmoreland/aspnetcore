@@ -1,10 +1,10 @@
-﻿using GlobalTicket.TicketManagement.Application.Contracts.Infrastructure;
-using GlobalTicket.TicketManagement.Application.Models.Mail;
+﻿using GloboTicket.TicketManagement.Application.Contracts.Infrastructure;
+using GloboTicket.TicketManagement.Application.Models.Mail;
 using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 
-namespace GlobalTicket.TicketManagement.Infrastructure.Mail;
+namespace GloboTicket.TicketManagement.Infrastructure.Mail;
 
 public sealed class EmailService : IEmailService
 {

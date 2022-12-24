@@ -10,6 +10,6 @@
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-namespace GlobalTicket.TicketManagement.Application.Features.Events.Queries.GetEventsExport;
+namespace GloboTicket.TicketManagement.Application.Features.Events.Queries.GetEventsExport;
 
 public sealed record class EventExportDto(Guid EventId, string Name, DateTime Date);

@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using FluentValidation.Results;
-using GlobalTicket.TicketManagement.Application.Contracts.Persistence;
-using GlobalTicket.TicketManagement.Domain.Entities;
+using GloboTicket.TicketManagement.Application.Contracts.Persistence;
+using GloboTicket.TicketManagement.Domain.Entities;
 using MediatR;
 
-namespace GlobalTicket.TicketManagement.Application.Features.Categories.Commands.CreateCategory;
+namespace GloboTicket.TicketManagement.Application.Features.Categories.Commands.CreateCategory;
 
 public sealed class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, CreateCategoryCommandResponse>
 {

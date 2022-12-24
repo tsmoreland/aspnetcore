@@ -1,18 +1,18 @@
-﻿using GlobalTicket.TicketManagement.Application.Contracts.Persistence;
-using GlobalTicket.TicketManagement.Domain.Common;
-using GlobalTicket.TicketManagement.Domain.Entities;
+﻿using GloboTicket.TicketManagement.Application.Contracts.Persistence;
+using GloboTicket.TicketManagement.Domain.Common;
+using GloboTicket.TicketManagement.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace GlobalTicket.TicketManagement.Persistence;
+namespace GloboTicket.TicketManagement.Persistence;
 
-public sealed class GlobalTicketDbContext : DbContext
+public sealed class GloboTicketDbContext : DbContext
 {
     private readonly IModelConfiguration<ModelBuilder, DbContextOptionsBuilder> _modelConfiguration;
 
     /// <inheritdoc />
-    public GlobalTicketDbContext(DbContextOptions<GlobalTicketDbContext> options,
+    public GloboTicketDbContext(DbContextOptions<GloboTicketDbContext> options,
         IModelConfiguration<ModelBuilder, DbContextOptionsBuilder> modelConfiguration)
         : base(options)
     {

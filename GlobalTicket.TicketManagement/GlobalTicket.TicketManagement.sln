@@ -11,21 +11,26 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{3F595291-44E4-
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{DF2A80DD-D66A-4521-9C65-D236D1A6888D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GlobalTicket.TicketManagement.Domain", "src\Domain\GlobalTicket.TicketManagement.Domain.csproj", "{9A2D91B6-E8EA-42AA-A658-87188904AEB3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GloboTicket.TicketManagement.Domain", "src\Domain\GloboTicket.TicketManagement.Domain.csproj", "{9A2D91B6-E8EA-42AA-A658-87188904AEB3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GlobalTicket.TicketManagement.Application", "src\Application\GlobalTicket.TicketManagement.Application.csproj", "{7DA9ABBC-2AF7-492D-95B2-5921CC647D4F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GloboTicket.TicketManagement.Application", "src\Application\GloboTicket.TicketManagement.Application.csproj", "{7DA9ABBC-2AF7-492D-95B2-5921CC647D4F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GlobalTicket.TicketManagement.Application.Test", "test\Application.Test\GlobalTicket.TicketManagement.Application.Test.csproj", "{97930513-D7A6-4E99-9ACC-C0C36E832579}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GloboTicket.TicketManagement.Application.Test", "test\Application.Test\GloboTicket.TicketManagement.Application.Test.csproj", "{97930513-D7A6-4E99-9ACC-C0C36E832579}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GlobalTicket.TicketManagement.Persistence", "src\Persistence\GlobalTicket.TicketManagement.Persistence.csproj", "{ABDCFBAD-9881-4CA4-9DFF-B606CE13DD9F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GloboTicket.TicketManagement.Persistence", "src\Persistence\GloboTicket.TicketManagement.Persistence.csproj", "{ABDCFBAD-9881-4CA4-9DFF-B606CE13DD9F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GlobalTicket.TicketManagement.Infrastructure", "src\Infrastructure\GlobalTicket.TicketManagement.Infrastructure.csproj", "{E45BF826-D4A5-473F-9123-486BB1B28451}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GloboTicket.TicketManagement.Infrastructure", "src\Infrastructure\GloboTicket.TicketManagement.Infrastructure.csproj", "{E45BF826-D4A5-473F-9123-486BB1B28451}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GlobalTicket.TicketManagement.Api", "src\Api\GlobalTicket.TicketManagement.Api.csproj", "{F496BD5A-D72A-4563-B16E-1A52DF3ACCC2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GloboTicket.TicketManagement.Api", "src\Api\GloboTicket.TicketManagement.Api.csproj", "{F496BD5A-D72A-4563-B16E-1A52DF3ACCC2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlobalTicket.TicketManagement.UI.Components", "src\UI\Components\GlobalTicket.TicketManagement.UI.Components.csproj", "{E5B20F06-34D7-4B42-8243-A93C0BCBBD17}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GloboTicket.TicketManagement.UI.Components", "src\UI\Components\GloboTicket.TicketManagement.UI.Components.csproj", "{E5B20F06-34D7-4B42-8243-A93C0BCBBD17}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlobalTicket.TicketManagement.UI.BlazorWasm.App", "src\UI\BlazorWasm.App\GlobalTicket.TicketManagement.UI.BlazorWasm.App.csproj", "{FB302525-A57D-4939-B2E1-BA883E497115}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GloboTicket.TicketManagement.UI.BlazorWasm.App", "src\UI\BlazorWasm.App\GloboTicket.TicketManagement.UI.BlazorWasm.App.csproj", "{FB302525-A57D-4939-B2E1-BA883E497115}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F926C796-77A3-4B87-95CE-68311E2FE02C}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

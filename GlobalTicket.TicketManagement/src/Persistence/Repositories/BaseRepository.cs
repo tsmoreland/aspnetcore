@@ -11,24 +11,24 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System.Runtime.CompilerServices;
-using GlobalTicket.TicketManagement.Application.Contracts.Persistence;
-using GlobalTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
-using GlobalTicket.TicketManagement.Domain.Common;
+using GloboTicket.TicketManagement.Application.Contracts.Persistence;
+using GloboTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
+using GloboTicket.TicketManagement.Domain.Common;
 using Microsoft.EntityFrameworkCore;
 
-namespace GlobalTicket.TicketManagement.Persistence.Repositories;
+namespace GloboTicket.TicketManagement.Persistence.Repositories;
 
 public class BaseRepository<T> : IAsyncRepository<T> where T : class
 {
     protected IQueryableToEnumerableConverter QueryableToEnumerableConverter { get; }
-    private readonly GlobalTicketDbContext _dbContext;
+    private readonly GloboTicketDbContext _dbContext;
 
     protected DbSet<T> DataSet
     {
         get { return _dbContext.Set<T>(); }
     }
 
-    public BaseRepository(GlobalTicketDbContext dbContext, IQueryableToEnumerableConverter queryableToEnumerableConverter)
+    public BaseRepository(GloboTicketDbContext dbContext, IQueryableToEnumerableConverter queryableToEnumerableConverter)
     {
         QueryableToEnumerableConverter = queryableToEnumerableConverter ?? throw new ArgumentNullException(nameof(queryableToEnumerableConverter));
         _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));

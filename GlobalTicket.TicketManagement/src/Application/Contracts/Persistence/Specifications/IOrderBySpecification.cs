@@ -1,5 +1,5 @@
 ﻿
-namespace GlobalTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
+namespace GloboTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
 
 public interface IOrderBySpecification<T> where T : class
 {

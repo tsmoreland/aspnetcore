@@ -1,16 +1,16 @@
-﻿using GlobalTicket.TicketManagement.Api.Infrastructure.Swagger.Attributes;
-using GlobalTicket.TicketManagement.Api.Models;
-using GlobalTicket.TicketManagement.Api.Models.Events;
-using GlobalTicket.TicketManagement.Application.Features.Events.Commands.CreateEvent;
-using GlobalTicket.TicketManagement.Application.Features.Events.Commands.DeleteEvent;
-using GlobalTicket.TicketManagement.Application.Features.Events.Queries.GetEventDetail;
-using GlobalTicket.TicketManagement.Application.Features.Events.Queries.GetEventsExport;
-using GlobalTicket.TicketManagement.Application.Features.Events.Queries.GetEventsPage;
-using GlobalTicket.TicketManagement.Domain.Common;
+﻿using GloboTicket.TicketManagement.Api.Infrastructure.Swagger.Attributes;
+using GloboTicket.TicketManagement.Api.Models;
+using GloboTicket.TicketManagement.Api.Models.Events;
+using GloboTicket.TicketManagement.Application.Features.Events.Commands.CreateEvent;
+using GloboTicket.TicketManagement.Application.Features.Events.Commands.DeleteEvent;
+using GloboTicket.TicketManagement.Application.Features.Events.Queries.GetEventDetail;
+using GloboTicket.TicketManagement.Application.Features.Events.Queries.GetEventsExport;
+using GloboTicket.TicketManagement.Application.Features.Events.Queries.GetEventsPage;
+using GloboTicket.TicketManagement.Domain.Common;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GlobalTicket.TicketManagement.Api.Controllers;
+namespace GloboTicket.TicketManagement.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

@@ -11,9 +11,9 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using GlobalTicket.TicketManagement.Domain.Common;
+using GloboTicket.TicketManagement.Domain.Common;
 
-namespace GlobalTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
+namespace GloboTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
 
 public interface IQueryBuilder<T> where T : class
 {

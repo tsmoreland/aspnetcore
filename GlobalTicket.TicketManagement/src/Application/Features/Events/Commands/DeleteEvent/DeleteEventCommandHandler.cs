@@ -1,8 +1,8 @@
-﻿using GlobalTicket.TicketManagement.Application.Contracts.Persistence;
-using GlobalTicket.TicketManagement.Domain.Entities;
+﻿using GloboTicket.TicketManagement.Application.Contracts.Persistence;
+using GloboTicket.TicketManagement.Domain.Entities;
 using MediatR;
 
-namespace GlobalTicket.TicketManagement.Application.Features.Events.Commands.DeleteEvent;
+namespace GloboTicket.TicketManagement.Application.Features.Events.Commands.DeleteEvent;
 
 public sealed class DeleteEventCommandHandler : IRequestHandler<DeleteEventCommand>
 {

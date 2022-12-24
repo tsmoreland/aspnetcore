@@ -11,7 +11,7 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-namespace GlobalTicket.TicketManagement.Api.Models;
+namespace GloboTicket.TicketManagement.Api.Models;
 
 /// <summary>
 /// Grouped Query Parameters for endpoints providing pagable responses

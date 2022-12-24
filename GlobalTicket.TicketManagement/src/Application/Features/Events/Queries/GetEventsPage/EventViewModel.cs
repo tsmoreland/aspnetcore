@@ -1,4 +1,4 @@
-﻿namespace GlobalTicket.TicketManagement.Application.Features.Events.Queries.GetEventsPage;
+﻿namespace GloboTicket.TicketManagement.Application.Features.Events.Queries.GetEventsPage;
 
 public sealed class EventViewModel
 {

@@ -1,14 +1,14 @@
-﻿using GlobalTicket.TicketManagement.Application.Contracts.Persistence;
-using GlobalTicket.TicketManagement.Domain.Common;
-using GlobalTicket.TicketManagement.Domain.Entities;
+﻿using GloboTicket.TicketManagement.Application.Contracts.Persistence;
+using GloboTicket.TicketManagement.Domain.Common;
+using GloboTicket.TicketManagement.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace GlobalTicket.TicketManagement.Persistence.Repositories;
+namespace GloboTicket.TicketManagement.Persistence.Repositories;
 
 public sealed class OrderRepository : BaseRepository<Order>, IOrderRepository
 {
     /// <inheritdoc />
-    public OrderRepository(GlobalTicketDbContext dbContext, IQueryableToEnumerableConverter queryableToEnumerableConverter)
+    public OrderRepository(GloboTicketDbContext dbContext, IQueryableToEnumerableConverter queryableToEnumerableConverter)
         : base(dbContext, queryableToEnumerableConverter)
     {
     }

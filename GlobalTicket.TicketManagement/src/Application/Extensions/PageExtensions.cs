@@ -12,9 +12,9 @@
 //
 
 using AutoMapper;
-using GlobalTicket.TicketManagement.Domain.Common;
+using GloboTicket.TicketManagement.Domain.Common;
 
-namespace GlobalTicket.TicketManagement.Application.Extensions;
+namespace GloboTicket.TicketManagement.Application.Extensions;
 
 internal static class PageExtensions
 {

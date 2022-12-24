@@ -1,4 +1,4 @@
-﻿namespace GlobalTicket.TicketManagement.Application.Responses;
+﻿namespace GloboTicket.TicketManagement.Application.Responses;
 
 public abstract record class BaseResponse(bool Success, string? Message, IReadOnlyDictionary<string, string>? ValidationErrors)
 {

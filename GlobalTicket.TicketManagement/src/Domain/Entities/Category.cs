@@ -1,6 +1,6 @@
-﻿using GlobalTicket.TicketManagement.Domain.Common;
+﻿using GloboTicket.TicketManagement.Domain.Common;
 
-namespace GlobalTicket.TicketManagement.Domain.Entities;
+namespace GloboTicket.TicketManagement.Domain.Entities;
 
 public sealed class Category : AuditableEntity
 {

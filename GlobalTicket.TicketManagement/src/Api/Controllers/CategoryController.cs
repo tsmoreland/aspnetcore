@@ -1,12 +1,12 @@
-﻿using GlobalTicket.TicketManagement.Api.Models;
-using GlobalTicket.TicketManagement.Application.Features.Categories.Commands.CreateCategory;
-using GlobalTicket.TicketManagement.Application.Features.Categories.Queries.GetCatagoriesPage;
-using GlobalTicket.TicketManagement.Application.Features.Categories.Queries.GetCategoriesPageWithEvents;
-using GlobalTicket.TicketManagement.Domain.Common;
+﻿using GloboTicket.TicketManagement.Api.Models;
+using GloboTicket.TicketManagement.Application.Features.Categories.Commands.CreateCategory;
+using GloboTicket.TicketManagement.Application.Features.Categories.Queries.GetCatagoriesPage;
+using GloboTicket.TicketManagement.Application.Features.Categories.Queries.GetCategoriesPageWithEvents;
+using GloboTicket.TicketManagement.Domain.Common;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GlobalTicket.TicketManagement.Api.Controllers;
+namespace GloboTicket.TicketManagement.Api.Controllers;
 
 [Route("api/categories")]
 [ApiController]

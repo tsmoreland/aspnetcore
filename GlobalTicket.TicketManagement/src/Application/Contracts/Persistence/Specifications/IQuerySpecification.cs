@@ -1,6 +1,6 @@
-﻿using GlobalTicket.TicketManagement.Domain.Common;
+﻿using GloboTicket.TicketManagement.Domain.Common;
 
-namespace GlobalTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
+namespace GloboTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
 
 public interface IQuerySpecification<T> where T : class
 {

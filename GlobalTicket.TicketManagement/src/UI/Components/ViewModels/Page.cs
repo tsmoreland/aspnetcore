@@ -11,7 +11,7 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-namespace GlobalTicket.TicketManagement.UI.Components.ViewModels;
+namespace GloboTicket.TicketManagement.UI.Components.ViewModels;
 
 /// <summary>
 /// Copied from Application.Domain in order to keep separate of UI from 'backend' application

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace GlobalTicket.TicketManagement.UI.Components;
+namespace GloboTicket.TicketManagement.UI.Components;
 
 public partial class Pager
 {

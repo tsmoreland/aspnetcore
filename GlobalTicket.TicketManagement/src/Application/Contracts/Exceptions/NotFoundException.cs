@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
-namespace GlobalTicket.TicketManagement.Application.Contracts.Exceptions;
+namespace GloboTicket.TicketManagement.Application.Contracts.Exceptions;
 
 public sealed class NotFoundException : Exception
 {

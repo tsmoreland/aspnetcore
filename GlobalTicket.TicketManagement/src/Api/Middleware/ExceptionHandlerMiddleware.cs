@@ -12,13 +12,13 @@
 
 using System.Diagnostics;
 using System.Runtime.ExceptionServices;
-using GlobalTicket.TicketManagement.Api.Models;
-using GlobalTicket.TicketManagement.Application.Contracts.Exceptions;
+using GloboTicket.TicketManagement.Api.Models;
+using GloboTicket.TicketManagement.Application.Contracts.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace GlobalTicket.TicketManagement.Api.Middleware;
+namespace GloboTicket.TicketManagement.Api.Middleware;
 
 /// <summary/>
 public sealed class ExceptionHandlerMiddleware

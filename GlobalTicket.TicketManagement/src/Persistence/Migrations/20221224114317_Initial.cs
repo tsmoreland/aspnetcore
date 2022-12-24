@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace GlobalTicket.TicketManagement.Persistence.Migrations
+namespace GloboTicket.TicketManagement.Persistence.Migrations
 {
     /// <inheritdoc />
     public partial class Initial : Migration

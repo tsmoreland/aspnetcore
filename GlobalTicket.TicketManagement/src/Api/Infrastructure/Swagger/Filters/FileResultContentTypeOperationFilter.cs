@@ -1,8 +1,8 @@
-﻿using GlobalTicket.TicketManagement.Api.Infrastructure.Swagger.Attributes;
+﻿using GloboTicket.TicketManagement.Api.Infrastructure.Swagger.Attributes;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace GlobalTicket.TicketManagement.Api.Infrastructure.Swagger.Filters;
+namespace GloboTicket.TicketManagement.Api.Infrastructure.Swagger.Filters;
 
 public sealed class FileResultContentTypeOperationFilter : IOperationFilter
 {

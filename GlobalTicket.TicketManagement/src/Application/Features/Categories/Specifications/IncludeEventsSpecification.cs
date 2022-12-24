@@ -10,10 +10,10 @@
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using GlobalTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
-using GlobalTicket.TicketManagement.Domain.Entities;
+using GloboTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
+using GloboTicket.TicketManagement.Domain.Entities;
 
-namespace GlobalTicket.TicketManagement.Application.Features.Categories.Specifications;
+namespace GloboTicket.TicketManagement.Application.Features.Categories.Specifications;
 
 public class IncludeEventsSpecification : IInclusionSpecification<Category>
 {

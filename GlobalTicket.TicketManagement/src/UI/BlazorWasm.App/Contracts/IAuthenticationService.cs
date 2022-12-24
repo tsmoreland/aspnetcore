@@ -1,4 +1,4 @@
-﻿namespace GlobalTicket.TicketManagement.UI.BlazorWasm.App.Contracts;
+﻿namespace GloboTicket.TicketManagement.UI.BlazorWasm.App.Contracts;
 
 public interface IAuthenticationService
 {

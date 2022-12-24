@@ -10,30 +10,30 @@
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using GlobalTicket.TicketManagement.Application.Contracts;
-using GlobalTicket.TicketManagement.Persistence.Configuration;
+using GloboTicket.TicketManagement.Application.Contracts;
+using GloboTicket.TicketManagement.Persistence.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace GlobalTicket.TicketManagement.Persistence;
+namespace GloboTicket.TicketManagement.Persistence;
 
-public sealed class GlobalTicketDbContextDesignTimeFactory : IDesignTimeDbContextFactory<GlobalTicketDbContext>
+public sealed class GloboTicketDbContextDesignTimeFactory : IDesignTimeDbContextFactory<GloboTicketDbContext>
 {
     /// <inheritdoc />
-    public GlobalTicketDbContext CreateDbContext(string[] args)
+    public GloboTicketDbContext CreateDbContext(string[] args)
     {
         IConfiguration configuration = new ConfigurationBuilder().Build();
 
         SqliteModelConfiguration modelConfiguration = new(configuration, new HostEnvironmentFacade(), new LoggerFactory());
 
-        DbContextOptionsBuilder<GlobalTicketDbContext> optionsBuilder = new();
+        DbContextOptionsBuilder<GloboTicketDbContext> optionsBuilder = new();
         optionsBuilder.UseSqlite(
             "Data Source=designTime.db;Pooling=false",
             options => options.MigrationsAssembly(typeof(SqliteModelConfiguration).Assembly.FullName));
 
-        GlobalTicketDbContext dbContext = new(optionsBuilder.Options, modelConfiguration);
+        GloboTicketDbContext dbContext = new(optionsBuilder.Options, modelConfiguration);
         return dbContext;
     }
 

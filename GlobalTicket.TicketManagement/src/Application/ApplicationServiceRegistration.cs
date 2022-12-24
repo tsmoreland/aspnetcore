@@ -2,7 +2,7 @@
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace GlobalTicket.TicketManagement.Application;
+namespace GloboTicket.TicketManagement.Application;
 
 public static class ApplicationServiceRegistration
 {

@@ -1,4 +1,4 @@
-﻿namespace GlobalTicket.TicketManagement.Domain.Common;
+﻿namespace GloboTicket.TicketManagement.Domain.Common;
 
 public abstract class AuditableEntity
 {

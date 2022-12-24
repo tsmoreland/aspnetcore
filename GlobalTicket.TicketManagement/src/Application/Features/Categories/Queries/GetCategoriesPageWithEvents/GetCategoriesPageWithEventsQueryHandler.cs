@@ -12,14 +12,14 @@
 //
 
 using AutoMapper;
-using GlobalTicket.TicketManagement.Application.Contracts.Persistence;
-using GlobalTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
-using GlobalTicket.TicketManagement.Application.Features.Categories.Specifications;
-using GlobalTicket.TicketManagement.Domain.Common;
-using GlobalTicket.TicketManagement.Domain.Entities;
+using GloboTicket.TicketManagement.Application.Contracts.Persistence;
+using GloboTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
+using GloboTicket.TicketManagement.Application.Features.Categories.Specifications;
+using GloboTicket.TicketManagement.Domain.Common;
+using GloboTicket.TicketManagement.Domain.Entities;
 using MediatR;
 
-namespace GlobalTicket.TicketManagement.Application.Features.Categories.Queries.GetCategoriesPageWithEvents;
+namespace GloboTicket.TicketManagement.Application.Features.Categories.Queries.GetCategoriesPageWithEvents;
 
 public sealed class GetCategoriesPageWithEventsQueryHandler : IRequestHandler<GetCategoriesPageWithEventsQuery, Page<CategoryWithEventsViewModel>>
 {

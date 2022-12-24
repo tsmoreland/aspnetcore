@@ -1,14 +1,14 @@
 ﻿using AutoMapper;
-using GlobalTicket.TicketManagement.Application.Features.Categories.Queries.GetCatagoriesPage;
-using GlobalTicket.TicketManagement.Application.Features.Categories.Queries.GetCategoriesPageWithEvents;
-using GlobalTicket.TicketManagement.Application.Features.Events.Commands.CreateEvent;
-using GlobalTicket.TicketManagement.Application.Features.Events.Commands.DeleteEvent;
-using GlobalTicket.TicketManagement.Application.Features.Events.Commands.UpdateEvent;
-using GlobalTicket.TicketManagement.Application.Features.Events.Queries.GetEventDetail;
-using GlobalTicket.TicketManagement.Application.Features.Events.Queries.GetEventsPage;
-using GlobalTicket.TicketManagement.Domain.Entities;
+using GloboTicket.TicketManagement.Application.Features.Categories.Queries.GetCatagoriesPage;
+using GloboTicket.TicketManagement.Application.Features.Categories.Queries.GetCategoriesPageWithEvents;
+using GloboTicket.TicketManagement.Application.Features.Events.Commands.CreateEvent;
+using GloboTicket.TicketManagement.Application.Features.Events.Commands.DeleteEvent;
+using GloboTicket.TicketManagement.Application.Features.Events.Commands.UpdateEvent;
+using GloboTicket.TicketManagement.Application.Features.Events.Queries.GetEventDetail;
+using GloboTicket.TicketManagement.Application.Features.Events.Queries.GetEventsPage;
+using GloboTicket.TicketManagement.Domain.Entities;
 
-namespace GlobalTicket.TicketManagement.Application.Profiles;
+namespace GloboTicket.TicketManagement.Application.Profiles;
 
 public sealed class MappingProfile : Profile
 {

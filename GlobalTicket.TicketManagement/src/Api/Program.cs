@@ -1,4 +1,4 @@
-using GlobalTicket.TicketManagement.Api;
+using GloboTicket.TicketManagement.Api;
 
 WebApplication app = WebApplication.CreateBuilder(args)
     .ConfigureServices()

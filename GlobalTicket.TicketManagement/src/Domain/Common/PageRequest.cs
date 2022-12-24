@@ -13,7 +13,7 @@
 
 using System.Runtime.CompilerServices;
 
-namespace GlobalTicket.TicketManagement.Domain.Common;
+namespace GloboTicket.TicketManagement.Domain.Common;
 
 public sealed record class PageRequest(int PageNumber, int PageSize)
 {

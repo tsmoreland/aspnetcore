@@ -13,7 +13,7 @@
 
 using SendGrid;
 
-namespace GlobalTicket.TicketManagement.Infrastructure.Mail;
+namespace GloboTicket.TicketManagement.Infrastructure.Mail;
 
 internal static class Extensions
 {

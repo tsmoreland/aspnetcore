@@ -1,6 +1,6 @@
-﻿using GlobalTicket.TicketManagement.Domain.Common;
+﻿using GloboTicket.TicketManagement.Domain.Common;
 using MediatR;
 
-namespace GlobalTicket.TicketManagement.Application.Features.Events.Queries.GetEventsPage;
+namespace GloboTicket.TicketManagement.Application.Features.Events.Queries.GetEventsPage;
 
 public sealed record class GetEventsPageQuery(PageRequest PageRequest) : IRequest<Page<EventViewModel>>;

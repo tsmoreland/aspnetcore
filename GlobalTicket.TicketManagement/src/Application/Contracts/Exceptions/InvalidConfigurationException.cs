@@ -11,7 +11,7 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-namespace GlobalTicket.TicketManagement.Application.Contracts.Exceptions;
+namespace GloboTicket.TicketManagement.Application.Contracts.Exceptions;
 
 public sealed class InvalidConfigurationException : Exception
 {

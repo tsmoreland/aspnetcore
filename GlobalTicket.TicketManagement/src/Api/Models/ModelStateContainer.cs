@@ -13,6 +13,6 @@
 
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace GlobalTicket.TicketManagement.Api.Models;
+namespace GloboTicket.TicketManagement.Api.Models;
 
 public sealed record class ModelStateContainer(ModelStateDictionary ModelState);

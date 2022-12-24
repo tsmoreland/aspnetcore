@@ -10,14 +10,14 @@
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using GlobalTicket.TicketManagement.Application.Contracts;
-using GlobalTicket.TicketManagement.Application.Contracts.Exceptions;
-using GlobalTicket.TicketManagement.Application.Contracts.Persistence;
+using GloboTicket.TicketManagement.Application.Contracts;
+using GloboTicket.TicketManagement.Application.Contracts.Exceptions;
+using GloboTicket.TicketManagement.Application.Contracts.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace GlobalTicket.TicketManagement.Persistence.Configuration;
+namespace GloboTicket.TicketManagement.Persistence.Configuration;
 
 public sealed class SqliteModelConfiguration : IModelConfiguration<ModelBuilder, DbContextOptionsBuilder>
 {
@@ -38,7 +38,7 @@ public sealed class SqliteModelConfiguration : IModelConfiguration<ModelBuilder,
     /// <inheritdoc />
     public void ConfigureModel(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(GlobalTicketDbContext).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(GloboTicketDbContext).Assembly);
     }
 
     /// <inheritdoc />
@@ -50,7 +50,7 @@ public sealed class SqliteModelConfiguration : IModelConfiguration<ModelBuilder,
         }
 
         string connectionString = _configuration
-            .GetConnectionString("GlobalTicketDbConnection") ?? throw new InvalidConfigurationException("missing GlobalTicketDbConnection entry.");
+            .GetConnectionString("GloboTicketDbConnection") ?? throw new InvalidConfigurationException("missing GloboTicketDbConnection entry.");
         optionsBuilder
             .UseSqlite(
                 connectionString,
@@ -61,7 +61,7 @@ public sealed class SqliteModelConfiguration : IModelConfiguration<ModelBuilder,
 
         if (!_isDevelopment)
         {
-            //optionsBuilder.UseModel(CompiledModels.GlobalTicketDbContext.Instance);
+            //optionsBuilder.UseModel(CompiledModels.GloboTicketDbContext.Instance);
         }
     }
 }

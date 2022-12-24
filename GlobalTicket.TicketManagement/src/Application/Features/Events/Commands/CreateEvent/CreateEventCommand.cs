@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace GlobalTicket.TicketManagement.Application.Features.Events.Commands.CreateEvent;
+namespace GloboTicket.TicketManagement.Application.Features.Events.Commands.CreateEvent;
 
 public sealed record class CreateEventCommand(
     string Name,

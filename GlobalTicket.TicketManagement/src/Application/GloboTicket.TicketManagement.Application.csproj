@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Domain\GlobalTicket.TicketManagement.Domain.csproj" />
+    <ProjectReference Include="..\Domain\GloboTicket.TicketManagement.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

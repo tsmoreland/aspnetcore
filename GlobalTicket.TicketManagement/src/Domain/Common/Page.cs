@@ -11,7 +11,7 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-namespace GlobalTicket.TicketManagement.Domain.Common;
+namespace GloboTicket.TicketManagement.Domain.Common;
 
 public sealed record class Page<T>(int PageNumber, int PageSize, int TotalPages, int TotalSize, IReadOnlyList<T> Items)
 {

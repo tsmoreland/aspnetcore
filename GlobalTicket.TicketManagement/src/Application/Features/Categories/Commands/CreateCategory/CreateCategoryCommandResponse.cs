@@ -1,7 +1,7 @@
 ﻿using FluentValidation.Results;
-using GlobalTicket.TicketManagement.Application.Responses;
+using GloboTicket.TicketManagement.Application.Responses;
 
-namespace GlobalTicket.TicketManagement.Application.Features.Categories.Commands.CreateCategory;
+namespace GloboTicket.TicketManagement.Application.Features.Categories.Commands.CreateCategory;
 
 public sealed record class CreateCategoryCommandResponse(bool Success, CreateCategoryDto? Category, string? Message, IReadOnlyDictionary<string, string>? ValidationErrors)
     : BaseResponse(Success, Message, ValidationErrors)

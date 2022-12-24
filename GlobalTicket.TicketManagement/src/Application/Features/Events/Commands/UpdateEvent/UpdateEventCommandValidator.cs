@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
-using GlobalTicket.TicketManagement.Application.Contracts.Persistence;
-using GlobalTicket.TicketManagement.Application.Features.Events.Commands.CreateEvent;
+using GloboTicket.TicketManagement.Application.Contracts.Persistence;
+using GloboTicket.TicketManagement.Application.Features.Events.Commands.CreateEvent;
 
-namespace GlobalTicket.TicketManagement.Application.Features.Events.Commands.UpdateEvent;
+namespace GloboTicket.TicketManagement.Application.Features.Events.Commands.UpdateEvent;
 
 public sealed class UpdateEventCommandValidator : AbstractValidator<UpdateEventCommand>
 {

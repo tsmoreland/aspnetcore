@@ -11,12 +11,12 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using AutoMapper;
-using GlobalTicket.TicketManagement.Application.Contracts.Infrastructure;
-using GlobalTicket.TicketManagement.Application.Contracts.Persistence;
-using GlobalTicket.TicketManagement.Domain.Entities;
+using GloboTicket.TicketManagement.Application.Contracts.Infrastructure;
+using GloboTicket.TicketManagement.Application.Contracts.Persistence;
+using GloboTicket.TicketManagement.Domain.Entities;
 using MediatR;
 
-namespace GlobalTicket.TicketManagement.Application.Features.Events.Queries.GetEventsExport;
+namespace GloboTicket.TicketManagement.Application.Features.Events.Queries.GetEventsExport;
 
 public sealed class GetEventsExportQueryHandler : IRequestHandler<GetEventsExportQuery, EventExportFileViewModel>
 {

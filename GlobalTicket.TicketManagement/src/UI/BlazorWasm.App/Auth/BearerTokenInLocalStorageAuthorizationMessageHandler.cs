@@ -1,7 +1,7 @@
 ﻿using System.Net.Http.Headers;
 using Blazored.LocalStorage;
 
-namespace GlobalTicket.TicketManagement.UI.BlazorWasm.App.Auth;
+namespace GloboTicket.TicketManagement.UI.BlazorWasm.App.Auth;
 
 public class BearerTokenInLocalStorageAuthorizationMessageHandler : DelegatingHandler
 {

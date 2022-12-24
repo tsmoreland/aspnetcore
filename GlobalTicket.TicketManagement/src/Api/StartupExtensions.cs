@@ -1,14 +1,14 @@
 ﻿using System.Text.Json.Serialization;
-using GlobalTicket.TicketManagement.Api.Infrastructure.Filters;
-using GlobalTicket.TicketManagement.Api.Infrastructure.Swagger.Filters;
-using GlobalTicket.TicketManagement.Api.Middleware;
-using GlobalTicket.TicketManagement.Application;
-using GlobalTicket.TicketManagement.Infrastructure;
-using GlobalTicket.TicketManagement.Persistence;
+using GloboTicket.TicketManagement.Api.Infrastructure.Filters;
+using GloboTicket.TicketManagement.Api.Infrastructure.Swagger.Filters;
+using GloboTicket.TicketManagement.Api.Middleware;
+using GloboTicket.TicketManagement.Application;
+using GloboTicket.TicketManagement.Infrastructure;
+using GloboTicket.TicketManagement.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
-namespace GlobalTicket.TicketManagement.Api;
+namespace GloboTicket.TicketManagement.Api;
 
 public static class StartupExtensions
 {
@@ -53,7 +53,7 @@ public static class StartupExtensions
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "GlobalTicket Ticket Management API"));
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "GloboTicket Ticket Management API"));
         }
 
         app.UseHttpsRedirection();
@@ -74,7 +74,7 @@ public static class StartupExtensions
             c.SwaggerDoc("v1", new OpenApiInfo
             {
                 Version = "v1",
-                Title = "GlobalTicket Ticket Management API"
+                Title = "GloboTicket Ticket Management API"
             });
             c.OperationFilter<FileResultContentTypeOperationFilter>();
         });
@@ -85,7 +85,7 @@ public static class StartupExtensions
         using IServiceScope scope = app.Services.CreateScope();
         try
         {
-            GlobalTicketDbContext? dbContext = scope.ServiceProvider.GetService<GlobalTicketDbContext>();
+            GloboTicketDbContext? dbContext = scope.ServiceProvider.GetService<GloboTicketDbContext>();
             if (dbContext is null)
             {
                 // Log failure

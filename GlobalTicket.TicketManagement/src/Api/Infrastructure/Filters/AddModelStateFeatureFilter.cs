@@ -10,11 +10,11 @@
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using GlobalTicket.TicketManagement.Api.Models;
+using GloboTicket.TicketManagement.Api.Models;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace GlobalTicket.TicketManagement.Api.Infrastructure.Filters;
+namespace GloboTicket.TicketManagement.Api.Infrastructure.Filters;
 
 public sealed class AddModelStateFeatureFilter : IAsyncActionFilter
 {

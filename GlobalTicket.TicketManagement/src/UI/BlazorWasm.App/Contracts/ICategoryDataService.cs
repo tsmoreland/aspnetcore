@@ -1,6 +1,6 @@
-﻿using GlobalTicket.TicketManagement.UI.Components.ViewModels;
+﻿using GloboTicket.TicketManagement.UI.Components.ViewModels;
 
-namespace GlobalTicket.TicketManagement.UI.BlazorWasm.App.Contracts;
+namespace GloboTicket.TicketManagement.UI.BlazorWasm.App.Contracts;
 
 public interface ICategoryDataService
 {

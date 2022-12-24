@@ -1,4 +1,4 @@
-﻿namespace GlobalTicket.TicketManagement.UI.Components.ViewModels;
+﻿namespace GloboTicket.TicketManagement.UI.Components.ViewModels;
 
 public sealed class PagedList<T>
 {

@@ -13,10 +13,10 @@
 
 using System.Globalization;
 using CsvHelper;
-using GlobalTicket.TicketManagement.Application.Contracts.Infrastructure;
-using GlobalTicket.TicketManagement.Application.Features.Events.Queries.GetEventsExport;
+using GloboTicket.TicketManagement.Application.Contracts.Infrastructure;
+using GloboTicket.TicketManagement.Application.Features.Events.Queries.GetEventsExport;
 
-namespace GlobalTicket.TicketManagement.Infrastructure.FileExport;
+namespace GloboTicket.TicketManagement.Infrastructure.FileExport;
 
 public sealed class CsvExporter : ICsvExporter
 {

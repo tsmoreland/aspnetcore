@@ -1,12 +1,12 @@
-﻿using GlobalTicket.TicketManagement.Application.Contracts.Persistence;
-using GlobalTicket.TicketManagement.Domain.Entities;
+﻿using GloboTicket.TicketManagement.Application.Contracts.Persistence;
+using GloboTicket.TicketManagement.Domain.Entities;
 
-namespace GlobalTicket.TicketManagement.Persistence.Repositories;
+namespace GloboTicket.TicketManagement.Persistence.Repositories;
 
 public class EventRepository : BaseRepository<Event>, IEventRepository
 {
     /// <inheritdoc />
-    public EventRepository(GlobalTicketDbContext dbContext, IQueryableToEnumerableConverter queryableToEnumerableConverter)
+    public EventRepository(GloboTicketDbContext dbContext, IQueryableToEnumerableConverter queryableToEnumerableConverter)
         : base(dbContext, queryableToEnumerableConverter)
     {
     }

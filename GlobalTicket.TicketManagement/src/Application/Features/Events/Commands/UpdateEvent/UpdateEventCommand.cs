@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace GlobalTicket.TicketManagement.Application.Features.Events.Commands.UpdateEvent;
+namespace GloboTicket.TicketManagement.Application.Features.Events.Commands.UpdateEvent;
 
 public sealed record class UpdateEventCommand(
     Guid EventId,

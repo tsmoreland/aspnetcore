@@ -11,10 +11,10 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System.Linq.Expressions;
-using GlobalTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
-using GlobalTicket.TicketManagement.Domain.Entities;
+using GloboTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
+using GloboTicket.TicketManagement.Domain.Entities;
 
-namespace GlobalTicket.TicketManagement.Application.Features.Orders.Queries.GetOrdersForMonth;
+namespace GloboTicket.TicketManagement.Application.Features.Orders.Queries.GetOrdersForMonth;
 
 public sealed class ForMonthFilterSpecification : IFilterSpecification<Order>
 {

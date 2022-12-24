@@ -11,12 +11,12 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System.Linq.Expressions;
-using GlobalTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
-using GlobalTicket.TicketManagement.Domain.Common;
-using GlobalTicket.TicketManagement.Persistence.Infrastructure;
+using GloboTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
+using GloboTicket.TicketManagement.Domain.Common;
+using GloboTicket.TicketManagement.Persistence.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
-namespace GlobalTicket.TicketManagement.Persistence.Specifications;
+namespace GloboTicket.TicketManagement.Persistence.Specifications;
 
 public record class QuerySpecification<T>(
     bool DoNotTrack,

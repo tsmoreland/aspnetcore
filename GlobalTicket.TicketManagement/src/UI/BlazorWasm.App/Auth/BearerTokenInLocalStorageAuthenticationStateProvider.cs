@@ -3,7 +3,7 @@ using System.Text.Json;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 
-namespace GlobalTicket.TicketManagement.UI.BlazorWasm.App.Auth;
+namespace GloboTicket.TicketManagement.UI.BlazorWasm.App.Auth;
 
 public sealed class BearerTokenInLocalStorageAuthenticationStateProvider : AuthenticationStateProvider
 {

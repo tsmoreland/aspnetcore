@@ -1,9 +1,9 @@
-﻿using GlobalTicket.TicketManagement.UI.BlazorWasm.App.Auth;
-using GlobalTicket.TicketManagement.UI.BlazorWasm.App.Contracts;
+﻿using GloboTicket.TicketManagement.UI.BlazorWasm.App.Auth;
+using GloboTicket.TicketManagement.UI.BlazorWasm.App.Contracts;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 
-namespace GlobalTicket.TicketManagement.UI.BlazorWasm.App.Pages;
+namespace GloboTicket.TicketManagement.UI.BlazorWasm.App.Pages;
 
 public partial class Index
 {

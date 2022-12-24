@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
 using FluentValidation.Results;
-using GlobalTicket.TicketManagement.Application.Contracts.Exceptions;
-using GlobalTicket.TicketManagement.Application.Contracts.Infrastructure;
-using GlobalTicket.TicketManagement.Application.Contracts.Persistence;
-using GlobalTicket.TicketManagement.Application.Models.Mail;
-using GlobalTicket.TicketManagement.Domain.Entities;
+using GloboTicket.TicketManagement.Application.Contracts.Exceptions;
+using GloboTicket.TicketManagement.Application.Contracts.Infrastructure;
+using GloboTicket.TicketManagement.Application.Contracts.Persistence;
+using GloboTicket.TicketManagement.Application.Models.Mail;
+using GloboTicket.TicketManagement.Domain.Entities;
 using MediatR;
 
-namespace GlobalTicket.TicketManagement.Application.Features.Events.Commands.CreateEvent;
+namespace GloboTicket.TicketManagement.Application.Features.Events.Commands.CreateEvent;
 
 public sealed class CreateEventCommandHandler : IRequestHandler<CreateEventCommand, Guid>
 {

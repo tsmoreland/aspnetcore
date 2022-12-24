@@ -10,9 +10,9 @@
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using GlobalTicket.TicketManagement.Domain.Common;
+using GloboTicket.TicketManagement.Domain.Common;
 
-namespace GlobalTicket.TicketManagement.Api.Models;
+namespace GloboTicket.TicketManagement.Api.Models;
 
 public class PageQueryParameters
 {

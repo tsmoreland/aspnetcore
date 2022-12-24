@@ -11,9 +11,9 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using GlobalTicket.TicketManagement.Application.Features.Events.Commands.UpdateEvent;
+using GloboTicket.TicketManagement.Application.Features.Events.Commands.UpdateEvent;
 
-namespace GlobalTicket.TicketManagement.Api.Models.Events;
+namespace GloboTicket.TicketManagement.Api.Models.Events;
 
 public sealed record class UpdateEventDto(
     string Name,

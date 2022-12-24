@@ -1,7 +1,7 @@
-﻿using GlobalTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
-using GlobalTicket.TicketManagement.Domain.Common;
+﻿using GloboTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
+using GloboTicket.TicketManagement.Domain.Common;
 
-namespace GlobalTicket.TicketManagement.Application.Contracts.Persistence;
+namespace GloboTicket.TicketManagement.Application.Contracts.Persistence;
 
 public interface IAsyncRepository<T> where T : class
 {

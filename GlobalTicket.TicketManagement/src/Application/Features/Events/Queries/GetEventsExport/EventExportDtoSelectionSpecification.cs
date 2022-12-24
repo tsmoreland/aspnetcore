@@ -12,11 +12,11 @@
 //
 
 using System.Linq.Expressions;
-using GlobalTicket.TicketManagement.Application.Contracts.Persistence;
-using GlobalTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
-using GlobalTicket.TicketManagement.Domain.Entities;
+using GloboTicket.TicketManagement.Application.Contracts.Persistence;
+using GloboTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
+using GloboTicket.TicketManagement.Domain.Entities;
 
-namespace GlobalTicket.TicketManagement.Application.Features.Events.Queries.GetEventsExport;
+namespace GloboTicket.TicketManagement.Application.Features.Events.Queries.GetEventsExport;
 
 internal sealed class EventExportDtoSelectionSpecification : ISelectorSpecification<Event, EventExportDto>
 {

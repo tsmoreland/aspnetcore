@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Application\GlobalTicket.TicketManagement.Application.csproj" />
-    <ProjectReference Include="..\Infrastructure\GlobalTicket.TicketManagement.Infrastructure.csproj" />
-    <ProjectReference Include="..\Persistence\GlobalTicket.TicketManagement.Persistence.csproj" />
+    <ProjectReference Include="..\Application\GloboTicket.TicketManagement.Application.csproj" />
+    <ProjectReference Include="..\Infrastructure\GloboTicket.TicketManagement.Infrastructure.csproj" />
+    <ProjectReference Include="..\Persistence\GloboTicket.TicketManagement.Persistence.csproj" />
   </ItemGroup>
 
   <ItemGroup>

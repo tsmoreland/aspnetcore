@@ -1,6 +1,6 @@
-﻿using GlobalTicket.TicketManagement.Application.Models.Mail;
+﻿using GloboTicket.TicketManagement.Application.Models.Mail;
 
-namespace GlobalTicket.TicketManagement.Application.Contracts.Infrastructure;
+namespace GloboTicket.TicketManagement.Application.Contracts.Infrastructure;
 
 public interface IEmailService
 {

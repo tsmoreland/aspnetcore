@@ -1,4 +1,4 @@
-﻿namespace GlobalTicket.TicketManagement.Api.Infrastructure.Swagger.Attributes;
+﻿namespace GloboTicket.TicketManagement.Api.Infrastructure.Swagger.Attributes;
 
 [AttributeUsage(AttributeTargets.Method)]
 public class FileResultContentTypeAttribute : Attribute

@@ -1,11 +1,11 @@
-﻿using GlobalTicket.TicketManagement.Application.Contracts.Persistence;
-using GlobalTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
-using GlobalTicket.TicketManagement.Application.Features.Orders.Specifications;
-using GlobalTicket.TicketManagement.Domain.Common;
-using GlobalTicket.TicketManagement.Domain.Entities;
+﻿using GloboTicket.TicketManagement.Application.Contracts.Persistence;
+using GloboTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
+using GloboTicket.TicketManagement.Application.Features.Orders.Specifications;
+using GloboTicket.TicketManagement.Domain.Common;
+using GloboTicket.TicketManagement.Domain.Entities;
 using MediatR;
 
-namespace GlobalTicket.TicketManagement.Application.Features.Orders.Queries.GetOrdersForMonth;
+namespace GloboTicket.TicketManagement.Application.Features.Orders.Queries.GetOrdersForMonth;
 
 public sealed class GetOrdersForMonthQueryHandler : IRequestHandler<GetOrdersForMonthQuery, Page<OrderViewModel>>
 {
