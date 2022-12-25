@@ -1,4 +1,4 @@
-﻿namespace GloboTicket.TicketManagement.UI.BlazorWasm.App.Contracts;
+﻿namespace GloboTicket.TicketManagement.UI.ApiClient.Contracts;
 
 public interface IOrderDataService
 {

@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ApiClient\GloboTicket.TicketManagement.UI.ApiClient.csproj" />
     <ProjectReference Include="..\Components\GloboTicket.TicketManagement.UI.Components.csproj" />
   </ItemGroup>
 

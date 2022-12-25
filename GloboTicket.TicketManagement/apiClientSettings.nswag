@@ -93,7 +93,7 @@
       "enumNameGeneratorType": null,
       "serviceHost": null,
       "serviceSchemes": null,
-      "output": "src/UI/ApiClient/Services/ServiceClient.cs",
+      "output": "src/UI/ApiClient/Services/Base/ServiceClient.cs",
       "newLineBehavior": "Auto"
     }
   }
