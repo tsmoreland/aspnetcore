@@ -72,7 +72,7 @@ public class EventsController : ControllerBase
         return NoContent();
     }
 
-    [HttpPut("{id}", Name = RouteNames.Delete)]
+    [HttpDelete("{id}", Name = RouteNames.Delete)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesDefaultResponseType]

@@ -1,6 +1,9 @@
 ﻿using GloboTicket.TicketManagement.Application.Contracts.Persistence;
+using GloboTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
 using GloboTicket.TicketManagement.Persistence.Configuration;
+using GloboTicket.TicketManagement.Persistence.Infrastructure;
 using GloboTicket.TicketManagement.Persistence.Repositories;
+using GloboTicket.TicketManagement.Persistence.Specifications;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,15 +15,20 @@ public static class PersistenceServiceRegistration
     {
         ArgumentNullException.ThrowIfNull(services);
 
-        services.AddDbContext<GloboTicketDbContext>();
+        services.AddDbContext<GloboTicketDbContext>(optionsLifetime: ServiceLifetime.Singleton);
         services.AddDbContextFactory<GloboTicketDbContext>();
 
-        services.AddScoped(typeof(IAsyncRepository<>), typeof(BaseRepository<>));
-        services.AddScoped<IEventRepository, EventRepository>();
-        services.AddScoped<ICategoryRepository, CategoryRepository>();
-        services.AddScoped<IOrderRepository, OrderRepository>();
+        services
+            .AddScoped(typeof(IAsyncRepository<>), typeof(BaseRepository<>))
+            .AddScoped<IEventRepository, EventRepository>()
+            .AddScoped<ICategoryRepository, CategoryRepository>()
+            .AddScoped<IOrderRepository, OrderRepository>();
 
-        services.AddSingleton<IModelConfiguration<ModelBuilder, DbContextOptionsBuilder<GloboTicketDbContext>>, SqliteModelConfiguration>();
+        services
+            .AddSingleton<IQueryableToEnumerableConverter, QueryableToEnumerableConverter>()
+            .AddSingleton<IModelConfiguration<ModelBuilder, DbContextOptionsBuilder>, SqliteModelConfiguration>()
+            .AddSingleton<IQueryBuilderFactory, QueryBuilderFactory>()
+            .AddSingleton<IModelConfiguration<ModelBuilder, DbContextOptionsBuilder<GloboTicketDbContext>>, SqliteModelConfiguration>();
 
         return services;
     }
