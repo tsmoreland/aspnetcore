@@ -2,7 +2,10 @@ using Blazored.LocalStorage;
 using GloboTicket.TicketManagement.UI.ApiClient.Contracts;
 using GloboTicket.TicketManagement.UI.ApiClient.Services;
 using GloboTicket.TicketManagement.UI.BlazorWasm.App;
+using GloboTicket.TicketManagement.UI.BlazorWasm.App.Auth;
+using GloboTicket.TicketManagement.UI.BlazorWasm.App.Contracts;
 using GloboTicket.TicketManagement.UI.BlazorWasm.App.Services;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
@@ -19,12 +22,12 @@ builder.Services
     .AddSingleton(new HttpClient { BaseAddress = new Uri("https://localhost:7001") });
 
 builder.Services
-    .AddHttpClient<IClient, Client>(client => client.BaseAddress = new Uri("https://localhost:7001"));
-    //.AddHttpMessageHandler<CustomAuthorizationHandler>();
+    .AddHttpClient<IClient, Client>(client => client.BaseAddress = new Uri("https://localhost:7001"))
+    .AddHttpMessageHandler<BearerTokenInLocalStorageAuthorizationMessageHandler>();
 
 builder.Services
-    //.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>()
-    //.AddScoped<IAuthenticationService, AuthenticationService>()
+    .AddScoped<AuthenticationStateProvider, BearerTokenInLocalStorageAuthenticationStateProvider>()
+    .AddScoped<IAuthenticationService, AuthenticationService>()
     .AddScoped<IEventDataService, EventDataService>()
     .AddScoped<ICategoryDataService, CategoryDataService>()
     .AddScoped<IOrderDataService, OrderDataService>();
