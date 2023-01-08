@@ -13,7 +13,7 @@
 using System.Net.Http.Headers;
 using GloboTicket.TicketManagement.UI.ApiClient.Contracts;
 
-namespace GloboTicket.TicketManagement.UI.ApiClient.Services.Base;
+namespace GloboTicket.TicketManagement.UI.ApiClient.Services;
 
 public class BaseDataService
 {

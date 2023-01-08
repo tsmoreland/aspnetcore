@@ -51,7 +51,7 @@ public class EventsController : ControllerBase
     [HttpGet("{id}", Name = RouteNames.GetById)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [SwaggerOperation("Gets an Event View Models by id", OperationId = RouteNames.GetById)]
-    [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(EventViewModel), ContentTypes = new[] { MediaTypeNames.Application.Json })]
+    [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(EventDetailViewModel), ContentTypes = new[] { MediaTypeNames.Application.Json })]
     [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails), ContentTypes = new[] { "applicaiton/problem+json" })]
     public async Task<IActionResult> GetEventById([FromRoute] Guid id, CancellationToken cancellationToken)
     {

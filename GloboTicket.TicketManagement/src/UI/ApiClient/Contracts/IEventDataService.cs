@@ -1,13 +1,12 @@
-﻿using GloboTicket.TicketManagement.UI.ApiClient.Services.Base;
-using GloboTicket.TicketManagement.UI.ApiClient.ViewModels;
+﻿using GloboTicket.TicketManagement.UI.ApiClient.ViewModels;
 
 namespace GloboTicket.TicketManagement.UI.ApiClient.Contracts;
 
 public interface IEventDataService
 {
     ValueTask<Page<EventListViewModel>> GetEventsPage(int pageNumber, int pageSize, CancellationToken cancellationToken);
-    ValueTask<EventDetailViewModel> GetEventById(Guid id, CancellationToken cancellationToken);
-    ValueTask<ApiResponse<Guid>> CreateEvent(EventDetailViewModel eventDetailViewModel, CancellationToken cancellationToken);
-    ValueTask<ApiResponse<Guid>> UpdateEvent(EventDetailViewModel eventDetailViewModel, CancellationToken cancellationToken);
-    ValueTask<ApiResponse<Guid>> DeleteEvent(Guid id, CancellationToken cancellationToken);
+    ValueTask<EventDetailViewModel?> GetEventById(Guid id, CancellationToken cancellationToken);
+    ValueTask<Services.ApiResponse<Guid>> CreateEvent(EventDetailViewModel eventDetailViewModel, CancellationToken cancellationToken);
+    ValueTask<Services.ApiResponse<Guid>> UpdateEvent(EventDetailViewModel eventDetailViewModel, CancellationToken cancellationToken);
+    ValueTask<Services.ApiResponse<Guid>> DeleteEvent(Guid id, CancellationToken cancellationToken);
 }
