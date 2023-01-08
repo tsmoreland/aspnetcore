@@ -12,7 +12,7 @@ public sealed class AuthenticationService : IAuthenticationService
     private readonly ILocalStorageService _localStorageService;
     private readonly AuthenticationStateProvider _authenticationStateProvider;
 
-    internal AuthenticationService(IClient client, ILocalStorageService localStorageService, AuthenticationStateProvider authenticationStateProvider)
+    public AuthenticationService(IClient client, ILocalStorageService localStorageService, AuthenticationStateProvider authenticationStateProvider)
     {
         _client = client ?? throw new ArgumentNullException(nameof(client));
         _localStorageService = localStorageService ?? throw new ArgumentNullException(nameof(localStorageService));

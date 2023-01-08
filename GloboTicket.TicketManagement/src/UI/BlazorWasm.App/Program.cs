@@ -22,6 +22,7 @@ builder.Services
     .AddSingleton(new HttpClient { BaseAddress = new Uri("https://localhost:7001") });
 
 builder.Services
+    .AddTransient<BearerTokenInLocalStorageAuthorizationMessageHandler>()
     .AddHttpClient<IClient, Client>(client => client.BaseAddress = new Uri("https://localhost:7001"))
     .AddHttpMessageHandler<BearerTokenInLocalStorageAuthorizationMessageHandler>();
 
