@@ -11,6 +11,8 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using Swashbuckle.AspNetCore.Annotations;
+
 namespace GloboTicket.TicketManagement.Api.Models;
 
 /// <summary>
@@ -22,6 +24,7 @@ public class CategoryPageQueryParameters : PageQueryParameters
     /// Flag used to determine if associated events should be included in response
     /// </summary>
     /// <example>true</example>
+    [SwaggerParameter("flag used to determine if events should be included")]
     public bool IncludeEvents { get; init; }
 
 }

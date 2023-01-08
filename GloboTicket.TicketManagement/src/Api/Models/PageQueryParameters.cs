@@ -11,6 +11,7 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using GloboTicket.TicketManagement.Domain.Common;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace GloboTicket.TicketManagement.Api.Models;
 
@@ -20,11 +21,13 @@ public class PageQueryParameters
     /// current page number to return
     /// </summary>
     /// <example>1</example>
+    [SwaggerParameter("page number", Required = true)]
     public int PageNumber { get; init; }
     /// <summary>
     /// maximum number of items to return
     /// </summary>
     /// <example>10</example>
+    [SwaggerParameter("page size", Required = true)]
     public int PageSize { get; init; }
 
     /// <summary>

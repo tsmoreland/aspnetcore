@@ -81,6 +81,7 @@ public static class StartupExtensions
                 Version = "v1",
                 Title = "GloboTicket Ticket Management API"
             });
+            c.EnableAnnotations();
             c.OperationFilter<FileResultContentTypeOperationFilter>();
         });
     }
