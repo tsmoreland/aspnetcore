@@ -2,7 +2,9 @@
 using GloboTicket.TicketManagement.Api.Infrastructure.Filters;
 using GloboTicket.TicketManagement.Api.Infrastructure.Swagger.Filters;
 using GloboTicket.TicketManagement.Api.Middleware;
+using GloboTicket.TicketManagement.Api.Models;
 using GloboTicket.TicketManagement.Application;
+using GloboTicket.TicketManagement.Application.Contracts;
 using GloboTicket.TicketManagement.Infrastructure;
 using GloboTicket.TicketManagement.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -41,6 +43,9 @@ public static class StartupExtensions
                     .AllowAnyMethod());
             });
 
+        builder.Services
+            .AddSingleton<IHostEnvironmentFacade, HostEnvironmentFacade>();
+
         return builder.Build();
     }
 
@@ -76,6 +81,7 @@ public static class StartupExtensions
                 Version = "v1",
                 Title = "GloboTicket Ticket Management API"
             });
+            c.EnableAnnotations();
             c.OperationFilter<FileResultContentTypeOperationFilter>();
         });
     }

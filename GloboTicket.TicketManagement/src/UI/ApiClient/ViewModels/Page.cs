@@ -11,20 +11,14 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using Swashbuckle.AspNetCore.Annotations;
+namespace GloboTicket.TicketManagement.UI.ApiClient.ViewModels;
 
-namespace GloboTicket.TicketManagement.Api.Models;
-
-/// <summary>
-/// Grouped Query Parameters for endpoints providing pagable responses
-/// </summary>
-public class CategoryPageQueryParameters : PageQueryParameters
+public sealed record class Page<T>(int PageNumber, int PageSize, int TotalPages, int TotalSize, IReadOnlyList<T> Items)
 {
-    /// <summary>
-    /// Flag used to determine if associated events should be included in response
-    /// </summary>
-    /// <example>true</example>
-    [SwaggerParameter("flag used to determine if events should be included")]
-    public bool IncludeEvents { get; init; }
+    public Page<TMapped> Select<TMapped>(Func<T, TMapped> selector)
+    {
+        ArgumentNullException.ThrowIfNull(selector);
+        return new Page<TMapped>(PageNumber, PageSize, TotalPages, TotalSize, Items.Select(selector).ToList().AsReadOnly());
+    }
 
 }

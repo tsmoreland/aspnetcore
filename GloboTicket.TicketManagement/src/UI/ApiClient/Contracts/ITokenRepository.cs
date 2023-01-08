@@ -10,31 +10,27 @@
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using GloboTicket.TicketManagement.Domain.Common;
-using Swashbuckle.AspNetCore.Annotations;
+namespace GloboTicket.TicketManagement.UI.ApiClient.Contracts;
 
-namespace GloboTicket.TicketManagement.Api.Models;
-
-public class PageQueryParameters
+public interface ITokenRepository
 {
-    /// <summary>
-    /// current page number to return
-    /// </summary>
-    /// <example>1</example>
-    [SwaggerParameter("page number", Required = true)]
-    public int PageNumber { get; init; }
-    /// <summary>
-    /// maximum number of items to return
-    /// </summary>
-    /// <example>10</example>
-    [SwaggerParameter("page size", Required = true)]
-    public int PageSize { get; init; }
+    bool ContainsKey(string key);
+    ValueTask<bool> ContainsKeyAsync(string key, CancellationToken cancellationToken);
+    string GetToken(string key);
+    ValueTask<string> GetTokenAsync(string key, CancellationToken cancellationToken);
 
     /// <summary>
-    /// Create a new instance of <see cref="PageRequest"/> using the configured page number and size
+    /// <see cref="GetToken(string)"/> and/or <see cref="AddOrSetToken(string, string)"/>
     /// </summary>
-    public PageRequest ToPageRequest()
+    public string this[string key]
     {
-        return new PageRequest(PageNumber, PageSize);
+        get => GetToken(key);
+        set => AddOrSetToken(key, value);
     }
+
+    void AddOrSetToken(string key, string value);
+    ValueTask AddOrSetTokenAsync(string key, string value, CancellationToken cancellationToken);
+
+    void RemoveToken(string key);
+    ValueTask RemoveTokenAsync(string key, CancellationToken cancellationToken);
 }

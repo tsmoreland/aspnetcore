@@ -1,15 +1,20 @@
-﻿using GloboTicket.TicketManagement.Api.Models;
+﻿using System.Net.Mime;
+using GloboTicket.TicketManagement.Api.Models;
 using GloboTicket.TicketManagement.Application.Features.Categories.Commands.CreateCategory;
 using GloboTicket.TicketManagement.Application.Features.Categories.Queries.GetCatagoriesPage;
 using GloboTicket.TicketManagement.Application.Features.Categories.Queries.GetCategoriesPageWithEvents;
 using GloboTicket.TicketManagement.Domain.Common;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace GloboTicket.TicketManagement.Api.Controllers;
 
 [Route("api/categories")]
 [ApiController]
+[Consumes(MediaTypeNames.Application.Json)]
+[Produces(MediaTypeNames.Application.Json)]
+[SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails), ContentTypes = new[] { "applicaiton/problem+json" })]
 public class CategoryController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -28,7 +33,8 @@ public class CategoryController : ControllerBase
     }
 
     [HttpGet(Name = RouteNames.GetPage)]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [SwaggerOperation("Gets categories in pages, optionally including events", OperationId = RouteNames.GetPage)]
+    [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(Page<CategoryWithEventsViewModel>), ContentTypes = new[] { MediaTypeNames.Application.Json })]
     public async Task<IActionResult> GetCategoriesPage([FromQuery] CategoryPageQueryParameters parameters, CancellationToken cancellationToken)
     {
         if (parameters.IncludeEvents)
@@ -44,9 +50,11 @@ public class CategoryController : ControllerBase
     }
 
     [HttpPost(Name = RouteNames.Create)]
+    [SwaggerOperation("Creates a new category", OperationId = RouteNames.Create)]
+    [SwaggerResponse(StatusCodes.Status201Created, Type = typeof(CreateCategoryCommandResponse), ContentTypes = new[] { MediaTypeNames.Application.Json })]
     public async Task<IActionResult> Create([FromBody] CreateCategoryCommand command, CancellationToken cancellationToken)
     {
         CreateCategoryCommandResponse response = await _mediator.Send(command, cancellationToken);
-        return Ok(response);
+        return new ObjectResult(response) { StatusCode = StatusCodes.Status201Created };
     }
 }

@@ -19,10 +19,10 @@
 
   <ItemGroup>
     <Folder Include="Contracts\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ApiClient\GloboTicket.TicketManagement.UI.ApiClient.csproj" />
     <ProjectReference Include="..\Components\GloboTicket.TicketManagement.UI.Components.csproj" />
   </ItemGroup>
 

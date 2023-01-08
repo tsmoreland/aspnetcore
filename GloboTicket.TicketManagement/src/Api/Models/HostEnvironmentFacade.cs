@@ -10,31 +10,20 @@
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using GloboTicket.TicketManagement.Domain.Common;
-using Swashbuckle.AspNetCore.Annotations;
+using GloboTicket.TicketManagement.Application.Contracts;
 
 namespace GloboTicket.TicketManagement.Api.Models;
 
-public class PageQueryParameters
+public class HostEnvironmentFacade : IHostEnvironmentFacade
 {
-    /// <summary>
-    /// current page number to return
-    /// </summary>
-    /// <example>1</example>
-    [SwaggerParameter("page number", Required = true)]
-    public int PageNumber { get; init; }
-    /// <summary>
-    /// maximum number of items to return
-    /// </summary>
-    /// <example>10</example>
-    [SwaggerParameter("page size", Required = true)]
-    public int PageSize { get; init; }
+    private readonly IHostEnvironment _environment;
 
-    /// <summary>
-    /// Create a new instance of <see cref="PageRequest"/> using the configured page number and size
-    /// </summary>
-    public PageRequest ToPageRequest()
+    public HostEnvironmentFacade(IHostEnvironment environment)
     {
-        return new PageRequest(PageNumber, PageSize);
+        _environment = environment ?? throw new ArgumentNullException(nameof(environment));
     }
+
+    /// <inheritdoc />
+    public bool IsDevelopment => _environment.IsDevelopment();
+
 }
