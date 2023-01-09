@@ -1,4 +1,5 @@
-﻿using GloboTicket.TicketManagement.Application.Contracts.Persistence;
+﻿using GloboTicket.TicketManagement.Application.Contracts.Identity;
+using GloboTicket.TicketManagement.Application.Contracts.Persistence;
 using GloboTicket.TicketManagement.Domain.Common;
 using GloboTicket.TicketManagement.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -10,13 +11,16 @@ namespace GloboTicket.TicketManagement.Persistence;
 public sealed class GloboTicketDbContext : DbContext
 {
     private readonly IModelConfiguration<ModelBuilder, DbContextOptionsBuilder> _modelConfiguration;
+    private readonly ILoggedInUserService _loggedInUserService;
 
     /// <inheritdoc />
     public GloboTicketDbContext(DbContextOptions<GloboTicketDbContext> options,
-        IModelConfiguration<ModelBuilder, DbContextOptionsBuilder> modelConfiguration)
+        IModelConfiguration<ModelBuilder, DbContextOptionsBuilder> modelConfiguration,
+        ILoggedInUserService loggedInUserService)
         : base(options)
     {
         _modelConfiguration = modelConfiguration ?? throw new ArgumentNullException(nameof(modelConfiguration));
+        _loggedInUserService = loggedInUserService ?? throw new ArgumentNullException(nameof(loggedInUserService));
     }
 
     public DbSet<Event> Events => Set<Event>();
@@ -86,15 +90,22 @@ public sealed class GloboTicketDbContext : DbContext
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
+        Guid userId = _loggedInUserService.UserId;
+        string? user = userId != Guid.Empty
+            ? userId.ToString()
+            : null;
+
         foreach (EntityEntry<AuditableEntity> entry in ChangeTracker.Entries<AuditableEntity>())
         {
             switch (entry.State)
             {
                 case EntityState.Added:
                     entry.Entity.CreatedDate = DateTime.Now;
+                    entry.Entity.CreatedBy = user;
                     break;
                 case EntityState.Modified:
                     entry.Entity.LastModifiedDate = DateTime.Now;
+                    entry.Entity.LastModifiedBy = user;
                     break;
             }
         }

@@ -11,6 +11,7 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System.Net.Http.Headers;
+using AutoMapper;
 using GloboTicket.TicketManagement.UI.ApiClient.Contracts;
 
 namespace GloboTicket.TicketManagement.UI.ApiClient.Services;
@@ -18,31 +19,31 @@ namespace GloboTicket.TicketManagement.UI.ApiClient.Services;
 public class BaseDataService
 {
     protected IClient Client { get; }
+    public IMapper Mapper { get; }
     protected ITokenRepository TokenRepository { get; }
 
-    public BaseDataService(IClient client, ITokenRepository tokenRepository)
+    public BaseDataService(IClient client, IMapper mapper,  ITokenRepository tokenRepository)
     {
         Client = client ?? throw new ArgumentNullException(nameof(client));
+        Mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         TokenRepository = tokenRepository ?? throw new ArgumentNullException(nameof(tokenRepository));
     }
 
-    /*
-    protected T ConvertApiExceptions<T><Guid>(ApiException ex, Func<string, bool, T> buildResponse)
+    protected static ApiResponse<T> ConvertApiException<T>(ApiException ex)
     {
-        if (ex.StatusCode == 400)
+        return ex.StatusCode switch
         {
-            return new ApiResponse<Guid>() { Message = "Validation errors have occured.", ValidationErrors = ex.Response, Success = false };
-        }
-        else if (ex.StatusCode == 404)
-        {
-            return new ApiResponse<Guid>() { Message = "The requested item could not be found.", Success = false };
-        }
-        else
-        {
-            return new ApiResponse<Guid>() { Message = "Something went wrong, please try again.", Success = false };
-        }
+            400 => ApiResponse.Error<T>("Validation errors have occured.", ex.Response),
+            404 => ApiResponse.Error<T>("The requested item could not be found.", string.Empty),
+            _ => ApiResponse.Error<T>("Something went wrong, please try again.", string.Empty),
+        };
     }
-    */
+
+    protected static ApiResponse<T> ConvertException<T>(Exception ex)
+    {
+        return ApiResponse.Error<T>("Unexpected error occurred.", ex.Message);
+    }
+
 
     protected async Task AddBearerToken(CancellationToken cancellationToken)
     {
