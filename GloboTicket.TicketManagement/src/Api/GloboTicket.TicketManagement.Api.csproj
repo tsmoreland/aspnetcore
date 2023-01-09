@@ -4,10 +4,12 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>06946572-182b-42a2-85a4-e64ad61c0c20</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Application\GloboTicket.TicketManagement.Application.csproj" />
+    <ProjectReference Include="..\Identity\GloboTicket.TicketManagement.Identity.csproj" />
     <ProjectReference Include="..\Infrastructure\GloboTicket.TicketManagement.Infrastructure.csproj" />
     <ProjectReference Include="..\Persistence\GloboTicket.TicketManagement.Persistence.csproj" />
   </ItemGroup>
@@ -24,6 +26,7 @@
     <Folder Include="Infrastructure\Filters\" />
     <Folder Include="Infrastructure\Swagger\Attributes\" />
     <Folder Include="Middleware\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>
