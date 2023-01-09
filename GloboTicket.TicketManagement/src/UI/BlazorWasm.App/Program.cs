@@ -31,6 +31,7 @@ builder.Services
     .AddScoped<IAuthenticationService, AuthenticationService>()
     .AddScoped<IEventDataService, EventDataService>()
     .AddScoped<ICategoryDataService, CategoryDataService>()
-    .AddScoped<IOrderDataService, OrderDataService>();
+    .AddScoped<IOrderDataService, OrderDataService>()
+    .AddScoped<ITokenRepository, TokenRepository>();
 
 await builder.Build().RunAsync();

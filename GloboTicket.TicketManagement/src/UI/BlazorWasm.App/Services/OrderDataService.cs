@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Blazored.LocalStorage;
 using GloboTicket.TicketManagement.UI.ApiClient.Contracts;
 using GloboTicket.TicketManagement.UI.ApiClient.Services;
 using GloboTicket.TicketManagement.UI.ApiClient.ViewModels;
@@ -9,8 +8,8 @@ namespace GloboTicket.TicketManagement.UI.BlazorWasm.App.Services;
 public sealed class OrderDataService : BaseDataService, IOrderDataService
 {
     /// <inheritdoc />
-    public OrderDataService(IClient client, IMapper mapper, ILocalStorageService localStorageService)
-        : base(client, mapper, localStorageService)
+    public OrderDataService(IClient client, IMapper mapper, ITokenRepository tokenRepository)
+        : base(client, mapper, tokenRepository)
     {
     }
 

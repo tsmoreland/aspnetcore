@@ -14,23 +14,10 @@ namespace GloboTicket.TicketManagement.UI.ApiClient.Contracts;
 
 public interface ITokenRepository
 {
-    bool ContainsKey(string key);
     ValueTask<bool> ContainsKeyAsync(string key, CancellationToken cancellationToken);
-    string GetToken(string key);
     ValueTask<string> GetTokenAsync(string key, CancellationToken cancellationToken);
 
-    /// <summary>
-    /// <see cref="GetToken(string)"/> and/or <see cref="AddOrSetToken(string, string)"/>
-    /// </summary>
-    public string this[string key]
-    {
-        get => GetToken(key);
-        set => AddOrSetToken(key, value);
-    }
-
-    void AddOrSetToken(string key, string value);
     ValueTask AddOrSetTokenAsync(string key, string value, CancellationToken cancellationToken);
 
-    void RemoveToken(string key);
     ValueTask RemoveTokenAsync(string key, CancellationToken cancellationToken);
 }

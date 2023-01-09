@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Blazored.LocalStorage;
 using GloboTicket.TicketManagement.UI.ApiClient.Contracts;
 using GloboTicket.TicketManagement.UI.ApiClient.Services;
 using GloboTicket.TicketManagement.UI.ApiClient.ViewModels;
@@ -8,8 +7,8 @@ namespace GloboTicket.TicketManagement.UI.BlazorWasm.App.Services;
 
 public sealed class CategoryDataService : BaseDataService, ICategoryDataService
 {
-    public CategoryDataService(IClient client, IMapper mapper, ILocalStorageService localStorageService)
-        : base(client, mapper, localStorageService)
+    public CategoryDataService(IClient client, IMapper mapper, ITokenRepository tokenRepository)
+        : base(client, mapper, tokenRepository)
     {
     }
 

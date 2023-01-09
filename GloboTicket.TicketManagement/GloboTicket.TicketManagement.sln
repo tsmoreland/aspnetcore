@@ -32,7 +32,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GloboTicket.TicketManagement.UI.ApiClient", "src\UI\ApiClient\GloboTicket.TicketManagement.UI.ApiClient.csproj", "{A30182F0-9271-441C-A8A2-584CE3C08A16}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GloboTicket.TicketManagement.UI.ApiClient", "src\UI\ApiClient\GloboTicket.TicketManagement.UI.ApiClient.csproj", "{A30182F0-9271-441C-A8A2-584CE3C08A16}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GloboTicket.TicketManagement.Identity", "src\Identity\GloboTicket.TicketManagement.Identity.csproj", "{7FBE8D1E-992E-4160-8ABF-DB891600AAC8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -76,6 +78,10 @@ Global
 		{A30182F0-9271-441C-A8A2-584CE3C08A16}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A30182F0-9271-441C-A8A2-584CE3C08A16}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A30182F0-9271-441C-A8A2-584CE3C08A16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FBE8D1E-992E-4160-8ABF-DB891600AAC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FBE8D1E-992E-4160-8ABF-DB891600AAC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FBE8D1E-992E-4160-8ABF-DB891600AAC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FBE8D1E-992E-4160-8ABF-DB891600AAC8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -90,6 +96,7 @@ Global
 		{E5B20F06-34D7-4B42-8243-A93C0BCBBD17} = {3F595291-44E4-46DA-A6C0-584221E5F299}
 		{FB302525-A57D-4939-B2E1-BA883E497115} = {3F595291-44E4-46DA-A6C0-584221E5F299}
 		{A30182F0-9271-441C-A8A2-584CE3C08A16} = {3F595291-44E4-46DA-A6C0-584221E5F299}
+		{7FBE8D1E-992E-4160-8ABF-DB891600AAC8} = {DE7796CB-9D3D-4F21-A474-15C1FDFEADB7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {51F42141-A97D-4172-9ECE-6D21B12AC647}
