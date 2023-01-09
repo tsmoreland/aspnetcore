@@ -11,6 +11,7 @@ using GloboTicket.TicketManagement.Identity;
 using GloboTicket.TicketManagement.Infrastructure;
 using GloboTicket.TicketManagement.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.OpenApi.Models;
 
 namespace GloboTicket.TicketManagement.Api;
@@ -121,20 +122,24 @@ public static class StartupExtensions
         });
     }
 
-    public static async Task RestDatabaseAsync(this WebApplication app)
+    public static async Task ResetDatabaseAsync(this WebApplication app)
     {
         using IServiceScope scope = app.Services.CreateScope();
+        await ResetDatabaseAsync(scope.ServiceProvider.GetService<GloboTicketDbContext>()?.Database);
+        await ResetDatabaseAsync(scope.ServiceProvider.GetService<GloboTicketIdentityDbContext>()?.Database);
+    }
+
+    private static async Task ResetDatabaseAsync(DatabaseFacade? database)
+    {
+        if (database is null)
+        {
+            return;
+        }
+
         try
         {
-            GloboTicketDbContext? dbContext = scope.ServiceProvider.GetService<GloboTicketDbContext>();
-            if (dbContext is null)
-            {
-                // Log failure
-                return;
-            }
-
-            await dbContext.Database.EnsureDeletedAsync();
-            await dbContext.Database.MigrateAsync();
+            await database.EnsureDeletedAsync();
+            await database.MigrateAsync();
         }
         catch (Exception)
         {
