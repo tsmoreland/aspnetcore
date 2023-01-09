@@ -11,6 +11,7 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using GloboTicket.TicketManagement.Application.Contracts;
+using GloboTicket.TicketManagement.Application.Contracts.Identity;
 using GloboTicket.TicketManagement.Persistence.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -33,12 +34,18 @@ public sealed class GloboTicketDbContextDesignTimeFactory : IDesignTimeDbContext
             "Data Source=designTime.db;Pooling=false",
             options => options.MigrationsAssembly(typeof(SqliteModelConfiguration).Assembly.FullName));
 
-        GloboTicketDbContext dbContext = new(optionsBuilder.Options, modelConfiguration);
+        GloboTicketDbContext dbContext = new(optionsBuilder.Options, modelConfiguration, new LoggedInUserService());
         return dbContext;
     }
 
     internal sealed class HostEnvironmentFacade : IHostEnvironmentFacade
     {
         public bool IsDevelopment => false;
+    }
+
+    internal sealed class LoggedInUserService : ILoggedInUserService
+    {
+        /// <inheritdoc />
+        public Guid UserId => Guid.Empty;
     }
 }

@@ -3,11 +3,15 @@ using GloboTicket.TicketManagement.Api.Infrastructure.Filters;
 using GloboTicket.TicketManagement.Api.Infrastructure.Swagger.Filters;
 using GloboTicket.TicketManagement.Api.Middleware;
 using GloboTicket.TicketManagement.Api.Models;
+using GloboTicket.TicketManagement.Api.Services;
 using GloboTicket.TicketManagement.Application;
 using GloboTicket.TicketManagement.Application.Contracts;
+using GloboTicket.TicketManagement.Application.Contracts.Identity;
+using GloboTicket.TicketManagement.Identity;
 using GloboTicket.TicketManagement.Infrastructure;
 using GloboTicket.TicketManagement.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.OpenApi.Models;
 
 namespace GloboTicket.TicketManagement.Api;
@@ -19,7 +23,10 @@ public static class StartupExtensions
         builder.Services
             .AddApplicationServices()
             .AddInfrastructureServices(builder.Configuration)
-            .AddPersistenceServices();
+            .AddPersistenceServices()
+            .AddIdentityServices(builder.Configuration, builder.Environment);
+
+        builder.Services.AddScoped<ILoggedInUserService, LoggedInUserService>();
 
         AddSwagger(builder.Services);
 
@@ -76,6 +83,35 @@ public static class StartupExtensions
     {
         services.AddSwaggerGen(c =>
         {
+            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Description = @"JWT Authorization header using the Bearer scheme. \r\n\r\n 
+                      Enter 'Bearer' [space] and then your token in the text input below.
+                      \r\n\r\nExample: 'Bearer 12345abcdef'",
+                Name = "Authorization",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.ApiKey,
+                Scheme = "Bearer"
+            });
+
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        },
+                        Scheme = "oauth2",
+                        Name = "Bearer",
+                        In = ParameterLocation.Header,
+                    },
+                    new List<string>()
+                }
+            });
+
             c.SwaggerDoc("v1", new OpenApiInfo
             {
                 Version = "v1",
@@ -86,20 +122,24 @@ public static class StartupExtensions
         });
     }
 
-    public static async Task RestDatabaseAsync(this WebApplication app)
+    public static async Task ResetDatabaseAsync(this WebApplication app)
     {
         using IServiceScope scope = app.Services.CreateScope();
+        await ResetDatabaseAsync(scope.ServiceProvider.GetService<GloboTicketDbContext>()?.Database);
+        await ResetDatabaseAsync(scope.ServiceProvider.GetService<GloboTicketIdentityDbContext>()?.Database);
+    }
+
+    private static async Task ResetDatabaseAsync(DatabaseFacade? database)
+    {
+        if (database is null)
+        {
+            return;
+        }
+
         try
         {
-            GloboTicketDbContext? dbContext = scope.ServiceProvider.GetService<GloboTicketDbContext>();
-            if (dbContext is null)
-            {
-                // Log failure
-                return;
-            }
-
-            await dbContext.Database.EnsureDeletedAsync();
-            await dbContext.Database.MigrateAsync();
+            await database.EnsureDeletedAsync();
+            await database.MigrateAsync();
         }
         catch (Exception)
         {

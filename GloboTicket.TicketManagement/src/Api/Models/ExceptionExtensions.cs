@@ -43,4 +43,23 @@ public static class ExceptionExtensions
     {
         return problemDetailsFactory.CreateProblemDetails(context, StatusCodes.Status400BadRequest, title: "One or more arguments are invalid", detail: ex.Message);
     }
+
+    public static ProblemDetails ToProblemDetails(this IdentityException ex, ProblemDetailsFactory problemDetailsFactory, HttpContext context)
+    {
+        int statusCode;
+        string title;
+        if (context.User.Identity is not null)
+        {
+            statusCode = StatusCodes.Status403Forbidden;
+            title = "not authorized for this request";
+        }
+        else
+        {
+            statusCode = StatusCodes.Status401Unauthorized;
+            title = "endpoint requires authentication";
+        }
+
+        string? detail = ex.GetUserFriendlyDetail();
+        return problemDetailsFactory.CreateProblemDetails(context, statusCode, title, detail);
+    }
 }

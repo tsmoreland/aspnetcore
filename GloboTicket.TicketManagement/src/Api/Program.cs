@@ -5,7 +5,7 @@ WebApplication app = WebApplication.CreateBuilder(args)
     .ConfigurePipeline();
 
 #if DEBUG
-await app.RestDatabaseAsync();
+await app.ResetDatabaseAsync();
 #endif
 
 app.Run();
