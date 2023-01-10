@@ -13,6 +13,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using IAuthenticationService = GloboTicket.TicketManagement.Application.Contracts.Identity.IAuthenticationService;
+using AuthenticationService = GloboTicket.TicketManagement.Identity.Services.AuthenticationService;
 
 namespace GloboTicket.TicketManagement.Identity;
 

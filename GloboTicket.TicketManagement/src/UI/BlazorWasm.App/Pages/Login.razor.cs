@@ -4,35 +4,34 @@ using Microsoft.AspNetCore.Components;
 
 namespace GloboTicket.TicketManagement.UI.BlazorWasm.App.Pages;
 
-public partial class Register
+public partial class Login
 {
-    public RegisterViewModel RegisterViewModel { get; set; } = default!;
+    public LoginViewModel LoginViewModel { get; set; } = default!;
 
     [Inject]
     public NavigationManager NavigationManager { get; set; } = default!;
 
-    public string Message { get; set; } = string.Empty;
+    public string? Message { get; set; }
 
     [Inject]
     private IAuthenticationService AuthenticationService { get; set; } = default!;
 
-    public Register()
+    public Login()
     {
+
     }
 
     protected override void OnInitialized()
     {
-        RegisterViewModel = new RegisterViewModel();
+        LoginViewModel = new LoginViewModel();
     }
 
     protected async void HandleValidSubmit()
     {
-        bool result = await AuthenticationService.Register(RegisterViewModel.FirstName, RegisterViewModel.LastName, RegisterViewModel.UserName, RegisterViewModel.Email, RegisterViewModel.Password);
-
-        if (result)
+        if (await AuthenticationService.Authenticate(LoginViewModel.Email, LoginViewModel.Password))
         {
             NavigationManager.NavigateTo("home");
         }
-        Message = "Something went wrong, please try again.";
+        Message = "Username/password combination unknown";
     }
 }

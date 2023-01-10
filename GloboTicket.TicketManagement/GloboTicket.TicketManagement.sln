@@ -34,7 +34,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GloboTicket.TicketManagement.UI.ApiClient", "src\UI\ApiClient\GloboTicket.TicketManagement.UI.ApiClient.csproj", "{A30182F0-9271-441C-A8A2-584CE3C08A16}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GloboTicket.TicketManagement.Identity", "src\Identity\GloboTicket.TicketManagement.Identity.csproj", "{7FBE8D1E-992E-4160-8ABF-DB891600AAC8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GloboTicket.TicketManagement.Identity", "src\Identity\GloboTicket.TicketManagement.Identity.csproj", "{7FBE8D1E-992E-4160-8ABF-DB891600AAC8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

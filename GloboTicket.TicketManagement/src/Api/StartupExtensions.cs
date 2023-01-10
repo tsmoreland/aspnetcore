@@ -126,10 +126,10 @@ public static class StartupExtensions
     {
         using IServiceScope scope = app.Services.CreateScope();
         await ResetDatabaseAsync(scope.ServiceProvider.GetService<GloboTicketDbContext>()?.Database);
-        await ResetDatabaseAsync(scope.ServiceProvider.GetService<GloboTicketIdentityDbContext>()?.Database);
+        await ResetDatabaseAsync(scope.ServiceProvider.GetService<GloboTicketIdentityDbContext>()?.Database, false);
     }
 
-    private static async Task ResetDatabaseAsync(DatabaseFacade? database)
+    private static async Task ResetDatabaseAsync(DatabaseFacade? database, bool deleteIExists = true)
     {
         if (database is null)
         {
@@ -138,7 +138,10 @@ public static class StartupExtensions
 
         try
         {
-            await database.EnsureDeletedAsync();
+            if (deleteIExists)
+            {
+                await database.EnsureDeletedAsync();
+            }
             await database.MigrateAsync();
         }
         catch (Exception)

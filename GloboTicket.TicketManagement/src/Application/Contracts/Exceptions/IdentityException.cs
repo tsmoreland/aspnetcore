@@ -18,17 +18,26 @@ namespace GloboTicket.TicketManagement.Application.Contracts.Exceptions;
 public sealed class IdentityException : Exception
 {
     public IdentityError Error { get; }
+    public IReadOnlyDictionary<string, string> ValidationErrors { get; }
 
     /// <inheritdoc />
     public IdentityException(IdentityError error)
         : this(error, null, null)
     {
+        ValidationErrors = new Dictionary<string, string>();
+    }
+
+    public IdentityException(IdentityError error, IReadOnlyDictionary<string, string> validationErrors)
+        : this(error, null, null)
+    {
+        ValidationErrors = validationErrors.ToDictionary(p => p.Key, p => p.Value).AsReadOnly();
     }
 
     /// <inheritdoc />
     public IdentityException(IdentityError error, string? message)
         : this(error, message, null)
     {
+        ValidationErrors = new Dictionary<string, string>();
     }
 
     /// <inheritdoc />
@@ -36,6 +45,7 @@ public sealed class IdentityException : Exception
         : base(message, innerException)
     {
         Error = error;
+        ValidationErrors = new Dictionary<string, string>();
     }
 
     public string? GetUserFriendlyDetail()
