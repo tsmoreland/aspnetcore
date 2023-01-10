@@ -15,6 +15,9 @@ namespace GloboTicket.TicketManagement.UI.ApiClient.ViewModels;
 
 public sealed record class Page<T>(int PageNumber, int PageSize, int TotalPages, int TotalSize, IReadOnlyList<T> Items)
 {
+    public bool HasPreviousPage => PageNumber > 1;
+    public bool HasNextPage => PageNumber < TotalPages;
+
     public Page<TMapped> Select<TMapped>(Func<T, TMapped> selector)
     {
         ArgumentNullException.ThrowIfNull(selector);
