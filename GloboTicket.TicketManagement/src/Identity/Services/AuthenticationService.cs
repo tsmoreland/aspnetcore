@@ -59,7 +59,7 @@ public sealed class AuthenticationService : IAuthenticationService
     {
         ApplicationUser? existingUser = await _userManager.FindByNameAsync(request.UserName);
 
-        if (existingUser is null)
+        if (existingUser is not null)
         {
             throw new IdentityException(IdentityError.UserAlreadyExists, "Account already exists");
         }
@@ -87,7 +87,7 @@ public sealed class AuthenticationService : IAuthenticationService
             return new RegistrationResponse(user.Id);
         }
 
-        throw new IdentityException(IdentityError.ValidationError, result.Errors.ToString());
+        throw new IdentityException(IdentityError.ValidationError, result.Errors.ToDictionary(e => e.Code, e => e.Description));
     }
 
     private async Task<JwtSecurityToken> GenerateToken(ApplicationUser user)
