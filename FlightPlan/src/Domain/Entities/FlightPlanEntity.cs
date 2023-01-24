@@ -2,7 +2,7 @@
 
 namespace FlightPlan.Domain.Entities;
 
-public class FlightPlan
+public class FlightPlanEntity
 {
     [JsonPropertyName("flight_plan_id")]
     public string FlightPlanId { get; set; } = string.Empty;
