@@ -15,5 +15,7 @@ namespace FlightPlan.Domain.Settings;
 
 public sealed class DatabaseSettings
 {
+    public static readonly string SectionName = nameof(DatabaseSettings);
+
     public string DatabaseName { get; set; } = string.Empty;
 }
