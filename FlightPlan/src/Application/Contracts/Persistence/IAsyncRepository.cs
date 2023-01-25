@@ -19,8 +19,8 @@ public interface IAsyncRepository<TId, TEntity>
     IAsyncEnumerable<TEntity> GetAll(CancellationToken cancellationToken);
 
     ValueTask<TEntity?> GetById(TId id, CancellationToken cancellationToken);
-    ValueTask<TId> Add(TEntity entity, CancellationToken cancellationToken);
-    ValueTask<bool> Update(TId id, TEntity entity, CancellationToken cancellationToken);
-    ValueTask<bool> Delete(TId id, CancellationToken cancellationToken);
-    ValueTask<bool> Delete(TEntity entity, CancellationToken cancellationToken);
+    ValueTask<(TId Id, TransactionResult Result)> Add(TEntity entity, CancellationToken cancellationToken);
+    ValueTask<TransactionResult> Update(TId id, TEntity entity, CancellationToken cancellationToken);
+    ValueTask<TransactionResult> Delete(TId id, CancellationToken cancellationToken);
+    ValueTask<TransactionResult> Delete(TEntity entity, CancellationToken cancellationToken);
 }

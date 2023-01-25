@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using FlightPlan.Application.Contracts.Persistence;
 using FlightPlan.Domain.Entities;
@@ -43,7 +44,7 @@ public sealed class FlightPlanAsyncRepository : IFlightPlanAsyncRepository
     }
 
     /// <inheritdoc />
-    public async ValueTask<string> Add(FlightPlanEntity entity, CancellationToken cancellationToken)
+    public async ValueTask<(string Id, TransactionResult Result)> Add(FlightPlanEntity entity, CancellationToken cancellationToken)
     {
         IMongoCollection<BsonDocument> collection = _context.GetCollection(CollectionName);
         string id = Guid.NewGuid().ToString("N");
@@ -69,17 +70,18 @@ public sealed class FlightPlanAsyncRepository : IFlightPlanAsyncRepository
         try
         {
             await collection.InsertOneAsync(document, cancellationToken: cancellationToken);
-            return id;
+            return document["_id"].IsObjectId
+                ? (id, TransactionResult.Success)
+                : (string.Empty, TransactionResult.BadRequest);
         }
         catch (Exception)
         {
-            // TODO: replace with more specific exception
-            throw;
+            return (string.Empty, TransactionResult.ServerError);
         }
     }
 
     /// <inheritdoc />
-    public async ValueTask<bool> Update(string id, FlightPlanEntity entity, CancellationToken cancellationToken)
+    public async ValueTask<TransactionResult> Update(string id, FlightPlanEntity entity, CancellationToken cancellationToken)
     {
         IMongoCollection<BsonDocument> collection = _context.GetCollection(CollectionName);
         FilterDefinition<BsonDocument> filter = GetFilterForId(id);
@@ -101,21 +103,30 @@ public sealed class FlightPlanAsyncRepository : IFlightPlanAsyncRepository
             .Set("number_onboard", entity.NumberOnBoard);
 
         UpdateResult result = await collection.UpdateOneAsync(filter, update, cancellationToken: cancellationToken);
-        return result.ModifiedCount > 0;
+        if (result.MatchedCount == 0)
+        {
+            return TransactionResult.NotFound;
+        }
+
+        return result.ModifiedCount > 0
+            ? TransactionResult.Success
+            : TransactionResult.ServerError;
     }
 
     /// <inheritdoc />
-    public async ValueTask<bool> Delete(string id, CancellationToken cancellationToken)
+    public async ValueTask<TransactionResult> Delete(string id, CancellationToken cancellationToken)
     {
         IMongoCollection<BsonDocument> collection = _context.GetCollection(CollectionName);
         FilterDefinition<BsonDocument> filter = GetFilterForId(id);
 
         DeleteResult result = await collection.DeleteOneAsync(filter, cancellationToken: cancellationToken);
-        return result.DeletedCount > 0;
+        return result.DeletedCount > 0
+            ? TransactionResult.Success
+            : TransactionResult.NotFound;
     }
 
     /// <inheritdoc />
-    public ValueTask<bool> Delete(FlightPlanEntity entity, CancellationToken cancellationToken)
+    public ValueTask<TransactionResult> Delete(FlightPlanEntity entity, CancellationToken cancellationToken)
     {
         return Delete(entity.FlightPlanId, cancellationToken);
     }

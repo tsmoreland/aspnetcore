@@ -12,6 +12,7 @@
 //
 
 using FlightPlan.Application.Contracts.Persistence;
+using FlightPlan.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlightPlan.Api.App.Controllers
@@ -29,38 +30,40 @@ namespace FlightPlan.Api.App.Controllers
         }
 
         [HttpGet(Name = "GetFlightPlans")]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
         {
-            await Task.CompletedTask;
-            return new ObjectResult("") { StatusCode = StatusCodes.Status501NotImplemented };
+            List<FlightPlanEntity> items = await _repository.GetAll(cancellationToken).ToListAsync(cancellationToken);
+            return Ok(items);
         }
 
         [HttpGet("{id}", Name = "GetFlightPlanById")]
-        public async Task<IActionResult> GetById([FromRoute] string id)
+        public async Task<IActionResult> GetById([FromRoute] string id, CancellationToken cancellationToken)
         {
-            await Task.CompletedTask;
-            return new ObjectResult("") { StatusCode = StatusCodes.Status501NotImplemented };
+            FlightPlanEntity? item = await _repository.GetById(id, cancellationToken);
+            return item is not null
+                ? Ok(item)
+                : NotFound();
         }
 
         [HttpPost(Name = "AddFlightPlan")]
-        public async Task<IActionResult> Add([FromBody] object flightPLan)
+        public async Task<IActionResult> Add([FromBody] object flightPLan, CancellationToken cancellationToken)
         {
             await Task.CompletedTask;
             return new ObjectResult("") { StatusCode = StatusCodes.Status501NotImplemented };
         }
 
         [HttpPut("{id}", Name = "UpdateFlightPlan")]
-        public async Task<IActionResult> Update([FromRoute] string id, [FromBody] object flightPLan)
+        public async Task<IActionResult> Update([FromRoute] string id, [FromBody] object flightPLan, CancellationToken cancellationToken)
         {
             await Task.CompletedTask;
             return new ObjectResult("") { StatusCode = StatusCodes.Status501NotImplemented };
         }
 
         [HttpDelete("{id}", Name = "DeleteFlightPlan")]
-        public async Task<IActionResult> Delete([FromRoute] string id)
+        public async Task<IActionResult> Delete([FromRoute] string id, CancellationToken cancellationToken)
         {
-            await Task.CompletedTask;
-            return new ObjectResult("") { StatusCode = StatusCodes.Status501NotImplemented };
+            await _repository.Delete(id, cancellationToken);
+            return NoContent();
         }
     }
 }
