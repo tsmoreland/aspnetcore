@@ -11,16 +11,28 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using FlightPlan.Domain.Settings;
+using Microsoft.Extensions.Options;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
-namespace FlightPlan.Application.Contracts.Persistence;
+namespace FlightPlan.Persistence;
 
-public interface IAsyncRepository<TId, TEntity>
+public sealed class NoSqlContext
 {
-    IAsyncEnumerable<TEntity> GetAll(CancellationToken cancellationToken);
+    private DatabaseSettings _settings;
 
-    ValueTask<TEntity?> GetById(TId id, CancellationToken cancellationToken);
-    ValueTask<TId> Add(TEntity entity, CancellationToken cancellationToken);
-    ValueTask<bool> Update(TId id, TEntity entity, CancellationToken cancellationToken);
-    ValueTask<bool> Delete(TId id, CancellationToken cancellationToken);
-    ValueTask<bool> Delete(TEntity entity, CancellationToken cancellationToken);
+    public NoSqlContext(IOptions<DatabaseSettings> options)
+    {
+        ArgumentNullException.ThrowIfNull(options);
+        _settings = options.Value;
+    }
+
+    public IMongoCollection<BsonDocument> GetCollection(string collectionName)
+    {
+        MongoClient client = new();
+        IMongoDatabase db = client.GetDatabase(_settings.DatabaseName);
+        IMongoCollection<BsonDocument> collection = db.GetCollection<BsonDocument>(collectionName);
+        return collection;
+    }
 }
