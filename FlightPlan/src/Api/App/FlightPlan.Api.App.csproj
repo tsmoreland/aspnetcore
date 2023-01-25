@@ -8,7 +8,13 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.2" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="TSMoreland.Text.Json.NamingStrategies" Version="1.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Application\FlightPlan.Application.csproj" />
+    <ProjectReference Include="..\..\Persistence\FlightPlan.Persistence.csproj" />
   </ItemGroup>
 
 </Project>
