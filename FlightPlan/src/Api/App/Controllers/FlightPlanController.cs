@@ -11,6 +11,7 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using System.Transactions;
 using FlightPlan.Application.Contracts.Persistence;
 using FlightPlan.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -33,7 +34,9 @@ namespace FlightPlan.Api.App.Controllers
         public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
         {
             List<FlightPlanEntity> items = await _repository.GetAll(cancellationToken).ToListAsync(cancellationToken);
-            return Ok(items);
+            return items.Count > 0
+                ? Ok(items)
+                : NoContent();
         }
 
         [HttpGet("{id}", Name = "GetFlightPlanById")]
@@ -46,24 +49,72 @@ namespace FlightPlan.Api.App.Controllers
         }
 
         [HttpPost(Name = "AddFlightPlan")]
-        public async Task<IActionResult> Add([FromBody] object flightPLan, CancellationToken cancellationToken)
+        public async Task<IActionResult> Add([FromBody] FlightPlanEntity flightPLan, CancellationToken cancellationToken)
         {
-            await Task.CompletedTask;
-            return new ObjectResult("") { StatusCode = StatusCodes.Status501NotImplemented };
+            (string id, TransactionResult result) = await _repository.Add(flightPLan, cancellationToken);
+
+            return result switch
+            {
+                TransactionResult.Success =>  CreatedAtRoute("GetFlightPlanById", new { id }),
+                TransactionResult.BadRequest => BadRequest(),
+                _ => StatusCode(StatusCodes.Status500InternalServerError)
+            };
         }
 
         [HttpPut("{id}", Name = "UpdateFlightPlan")]
-        public async Task<IActionResult> Update([FromRoute] string id, [FromBody] object flightPLan, CancellationToken cancellationToken)
+        public async Task<IActionResult> Update([FromRoute] string id, [FromBody] FlightPlanEntity flightPLan, CancellationToken cancellationToken)
         {
-            await Task.CompletedTask;
-            return new ObjectResult("") { StatusCode = StatusCodes.Status501NotImplemented };
+            TransactionResult result = await _repository.Update(id, flightPLan, cancellationToken);
+            return result switch
+            {
+                TransactionResult.Success =>  Ok(),
+                TransactionResult.NotFound => NotFound(),
+                TransactionResult.BadRequest => BadRequest(),
+                _ => StatusCode(StatusCodes.Status500InternalServerError)
+            };
         }
 
         [HttpDelete("{id}", Name = "DeleteFlightPlan")]
         public async Task<IActionResult> Delete([FromRoute] string id, CancellationToken cancellationToken)
         {
-            await _repository.Delete(id, cancellationToken);
-            return NoContent();
+            TransactionResult result = await _repository.Delete(id, cancellationToken);
+            return result switch
+            {
+                TransactionResult.Success =>  Ok(),
+                TransactionResult.NotFound => NotFound(),
+                TransactionResult.BadRequest => BadRequest(),
+                _ => StatusCode(StatusCodes.Status500InternalServerError)
+            };
+        }
+
+        [HttpGet]
+        [Route("airport/departure/{id}")]
+        public async Task<IActionResult> GetFlightPlanDepartmentAirport(string id, CancellationToken cancellationToken)
+        {
+            FlightPlanEntity? item = await _repository.GetById(id, cancellationToken);
+            return item is not null
+                ? Ok(item.DepartureAirport)
+                : NotFound();
+        }
+
+        [HttpGet]
+        [Route("route/{id}")]
+        public async Task<IActionResult> GetFlightPlanRoute(string id, CancellationToken cancellationToken)
+        {
+            FlightPlanEntity? item = await _repository.GetById(id, cancellationToken);
+            return item is not null
+                ? Ok(item.Route)
+                : NotFound();
+        }
+
+        [HttpGet]
+        [Route("time/enroute/{id}")]
+        public async Task<IActionResult> GetFlightPlanTimeEnroute(string id, CancellationToken cancellationToken)
+        {
+            FlightPlanEntity? item = await _repository.GetById(id, cancellationToken);
+            return item is not null
+                ? Ok(item.ArrivalTime - item.DepartureTime)
+                : NotFound();
         }
     }
 }
