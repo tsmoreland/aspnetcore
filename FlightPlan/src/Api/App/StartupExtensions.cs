@@ -11,9 +11,13 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using FlightPlan.Api.App.Authentication;
 using FlightPlan.Persistence;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.OpenApi.Models;
 using TSMoreland.Text.Json.NamingStrategies;
 using TSMoreland.Text.Json.NamingStrategies.Strategies;
 
@@ -38,10 +42,48 @@ public static class StartupExtensions
             });
 
         builder.Services
+            .AddTransient<IUserService, UserService>()
             .AddEndpointsApiExplorer()
-            .AddSwaggerGen()
+            .AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("flightPlan", new OpenApiInfo
+                {
+                    Title = "Flight Plan API",
+                    Version = "v3",
+                    Description = "Flight Plan Demo REST API",
+                });
+                options.AddSecurityDefinition("basicAuth", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "basic",
+                    In = ParameterLocation.Header,
+                    Description = "Basic Authorization header using bearer scheme",
+                });
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "basicAuth"
+                            },
+                        },
+                        Array.Empty<string>()
+                    },
+                });
+                options.EnableAnnotations();
+                string xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+            })
             .AddCors()
             .AddPersistence(builder.Configuration);
+
+        builder.Services
+            .AddAuthentication("BasicAuthentiation")
+            .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentiation", null);
 
         return builder;
     }
@@ -52,26 +94,24 @@ public static class StartupExtensions
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
-            app.UseSwaggerUI();
+            app.UseSwaggerUI(options =>
+                options.SwaggerEndpoint("/swagger/flightplan/swagger.json", "Flight Plan API"));
         }
+
+        app.UseCors(config =>
+            config
+                .AllowAnyHeader()
+                .AllowAnyOrigin()
+                .AllowAnyMethod());
+
 
         app.UseHttpsRedirection();
 
-        app.MapControllers();
-        app.MapGet("/weatherforecast", () =>
-        {
-            var forecast = Enumerable.Range(1, 5).Select(index =>
-                new WeatherForecast
-                (
-                    DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                    Random.Shared.Next(-20, 55),
-                    summaries[Random.Shared.Next(summaries.Length)]
-                ))
-                .ToArray();
-            return forecast;
-        })
-        .WithName("GetWeatherForecast")
-        .WithOpenApi();
+        app.UseAuthentication();
+        app.UseAuthorization();
 
+        app.MapControllers();
+
+        return app;
     }
 }
