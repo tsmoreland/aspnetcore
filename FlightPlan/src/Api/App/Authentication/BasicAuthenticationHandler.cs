@@ -53,7 +53,7 @@ public sealed class BasicAuthenticationHandler : AuthenticationHandler<Authentic
             new Claim(ClaimTypes.Name, user.Username)
         };
 
-        ClaimsIdentity identity = new(claims);
+        ClaimsIdentity identity = new(claims, Scheme.Name);
         ClaimsPrincipal principal = new(identity);
         AuthenticationTicket ticket = new(principal, Scheme.Name);
 

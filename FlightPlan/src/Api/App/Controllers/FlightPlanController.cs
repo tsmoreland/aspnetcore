@@ -36,8 +36,8 @@ public class FlightPlanController : ControllerBase
     }
 
     [HttpGet(Name = "GetFlightPlans")]
-    [SwaggerResponse(StatusCodes.Status200OK, "successful retrieveal of flight plans", typeof(List<FlightPlanEntity>), contentTypes: MediaTypeNames.Application.Json);
-    [SwaggerResponse(StatusCodes.Status204NoContent, "no flight plans found", contentTypes: MediaTypeNames.Application.Json);
+    [SwaggerResponse(StatusCodes.Status200OK, "successful retrieveal of flight plans", typeof(List<FlightPlanEntity>), contentTypes: MediaTypeNames.Application.Json)]
+    [SwaggerResponse(StatusCodes.Status204NoContent, "no flight plans found", contentTypes: MediaTypeNames.Application.Json)]
     public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {
         List<FlightPlanEntity> items = await _repository.GetAll(cancellationToken).ToListAsync(cancellationToken);
@@ -47,8 +47,8 @@ public class FlightPlanController : ControllerBase
     }
 
     [HttpGet("{id}", Name = "GetFlightPlanById")]
-    [SwaggerResponse(StatusCodes.Status200OK, "successful retrieveal of flight plan", typeof(FlightPlanEntity), contentTypes: MediaTypeNames.Application.Json);
-    [SwaggerResponse(StatusCodes.Status404NotFound, "flight plan not found", contentTypes: MediaTypeNames.Application.Json);
+    [SwaggerResponse(StatusCodes.Status200OK, "successful retrieveal of flight plan", typeof(FlightPlanEntity), contentTypes: MediaTypeNames.Application.Json)]
+    [SwaggerResponse(StatusCodes.Status404NotFound, "flight plan not found", contentTypes: MediaTypeNames.Application.Json)]
     public async Task<IActionResult> GetById([FromRoute] string id, CancellationToken cancellationToken)
     {
         FlightPlanEntity? item = await _repository.GetById(id, cancellationToken);
@@ -74,7 +74,7 @@ public class FlightPlanController : ControllerBase
     }
 
     [HttpPut("{id}", Name = "UpdateFlightPlan")]
-    [SwaggerResponse(StatusCodes.Status200OK, "successful retrieveal and update of flight plan", typeof(FlightPlanEntity), contentTypes: MediaTypeNames.Application.Json);
+    [SwaggerResponse(StatusCodes.Status200OK, "successful retrieveal and update of flight plan", typeof(FlightPlanEntity), contentTypes: MediaTypeNames.Application.Json)]
     [SwaggerResponse(StatusCodes.Status400BadRequest, "one or more problems found with request", contentTypes: MediaTypeNames.Application.Json)]
     [SwaggerResponse(StatusCodes.Status400BadRequest, "one or more problems found with request", contentTypes: MediaTypeNames.Application.Json)]
     [SwaggerResponse(StatusCodes.Status500InternalServerError, "a problem occurred executing request", contentTypes: MediaTypeNames.Application.Json)]

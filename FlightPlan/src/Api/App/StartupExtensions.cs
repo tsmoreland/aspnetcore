@@ -82,8 +82,12 @@ public static class StartupExtensions
             .AddPersistence(builder.Configuration);
 
         builder.Services
-            .AddAuthentication("BasicAuthentiation")
+            .AddAuthentication()
             .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentiation", null);
+
+        builder.Services.AddAuthorization(options =>
+        {
+        });
 
         return builder;
     }
@@ -95,7 +99,7 @@ public static class StartupExtensions
         {
             app.UseSwagger();
             app.UseSwaggerUI(options =>
-                options.SwaggerEndpoint("/swagger/flightplan/swagger.json", "Flight Plan API"));
+                options.SwaggerEndpoint("/swagger/flightPlan/swagger.json", "Flight Plan API"));
         }
 
         app.UseCors(config =>

@@ -30,7 +30,12 @@ public sealed class NoSqlContext
 
     public IMongoCollection<BsonDocument> GetCollection(string collectionName)
     {
-        MongoClient client = new();
+        MongoClientSettings settings = new()
+        {
+            AllowInsecureTls = true,
+
+        };
+        MongoClient client = new(settings);
         IMongoDatabase db = client.GetDatabase(_settings.DatabaseName);
         IMongoCollection<BsonDocument> collection = db.GetCollection<BsonDocument>(collectionName);
         return collection;

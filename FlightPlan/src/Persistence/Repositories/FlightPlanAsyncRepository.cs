@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using FlightPlan.Application.Contracts.Persistence;
 using FlightPlan.Domain.Entities;
@@ -11,7 +10,7 @@ namespace FlightPlan.Persistence.Repositories;
 public sealed class FlightPlanAsyncRepository : IFlightPlanAsyncRepository
 {
     private readonly NoSqlContext _context;
-    private const string CollectionName = "flight_plan";
+    private const string CollectionName = "flight_plans";
 
     public FlightPlanAsyncRepository(NoSqlContext context)
     {
