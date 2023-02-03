@@ -41,14 +41,17 @@ public sealed class ProfileService : ProfileService<ApplicationUser>
             return principal;
         }
 
-        Claim? existingClaim = identity.Claims.FirstOrDefault(c => c.Type == "location");
-        if (existingClaim is not null)
-        {
-            return principal;
-        }
-
-        identity.AddClaim(new Claim("location", user.Location);
+        AddClaimIfNotPresent(identity, "location", user.Location);
 
         return principal;
+    }
+
+    private static void AddClaimIfNotPresent(ClaimsIdentity identity, string claimName, string claimValue)
+    {
+        Claim? existingClaim = identity.Claims.FirstOrDefault(c => c.Type == claimName);
+        if (existingClaim is null)
+        {
+            identity.AddClaim(new Claim(claimName, claimValue));
+        }
     }
 }
