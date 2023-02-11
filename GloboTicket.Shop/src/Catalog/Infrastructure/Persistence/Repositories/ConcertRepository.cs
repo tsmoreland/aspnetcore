@@ -22,7 +22,7 @@ using Microsoft.Extensions.Logging;
 
 namespace GloboTicket.Shop.Catalog.Infrastructure.Persistence.Repositories;
 
-public sealed class ConcertRepository : IConcertRepository
+public sealed class ConcertRepository : IConcertRepository, IReadOnlyConcertRepository
 {
     private readonly EventCatalogDbContext _dbContext;
     private readonly IQueryableToEnumerableConverter _queryableToEnumerableConverter;
