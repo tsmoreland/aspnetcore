@@ -11,20 +11,26 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using GloboTicket.Shop.Shared.Contracts.Persistence.Specifications;
 using GloboTicket.Shop.Shared.Models.Persistence;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace GloboTicket.Shop.Catalog.Infrastructure.Persistence.Configuration;
+namespace GloboTicket.Shop.Shared.Contracts.Persistence;
 
-internal static class AuditDetailsConfigurer
+public interface IAsyncReadOnlyRepository<T> where T : class
 {
-    public static void Configure<T>(OwnedNavigationBuilder<T, AuditDetails> owned)
-        where T : class
-    {
-        owned.Property(e => e.CreatedBy).HasMaxLength(AuditDetails.MaxCreatedByLength);
-        owned.Property(e => e.CreatedDate).HasDefaultValue(DateTime.MinValue);
-        owned.Property(e => e.LastModifiedBy).HasMaxLength(AuditDetails.MaxLastModifiedByLength);
-        owned.Property(e => e.LastModifiedDate).HasDefaultValue(DateTime.MinValue);
-    }
+    ValueTask<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+
+    ValueTask<T?> GetByQueryAsync(IQuerySpecification<T> query, CancellationToken cancellationToken = default);
+    ValueTask<TProjection?> GetProjectionByQueryAsync<TProjection>(IQuerySpecification<T, TProjection> query, CancellationToken cancellationToken = default);
+
+    IAsyncEnumerable<T> GetAll(CancellationToken cancellationToken = default);
+    IAsyncEnumerable<TProjection> GetAll<TProjection>(ISelectorSpecification<T, TProjection> selector, CancellationToken cancellationToken = default);
+
+    ValueTask<Page<T>> GetPage(
+        IQuerySpecification<T> query,
+        CancellationToken cancellationToken = default);
+
+    ValueTask<Page<TProjection>> GetPage<TProjection>(
+        IQuerySpecification<T, TProjection> query,
+        CancellationToken cancellationToken = default);
 }

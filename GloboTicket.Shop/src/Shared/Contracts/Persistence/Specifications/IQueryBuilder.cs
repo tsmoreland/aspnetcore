@@ -1,5 +1,5 @@
 ﻿//
-// Copyright © 2023 Terry Moreland
+// Copyright © 2022 Terry Moreland
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
 // and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
@@ -12,19 +12,19 @@
 //
 
 using GloboTicket.Shop.Shared.Models.Persistence;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace GloboTicket.Shop.Catalog.Infrastructure.Persistence.Configuration;
+namespace GloboTicket.Shop.Shared.Contracts.Persistence.Specifications;
 
-internal static class AuditDetailsConfigurer
+public interface IQueryBuilder<T> where T : class
 {
-    public static void Configure<T>(OwnedNavigationBuilder<T, AuditDetails> owned)
-        where T : class
-    {
-        owned.Property(e => e.CreatedBy).HasMaxLength(AuditDetails.MaxCreatedByLength);
-        owned.Property(e => e.CreatedDate).HasDefaultValue(DateTime.MinValue);
-        owned.Property(e => e.LastModifiedBy).HasMaxLength(AuditDetails.MaxLastModifiedByLength);
-        owned.Property(e => e.LastModifiedDate).HasDefaultValue(DateTime.MinValue);
-    }
+    IQueryBuilder<T> WithNoTracking();
+    IQueryBuilder<T> WithFilter(IFilterSpecification<T> filterSpecification);
+    IQueryBuilder<T> WithOrderBy(IOrderBySpecification<T> orderBySpecification);
+    IQueryBuilder<T> WithThenBy(IOrderBySpecification<T> orderBySpecification);
+    IQueryBuilder<T> WithInclusion(IInclusionSpecification<T> inclusion);
+    IQueryBuilder<T> WithPaging(PageRequest pageRequest);
+
+    IQuerySpecification<T> Query();
+    IQuerySpecification<T, TProjection> Query<TProjection>(ISelectorSpecification<T, TProjection> selector);
 }
+

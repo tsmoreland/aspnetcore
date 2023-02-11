@@ -12,7 +12,7 @@
 
 using System.Runtime.CompilerServices;
 
-namespace GloboTicket.Shop.Shared.Models;
+namespace GloboTicket.Shop.Shared.Models.Persistence;
 
 public sealed record class AuditDetails(string? CreatedBy, DateTime CreatedDate, string? LastModifiedBy, DateTime LastModifiedDate)
 {

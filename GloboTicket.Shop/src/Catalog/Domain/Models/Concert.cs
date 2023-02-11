@@ -1,5 +1,5 @@
 ﻿using GloboTicket.Shop.Shared.Contracts.Persistence;
-using GloboTicket.Shop.Shared.Models;
+using GloboTicket.Shop.Shared.Models.Persistence;
 using static GloboTicket.Shop.Shared.Validators.ArgumentValidator;
 
 namespace GloboTicket.Shop.Catalog.Domain.Models;

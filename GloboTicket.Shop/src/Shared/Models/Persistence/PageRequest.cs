@@ -11,20 +11,21 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using GloboTicket.Shop.Shared.Models.Persistence;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Runtime.CompilerServices;
 
-namespace GloboTicket.Shop.Catalog.Infrastructure.Persistence.Configuration;
+namespace GloboTicket.Shop.Shared.Models.Persistence;
 
-internal static class AuditDetailsConfigurer
+public sealed record class PageRequest(int PageNumber, int PageSize)
 {
-    public static void Configure<T>(OwnedNavigationBuilder<T, AuditDetails> owned)
-        where T : class
+    public int PageNumber { get; init; } = ValidValueOrThrow(PageNumber);
+    public int PageSize { get; init; } = ValidValueOrThrow(PageSize);
+
+    private static int ValidValueOrThrow(int value, [CallerArgumentExpression("value")] string? paramName = null)
     {
-        owned.Property(e => e.CreatedBy).HasMaxLength(AuditDetails.MaxCreatedByLength);
-        owned.Property(e => e.CreatedDate).HasDefaultValue(DateTime.MinValue);
-        owned.Property(e => e.LastModifiedBy).HasMaxLength(AuditDetails.MaxLastModifiedByLength);
-        owned.Property(e => e.LastModifiedDate).HasDefaultValue(DateTime.MinValue);
+        if (value < 1)
+        {
+            throw new ArgumentOutOfRangeException(paramName, "value must be greater than or equal to 1");
+        }
+        return value;
     }
 }

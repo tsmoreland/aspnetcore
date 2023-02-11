@@ -2,7 +2,7 @@
 using System;
 using System.Reflection;
 using GloboTicket.Shop.Catalog.Domain.Models;
-using GloboTicket.Shop.Shared.Models;
+using GloboTicket.Shop.Shared.Models.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 

@@ -11,20 +11,14 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using GloboTicket.Shop.Shared.Models.Persistence;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+namespace GloboTicket.Shop.Shared.Models.Persistence;
 
-namespace GloboTicket.Shop.Catalog.Infrastructure.Persistence.Configuration;
-
-internal static class AuditDetailsConfigurer
+public sealed record class Page<T>(int PageNumber, int PageSize, int TotalPages, int TotalSize, IReadOnlyList<T> Items)
 {
-    public static void Configure<T>(OwnedNavigationBuilder<T, AuditDetails> owned)
-        where T : class
+    public Page<TMapped> Select<TMapped>(Func<T, TMapped> selector)
     {
-        owned.Property(e => e.CreatedBy).HasMaxLength(AuditDetails.MaxCreatedByLength);
-        owned.Property(e => e.CreatedDate).HasDefaultValue(DateTime.MinValue);
-        owned.Property(e => e.LastModifiedBy).HasMaxLength(AuditDetails.MaxLastModifiedByLength);
-        owned.Property(e => e.LastModifiedDate).HasDefaultValue(DateTime.MinValue);
+        ArgumentNullException.ThrowIfNull(selector);
+        return new Page<TMapped>(PageNumber, PageSize, TotalPages, TotalSize, Items.Select(selector).ToList().AsReadOnly());
     }
+
 }

@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Shared\GloboTicket.Shop.Shared.csproj" />
+    <ProjectReference Include="..\Domain\GloboTicket.Shop.Catalog.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

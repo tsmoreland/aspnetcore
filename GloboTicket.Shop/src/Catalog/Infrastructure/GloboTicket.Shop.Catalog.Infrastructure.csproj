@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Application\GloboTicket.Shop.Catalog.Application.csproj" />
     <ProjectReference Include="..\Domain\GloboTicket.Shop.Catalog.Domain.csproj" />
   </ItemGroup>
 
