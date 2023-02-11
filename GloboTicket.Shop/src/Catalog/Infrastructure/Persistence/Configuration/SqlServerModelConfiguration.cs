@@ -11,8 +11,6 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-#if USE_SQL_LITE
-
 using GloboTicket.Shop.Shared.Contracts.Hosting;
 using GloboTicket.Shop.Shared.Contracts.Persistence;
 using GloboTicket.Shop.Shared.Exceptions;
@@ -22,13 +20,13 @@ using Microsoft.Extensions.Logging;
 
 namespace GloboTicket.Shop.Catalog.Infrastructure.Persistence.Configuration;
 
-public sealed class SqliteModelConfiguration : IModelConfiguration<ModelBuilder, DbContextOptionsBuilder>
+public sealed class SqlServerModelConfiguration : IModelConfiguration<ModelBuilder, DbContextOptionsBuilder>
 {
     private readonly IConfiguration _configuration;
     private readonly bool _isDevelopment;
-    private readonly ILogger<SqliteModelConfiguration> _logger;
+    private readonly ILogger<SqlServerModelConfiguration> _logger;
 
-    public SqliteModelConfiguration(IConfiguration configuration, IHostEnvironmentFacade environment, ILoggerFactory loggerFactory)
+    public SqlServerModelConfiguration(IConfiguration configuration, IHostEnvironmentFacade environment, ILoggerFactory loggerFactory)
     {
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
@@ -36,7 +34,7 @@ public sealed class SqliteModelConfiguration : IModelConfiguration<ModelBuilder,
         ArgumentNullException.ThrowIfNull(loggerFactory);
 
         _isDevelopment = environment.IsDevelopment;
-        _logger = loggerFactory.CreateLogger<SqliteModelConfiguration>();
+        _logger = loggerFactory.CreateLogger<SqlServerModelConfiguration>();
     }
 
     /// <inheritdoc />
@@ -56,18 +54,16 @@ public sealed class SqliteModelConfiguration : IModelConfiguration<ModelBuilder,
         string connectionString = _configuration
             .GetConnectionString("Default") ?? throw new InvalidConfigurationException("missing connection entry.");
         optionsBuilder
-            .UseSqlite(
+            .UseSqlServer(
                 connectionString,
-                options => options.MigrationsAssembly(typeof(SqliteModelConfiguration).Assembly.FullName))
+                options => options.MigrationsAssembly(typeof(SqlServerModelConfiguration).Assembly.FullName))
             .LogTo(message => _logger.LogInformation("{SQL}", message))
             .EnableSensitiveDataLogging(_isDevelopment);
 
 
         if (!_isDevelopment)
         {
-            // optionsBuilder.UseModel(CompiledModels.EventCatalogDbContextModel.Instance);
+            //optionsBuilder.UseModel(CompiledModels.EventCatalogDbContextModel.Instance);
         }
     }
 }
-
-#endif

@@ -28,12 +28,13 @@ public sealed class EventCatalogDesignTimeDbContextFactory : IDesignTimeDbContex
     {
         IConfiguration configuration = new ConfigurationBuilder().Build();
 
-        SqliteModelConfiguration modelConfiguration = new(configuration, new HostEnvironmentFacade(), new LoggerFactory());
+        SqlServerModelConfiguration modelConfiguration = new(configuration, new HostEnvironmentFacade(), new LoggerFactory());
 
         DbContextOptionsBuilder<EventCatalogDbContext> optionsBuilder = new();
-        optionsBuilder.UseSqlite(
-            "Data Source=designTime.db;Pooling=false",
-            options => options.MigrationsAssembly(typeof(SqliteModelConfiguration).Assembly.FullName));
+        // SqlServer 2019 Localdb 
+        optionsBuilder.UseSqlServer(
+            "Server=(LocalDB)\v15.0; Integrated Security=True; MultipleActiveResultSets=True",
+            options => options.MigrationsAssembly(typeof(SqlServerModelConfiguration).Assembly.FullName));
 
         EventCatalogDbContext dbContext = new(optionsBuilder.Options, modelConfiguration);
         return dbContext;
