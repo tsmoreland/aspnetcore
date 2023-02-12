@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright © 2023 Terry Moreland
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
@@ -11,16 +11,19 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using GloboTicket.Shop.Catalog.Api;
+using GloboTicket.Shop.Shared.Contracts.Hosting;
 
-WebApplicationBuilder builder = WebApplication
-    .CreateBuilder(args)
-    .ConfigureServices();
+namespace GloboTicket.Shop.Catalog.Api.Services;
 
+public sealed class HostEnvironmentFacade : IHostEnvironmentFacade
+{
+    private readonly IHostEnvironment _environment;
 
-WebApplication app = builder
-    .Build()
-    .Configure();
+    public HostEnvironmentFacade(IHostEnvironment environment)
+    {
+        _environment = environment ?? throw new ArgumentNullException(nameof(environment));
+    }
 
-
-await app.RunAsync();
+    /// <inheritdoc />
+    public bool IsDevelopment => _environment.IsDevelopment();
+}

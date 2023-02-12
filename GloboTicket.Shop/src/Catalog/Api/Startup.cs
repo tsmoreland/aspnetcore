@@ -10,8 +10,10 @@
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+using GloboTicket.Shop.Catalog.Api.Services;
 using GloboTicket.Shop.Catalog.Application;
 using GloboTicket.Shop.Catalog.Infrastructure;
+using GloboTicket.Shop.Shared.Contracts.Hosting;
 
 namespace GloboTicket.Shop.Catalog.Api;
 
@@ -31,11 +33,12 @@ public static class Startup
 
         services.AddControllers();
 
-        services.AddProblemDetails();
-        services.AddSwaggerGen();
-
-        services.AddCatalogApplicationServices();
-        services.AddCatalogInfrastructure();
+        services
+            .AddProblemDetails()
+            .AddSwaggerGen()
+            .AddSingleton<IHostEnvironmentFacade, HostEnvironmentFacade>()
+            .AddCatalogApplicationServices()
+            .AddCatalogInfrastructure();
 
         return builder;
     }
