@@ -24,7 +24,7 @@ public sealed class Concert : IAuditableEntity
     {
         // used by EF
     }
-    private Concert(Guid concertId, string name, int price, string artist, DateTime date, string description, string imageUrl, AuditDetails? audit, string concurrencyToken)
+    public Concert(Guid concertId, string name, int price, string artist, DateTime date, string description, string imageUrl, AuditDetails? audit, string concurrencyToken)
     {
         ConcertId = concertId;
         Name = name;
