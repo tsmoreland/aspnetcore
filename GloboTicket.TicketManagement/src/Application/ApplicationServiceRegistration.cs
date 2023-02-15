@@ -19,7 +19,7 @@ public static class ApplicationServiceRegistration
         ArgumentNullException.ThrowIfNull(services);
 
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
-        services.AddMediatR(Assembly.GetExecutingAssembly());
+        services.AddMediatR(options => options.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
 
         return services;
     }

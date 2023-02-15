@@ -19,7 +19,7 @@ public sealed class UpdateEventCommandHandler : IRequestHandler<UpdateEventComma
     }
 
     /// <inheritdoc />
-    public async Task<Unit> Handle(UpdateEventCommand request, CancellationToken cancellationToken)
+    public async Task Handle(UpdateEventCommand request, CancellationToken cancellationToken)
     {
         Event? @event = await _eventRepository.GetByIdAsync(request.EventId, cancellationToken);
         NotFoundException.ThrowIfNull(@event, request.EventId);
@@ -30,7 +30,5 @@ public sealed class UpdateEventCommandHandler : IRequestHandler<UpdateEventComma
 
         _mapper.Map(request, @event, typeof(UpdateEventCommand), typeof(Event));
         await _eventRepository.UpdateAsync(@event!, cancellationToken);
-
-        return Unit.Value;
     }
 }
