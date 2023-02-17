@@ -6,4 +6,16 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="7.0.1-preview1.23061.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Shared\GloboTicket.Shop.Shared.csproj" />
+    <ProjectReference Include="..\Application\GloboTicket.Shop.Ordering.Application.csproj" />
+    <ProjectReference Include="..\Domain\GloboTicket.Shop.Ordering.Domain.csproj" />
+  </ItemGroup>
 </Project>
