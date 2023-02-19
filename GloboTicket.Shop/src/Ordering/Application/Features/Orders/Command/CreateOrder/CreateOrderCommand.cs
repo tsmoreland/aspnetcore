@@ -16,4 +16,4 @@ using MediatR;
 
 namespace GloboTicket.Shop.Ordering.Application.Features.Orders.Command.CreateOrder;
 
-public sealed record class CreateOrderCommand(OrderForCreation Order) : IRequest<Guid>;
+public sealed record class CreateOrderCommand(CreateOrderDto Order) : IRequest<Guid>;

@@ -11,25 +11,31 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-namespace GloboTicket.Shop.Shared.Exceptions;
+using FluentValidation.Results;
 
-public sealed class InvalidConfigurationException : Exception
+namespace GloboTicket.Shop.Shared.Contracts.Exceptions;
+
+public sealed class ValidationFailureException : Exception
 {
     /// <inheritdoc />
-    public InvalidConfigurationException()
-        : this(null)
+    public ValidationFailureException(ValidationResult validationResult)
     {
+        Dictionary<string, string> errorsByProperty = new();
+        foreach (ValidationFailure error in validationResult.Errors)
+        {
+            errorsByProperty[error.PropertyName] = error.ErrorMessage;
+        }
+
+        ValidationErrors = errorsByProperty.AsReadOnly();
     }
 
-    /// <inheritdoc />
-    public InvalidConfigurationException(string? message)
-        : this(message, null)
-    {
-    }
+    public IReadOnlyDictionary<string, string> ValidationErrors { get; }
 
-    /// <inheritdoc />
-    public InvalidConfigurationException(string? message, Exception? innerException)
-        : base(message, innerException)
+    public static void ThrowIfHasErrors(ValidationResult validationResult)
     {
+        if (validationResult.Errors.Count > 0)
+        {
+            throw new ValidationFailureException(validationResult);
+        }
     }
 }

@@ -11,9 +11,11 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using FluentValidation.Results;
 using GloboTicket.Shop.Ordering.Application.Contracts.Infrastructure;
 using GloboTicket.Shop.Ordering.Application.Models.Mail;
 using GloboTicket.Shop.Ordering.Domain.Models;
+using GloboTicket.Shop.Shared.Contracts.Exceptions;
 using MediatR;
 
 namespace GloboTicket.Shop.Ordering.Application.Features.Orders.Command.CreateOrder;
@@ -31,7 +33,13 @@ public sealed class CreateOrderCommandHandler : IRequestHandler<CreateOrderComma
 
     public async Task<Guid> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
     {
-        OrderForCreation order = request.Order;
+        CreateOrderDto orderDto = request.Order;
+
+        ValidationResult validationResult = await new CreateOrderDtoValidator()
+            .ValidateAsync(orderDto, cancellationToken);
+        ValidationFailureException.ThrowIfHasErrors(validationResult);
+
+        OrderForCreation order = orderDto.ToOrderForCreationOrThrow();
         Guid orderId = Guid.NewGuid();
 
         await _emailService.SendEmail(BuildEmailForOrder(order, orderId), cancellationToken);

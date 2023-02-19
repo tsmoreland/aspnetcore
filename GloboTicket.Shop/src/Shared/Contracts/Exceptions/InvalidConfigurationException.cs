@@ -11,36 +11,25 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System.Net.Mime;
-using GloboTicket.Shop.Ordering.Application.Features.Orders.Command.CreateOrder;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
+namespace GloboTicket.Shop.Shared.Contracts.Exceptions;
 
-namespace GloboTicket.Shop.Ordering.Api.Controllers;
-
-[Route("api/orders")]
-[ApiController]
-[Produces(MediaTypeNames.Application.Json)]
-[Consumes(MediaTypeNames.Application.Json)]
-public class OrderController : ControllerBase
+public sealed class InvalidConfigurationException : Exception
 {
-    private readonly IMediator _mediator;
-
     /// <inheritdoc />
-    public OrderController(IMediator mediator)
+    public InvalidConfigurationException()
+        : this(null)
     {
-        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
     }
 
-    /// <summary>
-    /// Submit a new order
-    /// </summary>
-    [HttpPost(Name = nameof(SubmitOrder))]
-    public async Task<IActionResult> SubmitOrder([FromBody] CreateOrderDto orderDto, CancellationToken cancellationToken)
+    /// <inheritdoc />
+    public InvalidConfigurationException(string? message)
+        : this(message, null)
     {
-        await _mediator.Send(new CreateOrderCommand(orderDto), cancellationToken);
+    }
 
-        // TODO: provide get route and use alongside CreatedAtRoute
-        return new StatusCodeResult(StatusCodes.Status201Created);
+    /// <inheritdoc />
+    public InvalidConfigurationException(string? message, Exception? innerException)
+        : base(message, innerException)
+    {
     }
 }

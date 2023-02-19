@@ -11,36 +11,14 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System.Net.Mime;
-using GloboTicket.Shop.Ordering.Application.Features.Orders.Command.CreateOrder;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
+using FluentValidation;
 
-namespace GloboTicket.Shop.Ordering.Api.Controllers;
+namespace GloboTicket.Shop.Ordering.Application.Features.Orders.Command.CreateOrder;
 
-[Route("api/orders")]
-[ApiController]
-[Produces(MediaTypeNames.Application.Json)]
-[Consumes(MediaTypeNames.Application.Json)]
-public class OrderController : ControllerBase
+public sealed class CreateOrderDtoValidator : AbstractValidator<CreateOrderDto>
 {
-    private readonly IMediator _mediator;
-
     /// <inheritdoc />
-    public OrderController(IMediator mediator)
+    public CreateOrderDtoValidator()
     {
-        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
-    }
-
-    /// <summary>
-    /// Submit a new order
-    /// </summary>
-    [HttpPost(Name = nameof(SubmitOrder))]
-    public async Task<IActionResult> SubmitOrder([FromBody] CreateOrderDto orderDto, CancellationToken cancellationToken)
-    {
-        await _mediator.Send(new CreateOrderCommand(orderDto), cancellationToken);
-
-        // TODO: provide get route and use alongside CreatedAtRoute
-        return new StatusCodeResult(StatusCodes.Status201Created);
     }
 }
