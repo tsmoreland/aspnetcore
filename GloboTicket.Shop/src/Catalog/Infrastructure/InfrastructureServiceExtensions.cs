@@ -23,7 +23,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace GloboTicket.Shop.Catalog.Infrastructure;
 
-public static class ServiceCollectionExtensions
+public static class InfrastructureServiceExtensions
 {
     public static IServiceCollection AddCatalogInfrastructure(this IServiceCollection services)
     {

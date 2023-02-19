@@ -11,6 +11,10 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using GloboTicket.Shop.Ordering.Application;
+using GloboTicket.Shop.Ordering.Infrastructure;
+using Serilog;
+
 namespace GloboTicket.Shop.Ordering.Api;
 
 internal static class Startup
@@ -25,13 +29,20 @@ internal static class Startup
                 o.AddServerHeader = false;
             });
 
+        builder.Host
+            .UseSerilog(static (context, loggerConfiguration) => loggerConfiguration
+                .WriteTo.Console()
+                .ReadFrom.Configuration(context.Configuration));
+
         IServiceCollection services = builder.Services;
 
         services.AddControllers();
 
         services
             .AddProblemDetails()
-            .AddSwaggerGen();
+            .AddSwaggerGen()
+            .AddOrderingApplicationServices()
+            .AddOrderingInfrastructure(builder.Configuration);
 
         return builder;
     }
@@ -41,6 +52,7 @@ internal static class Startup
     {
         ArgumentNullException.ThrowIfNull(app);
 
+        app.UseSerilogRequestLogging();
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();

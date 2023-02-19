@@ -12,15 +12,18 @@
 //
 
 using GloboTicket.Shop.Ordering.Api;
+using Serilog;
+
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .CreateBootstrapLogger();
 
 WebApplicationBuilder builder = WebApplication
     .CreateBuilder(args)
     .ConfigureServices();
 
-
 WebApplication app = builder
     .Build()
     .Configure();
-
 
 await app.RunAsync();

@@ -14,6 +14,7 @@ using GloboTicket.Shop.Catalog.Api.Services;
 using GloboTicket.Shop.Catalog.Application;
 using GloboTicket.Shop.Catalog.Infrastructure;
 using GloboTicket.Shop.Shared.Contracts.Hosting;
+using Serilog;
 
 namespace GloboTicket.Shop.Catalog.Api;
 
@@ -28,6 +29,11 @@ internal static class Startup
             {
                 o.AddServerHeader = false;
             });
+
+        builder.Host
+            .UseSerilog(static (context, loggerConfiguration) => loggerConfiguration
+                .WriteTo.Console()
+                .ReadFrom.Configuration(context.Configuration));
 
         IServiceCollection services = builder.Services;
 
@@ -47,6 +53,7 @@ internal static class Startup
     {
         ArgumentNullException.ThrowIfNull(app);
 
+        app.UseSerilogRequestLogging();
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();

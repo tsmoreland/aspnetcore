@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright © 2023 Terry Moreland
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
@@ -11,19 +11,30 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using GloboTicket.Shop.Catalog.Api;
-using Serilog;
+using GloboTicket.Shop.Ordering.Application.Contracts.Infrastructure;
+using GloboTicket.Shop.Ordering.Application.Models.Mail;
+using GloboTicket.Shop.Ordering.Infrastructure.Mail;
+using GloboTicket.Shop.Ordering.Infrastructure.Telemetry;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
-Log.Logger = new LoggerConfiguration()
-    .WriteTo.Console()
-    .CreateBootstrapLogger();
+namespace GloboTicket.Shop.Ordering.Infrastructure;
 
-WebApplicationBuilder builder = WebApplication
-    .CreateBuilder(args)
-    .ConfigureServices();
+public static class InfrastructureServiceExtensions
+{
+    public static IServiceCollection AddOrderingInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    {
+        ArgumentNullException.ThrowIfNull(services);
+        
+        services
+            .Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
 
-WebApplication app = builder
-    .Build()
-    .Configure();
+        services
+            .AddTransient<IEmailService, EmailService>();
 
-await app.RunAsync();
+        services
+            .AddScoped<ITelemetryService, TelemetryService>();
+
+        return services;
+    }
+}

@@ -12,12 +12,11 @@
 //
 
 using System.Reflection;
-using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GloboTicket.Shop.Catalog.Application;
 
-public static class ServiceCollectionExtensions
+public static class ApplicationServiceExtensions
 {
     public static IServiceCollection AddCatalogApplicationServices(this IServiceCollection services)
     {
