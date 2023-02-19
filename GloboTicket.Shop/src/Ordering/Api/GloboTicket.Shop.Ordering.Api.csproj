@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Shared.Api\GloboTicket.Shop.Shared.Api.csproj" />
     <ProjectReference Include="..\..\Shared\GloboTicket.Shop.Shared.csproj" />
     <ProjectReference Include="..\Application\GloboTicket.Shop.Ordering.Application.csproj" />
     <ProjectReference Include="..\Infrastructure\GloboTicket.Shop.Ordering.Infrastructure.csproj" />

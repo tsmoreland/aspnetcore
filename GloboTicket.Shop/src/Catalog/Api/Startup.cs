@@ -13,6 +13,8 @@
 using GloboTicket.Shop.Catalog.Api.Services;
 using GloboTicket.Shop.Catalog.Application;
 using GloboTicket.Shop.Catalog.Infrastructure;
+using GloboTicket.Shop.Shared.Api;
+using GloboTicket.Shop.Shared.Api.Filters;
 using GloboTicket.Shop.Shared.Contracts.Hosting;
 using Serilog;
 
@@ -37,7 +39,7 @@ internal static class Startup
 
         IServiceCollection services = builder.Services;
 
-        services.AddControllers();
+        services.AddControllers(options => options.Filters.Add(new AddModelStateFeatureFilter()));
 
         services
             .AddProblemDetails()
@@ -54,6 +56,7 @@ internal static class Startup
         ArgumentNullException.ThrowIfNull(app);
 
         app.UseSerilogRequestLogging();
+        app.AddValidationExceptionHandler();
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
