@@ -34,7 +34,7 @@ public sealed class CreateOrderDto
     public required string DeliveryCity { get; init; }
     public required string DeliveryCountry { get; init; }
 
-    private IEnumerable<(Guid ConcertId, int TicketCount, int Price)> Items { get; init; } =
+    public IEnumerable<(Guid ItemId, int TicketCount, int Price)> Items { get; init; } =
         Array.Empty<(Guid, int, int)>();
 
     /// <summary>
@@ -54,7 +54,7 @@ public sealed class CreateOrderDto
                     DeliveryCountry),
                 new Address(BillingAddressLineOne, BillingAddressLineTwo, BillingPostCode, BillingCity,
                     BillingCountry)),
-            Items.Select(t => new OrderLine(t.ConcertId, t.TicketCount, t.Price)).ToList().AsReadOnly());
+            Items.Select(t => new OrderLine(t.ItemId, t.TicketCount, t.Price)).ToList().AsReadOnly());
         return order;
     }
 }

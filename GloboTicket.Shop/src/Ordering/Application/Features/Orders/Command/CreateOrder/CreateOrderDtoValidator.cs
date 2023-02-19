@@ -12,6 +12,7 @@
 //
 
 using FluentValidation;
+using GloboTicket.Shop.Ordering.Domain.Models;
 
 namespace GloboTicket.Shop.Ordering.Application.Features.Orders.Command.CreateOrder;
 
@@ -20,5 +21,71 @@ public sealed class CreateOrderDtoValidator : AbstractValidator<CreateOrderDto>
     /// <inheritdoc />
     public CreateOrderDtoValidator()
     {
+        RuleFor(p => p.Date)
+            .NotEmpty().WithMessage("{PropertyName} is required");
+
+        RuleFor(p => p.CustomerName)
+            .NotEmpty().WithMessage("{PropertyName} is required")
+            .NotNull()
+            .MaximumLength(CustomerDetails.MaxNameLength);
+
+        RuleFor(p => p.CustomerEmail)
+            .NotEmpty().WithMessage("{PropertyName} is required")
+            .NotNull()
+            .EmailAddress()
+            .MaximumLength(CustomerDetails.MaxEmailLength);
+
+        RuleFor(p => p.BillingAddressLineOne)
+            .NotEmpty().WithMessage("{PropertyName} is required")
+            .NotNull()
+            .MaximumLength(Address.MaxAddressLineLength);
+        RuleFor(p => p.BillingAddressLineTwo)
+            .MaximumLength(Address.MaxAddressLineLength);
+        RuleFor(p => p.BillingPostCode)
+            .NotEmpty().WithMessage("{PropertyName} is required")
+            .NotNull()
+            .MaximumLength(Address.MaxPostCodeLength);
+        RuleFor(p => p.BillingCity)
+            .NotEmpty().WithMessage("{PropertyName} is required")
+            .NotNull()
+            .MaximumLength(Address.MaxCityLength);
+        RuleFor(p => p.BillingCountry)
+            .NotEmpty().WithMessage("{PropertyName} is required")
+            .NotNull()
+            .MaximumLength(Address.MaxCountryLength);
+
+        RuleFor(p => p.DeliveryAddressLineOne)
+            .NotEmpty().WithMessage("{PropertyName} is required")
+            .NotNull()
+            .MaximumLength(Address.MaxAddressLineLength);
+        RuleFor(p => p.DeliveryAddressLineTwo)
+            .MaximumLength(Address.MaxAddressLineLength);
+        RuleFor(p => p.DeliveryPostCode)
+            .NotEmpty().WithMessage("{PropertyName} is required")
+            .NotNull()
+            .MaximumLength(Address.MaxPostCodeLength);
+        RuleFor(p => p.DeliveryCity)
+            .NotEmpty().WithMessage("{PropertyName} is required")
+            .NotNull()
+            .MaximumLength(Address.MaxCityLength);
+        RuleFor(p => p.DeliveryCountry)
+            .NotEmpty().WithMessage("{PropertyName} is required")
+            .NotNull()
+            .MaximumLength(Address.MaxCountryLength);
+
+        RuleFor(p => p.Items)
+            .NotEmpty().WithMessage("At least one item must be added")
+            .NotNull()
+            .Must(((items =>
+            {
+                List<Guid> ids = new();
+                bool valid = items
+                    .All(t =>
+                    {
+                        ids.Add(t.ItemId);
+                        return t is { TicketCount: > 0, Price: > 0 };
+                    });
+                return valid && ids.Count == ids.Distinct().Count();
+            }))).WithMessage("Items must be unique with non-zero count and price");
     }
 }
