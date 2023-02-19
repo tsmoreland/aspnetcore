@@ -21,10 +21,12 @@ namespace GloboTicket.Shop.Ordering.Application.Features.Orders.Command.CreateOr
 public sealed class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Guid>
 {
     private readonly IEmailService _emailService;
+    private readonly ITelemetryService _telemetryService;
 
-    public CreateOrderCommandHandler(IEmailService emailService)
+    public CreateOrderCommandHandler(IEmailService emailService, ITelemetryService telemetryService)
     {
         _emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
+        _telemetryService = telemetryService ?? throw new ArgumentNullException(nameof(telemetryService));
     }
 
     public async Task<Guid> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
@@ -33,6 +35,7 @@ public sealed class CreateOrderCommandHandler : IRequestHandler<CreateOrderComma
         Guid orderId = Guid.NewGuid();
 
         await _emailService.SendEmail(BuildEmailForOrder(order, orderId), cancellationToken);
+        _telemetryService.SendInsights(nameof(CreateOrderCommand), 1);
 
         return orderId;
     }
