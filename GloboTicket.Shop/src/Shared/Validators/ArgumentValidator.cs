@@ -29,6 +29,17 @@ public static class ArgumentValidator
         return argument;
     }
 
+    public static string? OptionalStringWithMaxLength(string? argument, int maxLength,
+        [CallerArgumentExpression("argument")] string? parameterName = null, string? message = null)
+    {
+        if (argument is null || argument.Length <= maxLength)
+        {
+            return argument;
+        }
+
+        throw new ArgumentException(parameterName, message);
+    }
+
     public static int RequiresGreaterThanOrEqualToZero(int argument, [CallerArgumentExpression("argument")] string? parameterName = null, string? message = null)
     {
         if (argument < 0)
@@ -41,6 +52,17 @@ public static class ArgumentValidator
     public static DateTime RequiresNowOrNewer(DateTime argument, [CallerArgumentExpression("argument")] string? parameterName = null, string? message = null)
     {
         if (argument < DateTime.UtcNow)
+        {
+            throw new ArgumentException(parameterName, message);
+        }
+
+        return argument;
+    }
+
+    public static IReadOnlyList<T> RequiresNonEmptyCollection<T>(IReadOnlyList<T> argument,
+        [CallerArgumentExpression("argument")] string? parameterName = null, string? message = null)
+    {
+        if (argument is not { Count: > 0 })
         {
             throw new ArgumentException(parameterName, message);
         }
