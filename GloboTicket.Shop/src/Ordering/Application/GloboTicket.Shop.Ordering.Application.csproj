@@ -17,4 +17,8 @@
     <ProjectReference Include="..\..\Catalog\Domain\GloboTicket.Shop.Catalog.Domain.csproj" />
     <ProjectReference Include="..\..\Shared\GloboTicket.Shop.Shared.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\Mail\" />
+  </ItemGroup>
 </Project>
