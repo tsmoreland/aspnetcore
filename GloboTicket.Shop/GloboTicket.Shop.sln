@@ -34,7 +34,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GloboTicket.Shop.Ordering.A
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{D6512804-39C7-4AA4-B998-F9568D5958F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GloboTicket.Shop.Shared.Api", "src\Shared.Api\GloboTicket.Shop.Shared.Api.csproj", "{B76C4EB0-9875-47AE-B054-DAE36EA48E50}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GloboTicket.Shop.Shared.Api", "src\Shared.Api\GloboTicket.Shop.Shared.Api.csproj", "{B76C4EB0-9875-47AE-B054-DAE36EA48E50}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GloboTicket.FrontEnd.Mvc.App", "src\FrontEnd.Mvc\App\GloboTicket.FrontEnd.Mvc.App.csproj", "{280DFFBA-8940-4580-BFCA-20496D9E1037}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -82,6 +84,10 @@ Global
 		{B76C4EB0-9875-47AE-B054-DAE36EA48E50}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B76C4EB0-9875-47AE-B054-DAE36EA48E50}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B76C4EB0-9875-47AE-B054-DAE36EA48E50}.Release|Any CPU.Build.0 = Release|Any CPU
+		{280DFFBA-8940-4580-BFCA-20496D9E1037}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{280DFFBA-8940-4580-BFCA-20496D9E1037}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{280DFFBA-8940-4580-BFCA-20496D9E1037}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{280DFFBA-8940-4580-BFCA-20496D9E1037}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -97,6 +103,7 @@ Global
 		{2C2B8BD5-20A5-4CED-BB91-1622031F92F4} = {631DD499-AC8F-41B0-9485-13C05F08B5B1}
 		{CF2D1ED7-05DE-4CA5-AEA1-5146742B6FA4} = {1BAA5F17-4483-445C-87D2-6C0BCD5E803B}
 		{B76C4EB0-9875-47AE-B054-DAE36EA48E50} = {D6512804-39C7-4AA4-B998-F9568D5958F4}
+		{280DFFBA-8940-4580-BFCA-20496D9E1037} = {00ECF132-E881-44E8-AEDC-7366D01C0228}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {16165570-9008-4DA2-8E41-8EF10BD6AEA8}
