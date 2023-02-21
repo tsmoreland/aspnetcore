@@ -14,16 +14,14 @@ public sealed class DeleteEventCommandHandler : IRequestHandler<DeleteEventComma
     }
 
     /// <inheritdoc />
-    public async Task<Unit> Handle(DeleteEventCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteEventCommand request, CancellationToken cancellationToken)
     {
         Event? @event = await _eventRepository.GetByIdAsync(request.EventId, cancellationToken);
         if (@event is null)
         {
-            return Unit.Value;
+            return;
         }
 
         await _eventRepository.DeleteAsync(@event, cancellationToken);
-
-        return Unit.Value;
     }
 }
