@@ -11,6 +11,10 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using GloboTicket.FrontEnd.Mvc.App.Models;
+using GloboTicket.FrontEnd.Mvc.App.Services.ConcertCatalog;
+using GloboTicket.FrontEnd.Mvc.App.Services.Ordering;
+using GloboTicket.FrontEnd.Mvc.App.Services.ShoppingBasket;
 using Serilog;
 
 namespace GloboTicket.FrontEnd.Mvc.App;
@@ -36,6 +40,22 @@ internal static class Startup
 
         services.AddControllersWithViews();
 
+        services
+            .AddHttpClient<IConcertCatalogService, ConcertCatalogService>((provider, client) =>
+            {
+                client.BaseAddress = new Uri(provider.GetService<IConfiguration>()?["ApiConfigs:ConcertCatalog:Uri"] ?? throw new InvalidOperationException("Missing config"));
+            });
+        services
+            .AddHttpClient<IOrderSubmissionService, HttpOrderSubmissionService>((provider, client) =>
+            {
+                client.BaseAddress = new Uri(provider.GetService<IConfiguration>()?["ApiConfigs:Ordering:Uri"] ?? throw new InvalidOperationException("Missing config"));
+            });
+
+        services
+            .AddSingleton<Settings>()
+            //.AddSingleton<IShoppingBasketService, InMemoryShoppingBasketService>()
+            .AddApplicationInsightsTelemetry();
+
         return builder;
     }
 
@@ -47,7 +67,7 @@ internal static class Startup
         if (!app.Environment.IsDevelopment())
         {
             app.UseExceptionHandler("/Home/Error");
-            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/AspNetCore-hsts.
             app.UseHsts();
         }
 

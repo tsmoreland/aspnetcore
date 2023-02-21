@@ -32,16 +32,20 @@ public sealed class ConcertDto
         Artist = concert.Artist;
         Price = concert.Price;
         Date = concert.Date;
+        Description = concert.Description;
+        ImageUrl = concert.ImageUrl;
     }
 
     [SetsRequiredMembers]
-    public ConcertDto(Guid id, string name, string artist, DateTime date, int price)
+    public ConcertDto(Guid id, string name, string artist, DateTime date, int price, string description, string? imageUrl)
     {
         Id = id;
         Name = name;
         Artist = artist;
         Date = date;
         Price = price;
+        Description = description;
+        ImageUrl = imageUrl;
     }
 
 
@@ -54,5 +58,8 @@ public sealed class ConcertDto
     public required DateTime Date { get; init; }
 
     public required int Price { get; init; }
+
+    public string Description { get; init; } = string.Empty;
+    public string? ImageUrl { get; init; } 
 
 }

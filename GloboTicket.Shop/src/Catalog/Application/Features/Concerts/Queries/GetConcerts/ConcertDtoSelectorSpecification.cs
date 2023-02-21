@@ -27,7 +27,7 @@ public sealed class ConcertDtoSelectorSpecification : ISelectorSpecification<Con
     public IAsyncEnumerable<ConcertDto> ProjectToAsyncEnumerable(IQueryable<Concert> query, IQueryableToEnumerableConverter queryableConverter)
     {
         return queryableConverter
-            .ConvertToAsyncEnumerable(query.Select(c => new { c.ConcertId, c.Name, c.Artist, c.Price, c.Date }))
-            .Select(c => new ConcertDto(c.ConcertId, c.Name, c.Artist, c.Date, c.Price));
+            .ConvertToAsyncEnumerable(query.Select(c => new { c.ConcertId, c.Name, c.Artist, c.Price, c.Date, c.Description, c.ImageUrl }))
+            .Select(c => new ConcertDto(c.ConcertId, c.Name, c.Artist, c.Date, c.Price, c.Description, c.ImageUrl));
     }
 }

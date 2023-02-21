@@ -11,34 +11,13 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System.Diagnostics;
-using GloboTicket.FrontEnd.Mvc.App.Models;
-using Microsoft.AspNetCore.Mvc;
+using GloboTicket.FrontEnd.Mvc.App.Models.Api;
 
-namespace GloboTicket.FrontEnd.Mvc.App.Controllers;
+namespace GloboTicket.FrontEnd.Mvc.App.Services.ConcertCatalog;
 
-public class HomeController : Controller
+public interface IConcertCatalogService
 {
-    private readonly ILogger<HomeController> _logger;
+    IAsyncEnumerable<Concert> GetAll(CancellationToken cancellationToken);
 
-    public HomeController(ILogger<HomeController> logger)
-    {
-        _logger = logger;
-    }
-
-    public IActionResult Index()
-    {
-        return View();
-    }
-
-    public IActionResult Privacy()
-    {
-        return View();
-    }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-    }
+    Task<Concert?> GetConcert(Guid id, CancellationToken cancellationToken);
 }
