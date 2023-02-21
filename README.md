@@ -15,3 +15,6 @@ Working through pluralsight course
 
 Working through pluralsight [ASP.NET Core 6 Clean Architecture](https://app.pluralsight.com/library/courses/asp-dot-net-core-6-clean-architecture), while making tweaks along the way
 
+## GloboTicket.Shop
+
+Working through pluralsight [Deplooying ASP.NET Core 6 Using Kubernetes](https://app.pluralsight.com/library/courses/asp-dot-net-core-6-kubernetes)
