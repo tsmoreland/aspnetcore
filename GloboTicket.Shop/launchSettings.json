@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "globoticket.frontend.mvc.app": "StartDebugging",
+        "globoticket.shop.catalog.api": "StartDebugging",
+        "globoticket.shop.ordering.api": "StartDebugging"
+      }
+    }
+  }
+}

@@ -30,6 +30,7 @@ public sealed class GetConcertsQueryHandler : IStreamRequestHandler<GetConcertsQ
     {
         _ = request;
 
-        return _repository.GetAll(new ConcertDtoSelectorSpecification(), cancellationToken);
+        return _repository
+            .GetAll(new ConcertDtoSelectorSpecification(), cancellationToken);
     }
 }

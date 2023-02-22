@@ -33,6 +33,7 @@ public static class InfrastructureServiceExtensions
             .AddTransient<IEmailService, EmailService>();
 
         services
+            .AddApplicationInsightsTelemetry()
             .AddScoped<ITelemetryService, TelemetryService>();
 
         return services;

@@ -15,6 +15,7 @@ using GloboTicket.FrontEnd.Mvc.App.Models;
 using GloboTicket.FrontEnd.Mvc.App.Services.ConcertCatalog;
 using GloboTicket.FrontEnd.Mvc.App.Services.Ordering;
 using GloboTicket.FrontEnd.Mvc.App.Services.ShoppingBasket;
+using GloboTicket.FrontEnd.Mvc.App.Services.ShoppingBasket.InMemory;
 using Serilog;
 
 namespace GloboTicket.FrontEnd.Mvc.App;
@@ -24,6 +25,7 @@ internal static class Startup
     public static WebApplicationBuilder ConfigureServices(this WebApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
+        builder.Configuration.AddEnvironmentVariables();
 
         builder.WebHost
             .ConfigureKestrel(o =>
@@ -53,7 +55,7 @@ internal static class Startup
 
         services
             .AddSingleton<Settings>()
-            //.AddSingleton<IShoppingBasketService, InMemoryShoppingBasketService>()
+            .AddSingleton<IShoppingBasketService, InMemoryShoppingBasketService>()
             .AddApplicationInsightsTelemetry();
 
         return builder;
@@ -71,7 +73,8 @@ internal static class Startup
             app.UseHsts();
         }
 
-        app.UseHttpsRedirection();
+        // Turning this off to simplify the running in Kubernetes demo
+        // app.UseHttpsRedirection();
         app.UseStaticFiles();
 
         app.UseRouting();
@@ -80,7 +83,7 @@ internal static class Startup
 
         app.MapControllerRoute(
             name: "default",
-            pattern: "{controller=Home}/{action=Index}/{id?}");
+            pattern: "{controller=ConcertCatalog}/{action=Index}/{id?}");
         return app;
     }
 }

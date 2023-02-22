@@ -1,0 +1,29 @@
+﻿@model GloboTicket.FrontEnd.Mvc.App.Models.View.ConcertListModel
+
+<div class="row">
+    @if (!Model!.Concerts.Any())
+    {
+        <text>No concerts were found.</text>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr class="columnHeader">
+                    <th></th>
+                    <th>DATE</th>
+                    <th>NAME</th>
+                    <th>ARTIST</th>
+                    <th>PRICE</th>
+                </tr>
+            </thead>
+            <tbody>
+                @Html.DisplayFor(m => m.Concerts)
+            </tbody>
+        </table>
+    }
+</div>
+
+@section Widget {
+    <partial name="_ShoppingCartWidget" model="@Model!.NumberOfItems" />
+}
