@@ -36,13 +36,16 @@ public sealed class CreateOrderCommandHandler : IRequestHandler<CreateOrderComma
         CreateOrderDto orderDto = request.Order;
 
         ValidationResult validationResult = await new CreateOrderDtoValidator()
-            .ValidateAsync(orderDto, cancellationToken);
+            .ValidateAsync(orderDto, cancellationToken)
+            .ConfigureAwait(false);
         ValidationFailureException.ThrowIfHasErrors(validationResult);
 
         OrderForCreation order = orderDto.ToOrderForCreationOrThrow();
         Guid orderId = Guid.NewGuid();
 
-        await _emailService.SendEmail(BuildEmailForOrder(order, orderId), cancellationToken);
+        await _emailService
+            .SendEmail(BuildEmailForOrder(order, orderId), cancellationToken)
+            .ConfigureAwait(false);
         _telemetryService.SendInsights(nameof(CreateOrderCommand), 1);
 
         return orderId;
