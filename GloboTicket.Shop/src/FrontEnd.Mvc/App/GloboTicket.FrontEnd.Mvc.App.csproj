@@ -22,7 +22,25 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <Folder Include="Views\ConcertCatalog\DisplayTemplates\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\ShoppingBasket\Index.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Checkout\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\ShoppingBasket\EditorTemplates\BasketLineViewModel.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\ShoppingBasket\Index.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\ShoppingBasket\EditorTemplates\BasketLineViewModel.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Checkout\Index.cshtml" />
   </ItemGroup>
 
 </Project>

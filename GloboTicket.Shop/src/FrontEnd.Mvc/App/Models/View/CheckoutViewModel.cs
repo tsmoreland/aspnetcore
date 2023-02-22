@@ -4,7 +4,7 @@ namespace GloboTicket.FrontEnd.Mvc.App.Models.View;
 
 public class CheckoutViewModel
 {
-    public Guid BasketId { get; init; }
+    public Guid BasketId { get; set; }
     public string Name { get; init; } = string.Empty;
 
     public string BillingAddressLineOne { get; init; } = string.Empty;

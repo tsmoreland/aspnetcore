@@ -8,8 +8,11 @@ services:
       - ApiConfigs__ConcertCatalog__Uri=http://catalog
       - ApiConfigs:Ordering:Uri=http://ordering
     ports:
-      - "80"
-      - "443"
+      - "8088:80"
+      - "4433:443"
+    expose:
+      - "8088"
+      - "4433"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
@@ -20,7 +23,6 @@ services:
       - CONNECTIONSTRINGS__DEFAULT=Server=sqlserver;Database=concertDB;User Id=sa;Password=P@55w0Rd!;MultipleActiveResultSets=True;TrustServerCertificate=true;
     ports:
       - "80"
-      - "443"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
@@ -31,7 +33,6 @@ services:
       - ASPNETCORE_URLS=https://+:443;http://+:80
     ports:
       - "80"
-      - "443"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
