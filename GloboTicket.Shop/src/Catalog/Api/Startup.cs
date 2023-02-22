@@ -25,6 +25,7 @@ internal static class Startup
     public static WebApplicationBuilder ConfigureServices(this WebApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
+        builder.Configuration.AddEnvironmentVariables();
 
         builder.WebHost
             .ConfigureKestrel(o =>

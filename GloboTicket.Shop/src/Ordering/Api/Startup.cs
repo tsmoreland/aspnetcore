@@ -25,6 +25,8 @@ internal static class Startup
     {
         ArgumentNullException.ThrowIfNull(builder);
 
+        builder.Configuration.AddEnvironmentVariables();
+
         builder.WebHost
             .ConfigureKestrel(o =>
             {

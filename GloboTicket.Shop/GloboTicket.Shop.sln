@@ -36,7 +36,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{D65128
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GloboTicket.Shop.Shared.Api", "src\Shared.Api\GloboTicket.Shop.Shared.Api.csproj", "{B76C4EB0-9875-47AE-B054-DAE36EA48E50}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GloboTicket.FrontEnd.Mvc.App", "src\FrontEnd.Mvc\App\GloboTicket.FrontEnd.Mvc.App.csproj", "{280DFFBA-8940-4580-BFCA-20496D9E1037}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GloboTicket.FrontEnd.Mvc.App", "src\FrontEnd.Mvc\App\GloboTicket.FrontEnd.Mvc.App.csproj", "{280DFFBA-8940-4580-BFCA-20496D9E1037}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{F1533129-1E4A-4F91-A1C4-F77A6E1B051B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -88,6 +90,10 @@ Global
 		{280DFFBA-8940-4580-BFCA-20496D9E1037}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{280DFFBA-8940-4580-BFCA-20496D9E1037}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{280DFFBA-8940-4580-BFCA-20496D9E1037}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1533129-1E4A-4F91-A1C4-F77A6E1B051B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1533129-1E4A-4F91-A1C4-F77A6E1B051B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1533129-1E4A-4F91-A1C4-F77A6E1B051B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1533129-1E4A-4F91-A1C4-F77A6E1B051B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

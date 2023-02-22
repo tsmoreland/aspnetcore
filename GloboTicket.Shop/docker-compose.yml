@@ -1,0 +1,22 @@
+version: '3.4'
+
+services:
+  frontend-mvc:
+    image: ${DOCKER_REGISTRY-}globoticketfrontendmvcapp
+    build:
+      context: .
+      dockerfile: src/FrontEnd.Mvc/App/Dockerfile
+
+  catalog:
+    image: ${DOCKER_REGISTRY-}globoticketshopcatalogapi
+    build:
+      context: .
+      dockerfile: src/Catalog/Api/Dockerfile
+
+
+  ordering:
+    image: ${DOCKER_REGISTRY-}globoticketshoporderingapi
+    build:
+      context: .
+      dockerfile: src/Ordering/Api/Dockerfile
+
