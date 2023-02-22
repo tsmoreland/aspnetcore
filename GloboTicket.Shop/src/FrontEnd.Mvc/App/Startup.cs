@@ -73,7 +73,8 @@ internal static class Startup
             app.UseHsts();
         }
 
-        app.UseHttpsRedirection();
+        // Turning this off to simplify the running in Kubernetes demo
+        // app.UseHttpsRedirection();
         app.UseStaticFiles();
 
         app.UseRouting();
@@ -82,7 +83,7 @@ internal static class Startup
 
         app.MapControllerRoute(
             name: "default",
-            pattern: "{controller=Home}/{action=Index}/{id?}");
+            pattern: "{controller=ConcertCatalog}/{action=Index}/{id?}");
         return app;
     }
 }
