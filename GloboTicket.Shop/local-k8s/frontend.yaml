@@ -7,12 +7,21 @@ metadata:
   labels:
     app: frontend
 spec:
+  security-context:
+    fsGroup: 2000
+    runAsNonRoot: true
+    runAsUser: 1000
   selector:
     app: frontend
   ports:
   - protocol: TCP
     port: 8080
-    targetPort: 80
+    targetPort: 8080
+    name: http
+  - protocol: TCP
+    port: 4433
+    targetPort: 4430
+    name: https
   type: LoadBalancer
 ---
 #Frontend deployment
@@ -43,5 +52,7 @@ spec:
         - name: ApiConfigs__Ordering__Uri
           value: http://ordering:8080
         ports:
-        - containerPort: 80
+        - containerPort: 8080
         imagePullPolicy: Never
+        securityContext:
+          allowPrivilegeEscalation: false

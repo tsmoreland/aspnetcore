@@ -10,7 +10,8 @@ spec:
   ports:
   - protocol: TCP
     port: 8080
-    targetPort: 80
+    targetPort: 8080
+    name: http
   type: ClusterIP
 ---
 apiVersion: apps/v1
@@ -36,5 +37,5 @@ spec:
         - name: ASPNETCORE_ENVIRONMENT
           value: Development
         ports:
-        - containerPort: 80
+        - containerPort: 8080
         imagePullPolicy: Never

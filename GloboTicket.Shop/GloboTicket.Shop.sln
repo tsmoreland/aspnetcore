@@ -52,6 +52,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Globoticket", "Globoticket"
 		local-k8s\apply-deployment.ps1 = local-k8s\apply-deployment.ps1
 		local-k8s\catalog.yaml = local-k8s\catalog.yaml
 		local-k8s\frontend.yaml = local-k8s\frontend.yaml
+		local-k8s\namespace.yaml = local-k8s\namespace.yaml
 		local-k8s\ordering.yaml = local-k8s\ordering.yaml
 		local-k8s\sqlserver.yaml = local-k8s\sqlserver.yaml
 	EndProjectSection

@@ -4,12 +4,12 @@ services:
   frontend-mvc:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_URLS=https://+:4430;http://+:8080
       - ApiConfigs__ConcertCatalog__Uri=http://catalog
       - ApiConfigs:Ordering:Uri=http://ordering
     ports:
-      - "8088:80"
-      - "4433:443"
+      - "8088:8080"
+      - "4433:4430"
     expose:
       - "8088"
       - "4433"
@@ -19,9 +19,10 @@ services:
   catalog:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_URLS=https://+:4430;http://+:8080
       - CONNECTIONSTRINGS__DEFAULT=Server=sqlserver;Database=concertDB;User Id=sa;Password=P@55w0Rd!;MultipleActiveResultSets=True;TrustServerCertificate=true;
     ports:
+      - "4430"
       - "80"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
@@ -30,9 +31,10 @@ services:
   ordering:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_URLS=https://+:4430;http://+:8080
     ports:
-      - "80"
+      - "4430"
+      - "8080"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
