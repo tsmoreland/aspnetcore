@@ -10,19 +10,18 @@
 
 k8s secrets should be added via ```kubectl``` as follows:
 
-    kubectl create secret generic (secret name) --from-literal=(secret value) -n (namespace)
+    kubectl create secret generic (secret reference) --from-literal=(secretKey)=(secret value) -n (namespace)
 
 Example:
 
     kubectl create secret catalog-db --from-literal=connectionString="" -n globoticket
 
-reference this secret in the matching yaml file (in the above case catalog.yaml):
-
-    ```
+reference this secret in the matching YAML file (in the above case catalog.YAML):
 
     - name: CONNECTIONSTRINGS__DEFAULT
       valueFrom:
         secretKeyRef: 
           name: catalog-db
-        
-    ```
+          key: connectionString
+
+
