@@ -1,0 +1,58 @@
+#Frontend service
+kind: Service
+apiVersion: v1
+metadata:
+  name: frontend
+  namespace: globoticket
+  labels:
+    app: frontend
+spec:
+  security-context:
+    fsGroup: 2000
+    runAsNonRoot: true
+    runAsUser: 1000
+  selector:
+    app: frontend
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+    name: http
+  - protocol: TCP
+    port: 4433
+    targetPort: 4430
+    name: https
+  type: LoadBalancer
+---
+#Frontend deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  labels:
+    app: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: frontend:dev
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Development
+        - name: ApiConfigs__ConcertCatalog__Uri
+          value: http://catalog:8080
+        - name: ApiConfigs__Ordering__Uri
+          value: http://ordering:8080
+        ports:
+        - containerPort: 8080
+        imagePullPolicy: Never
+        securityContext:
+          allowPrivilegeEscalation: false

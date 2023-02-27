@@ -40,7 +40,11 @@ internal static class Startup
 
         IServiceCollection services = builder.Services;
 
-        services.AddControllers(options => options.Filters.Add(new AddModelStateFeatureFilter()));
+        services
+            .AddHealthChecks();
+
+        services
+            .AddControllers(options => options.Filters.Add(new AddModelStateFeatureFilter()));
 
         services
             .AddProblemDetails()
@@ -66,6 +70,7 @@ internal static class Startup
 
         app.UseHttpsRedirection();
         app.UseAuthorization();
+        app.MapHealthChecks("/health");
         app.MapControllers();
 
         return app;
