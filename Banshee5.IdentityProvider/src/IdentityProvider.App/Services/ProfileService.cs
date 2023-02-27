@@ -35,7 +35,7 @@ public sealed class ProfileService : ProfileService<ApplicationUser>
     /// <inheritdoc />
     protected override async Task<ClaimsPrincipal> GetUserClaimsAsync(ApplicationUser user)
     {
-        ClaimsPrincipal principal =  await base.GetUserClaimsAsync(user);
+        ClaimsPrincipal principal = await base.GetUserClaimsAsync(user);
         if (principal.Identity is not ClaimsIdentity identity)
         {
             return principal;
