@@ -19,16 +19,45 @@ namespace Banshee5.IdentityProvider.App.Data;
 
 public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+    private readonly IConfiguration _configuration;
+    private readonly IHostEnvironment _environment;
+    private readonly ILogger<ApplicationDbContext> _logger;
+
+    public ApplicationDbContext(
+        DbContextOptions<ApplicationDbContext> options,
+        IConfiguration configuration,
+        IHostEnvironment environment,
+        ILogger<ApplicationDbContext> logger)
         : base(options)
     {
+        _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+        _environment = environment ?? throw new ArgumentNullException(nameof(environment));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
+    /// <inheritdoc />
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
         // Customize the ASP.NET Identity model and override the defaults if needed.
         // For example, you can rename the ASP.NET Identity table names and more.
         // Add your customizations after calling base.OnModelCreating(builder);
+    }
+
+    /// <inheritdoc />
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        string connectionString = _configuration.GetConnectionString("DefaultConnection") ??
+                                  throw new KeyNotFoundException("DefaultConnection is not defined");
+
+        optionsBuilder
+            .UseSqlite(connectionString,
+                options => options.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName))
+            .LogTo(message => _logger.LogInformation("{SQL}", message));
+
+        if (!_environment.IsDevelopment())
+        {
+            optionsBuilder.UseModel(CompiledModels.ApplicationDbContextModel.Instance);
+        }
     }
 }
