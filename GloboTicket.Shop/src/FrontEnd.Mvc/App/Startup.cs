@@ -93,7 +93,6 @@ internal static class Startup
             name: "default",
             pattern: "{controller=ConcertCatalog}/{action=Index}/{id?}");
 
-        UIResponseWriter
         app.MapHealthChecks("/health/ready",
             new HealthCheckOptions()
             {
