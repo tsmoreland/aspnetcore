@@ -63,7 +63,7 @@ public sealed class SqlServerModelConfiguration : IModelConfiguration<ModelBuild
 
         if (!_isDevelopment)
         {
-            //optionsBuilder.UseModel(CompiledModels.EventCatalogDbContextModel.Instance);
+            optionsBuilder.UseModel(CompiledModels.EventCatalogDbContextModel.Instance);
         }
     }
 }
