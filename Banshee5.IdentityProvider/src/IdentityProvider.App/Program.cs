@@ -16,6 +16,7 @@ using Serilog;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Banshee5.IdentityProvider.App.Data;
+using Banshee5.IdentityProvider.App.Models;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -61,8 +62,4 @@ finally
     Log.Information("Shut down complete");
     Log.CloseAndFlush();
 }
-var connectionString = builder.Configuration.GetConnectionString("ApplicationDbContextConnection") ?? throw new InvalidOperationException("Connection string 'ApplicationDbContextConnection' not found.");
 
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
-
-builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
