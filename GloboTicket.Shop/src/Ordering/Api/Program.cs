@@ -18,12 +18,26 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .CreateBootstrapLogger();
 
-WebApplicationBuilder builder = WebApplication
-    .CreateBuilder(args)
-    .ConfigureServices();
+try
+{
+    WebApplicationBuilder builder = WebApplication
+        .CreateBuilder(args)
+        .ConfigureServices();
 
-WebApplication app = builder
-    .Build()
-    .Configure();
+    WebApplication app = builder
+        .Build()
+        .Configure();
 
-await app.RunAsync();
+    await app.RunAsync();
+}
+catch (Exception ex) when (ex.GetType().Name is not "StopTheHostException")
+{
+    // https://github.com/dotnet/runtime/issues/60600 for StopTheHostException
+    Log.Fatal(ex, "Unhandled exception");
+}
+finally
+{
+    Log.Information("Shut down complete");
+    Log.CloseAndFlush();
+}
+

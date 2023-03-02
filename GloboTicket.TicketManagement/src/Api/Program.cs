@@ -7,21 +7,35 @@ Log.Logger = new LoggerConfiguration()
 
 Log.Information("GloboTicket API Starting...");
 
-WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-builder.Host
-    .UseSerilog((context, loggerConfiguration) => loggerConfiguration
-        .WriteTo.Console()
-        .ReadFrom.Configuration(context.Configuration));
+try
+{
+    WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+    builder.Host
+        .UseSerilog((context, loggerConfiguration) => loggerConfiguration
+            .WriteTo.Console()
+            .ReadFrom.Configuration(context.Configuration));
 
 
-WebApplication app = builder 
-    .ConfigureServices()
-    .ConfigurePipeline();
+    WebApplication app = builder
+        .ConfigureServices()
+        .ConfigurePipeline();
 
-app.UseSerilogRequestLogging();
+    app.UseSerilogRequestLogging();
 
 #if DEBUG
 await app.ResetDatabaseAsync();
 #endif
 
-app.Run();
+    app.Run();
+}
+catch (Exception ex) when (ex.GetType().Name is not "StopTheHostException")
+{
+    // https://github.com/dotnet/runtime/issues/60600 for StopTheHostException
+    Log.Fatal(ex, "Unhandled exception");
+}
+finally
+{
+    Log.Information("Shut down complete");
+    Log.CloseAndFlush();
+}
+
