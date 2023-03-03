@@ -51,7 +51,7 @@ namespace Banshee5.IdentityProvider.App.Data
             optionsBuilder
                 .UseSqlite(
                     _configuration.GetConnectionString("DefaultConnection") ?? throw new KeyNotFoundException("Missing connection string"),
-                    options => options.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.Location));
+                    options => options.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.GetName().Name));
 
             if (!_environment.IsDevelopment())
             {

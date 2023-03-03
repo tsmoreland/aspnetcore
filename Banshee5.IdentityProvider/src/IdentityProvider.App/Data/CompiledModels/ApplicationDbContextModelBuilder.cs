@@ -14,28 +14,28 @@ namespace Banshee5.IdentityProvider.App.Data.CompiledModels
         {
             var applicationUser = ApplicationUserEntityType.Create(this);
             var identityRole = IdentityRoleEntityType.Create(this);
-            var identityRoleClaimstring = IdentityRoleClaimstringEntityType.Create(this);
-            var identityUserClaimstring = IdentityUserClaimstringEntityType.Create(this);
-            var identityUserLoginstring = IdentityUserLoginstringEntityType.Create(this);
-            var identityUserRolestring = IdentityUserRolestringEntityType.Create(this);
-            var identityUserTokenstring = IdentityUserTokenstringEntityType.Create(this);
+            var identityRoleClaim = IdentityRoleClaimEntityType.Create(this);
+            var identityUserClaim = IdentityUserClaimEntityType.Create(this);
+            var identityUserLogin = IdentityUserLoginEntityType.Create(this);
+            var identityUserRole = IdentityUserRoleEntityType.Create(this);
+            var identityUserToken = IdentityUserTokenEntityType.Create(this);
 
-            IdentityRoleClaimstringEntityType.CreateForeignKey1(identityRoleClaimstring, identityRole);
-            IdentityUserClaimstringEntityType.CreateForeignKey1(identityUserClaimstring, applicationUser);
-            IdentityUserLoginstringEntityType.CreateForeignKey1(identityUserLoginstring, applicationUser);
-            IdentityUserRolestringEntityType.CreateForeignKey1(identityUserRolestring, identityRole);
-            IdentityUserRolestringEntityType.CreateForeignKey2(identityUserRolestring, applicationUser);
-            IdentityUserTokenstringEntityType.CreateForeignKey1(identityUserTokenstring, applicationUser);
+            IdentityRoleClaimEntityType.CreateForeignKey1(identityRoleClaim, identityRole);
+            IdentityUserClaimEntityType.CreateForeignKey1(identityUserClaim, applicationUser);
+            IdentityUserLoginEntityType.CreateForeignKey1(identityUserLogin, applicationUser);
+            IdentityUserRoleEntityType.CreateForeignKey1(identityUserRole, identityRole);
+            IdentityUserRoleEntityType.CreateForeignKey2(identityUserRole, applicationUser);
+            IdentityUserTokenEntityType.CreateForeignKey1(identityUserToken, applicationUser);
 
             ApplicationUserEntityType.CreateAnnotations(applicationUser);
             IdentityRoleEntityType.CreateAnnotations(identityRole);
-            IdentityRoleClaimstringEntityType.CreateAnnotations(identityRoleClaimstring);
-            IdentityUserClaimstringEntityType.CreateAnnotations(identityUserClaimstring);
-            IdentityUserLoginstringEntityType.CreateAnnotations(identityUserLoginstring);
-            IdentityUserRolestringEntityType.CreateAnnotations(identityUserRolestring);
-            IdentityUserTokenstringEntityType.CreateAnnotations(identityUserTokenstring);
+            IdentityRoleClaimEntityType.CreateAnnotations(identityRoleClaim);
+            IdentityUserClaimEntityType.CreateAnnotations(identityUserClaim);
+            IdentityUserLoginEntityType.CreateAnnotations(identityUserLogin);
+            IdentityUserRoleEntityType.CreateAnnotations(identityUserRole);
+            IdentityUserTokenEntityType.CreateAnnotations(identityUserToken);
 
-            AddAnnotation("ProductVersion", "6.0.0");
+            AddAnnotation("ProductVersion", "7.0.3");
         }
     }
 }

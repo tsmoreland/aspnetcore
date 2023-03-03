@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Banshee5.IdentityProvider.App.Data.CompiledModels
 {
-    internal partial class IdentityUserClaimstringEntityType
+    internal partial class IdentityUserClaimEntityType
     {
         public static RuntimeEntityType Create(RuntimeModel model, RuntimeEntityType baseEntityType = null)
         {

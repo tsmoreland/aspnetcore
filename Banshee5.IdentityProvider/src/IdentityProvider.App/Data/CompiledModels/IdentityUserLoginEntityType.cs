@@ -10,46 +10,48 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Banshee5.IdentityProvider.App.Data.CompiledModels
 {
-    internal partial class IdentityUserTokenstringEntityType
+    internal partial class IdentityUserLoginEntityType
     {
         public static RuntimeEntityType Create(RuntimeModel model, RuntimeEntityType baseEntityType = null)
         {
             var runtimeEntityType = model.AddEntityType(
-                "Microsoft.AspNetCore.Identity.IdentityUserToken<string>",
-                typeof(IdentityUserToken<string>),
+                "Microsoft.AspNetCore.Identity.IdentityUserLogin<string>",
+                typeof(IdentityUserLogin<string>),
                 baseEntityType);
-
-            var userId = runtimeEntityType.AddProperty(
-                "UserId",
-                typeof(string),
-                propertyInfo: typeof(IdentityUserToken<string>).GetProperty("UserId", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
-                fieldInfo: typeof(IdentityUserToken<string>).GetField("<UserId>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly),
-                afterSaveBehavior: PropertySaveBehavior.Throw);
 
             var loginProvider = runtimeEntityType.AddProperty(
                 "LoginProvider",
                 typeof(string),
-                propertyInfo: typeof(IdentityUserToken<string>).GetProperty("LoginProvider", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
-                fieldInfo: typeof(IdentityUserToken<string>).GetField("<LoginProvider>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+                propertyInfo: typeof(IdentityUserLogin<string>).GetProperty("LoginProvider", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+                fieldInfo: typeof(IdentityUserLogin<string>).GetField("<LoginProvider>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly),
                 afterSaveBehavior: PropertySaveBehavior.Throw);
 
-            var name = runtimeEntityType.AddProperty(
-                "Name",
+            var providerKey = runtimeEntityType.AddProperty(
+                "ProviderKey",
                 typeof(string),
-                propertyInfo: typeof(IdentityUserToken<string>).GetProperty("Name", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
-                fieldInfo: typeof(IdentityUserToken<string>).GetField("<Name>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+                propertyInfo: typeof(IdentityUserLogin<string>).GetProperty("ProviderKey", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+                fieldInfo: typeof(IdentityUserLogin<string>).GetField("<ProviderKey>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly),
                 afterSaveBehavior: PropertySaveBehavior.Throw);
 
-            var value = runtimeEntityType.AddProperty(
-                "Value",
+            var providerDisplayName = runtimeEntityType.AddProperty(
+                "ProviderDisplayName",
                 typeof(string),
-                propertyInfo: typeof(IdentityUserToken<string>).GetProperty("Value", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
-                fieldInfo: typeof(IdentityUserToken<string>).GetField("<Value>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+                propertyInfo: typeof(IdentityUserLogin<string>).GetProperty("ProviderDisplayName", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+                fieldInfo: typeof(IdentityUserLogin<string>).GetField("<ProviderDisplayName>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly),
                 nullable: true);
 
+            var userId = runtimeEntityType.AddProperty(
+                "UserId",
+                typeof(string),
+                propertyInfo: typeof(IdentityUserLogin<string>).GetProperty("UserId", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+                fieldInfo: typeof(IdentityUserLogin<string>).GetField("<UserId>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly));
+
             var key = runtimeEntityType.AddKey(
-                new[] { userId, loginProvider, name });
+                new[] { loginProvider, providerKey });
             runtimeEntityType.SetPrimaryKey(key);
+
+            var index = runtimeEntityType.AddIndex(
+                new[] { userId });
 
             return runtimeEntityType;
         }
@@ -70,7 +72,7 @@ namespace Banshee5.IdentityProvider.App.Data.CompiledModels
             runtimeEntityType.AddAnnotation("Relational:FunctionName", null);
             runtimeEntityType.AddAnnotation("Relational:Schema", null);
             runtimeEntityType.AddAnnotation("Relational:SqlQuery", null);
-            runtimeEntityType.AddAnnotation("Relational:TableName", "AspNetUserTokens");
+            runtimeEntityType.AddAnnotation("Relational:TableName", "AspNetUserLogins");
             runtimeEntityType.AddAnnotation("Relational:ViewName", null);
             runtimeEntityType.AddAnnotation("Relational:ViewSchema", null);
 

@@ -30,7 +30,7 @@ internal static class HostingExtensions
 
         builder.Services.AddDbContext<ApplicationDbContext>();
 
-        builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+        builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
 
@@ -54,6 +54,7 @@ internal static class HostingExtensions
             .AddInMemoryClients(Config.Clients)
             .AddAspNetIdentity<ApplicationUser>();
 
+#if USE_GOOGLE
         builder.Services.AddAuthentication()
             .AddGoogle(options =>
             {
@@ -65,6 +66,7 @@ internal static class HostingExtensions
                 options.ClientId = "copy client ID from Google here";
                 options.ClientSecret = "copy client secret from Google here";
             });
+#endif
 
         return builder.Build();
     }

@@ -15,7 +15,7 @@ namespace Banshee5.IdentityProvider.App.Data.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.0");
+            modelBuilder.HasAnnotation("ProductVersion", "7.0.3");
 
             modelBuilder.Entity("Banshee5.IdentityProvider.App.Models.ApplicationUser", b =>
                 {
