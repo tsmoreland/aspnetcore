@@ -19,80 +19,82 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
-namespace Banshee5.IdentityProvider.App;
-
-public class SeedData
+namespace Banshee5.IdentityProvider.App
 {
-    public static void EnsureSeedData(WebApplication app)
+    public class SeedData
     {
-        using (IServiceScope scope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope())
+        public static void EnsureSeedData(WebApplication app)
         {
-            ApplicationDbContext context = scope.ServiceProvider.GetService<ApplicationDbContext>();
-            context.Database.Migrate();
-
-            UserManager<ApplicationUser> userMgr = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-            ApplicationUser diana = userMgr.FindByNameAsync("Diana").Result;
-            if (diana == null)
+            using (var scope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
-                diana = new ApplicationUser
+                var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
+                context.Database.Migrate();
+
+                var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+                var alice = userMgr.FindByNameAsync("alice").Result;
+                if (alice == null)
                 {
-                    UserName = "dprince",
-                    Email = "diana.princejusticeleague.com",
-                    EmailConfirmed = true,
-                };
-                IdentityResult result = userMgr.CreateAsync(diana, "Pass123$").Result;
-                if (!result.Succeeded)
+                    alice = new ApplicationUser
+                    {
+                        UserName = "alice",
+                        Email = "AliceSmith@email.com",
+                        EmailConfirmed = true,
+                    };
+                    var result = userMgr.CreateAsync(alice, "Pass123$").Result;
+                    if (!result.Succeeded)
+                    {
+                        throw new Exception(result.Errors.First().Description);
+                    }
+
+                    result = userMgr.AddClaimsAsync(alice, new Claim[]{
+                            new Claim(JwtClaimTypes.Name, "Alice Smith"),
+                            new Claim(JwtClaimTypes.GivenName, "Alice"),
+                            new Claim(JwtClaimTypes.FamilyName, "Smith"),
+                            new Claim(JwtClaimTypes.WebSite, "http://alice.com"),
+                        }).Result;
+                    if (!result.Succeeded)
+                    {
+                        throw new Exception(result.Errors.First().Description);
+                    }
+                    Log.Debug("alice created");
+                }
+                else
                 {
-                    throw new Exception(result.Errors.First().Description);
+                    Log.Debug("alice already exists");
                 }
 
-                result = userMgr.AddClaimsAsync(diana, new Claim[]{
-                    new(JwtClaimTypes.Name, "Diana Prince"),
-                    new(JwtClaimTypes.GivenName, "Diana"),
-                    new(JwtClaimTypes.FamilyName, "Prince"),
-                    new("location", "Themyscira ")
-                }).Result;
-                if (!result.Succeeded)
+                var bob = userMgr.FindByNameAsync("bob").Result;
+                if (bob == null)
                 {
-                    throw new Exception(result.Errors.First().Description);
-                }
-                Log.Debug("Diana created");
-            }
-            else
-            {
-                Log.Debug("Diana already exists");
-            }
+                    bob = new ApplicationUser
+                    {
+                        UserName = "bob",
+                        Email = "BobSmith@email.com",
+                        EmailConfirmed = true
+                    };
+                    var result = userMgr.CreateAsync(bob, "Pass123$").Result;
+                    if (!result.Succeeded)
+                    {
+                        throw new Exception(result.Errors.First().Description);
+                    }
 
-            ApplicationUser bruce = userMgr.FindByNameAsync("Bruce").Result;
-            if (bruce == null)
-            {
-                bruce = new ApplicationUser
-                {
-                    UserName = "bwayne",
-                    Email = "bruce.wayne@wayne-enterprises.com",
-                    EmailConfirmed = true
-                };
-                IdentityResult result = userMgr.CreateAsync(bruce, "Pass123$").Result;
-                if (!result.Succeeded)
-                {
-                    throw new Exception(result.Errors.First().Description);
+                    result = userMgr.AddClaimsAsync(bob, new Claim[]{
+                            new Claim(JwtClaimTypes.Name, "Bob Smith"),
+                            new Claim(JwtClaimTypes.GivenName, "Bob"),
+                            new Claim(JwtClaimTypes.FamilyName, "Smith"),
+                            new Claim(JwtClaimTypes.WebSite, "http://bob.com"),
+                            new Claim("location", "somewhere")
+                        }).Result;
+                    if (!result.Succeeded)
+                    {
+                        throw new Exception(result.Errors.First().Description);
+                    }
+                    Log.Debug("bob created");
                 }
-
-                result = userMgr.AddClaimsAsync(bruce, new Claim[]{
-                    new(JwtClaimTypes.Name, "Bruce Wayne"),
-                    new(JwtClaimTypes.GivenName, "Bruce"),
-                    new(JwtClaimTypes.FamilyName, "Wayne"),
-                    new("location", "Gotham")
-                }).Result;
-                if (!result.Succeeded)
+                else
                 {
-                    throw new Exception(result.Errors.First().Description);
+                    Log.Debug("bob already exists");
                 }
-                Log.Debug("Bruce created");
-            }
-            else
-            {
-                Log.Debug("Bruce already exists");
             }
         }
     }

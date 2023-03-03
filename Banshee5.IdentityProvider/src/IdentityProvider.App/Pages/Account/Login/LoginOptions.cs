@@ -11,12 +11,13 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-namespace Banshee5.IdentityProvider.App.Pages.Account.Login;
-
-public class LoginOptions
+namespace Banshee5.IdentityProvider.App.Pages.Account.Login
 {
-    public static bool AllowLocalLogin = true;
-    public static bool AllowRememberLogin = true;
-    public static TimeSpan RememberMeLoginDuration = TimeSpan.FromDays(30);
-    public static string InvalidCredentialsErrorMessage = "Invalid username or password";
+    public class LoginOptions
+    {
+        public static bool AllowLocalLogin = true;
+        public static bool AllowRememberLogin = true;
+        public static TimeSpan RememberMeLoginDuration = TimeSpan.FromDays(30);
+        public static string InvalidCredentialsErrorMessage = "Invalid username or password";
+    }
 }

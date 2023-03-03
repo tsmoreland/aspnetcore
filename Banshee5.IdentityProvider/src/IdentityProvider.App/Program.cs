@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright © 2023 Terry Moreland
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
@@ -13,10 +13,6 @@
 
 using Banshee5.IdentityProvider.App;
 using Serilog;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Banshee5.IdentityProvider.App.Data;
-using Banshee5.IdentityProvider.App.Models;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -26,16 +22,14 @@ Log.Information("Starting up");
 
 try
 {
-    WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+    var builder = WebApplication.CreateBuilder(args);
 
     builder.Host.UseSerilog((ctx, lc) => lc
-        .WriteTo.Console(
-            outputTemplate:
-            "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}")
+        .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}")
         .Enrich.FromLogContext()
         .ReadFrom.Configuration(ctx.Configuration));
 
-    WebApplication app = builder
+    var app = builder
         .ConfigureServices()
         .ConfigurePipeline();
 
@@ -51,10 +45,8 @@ try
 
     app.Run();
 }
-catch (Exception ex) when (ex.GetType().Name is not "StopTheHostException" && args.All(a => a != "--applicationName"))
+catch (Exception ex) when (ex.GetType().Name is not "StopTheHostException" && args.All(a => a != "--applicationName")) // https://github.com/dotnet/runtime/issues/60600
 {
-    // https://github.com/dotnet/runtime/issues/60600 for StopTheHostException
-    // --applicaitonName is based on observation when adding migration or optimizing context
     Log.Fatal(ex, "Unhandled exception");
 }
 finally
@@ -62,4 +54,3 @@ finally
     Log.Information("Shut down complete");
     Log.CloseAndFlush();
 }
-

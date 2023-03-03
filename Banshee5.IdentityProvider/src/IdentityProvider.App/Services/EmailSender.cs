@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright © 2023 Terry Moreland
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
@@ -11,36 +11,30 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System.ComponentModel.DataAnnotations;
-using Duende.IdentityServer.Models;
-using Duende.IdentityServer.Services;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 
-namespace Banshee5.IdentityProvider.App.Pages.Ciba
+namespace Banshee5.IdentityProvider.App.Services;
+
+public sealed class EmailSender : IEmailSender
 {
-    [SecurityHeaders]
-    [Authorize]
-    public class AllModel : PageModel
+    private readonly ISendGridClient _client;
+
+    public EmailSender(ISendGridClient client)
     {
-        public IEnumerable<BackchannelUserLoginRequest> Logins { get; set; }
+        _client = client ?? throw new ArgumentNullException(nameof(client));
+    }
 
-        [BindProperty, Required]
-        public string Id { get; set; }
-        [BindProperty, Required]
-        public string Button { get; set; }
+    /// <inheritdoc />
+    public async Task SendEmailAsync(string email, string subject, string htmlMessage)
+    {
+        EmailAddress from = new("no-reply@localhost", "no-reply");
+        EmailAddress to = new(email, email);
 
-        private readonly IBackchannelAuthenticationInteractionService _backchannelAuthenticationInteraction;
+        var message = MailHelper.CreateSingleEmail(from, to, subject, "empty", htmlMessage);
 
-        public AllModel(IBackchannelAuthenticationInteractionService backchannelAuthenticationInteractionService)
-        {
-            _backchannelAuthenticationInteraction = backchannelAuthenticationInteractionService;
-        }
-
-        public async Task OnGet()
-        {
-            Logins = await _backchannelAuthenticationInteraction.GetPendingLoginRequestsForCurrentUserAsync();
-        }
+        await _client.SendEmailAsync(message)
+            .ConfigureAwait(false);
     }
 }

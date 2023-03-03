@@ -8,7 +8,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Banshee5.IdentityProvider.App", "src\IdentityProvider.App\Banshee5.IdentityProvider.App.csproj", "{7BEC6075-0267-473B-8D61-342FE856F694}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banshee5.IdentityProvider.App", "src\IdentityProvider.App\Banshee5.IdentityProvider.App.csproj", "{196BE3BD-EDE6-47F6-AA39-83239F6DED9A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -16,10 +16,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7BEC6075-0267-473B-8D61-342FE856F694}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7BEC6075-0267-473B-8D61-342FE856F694}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7BEC6075-0267-473B-8D61-342FE856F694}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7BEC6075-0267-473B-8D61-342FE856F694}.Release|Any CPU.Build.0 = Release|Any CPU
+		{196BE3BD-EDE6-47F6-AA39-83239F6DED9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{196BE3BD-EDE6-47F6-AA39-83239F6DED9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{196BE3BD-EDE6-47F6-AA39-83239F6DED9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{196BE3BD-EDE6-47F6-AA39-83239F6DED9A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

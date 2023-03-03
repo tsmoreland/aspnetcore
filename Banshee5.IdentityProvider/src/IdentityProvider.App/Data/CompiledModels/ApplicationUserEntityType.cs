@@ -6,13 +6,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 #pragma warning disable 219, 612, 618
-#nullable enable
+#nullable disable
 
 namespace Banshee5.IdentityProvider.App.Data.CompiledModels
 {
     internal partial class ApplicationUserEntityType
     {
-        public static RuntimeEntityType Create(RuntimeModel model, RuntimeEntityType? baseEntityType = null)
+        public static RuntimeEntityType Create(RuntimeModel model, RuntimeEntityType baseEntityType = null)
         {
             var runtimeEntityType = model.AddEntityType(
                 "Banshee5.IdentityProvider.App.Models.ApplicationUser",
@@ -53,12 +53,6 @@ namespace Banshee5.IdentityProvider.App.Data.CompiledModels
                 typeof(bool),
                 propertyInfo: typeof(IdentityUser<string>).GetProperty("EmailConfirmed", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
                 fieldInfo: typeof(IdentityUser<string>).GetField("<EmailConfirmed>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly));
-
-            var location = runtimeEntityType.AddProperty(
-                "Location",
-                typeof(string),
-                propertyInfo: typeof(ApplicationUser).GetProperty("Location", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
-                fieldInfo: typeof(ApplicationUser).GetField("<Location>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly));
 
             var lockoutEnabled = runtimeEntityType.AddProperty(
                 "LockoutEnabled",

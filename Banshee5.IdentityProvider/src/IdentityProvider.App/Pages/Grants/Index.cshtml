@@ -1,5 +1,4 @@
 @page
-@using Banshee5.IdentityProvider.App.Pages.Grants
 @model Banshee5.IdentityProvider.App.Pages.Grants.Index
 @{
 }
@@ -22,7 +21,7 @@
     }
     else
     {
-        foreach (GrantViewModel grant in Model.View.Grants)
+        foreach (var grant in Model.View.Grants)
         {
             <div class="card">
                 <div class="card-header">
@@ -65,7 +64,7 @@
                         <li class="list-group-item">
                             <label>Identity Grants</label>
                             <ul>
-                                @foreach (string name in grant.IdentityGrantNames)
+                                @foreach (var name in grant.IdentityGrantNames)
                                 {
                                     <li>@name</li>
                                 }
@@ -77,7 +76,7 @@
                         <li class="list-group-item">
                             <label>API Grants</label>
                             <ul>
-                                @foreach (string name in grant.ApiGrantNames)
+                                @foreach (var name in grant.ApiGrantNames)
                                 {
                                     <li>@name</li>
                                 }

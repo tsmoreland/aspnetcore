@@ -11,37 +11,37 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Banshee5.IdentityProvider.App.Pages.Account.Logout;
-
-[SecurityHeaders]
-[AllowAnonymous]
-public class LoggedOut : PageModel
+namespace Banshee5.IdentityProvider.App.Pages.Account.Logout
 {
-    private readonly IIdentityServerInteractionService _interactionService;
-
-    public LoggedOutViewModel View { get; set; }
-
-    public LoggedOut(IIdentityServerInteractionService interactionService)
+    [SecurityHeaders]
+    [AllowAnonymous]
+    public class LoggedOut : PageModel
     {
-        _interactionService = interactionService;
-    }
+        private readonly IIdentityServerInteractionService _interactionService;
 
-    public async Task OnGet(string logoutId)
-    {
-        // get context information (client name, post logout redirect URI and iframe for federated signout)
-        LogoutRequest logout = await _interactionService.GetLogoutContextAsync(logoutId);
+        public LoggedOutViewModel View { get; set; }
 
-        View = new LoggedOutViewModel
+        public LoggedOut(IIdentityServerInteractionService interactionService)
         {
-            AutomaticRedirectAfterSignOut = LogoutOptions.AutomaticRedirectAfterSignOut,
-            PostLogoutRedirectUri = logout?.PostLogoutRedirectUri,
-            ClientName = String.IsNullOrEmpty(logout?.ClientName) ? logout?.ClientId : logout?.ClientName,
-            SignOutIframeUrl = logout?.SignOutIFrameUrl
-        };
+            _interactionService = interactionService;
+        }
+
+        public async Task OnGet(string logoutId)
+        {
+            // get context information (client name, post logout redirect URI and iframe for federated signout)
+            var logout = await _interactionService.GetLogoutContextAsync(logoutId);
+
+            View = new LoggedOutViewModel
+            {
+                AutomaticRedirectAfterSignOut = LogoutOptions.AutomaticRedirectAfterSignOut,
+                PostLogoutRedirectUri = logout?.PostLogoutRedirectUri,
+                ClientName = String.IsNullOrEmpty(logout?.ClientName) ? logout?.ClientId : logout?.ClientName,
+                SignOutIframeUrl = logout?.SignOutIFrameUrl
+            };
+        }
     }
 }

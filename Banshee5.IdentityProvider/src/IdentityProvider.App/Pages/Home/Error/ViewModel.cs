@@ -13,18 +13,19 @@
 
 using Duende.IdentityServer.Models;
 
-namespace Banshee5.IdentityProvider.App.Pages.Home.Error;
-
-public class ViewModel
+namespace Banshee5.IdentityProvider.App.Pages.Home.Error
 {
-    public ViewModel()
+    public class ViewModel
     {
-    }
+        public ViewModel()
+        {
+        }
 
-    public ViewModel(string error)
-    {
-        Error = new ErrorMessage { Error = error };
-    }
+        public ViewModel(string error)
+        {
+            Error = new ErrorMessage { Error = error };
+        }
 
-    public ErrorMessage Error { get; set; }
+        public ErrorMessage Error { get; set; }
+    }
 }

@@ -14,19 +14,20 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace Banshee5.IdentityProvider.App.Pages.Account.Login;
-
-public class InputModel
+namespace Banshee5.IdentityProvider.App.Pages.Account.Login
 {
-    [Required]
-    public string Username { get; set; }
+    public class InputModel
+    {
+        [Required]
+        public string Username { get; set; }
 
-    [Required]
-    public string Password { get; set; }
+        [Required]
+        public string Password { get; set; }
 
-    public bool RememberLogin { get; set; }
+        public bool RememberLogin { get; set; }
 
-    public string ReturnUrl { get; set; }
+        public string ReturnUrl { get; set; }
 
-    public string Button { get; set; }
+        public string Button { get; set; }
+    }
 }

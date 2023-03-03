@@ -13,8 +13,11 @@
 
 using Banshee5.IdentityProvider.App.Data;
 using Banshee5.IdentityProvider.App.Models;
+using Banshee5.IdentityProvider.App.Services;
+using Duende.IdentityServer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using SendGrid.Extensions.DependencyInjection;
 using Serilog;
 
 namespace Banshee5.IdentityProvider.App;
@@ -25,12 +28,15 @@ internal static class HostingExtensions
     {
         builder.Services.AddRazorPages();
 
-        builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new Exception("DefaultConnection is not defined")));
+        builder.Services.AddDbContext<ApplicationDbContext>();
 
         builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
+
+        builder.Services
+            .AddTransient<IEmailSender, EmailSender>()
+            .AddSendGrid(options => options.ApiKey = builder.Configuration.GetValue<string>("SendGrid:ApiKey"));
 
         builder.Services
             .AddIdentityServer(options =>
@@ -46,10 +52,8 @@ internal static class HostingExtensions
             .AddInMemoryIdentityResources(Config.IdentityResources)
             .AddInMemoryApiScopes(Config.ApiScopes)
             .AddInMemoryClients(Config.Clients)
-            .AddAspNetIdentity<ApplicationUser>()
-            .AddProfileService<Services.ProfileService>();
+            .AddAspNetIdentity<ApplicationUser>();
 
-#if ENABLE_GOOGLE
         builder.Services.AddAuthentication()
             .AddGoogle(options =>
             {
@@ -57,11 +61,10 @@ internal static class HostingExtensions
 
                 // register your IdentityServer with Google at https://console.developers.google.com
                 // enable the Google+ API
-                // set the redirect URI to https://localhost:9001/signin-google
+                // set the redirect URI to https://localhost:5001/signin-google
                 options.ClientId = "copy client ID from Google here";
                 options.ClientSecret = "copy client secret from Google here";
             });
-#endif
 
         return builder.Build();
     }

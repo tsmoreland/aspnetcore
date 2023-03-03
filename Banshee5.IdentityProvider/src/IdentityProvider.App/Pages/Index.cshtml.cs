@@ -15,15 +15,16 @@ using System.Reflection;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Banshee5.IdentityProvider.App.Pages;
-
-[AllowAnonymous]
-public class Index : PageModel
+namespace Banshee5.IdentityProvider.App.Pages
 {
-    public string Version;
-
-    public void OnGet()
+    [AllowAnonymous]
+    public class Index : PageModel
     {
-        Version = typeof(Duende.IdentityServer.Hosting.IdentityServerMiddleware).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion.Split('+').First();
+        public string Version;
+
+        public void OnGet()
+        {
+            Version = typeof(Duende.IdentityServer.Hosting.IdentityServerMiddleware).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion.Split('+').First();
+        }
     }
 }
