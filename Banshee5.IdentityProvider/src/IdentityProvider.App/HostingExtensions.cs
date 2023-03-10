@@ -26,19 +26,27 @@ internal static class HostingExtensions
 {
     public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
     {
-        builder.Services.AddRazorPages();
+        IServiceCollection services = builder.Services;
+        IConfiguration configuration = builder.Configuration;
 
-        builder.Services.AddDbContext<ApplicationDbContext>();
+        services.AddRazorPages();
 
-        builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+        services.AddDbContext<ApplicationDbContext>();
+
+        services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
 
-        builder.Services
+        services
             .AddTransient<IEmailSender, EmailSender>()
             .AddSendGrid(options => options.ApiKey = builder.Configuration.GetValue<string>("SendGrid:ApiKey"));
 
-        builder.Services
+        IdentityServerSettings config = new();
+        configuration.Bind(IdentityServerSettings.SectionName, config);
+
+        services.Configure<IdentityServerSettings>(configuration.GetSection(IdentityServerSettings.SectionName));
+
+        services
             .AddIdentityServer(options =>
             {
                 options.Events.RaiseErrorEvents = true;
@@ -50,7 +58,7 @@ internal static class HostingExtensions
                 options.EmitStaticAudienceClaim = true;
             })
             .AddInMemoryIdentityResources(Config.IdentityResources)
-            .AddInMemoryApiScopes(Config.ApiScopes)
+            .AddInMemoryApiScopes(config.ApiScopes)
             .AddInMemoryClients(Config.Clients)
             .AddAspNetIdentity<ApplicationUser>();
 
