@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Banshee5.IdentityProvider.App.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230303031142_Users")]
+    [Migration("20230310012028_Users")]
     partial class Users
     {
         /// <inheritdoc />

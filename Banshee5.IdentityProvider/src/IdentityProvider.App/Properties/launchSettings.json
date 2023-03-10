@@ -3,10 +3,11 @@
     "SelfHost": {
       "commandName": "Project",
       "launchBrowser": true,
+      "launchUrl": "identity/account/login",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "https://localhost:5001"
+      "applicationUrl": "https://localhost:9001"
     }
   }
 }
