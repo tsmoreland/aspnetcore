@@ -7,10 +7,6 @@ metadata:
   labels:
     app: frontend
 spec:
-  security-context:
-    fsGroup: 2000
-    runAsNonRoot: true
-    runAsUser: 1000
   selector:
     app: frontend
   ports:
@@ -41,6 +37,11 @@ spec:
       labels:
         app: frontend
     spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 2000
+        fsGroup: 2000
+        runAsNonRoot: true
       containers:
       - name: frontend
         image: frontend:dev
