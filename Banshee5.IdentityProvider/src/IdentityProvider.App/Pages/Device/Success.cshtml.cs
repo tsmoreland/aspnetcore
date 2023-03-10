@@ -14,13 +14,14 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Banshee5.IdentityProvider.App.Pages.Device;
-
-[SecurityHeaders]
-[Authorize]
-public class SuccessModel : PageModel
+namespace Banshee5.IdentityProvider.App.Pages.Device
 {
-    public void OnGet()
+    [SecurityHeaders]
+    [Authorize]
+    public class SuccessModel : PageModel
     {
+        public void OnGet()
+        {
+        }
     }
 }

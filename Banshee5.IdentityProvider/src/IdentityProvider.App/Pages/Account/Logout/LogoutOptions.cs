@@ -11,10 +11,11 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-namespace Banshee5.IdentityProvider.App.Pages.Account.Logout;
-
-public class LogoutOptions
+namespace Banshee5.IdentityProvider.App.Pages.Account.Logout
 {
-    public static bool ShowLogoutPrompt = true;
-    public static bool AutomaticRedirectAfterSignOut = false;
+    public class LogoutOptions
+    {
+        public static bool ShowLogoutPrompt = true;
+        public static bool AutomaticRedirectAfterSignOut = false;
+    }
 }

@@ -13,11 +13,12 @@
 
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Banshee5.IdentityProvider.App.Pages.Account;
-
-public class AccessDeniedModel : PageModel
+namespace Banshee5.IdentityProvider.App.Pages.Account
 {
-    public void OnGet()
+    public class AccessDeniedModel : PageModel
     {
+        public void OnGet()
+        {
+        }
     }
 }

@@ -13,8 +13,11 @@
 
 using Banshee5.IdentityProvider.App.Data;
 using Banshee5.IdentityProvider.App.Models;
+using Banshee5.IdentityProvider.App.Services;
+using Duende.IdentityServer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using SendGrid.Extensions.DependencyInjection;
 using Serilog;
 
 namespace Banshee5.IdentityProvider.App;
@@ -23,16 +26,27 @@ internal static class HostingExtensions
 {
     public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
     {
-        builder.Services.AddRazorPages();
+        IServiceCollection services = builder.Services;
+        IConfiguration configuration = builder.Configuration;
 
-        builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new Exception("DefaultConnection is not defined")));
+        services.AddRazorPages();
 
-        builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+        services.AddDbContext<ApplicationDbContext>();
+
+        services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
 
-        builder.Services
+        services
+            .AddTransient<IEmailSender, EmailSender>()
+            .AddSendGrid(options => options.ApiKey = builder.Configuration.GetValue<string>("SendGrid:ApiKey"));
+
+        IdentityServerSettings config = new();
+        configuration.Bind(IdentityServerSettings.SectionName, config);
+
+        services.Configure<IdentityServerSettings>(configuration.GetSection(IdentityServerSettings.SectionName));
+
+        services
             .AddIdentityServer(options =>
             {
                 options.Events.RaiseErrorEvents = true;
@@ -44,12 +58,11 @@ internal static class HostingExtensions
                 options.EmitStaticAudienceClaim = true;
             })
             .AddInMemoryIdentityResources(Config.IdentityResources)
-            .AddInMemoryApiScopes(Config.ApiScopes)
+            .AddInMemoryApiScopes(config.ApiScopes)
             .AddInMemoryClients(Config.Clients)
-            .AddAspNetIdentity<ApplicationUser>()
-            .AddProfileService<Services.ProfileService>();
+            .AddAspNetIdentity<ApplicationUser>();
 
-#if ENABLE_GOOGLE
+#if USE_GOOGLE
         builder.Services.AddAuthentication()
             .AddGoogle(options =>
             {
@@ -57,7 +70,7 @@ internal static class HostingExtensions
 
                 // register your IdentityServer with Google at https://console.developers.google.com
                 // enable the Google+ API
-                // set the redirect URI to https://localhost:9001/signin-google
+                // set the redirect URI to https://localhost:5001/signin-google
                 options.ClientId = "copy client ID from Google here";
                 options.ClientSecret = "copy client secret from Google here";
             });

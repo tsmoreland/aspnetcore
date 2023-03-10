@@ -1,5 +1,4 @@
 @page
-@using Banshee5.IdentityProvider.App.Pages.Ciba
 @model Banshee5.IdentityProvider.App.Pages.Ciba.Consent
 @{
 }
@@ -39,7 +38,7 @@
                                 Personal Information
                             </div>
                             <ul class="list-group list-group-flush">
-                                @foreach (ScopeViewModel scope in Model.View.IdentityScopes)
+                                @foreach (var scope in Model.View.IdentityScopes)
                                 {
                                     <partial name="_ScopeListItem" model="@scope" />
                                 }
@@ -57,7 +56,7 @@
                                 Application Access
                             </div>
                             <ul class="list-group list-group-flush">
-                                @foreach (ScopeViewModel scope in Model.View.ApiScopes)
+                                @foreach (var scope in Model.View.ApiScopes)
                                 {
                                     <partial name="_ScopeListItem" model="scope" />
                                 }

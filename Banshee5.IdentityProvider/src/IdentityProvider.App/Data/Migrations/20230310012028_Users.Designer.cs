@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Banshee5.IdentityProvider.App.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230301234415_Users")]
+    [Migration("20230310012028_Users")]
     partial class Users
     {
         /// <inheritdoc />
@@ -38,10 +38,6 @@ namespace Banshee5.IdentityProvider.App.Data.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("INTEGER");

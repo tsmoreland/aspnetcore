@@ -11,12 +11,13 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-namespace Banshee5.IdentityProvider.App.Pages.Ciba;
-
-public class InputModel
+namespace Banshee5.IdentityProvider.App.Pages.Ciba
 {
-    public string Button { get; set; }
-    public IEnumerable<string> ScopesConsented { get; set; }
-    public string Id { get; set; }
-    public string Description { get; set; }
+    public class InputModel
+    {
+        public string Button { get; set; }
+        public IEnumerable<string> ScopesConsented { get; set; }
+        public string Id { get; set; }
+        public string Description { get; set; }
+    }
 }

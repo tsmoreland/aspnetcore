@@ -1,4 +1,3 @@
-@using Banshee5.IdentityProvider.App.Pages.Ciba
 @model Banshee5.IdentityProvider.App.Pages.Ciba.ScopeViewModel
 
 <li class="list-group-item">
@@ -37,7 +36,7 @@
         <div class="consent-description">
             <label>Will be available to these resource servers:</label>
             <ul>
-            @foreach (ResourceViewModel resource in Model.Resources)
+            @foreach (var resource in Model.Resources)
             {
                 <li>@resource.DisplayName</li>
             }
