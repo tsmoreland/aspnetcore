@@ -22,6 +22,30 @@ public sealed class CustomerEntityTypeConfiguration : IEntityTypeConfiguration<C
     /// <inheritdoc />
     public void Configure(EntityTypeBuilder<Customer> builder)
     {
+        builder.ToTable("customers");
+
         builder.HasKey(e => e.Id);
+        builder.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
+
+        builder.Property(e => e.FirstName)
+            .HasColumnName("first_name")
+            .IsRequired()
+            .HasMaxLength(100)
+            .IsUnicode();
+        builder.Property(e => e.LastName).IsRequired()
+            .HasColumnName("last_name")
+            .IsRequired()
+            .HasMaxLength(100)
+            .IsUnicode();
+        builder.Property(e => e.Username).IsRequired()
+            .HasColumnName("username")
+            .IsRequired()
+            .HasMaxLength(20)
+            .IsUnicode();
+
+        builder
+            .HasMany(e => e.Orders)
+            .WithOne(e => e.Customer)
+            .HasForeignKey(e => e.CustomerId);
     }
 }

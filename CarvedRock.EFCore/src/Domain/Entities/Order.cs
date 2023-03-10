@@ -8,17 +8,17 @@ public sealed class Order
     }
 
     public Order(string name, Customer customer, ICollection<Item> items)
-        : this(0, name, customer.Id, customer, items)
+        : this(0, name, customer.Id)
     {
+        Customer = customer;
+        Items = items;
     }
 
-    private Order(int id, string name, int customerId, Customer customer, ICollection<Item> items)
+    private Order(int id, string name, int customerId)
     {
         Id = id;
         Name = name;
         CustomerId = customerId;
-        Customer = customer;
-        Items = items;
     }
 
     public required int Id { get; init; }
@@ -27,7 +27,7 @@ public sealed class Order
 
     public required int CustomerId { get; init; }
 
-    public required Customer Customer { get; init; }
+    public required Customer Customer { get; init; } 
 
     public required ICollection<Item> Items { get; init; }
 }

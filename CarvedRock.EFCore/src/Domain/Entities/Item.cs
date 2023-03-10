@@ -26,5 +26,5 @@ public sealed class Item
     public required decimal Price { get; set; }
     public required float Weight { get; set; }
 
-    public ICollection<Order> Orders { get; init; } 
+    public required ICollection<Order> Orders { get; init; } 
 }

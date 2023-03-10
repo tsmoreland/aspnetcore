@@ -24,6 +24,6 @@ public sealed class Customer
 
     public required string Username { get; set; }
 
-    public ICollection<Order> Orders { get; init; } 
+    public required ICollection<Order> Orders { get; init; } 
 
 }
