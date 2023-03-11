@@ -24,6 +24,7 @@ public sealed class Item
     public required int Id { get; init; }
     public required string Description { get; set; }
     public required decimal Price { get; set; }
+    public required decimal PriceAfterVat { get; init; }
     public required float Weight { get; set; }
 
     public required ICollection<Order> Orders { get; init; } 

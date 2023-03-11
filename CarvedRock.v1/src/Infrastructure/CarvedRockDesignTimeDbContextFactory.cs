@@ -33,7 +33,7 @@ public sealed class CarvedRockDesignTimeDbContextFactory : IDesignTimeDbContextF
         DbContextOptionsBuilder<CarvedRockDbContext> optionsBuilder = new();
         // SqlServer 2019 Localdb
         optionsBuilder.UseSqlServer(
-            "Server=(LocalDB)\v15.0; Integrated Security=True; MultipleActiveResultSets=True",
+            @"Server=(localdb)\MSSQLLocalDB; Integrated Security=True; MultipleActiveResultSets=True",
             options => options.MigrationsAssembly(typeof(SqlServerModelConfiguration).Assembly.FullName));
         CarvedRockDbContext dbContext = new(optionsBuilder.Options, modelConfiguration);
         return dbContext;

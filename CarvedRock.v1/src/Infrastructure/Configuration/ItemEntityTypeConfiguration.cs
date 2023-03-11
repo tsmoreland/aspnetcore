@@ -24,6 +24,11 @@ public sealed class ItemEntityTypeConfiguration : IEntityTypeConfiguration<Item>
             .HasColumnType("decimal(22,2)")
             .IsRequired();
 
+        builder.Property(e => e.PriceAfterVat)
+            .HasColumnName("price_after_vat")
+            .HasColumnType("decimal(22,2)")
+            .HasComputedColumnSql("[price]*1.20");
+
         builder.Property(e => e.Weight)
             .HasColumnName("unit_weight")
             .HasColumnType("float(36)")

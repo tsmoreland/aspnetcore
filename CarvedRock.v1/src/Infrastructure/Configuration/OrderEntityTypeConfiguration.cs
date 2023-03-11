@@ -19,11 +19,9 @@ public sealed class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Orde
             .IsUnicode()
             .HasMaxLength(50);
 
-        /*
         builder.Property(e => e.CustomerId)
             .IsRequired()
             .HasColumnName("customer_id");
-        */
 
         builder
             .HasOne(e => e.Customer)
