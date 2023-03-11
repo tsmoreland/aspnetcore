@@ -4,6 +4,7 @@ using CarvedRock.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarvedRock.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(CarvedRockDbContext))]
-    partial class CarvedRockDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230311133502_PriceAfterVat")]
+    partial class PriceAfterVat
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -176,83 +179,6 @@ namespace CarvedRock.Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("tag", (string)null);
-                });
-
-            modelBuilder.Entity("CarvedRock.Domain.Entities.Customer", b =>
-                {
-                    b.OwnsOne("CarvedRock.Domain.ValueObjects.Address", "BillToAddress", b1 =>
-                        {
-                            b1.Property<int>("CustomerId")
-                                .HasColumnType("int");
-
-                            b1.Property<string>("City")
-                                .IsRequired()
-                                .HasMaxLength(50)
-                                .IsUnicode(true)
-                                .HasColumnType("nvarchar(50)")
-                                .HasColumnName("billto_city");
-
-                            b1.Property<string>("Country")
-                                .IsRequired()
-                                .HasMaxLength(50)
-                                .IsUnicode(true)
-                                .HasColumnType("nvarchar(50)")
-                                .HasColumnName("billto_country");
-
-                            b1.Property<string>("Street")
-                                .IsRequired()
-                                .HasMaxLength(50)
-                                .IsUnicode(true)
-                                .HasColumnType("nvarchar(50)")
-                                .HasColumnName("billto_street");
-
-                            b1.HasKey("CustomerId");
-
-                            b1.ToTable("customers");
-
-                            b1.WithOwner()
-                                .HasForeignKey("CustomerId");
-                        });
-
-                    b.OwnsOne("CarvedRock.Domain.ValueObjects.Address", "ShipToAddress", b1 =>
-                        {
-                            b1.Property<int>("CustomerId")
-                                .HasColumnType("int");
-
-                            b1.Property<string>("City")
-                                .IsRequired()
-                                .HasMaxLength(50)
-                                .IsUnicode(true)
-                                .HasColumnType("nvarchar(50)")
-                                .HasColumnName("shipto_city");
-
-                            b1.Property<string>("Country")
-                                .IsRequired()
-                                .HasMaxLength(50)
-                                .IsUnicode(true)
-                                .HasColumnType("nvarchar(50)")
-                                .HasColumnName("shipto_country");
-
-                            b1.Property<string>("Street")
-                                .IsRequired()
-                                .HasMaxLength(50)
-                                .IsUnicode(true)
-                                .HasColumnType("nvarchar(50)")
-                                .HasColumnName("shipto_street");
-
-                            b1.HasKey("CustomerId");
-
-                            b1.ToTable("customers");
-
-                            b1.WithOwner()
-                                .HasForeignKey("CustomerId");
-                        });
-
-                    b.Navigation("BillToAddress")
-                        .IsRequired();
-
-                    b.Navigation("ShipToAddress")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("CarvedRock.Domain.Entities.Order", b =>

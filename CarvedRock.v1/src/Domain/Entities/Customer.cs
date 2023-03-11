@@ -1,21 +1,30 @@
-﻿namespace CarvedRock.Domain.Entities;
+﻿using CarvedRock.Domain.ValueObjects;
+
+namespace CarvedRock.Domain.Entities;
 
 public sealed class Customer
 {
     private readonly Dictionary<string, object?> _data = new();
 
-    public Customer(string firstName, string lastName, string username)
-        : this(0, firstName, lastName, username, new HashSet<Order>())
+    public Customer(string firstName, string lastName, string username, Address shipToAddress, Address billToAddress)
+        : this(firstName, lastName, username, shipToAddress, billToAddress, new HashSet<Order>())
     {
     }
 
-    private Customer(int id, string firstName, string lastName, string username, ICollection<Order> orders)
+    public Customer(string firstName, string lastName, string username, Address shipToAddress, Address billToAddress, ICollection<Order> orders)
+        : this(0, firstName, lastName, username)
+    {
+        ShipToAddress = shipToAddress;
+        BillToAddress = billToAddress;
+        Orders = orders;
+    }
+
+    private Customer(int id, string firstName, string lastName, string username)
     {
         Id = id;
         FirstName = firstName;
         LastName = lastName;
         Username = username;
-        Orders = orders;
     }
 
     public required int Id { get; init; }
@@ -24,7 +33,13 @@ public sealed class Customer
 
     public required string LastName { get; set; }
 
+    public string FullName => $"{FirstName} {LastName}";
+    public string OrderedFullName => $"{LastName}, {FirstName}";
+
     public string Username { get; private set; }
+
+    public required Address ShipToAddress { get; set; }
+    public required Address BillToAddress { get; set; }
 
     public required ICollection<Order> Orders { get; init; }
 

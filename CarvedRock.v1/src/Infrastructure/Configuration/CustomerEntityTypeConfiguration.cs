@@ -12,6 +12,7 @@
 //
 
 using CarvedRock.Domain.Entities;
+using CarvedRock.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -57,10 +58,34 @@ public sealed class CustomerEntityTypeConfiguration : IEntityTypeConfiguration<C
 
         builder.Ignore(e => e.ConsumerType);
         builder.Ignore(e => e.LastUpdated);
+        builder.Ignore(e => e.FullName);
+        builder.Ignore(e => e.OrderedFullName);
+
+        ConfigureOwnedAddress(builder.OwnsOne(e => e.ShipToAddress), "shipto");
+        ConfigureOwnedAddress(builder.OwnsOne(e => e.BillToAddress), "billto");
 
         builder
             .HasMany(e => e.Orders)
             .WithOne(e => e.Customer)
             .HasForeignKey(e => e.CustomerId);
+    }
+
+    private void ConfigureOwnedAddress(OwnedNavigationBuilder<Customer, Address> builder, string columnPrefix)
+    {
+        builder.Property(o => o.Street)
+            .HasColumnName($"{columnPrefix}_street")
+            .IsRequired()
+            .HasMaxLength(50)
+            .IsUnicode();
+        builder.Property(o => o.City)
+            .HasColumnName($"{columnPrefix}_city")
+            .IsRequired()
+            .HasMaxLength(50)
+            .IsUnicode();
+        builder.Property(o => o.Country)
+            .HasColumnName($"{columnPrefix}_country")
+            .IsRequired()
+            .HasMaxLength(50)
+            .IsUnicode();
     }
 }
