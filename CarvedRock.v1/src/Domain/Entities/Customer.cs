@@ -54,7 +54,7 @@ public sealed class Customer
         this["LastUpdatedBacking"] = DateTime.UtcNow;
     }
 
-    public void SetConsumerType(string consumerType)
+    public void SetConsumerTypeOrThrow(string consumerType)
     {
         if (consumerType is not { Length: > 0 })
         {
