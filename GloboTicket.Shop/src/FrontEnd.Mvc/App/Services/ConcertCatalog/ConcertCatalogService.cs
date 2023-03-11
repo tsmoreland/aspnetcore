@@ -27,6 +27,8 @@ public sealed class ConcertCatalogService : IConcertCatalogService
     public async Task<Concert?> GetConcert(Guid id, CancellationToken cancellationToken)
     {
         HttpResponseMessage response = await _client.GetAsync($"api/concerts/{id}", cancellationToken);
-        return await response.ReadAs<Concert>(cancellationToken);
+        return response.IsSuccessStatusCode
+            ? await response.ReadAs<Concert>(cancellationToken)
+            : null;
     }
 }

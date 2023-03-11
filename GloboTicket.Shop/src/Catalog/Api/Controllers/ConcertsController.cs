@@ -53,6 +53,9 @@ public class ConcertsController : ControllerBase
     [HttpGet("{id}", Name = nameof(GetConcertById))]
     public async Task<IActionResult> GetConcertById(Guid id, CancellationToken cancellationToken)
     {
-        return Ok(await _mediator.Send(new GetConcertByIdQuery(id), cancellationToken));
+        ConcertDto? dto = await (_mediator.Send(new GetConcertByIdQuery(id), cancellationToken).ConfigureAwait(false));
+        return dto is not null
+            ? Ok(dto)
+            : NotFound();
     }
 }
