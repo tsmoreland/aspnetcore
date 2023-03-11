@@ -43,6 +43,19 @@ public sealed class CustomerEntityTypeConfiguration : IEntityTypeConfiguration<C
             .HasMaxLength(20)
             .IsUnicode();
 
+        builder.Property<byte[]>("Checksum")
+            .HasColumnName("checksum")
+            .HasComputedColumnSql("CONVERT(VARBINARY(1024),CHECKSUM([username],[first_name],[last_name]))");
+
+        builder.IndexerProperty<DateTime>("lastUpdatedBacking")
+            .HasColumnName("last_updated")
+            .HasDefaultValue(new DateTime(2000, 1, 1));
+        builder.IndexerProperty<string>("ConsumerTypeBacking")
+            .HasColumnName("consumer_type");
+
+        builder.Ignore(e => e.ConsumerType);
+        builder.Ignore(e => e.LastUpdated);
+
         builder
             .HasMany(e => e.Orders)
             .WithOne(e => e.Customer)

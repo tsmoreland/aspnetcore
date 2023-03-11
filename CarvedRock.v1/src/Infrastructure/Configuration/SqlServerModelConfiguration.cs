@@ -39,6 +39,19 @@ public sealed class SqlServerModelConfiguration : IModelConfiguration<ModelBuild
     public void ConfigureModel(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(CarvedRockDbContext).Assembly);
+
+        // setup as shared type entity to show property bag usage, in this case we could just use an explicity entity instead
+        // but this may be helpful if constructing these from something like the settings file (i.e. where it's more dynamic)
+        modelBuilder
+            .SharedTypeEntity<Dictionary<string, object?>>("Tag", entity =>
+            {
+                entity.ToTable("tag");
+                entity.Property<int>("Id").HasColumnName("id");
+                entity.Property<int>("CustomerId").HasColumnName("customer_id");
+                entity.Property<string>("Nickname").HasColumnName("nickname");
+                entity.Property<int>("DiscountRate").HasColumnName("discount_rate");
+            });
+
     }
 
     /// <inheritdoc />

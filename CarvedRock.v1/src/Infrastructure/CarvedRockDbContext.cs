@@ -21,6 +21,8 @@ public sealed class CarvedRockDbContext : DbContext
 
     public DbSet<Item> Items => Set<Item>();
 
+    public DbSet<Dictionary<string, object?>> Tags => Set<Dictionary<string, object?>>("Tag");
+
     /// <inheritdoc />
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
