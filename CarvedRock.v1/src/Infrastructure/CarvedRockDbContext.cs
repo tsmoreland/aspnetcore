@@ -6,10 +6,10 @@ namespace CarvedRock.Infrastructure;
 
 public sealed class CarvedRockDbContext : DbContext
 {
-    private readonly IModelConfiguration<ModelBuilder, DbContextOptionsBuilder> _configuration;
+    private readonly IModelConfiguration<ModelBuilder, DbContextOptionsBuilder, ModelConfigurationBuilder> _configuration;
 
     /// <inheritdoc />
-    public CarvedRockDbContext(DbContextOptions options, IModelConfiguration<ModelBuilder, DbContextOptionsBuilder> configuration)
+    public CarvedRockDbContext(DbContextOptions options, IModelConfiguration<ModelBuilder, DbContextOptionsBuilder, ModelConfigurationBuilder> configuration)
         : base(options)
     {
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
@@ -33,5 +33,12 @@ public sealed class CarvedRockDbContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         _configuration.ConfigureContext(optionsBuilder);
+    }
+
+    /// <inheritdoc />
+    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+    {
+        _configuration.ConfigureConventions(configurationBuilder);
+        base.ConfigureConventions(configurationBuilder);
     }
 }

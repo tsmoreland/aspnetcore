@@ -13,8 +13,9 @@
 
 namespace CarvedRock.Infrastructure.Contracts;
 
-public interface IModelConfiguration<in TModelBuilder, in TOptionsBuilder>
+public interface IModelConfiguration<in TModelBuilder, in TOptionsBuilder, in TModelConfigurationBuilder>
 {
     void ConfigureModel(TModelBuilder modelBuilder);
     void ConfigureContext(TOptionsBuilder optionsBuilder);
+    void ConfigureConventions(TModelConfigurationBuilder configurationBuilder);
 }

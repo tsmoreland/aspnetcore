@@ -23,6 +23,12 @@ public sealed class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Orde
             .IsRequired()
             .HasColumnName("customer_id");
 
+        builder.Property(e => e.Status)
+            .HasColumnName("status")
+            .IsRequired()
+            .HasMaxLength(20)
+            .IsUnicode(false);
+
         builder
             .HasOne(e => e.Customer)
             .WithMany(e => e.Orders)

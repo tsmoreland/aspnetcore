@@ -13,14 +13,16 @@
 
 using CarvedRock.Application.Contracts;
 using CarvedRock.Application.Contracts.Exceptions;
+using CarvedRock.Domain.ValueObjects;
 using CarvedRock.Infrastructure.Contracts;
+using CarvedRock.Infrastructure.Converters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace CarvedRock.Infrastructure.Configuration;
 
-public sealed class SqlServerModelConfiguration : IModelConfiguration<ModelBuilder, DbContextOptionsBuilder>
+public sealed class SqlServerModelConfiguration : IModelConfiguration<ModelBuilder, DbContextOptionsBuilder, ModelConfigurationBuilder>
 {
     private readonly IConfiguration _configuration;
     private readonly ILogger<SqlServerModelConfiguration> _logger;
@@ -76,5 +78,18 @@ public sealed class SqlServerModelConfiguration : IModelConfiguration<ModelBuild
         {
             //optionsBuilder.UseModel(CompiledModels.CarvedRockDbContextModel.Instance);
         }
+    }
+
+    /// <inheritdoc />
+    public void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+    {
+        configurationBuilder
+            .Properties<Status>()
+            .HaveConversion<StatusConverter>();
+
+        configurationBuilder
+            .Properties<string>()
+            .HaveConversion<ShortStringConverter>();
+        
     }
 }

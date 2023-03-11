@@ -46,6 +46,7 @@ public sealed class CustomerEntityTypeConfiguration : IEntityTypeConfiguration<C
             .IsRequired()
             .HasMaxLength(20)
             .IsUnicode();
+#if DO_NOT_USE_CONVENTION_CONVERTER
         builder.Property(e => e.Status)
             .HasColumnName("status")
             .IsRequired()
@@ -54,9 +55,10 @@ public sealed class CustomerEntityTypeConfiguration : IEntityTypeConfiguration<C
             .HasConversion(
                 v => v.ToString(),
                 v => !string.IsNullOrWhiteSpace(v)
-                    ? Enum.Parse<AccountStatus>(v)
-                    : AccountStatus.Pending);
+                    ? Enum.Parse<Status>(v)
+                    : Status.Pending);
         // or simplified to .HasConversion<string>();
+#endif
 
 
         builder.Property<byte[]>("Checksum")

@@ -6,12 +6,12 @@ public sealed class Customer
 {
     private readonly Dictionary<string, object?> _data = new();
 
-    public Customer(string firstName, string lastName, string username, AccountStatus status, Address shipToAddress, Address billToAddress)
+    public Customer(string firstName, string lastName, string username, Status status, Address shipToAddress, Address billToAddress)
         : this(firstName, lastName, username, status, shipToAddress, billToAddress, new HashSet<Order>())
     {
     }
 
-    public Customer(string firstName, string lastName, string username, AccountStatus status, Address shipToAddress, Address billToAddress, ICollection<Order> orders)
+    public Customer(string firstName, string lastName, string username, Status status, Address shipToAddress, Address billToAddress, ICollection<Order> orders)
         : this(0, firstName, lastName, username, status)
     {
         ShipToAddress = shipToAddress;
@@ -19,7 +19,7 @@ public sealed class Customer
         Orders = orders;
     }
 
-    private Customer(int id, string firstName, string lastName, string username, AccountStatus status)
+    private Customer(int id, string firstName, string lastName, string username, Status status)
     {
         Id = id;
         FirstName = firstName;
@@ -39,7 +39,7 @@ public sealed class Customer
 
     public string Username { get; private set; }
 
-    public AccountStatus Status { get; set; }
+    public Status Status { get; set; }
 
     public required Address ShipToAddress { get; set; }
     public required Address BillToAddress { get; set; }

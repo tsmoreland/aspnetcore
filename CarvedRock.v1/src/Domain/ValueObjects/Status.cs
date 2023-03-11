@@ -1,6 +1,6 @@
 ﻿namespace CarvedRock.Domain.ValueObjects;
 
-public enum AccountStatus
+public enum Status
 {
     Pending,
     Active,
