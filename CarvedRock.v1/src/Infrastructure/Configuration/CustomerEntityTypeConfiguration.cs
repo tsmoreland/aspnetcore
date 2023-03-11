@@ -11,6 +11,7 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using System.Globalization;
 using CarvedRock.Domain.Entities;
 using CarvedRock.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
@@ -35,16 +36,28 @@ public sealed class CustomerEntityTypeConfiguration : IEntityTypeConfiguration<C
             .IsRequired()
             .HasMaxLength(100)
             .IsUnicode();
-        builder.Property(e => e.LastName).IsRequired()
+        builder.Property(e => e.LastName)
             .HasColumnName("last_name")
             .IsRequired()
             .HasMaxLength(100)
             .IsUnicode();
-        builder.Property(e => e.Username).IsRequired()
+        builder.Property(e => e.Username)
             .HasColumnName("username")
             .IsRequired()
             .HasMaxLength(20)
             .IsUnicode();
+        builder.Property(e => e.Status)
+            .HasColumnName("status")
+            .IsRequired()
+            .HasMaxLength(20)
+            .IsUnicode(false)
+            .HasConversion(
+                v => v.ToString(),
+                v => !string.IsNullOrWhiteSpace(v)
+                    ? Enum.Parse<AccountStatus>(v)
+                    : AccountStatus.Pending);
+        // or simplified to .HasConversion<string>();
+
 
         builder.Property<byte[]>("Checksum")
             .HasColumnName("checksum")
@@ -70,7 +83,7 @@ public sealed class CustomerEntityTypeConfiguration : IEntityTypeConfiguration<C
             .HasForeignKey(e => e.CustomerId);
     }
 
-    private void ConfigureOwnedAddress(OwnedNavigationBuilder<Customer, Address> builder, string columnPrefix)
+    private static void ConfigureOwnedAddress(OwnedNavigationBuilder<Customer, Address> builder, string columnPrefix)
     {
         builder.Property(o => o.Street)
             .HasColumnName($"{columnPrefix}_street")
