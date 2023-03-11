@@ -51,7 +51,7 @@ public sealed class HttpOrderSubmissionService : IOrderSubmissionService
             },
         };
         // make a synchronous call to the ordering microservice
-        HttpResponseMessage response = await _orderingClient.PostAsJsonAsync("orders", order);
+        HttpResponseMessage response = await _orderingClient.PostAsJsonAsync("api/orders", order, cancellationToken);
         if (response.IsSuccessStatusCode)
         {
             return order.OrderId;

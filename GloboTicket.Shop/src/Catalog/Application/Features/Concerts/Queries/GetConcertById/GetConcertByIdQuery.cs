@@ -11,23 +11,8 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System.Linq.Expressions;
-using GloboTicket.Shop.Catalog.Domain.Models;
-using GloboTicket.Shop.Shared.Contracts.Persistence;
-using GloboTicket.Shop.Shared.Contracts.Persistence.Specifications;
+using MediatR;
 
-namespace GloboTicket.Shop.Catalog.Application.Features.Concerts.Queries.GetConcerts;
+namespace GloboTicket.Shop.Catalog.Application.Features.Concerts.Queries.GetConcertById;
 
-public sealed class ConcertDtoSelectorSpecification : ISelectorSpecification<Concert, ConcertSummaryDto>
-{
-    /// <inheritdoc />
-    public Expression<Func<Concert, ConcertSummaryDto>> Selector => c => new ConcertSummaryDto(c);
-
-    /// <inheritdoc />
-    public IAsyncEnumerable<ConcertSummaryDto> ProjectToAsyncEnumerable(IQueryable<Concert> query, IQueryableToEnumerableConverter queryableConverter)
-    {
-        return queryableConverter
-            .ConvertToAsyncEnumerable(query.Select(c => new { c.ConcertId, c.Name, c.Artist, c.Price, c.Date, c.Description, c.ImageUrl }))
-            .Select(c => new ConcertSummaryDto(c.ConcertId, c.Name, c.Artist, c.Date, c.Price, c.Description, c.ImageUrl));
-    }
-}
+public sealed record class GetConcertByIdQuery(Guid Id) : IRequest<ConcertDto?>;

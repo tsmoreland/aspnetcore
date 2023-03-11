@@ -11,23 +11,56 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System.Linq.Expressions;
+using System.Diagnostics.CodeAnalysis;
 using GloboTicket.Shop.Catalog.Domain.Models;
-using GloboTicket.Shop.Shared.Contracts.Persistence;
-using GloboTicket.Shop.Shared.Contracts.Persistence.Specifications;
 
 namespace GloboTicket.Shop.Catalog.Application.Features.Concerts.Queries.GetConcerts;
 
-public sealed class ConcertDtoSelectorSpecification : ISelectorSpecification<Concert, ConcertSummaryDto>
+public sealed class ConcertSummaryDto
 {
-    /// <inheritdoc />
-    public Expression<Func<Concert, ConcertSummaryDto>> Selector => c => new ConcertSummaryDto(c);
-
-    /// <inheritdoc />
-    public IAsyncEnumerable<ConcertSummaryDto> ProjectToAsyncEnumerable(IQueryable<Concert> query, IQueryableToEnumerableConverter queryableConverter)
+    public ConcertSummaryDto()
     {
-        return queryableConverter
-            .ConvertToAsyncEnumerable(query.Select(c => new { c.ConcertId, c.Name, c.Artist, c.Price, c.Date, c.Description, c.ImageUrl }))
-            .Select(c => new ConcertSummaryDto(c.ConcertId, c.Name, c.Artist, c.Date, c.Price, c.Description, c.ImageUrl));
     }
+
+    [SetsRequiredMembers]
+    public ConcertSummaryDto(Concert concert)
+    {
+        ArgumentNullException.ThrowIfNull(concert);
+
+        Id = concert.ConcertId;
+        Name = concert.Name;
+        Artist = concert.Artist;
+        Price = concert.Price;
+        Date = concert.Date;
+        Description = concert.Description;
+        ImageUrl = concert.ImageUrl;
+    }
+
+    [SetsRequiredMembers]
+    public ConcertSummaryDto(Guid id, string name, string artist, DateTime date, int price, string description, string? imageUrl)
+    {
+        Id = id;
+        Name = name;
+        Artist = artist;
+        Date = date;
+        Price = price;
+        Description = description;
+        ImageUrl = imageUrl;
+    }
+
+
+    public required Guid Id { get; init; }
+
+    public required string Name { get; init; }
+
+    public required string Artist { get; init; }
+
+    public required DateTime Date { get; init; }
+
+    public required int Price { get; init; }
+
+    public string Description { get; init; } = string.Empty;
+
+    public string? ImageUrl { get; init; } 
+
 }

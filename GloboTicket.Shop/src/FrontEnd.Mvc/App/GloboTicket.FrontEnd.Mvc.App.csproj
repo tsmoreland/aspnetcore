@@ -25,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="logs\" />
     <Folder Include="Views\ConcertCatalog\DisplayTemplates\" />
   </ItemGroup>
 

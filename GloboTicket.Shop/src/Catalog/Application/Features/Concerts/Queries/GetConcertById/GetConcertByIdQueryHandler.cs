@@ -11,23 +11,28 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System.Linq.Expressions;
+using GloboTicket.Shop.Catalog.Application.Contracts.Persistence;
 using GloboTicket.Shop.Catalog.Domain.Models;
-using GloboTicket.Shop.Shared.Contracts.Persistence;
-using GloboTicket.Shop.Shared.Contracts.Persistence.Specifications;
+using MediatR;
 
-namespace GloboTicket.Shop.Catalog.Application.Features.Concerts.Queries.GetConcerts;
+namespace GloboTicket.Shop.Catalog.Application.Features.Concerts.Queries.GetConcertById;
 
-public sealed class ConcertDtoSelectorSpecification : ISelectorSpecification<Concert, ConcertSummaryDto>
+public sealed class GetConcertByIdQueryHandler : IRequestHandler<GetConcertByIdQuery, ConcertDto?>
 {
-    /// <inheritdoc />
-    public Expression<Func<Concert, ConcertSummaryDto>> Selector => c => new ConcertSummaryDto(c);
+    private readonly IConcertRepository _repository;
+
+    public GetConcertByIdQueryHandler(IConcertRepository repository)
+    {
+        _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+    }
 
     /// <inheritdoc />
-    public IAsyncEnumerable<ConcertSummaryDto> ProjectToAsyncEnumerable(IQueryable<Concert> query, IQueryableToEnumerableConverter queryableConverter)
+    public async Task<ConcertDto?> Handle(GetConcertByIdQuery request, CancellationToken cancellationToken)
     {
-        return queryableConverter
-            .ConvertToAsyncEnumerable(query.Select(c => new { c.ConcertId, c.Name, c.Artist, c.Price, c.Date, c.Description, c.ImageUrl }))
-            .Select(c => new ConcertSummaryDto(c.ConcertId, c.Name, c.Artist, c.Date, c.Price, c.Description, c.ImageUrl));
+        Concert? concert = await (_repository.GetByIdAsync(request.Id, cancellationToken)
+            .ConfigureAwait(false));
+        return concert is not null
+            ? new ConcertDto(concert)
+            : null;
     }
 }
