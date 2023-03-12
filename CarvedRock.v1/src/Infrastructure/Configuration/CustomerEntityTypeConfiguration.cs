@@ -26,6 +26,8 @@ public sealed class CustomerEntityTypeConfiguration : IEntityTypeConfiguration<C
     {
         builder.ToTable("customers");
 
+        builder.HasIndex(e => new { e.FirstName, e.LastName });
+
         builder.HasKey(e => e.Id);
         builder.HasAlternateKey(e => e.Username);
 
