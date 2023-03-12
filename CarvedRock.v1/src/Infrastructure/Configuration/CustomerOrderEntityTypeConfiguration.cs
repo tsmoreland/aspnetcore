@@ -25,15 +25,17 @@ public sealed class CustomerOrderEntityTypeConfiguration : IEntityTypeConfigurat
         builder.HasNoKey();
 
         builder.Property(e => e.OrderId)
-            .HasColumnName("order_id");
+            .HasColumnName("orders_id");
         builder.Property(e => e.OrderName)
-            .HasColumnName("order_name");
+            .HasColumnName("orders_name");
 
         builder.Property(e => e.CustomerId)
-            .HasColumnName("customer_id");
+            .HasColumnName("customers_id");
         builder.Property(e => e.CustomerName)
-            .HasColumnName("customer_name");
+            .HasColumnName("customers_name");
 
+        builder.Property(e => e.ItemId)
+            .HasColumnName("item_id");
         builder.Property(e => e.ItemDescription)
             .HasColumnName("item_description");
 

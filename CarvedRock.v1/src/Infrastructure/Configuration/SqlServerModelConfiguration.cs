@@ -54,6 +54,15 @@ public sealed class SqlServerModelConfiguration : IModelConfiguration<ModelBuild
                 entity.Property<int>("DiscountRate").HasColumnName("discount_rate");
             });
 
+        // not a real view but mapped as one so no table will be created.
+        modelBuilder.Entity<StatusOverview>().ToView("status_overview");
+
+        modelBuilder.HasDbFunction(typeof(CarvedRockDbContext).GetMethod(nameof(CarvedRockDbContext.GetCustomerOrdersById), new[] { typeof(int) })!)
+            .HasName("get_customer_orders_by_id");
+        modelBuilder.HasDbFunction(typeof(CarvedRockDbContext).GetMethod(nameof(CarvedRockDbContext.GetStatusOverview))!)
+            .HasName("get_status_overview");
+        modelBuilder.HasDbFunction(typeof(CarvedRockDbContext).GetMethod(nameof(CarvedRockDbContext.GetTotalInvoceAmountByOrder), new[] { typeof(int) })!)
+            .HasName("get_total_invoice_amount_by_order_id");
     }
 
     /// <inheritdoc />

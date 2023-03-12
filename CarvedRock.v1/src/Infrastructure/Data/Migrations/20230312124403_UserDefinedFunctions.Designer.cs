@@ -4,6 +4,7 @@ using CarvedRock.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarvedRock.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(CarvedRockDbContext))]
-    partial class CarvedRockDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230312124403_UserDefinedFunctions")]
+    partial class UserDefinedFunctions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -205,7 +208,7 @@ namespace CarvedRock.Infrastructure.Data.Migrations
 
                     b.HasIndex("OrdersId");
 
-                    b.ToTable("ItemOrder", (string)null);
+                    b.ToTable("ItemOrder");
                 });
 
             modelBuilder.Entity("Tag", b =>
@@ -236,7 +239,7 @@ namespace CarvedRock.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("CarvedRock.Domain.Entities.Customer", b =>
                 {
-                    b.OwnsOne("CarvedRock.Domain.Entities.Customer.BillToAddress#CarvedRock.Domain.ValueObjects.Address", "BillToAddress", b1 =>
+                    b.OwnsOne("CarvedRock.Domain.ValueObjects.Address", "BillToAddress", b1 =>
                         {
                             b1.Property<int>("CustomerId")
                                 .HasColumnType("int");
@@ -264,13 +267,13 @@ namespace CarvedRock.Infrastructure.Data.Migrations
 
                             b1.HasKey("CustomerId");
 
-                            b1.ToTable("customers", (string)null);
+                            b1.ToTable("customers");
 
                             b1.WithOwner()
                                 .HasForeignKey("CustomerId");
                         });
 
-                    b.OwnsOne("CarvedRock.Domain.Entities.Customer.ShipToAddress#CarvedRock.Domain.ValueObjects.Address", "ShipToAddress", b1 =>
+                    b.OwnsOne("CarvedRock.Domain.ValueObjects.Address", "ShipToAddress", b1 =>
                         {
                             b1.Property<int>("CustomerId")
                                 .HasColumnType("int");
@@ -298,7 +301,7 @@ namespace CarvedRock.Infrastructure.Data.Migrations
 
                             b1.HasKey("CustomerId");
 
-                            b1.ToTable("customers", (string)null);
+                            b1.ToTable("customers");
 
                             b1.WithOwner()
                                 .HasForeignKey("CustomerId");

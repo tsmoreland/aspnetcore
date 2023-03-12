@@ -28,6 +28,29 @@ public sealed class CarvedRockDbContext : DbContext
 
     public DbSet<CustomerOrder> CustomerOrders { get; init; } = default!;
 
+    public IQueryable<CustomerOrder> GetCustomerOrdersById(int customerId)
+    {
+        return FromExpression(() => GetCustomerOrdersById(customerId));
+    }
+
+    public IQueryable<StatusOverview> GetStatusOverview()
+    {
+        return FromExpression(() => GetStatusOverview());
+    }
+
+    /// <summary>
+    /// Configuration will tie this method to the db function so this implementation should never be called
+    /// </summary>
+    /// <param name="orderId">order id to retrieve total invoice amount for</param>
+    /// <returns></returns>
+    /// <exception cref="NotSupportedException">
+    /// thrown if misconfigured or database doesn't support functions
+    /// </exception>
+    public int GetTotalInvoceAmountByOrder(int orderId)
+    {
+        throw new NotSupportedException();
+    }
+
     public async IAsyncEnumerable<Order> GetOrders([EnumeratorCancellation] CancellationToken cancellationToken)
     {
         ConfiguredCancelableAsyncEnumerable<Order> orders = Orders

@@ -46,12 +46,12 @@ public sealed class CustomerEntityTypeConfiguration : IEntityTypeConfiguration<C
             .IsRequired()
             .HasMaxLength(20)
             .IsUnicode();
-#if DO_NOT_USE_CONVENTION_CONVERTER
         builder.Property(e => e.Status)
             .HasColumnName("status")
             .IsRequired()
             .HasMaxLength(20)
-            .IsUnicode(false)
+            .IsUnicode(false);
+#if DO_NOT_USE_CONVENTION_CONVERTER
             .HasConversion(
                 v => v.ToString(),
                 v => !string.IsNullOrWhiteSpace(v)

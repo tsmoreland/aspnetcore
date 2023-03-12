@@ -13,17 +13,18 @@ namespace CarvedRock.Infrastructure.Data.Migrations
             const string sql = """
                 CREATE VIEW customers_orders_view AS
                 SELECT
-                    orders.id as order_id
-                    orders.name as order_name
-                    customers.id as customer_id
-                    CONCAT(customers.first_name, ' ', customers.last_name) as customer_name
+                    orders.id as orders_id
+                    orders.name as orders_name
+                    customers.id as customers_id
+                    CONCAT(customers.first_name, ' ', customers.last_name) as customers_name
+                    items.id as item_id
                     items.description as item_description
                     items.price
                     items.price_after_vat
                 FROM item_order
                 JOIN items on item_order.items_id = items.id
-                JOIN order on item_order.order_id = orders.id
-                JOIN customers on customer.id = customers.id
+                JOIN order on item_order.orders_id = orders.id
+                JOIN customers on item_order.customers_id = customers.id
                 """;
             migrationBuilder.Sql(sql);
         }
