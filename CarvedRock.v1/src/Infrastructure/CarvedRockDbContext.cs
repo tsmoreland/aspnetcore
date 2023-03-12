@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using CarvedRock.Domain.Entities;
+using CarvedRock.Domain.ValueObjects;
 using CarvedRock.Infrastructure.Contracts;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -17,13 +18,15 @@ public sealed class CarvedRockDbContext : DbContext
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
     }
 
-    public DbSet<Order> Orders => Set<Order>();
+    public DbSet<Order> Orders { get; init; } = default!;
 
-    public DbSet<Customer> Customers => Set<Customer>();
+    public DbSet<Customer> Customers { get; init; } = default!;
 
-    public DbSet<Item> Items => Set<Item>();
+    public DbSet<Item> Items { get; init; } = default!;
 
     public DbSet<Dictionary<string, object?>> Tags => Set<Dictionary<string, object?>>("Tag");
+
+    public DbSet<CustomerOrder> CustomerOrders { get; init; } = default!;
 
     public async IAsyncEnumerable<Order> GetOrders([EnumeratorCancellation] CancellationToken cancellationToken)
     {
