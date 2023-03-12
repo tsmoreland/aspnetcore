@@ -24,51 +24,51 @@ public sealed class CreateOrderDtoValidator : AbstractValidator<CreateOrderDto>
         RuleFor(p => p.Date)
             .NotEmpty().WithMessage("{PropertyName} is required");
 
-        RuleFor(p => p.CustomerName)
+        RuleFor(p => p.CustomerDetails.Name)
             .NotEmpty().WithMessage("{PropertyName} is required")
             .NotNull()
             .MaximumLength(CustomerDetails.MaxNameLength);
 
-        RuleFor(p => p.CustomerEmail)
+        RuleFor(p => p.CustomerDetails.Email)
             .NotEmpty().WithMessage("{PropertyName} is required")
             .NotNull()
             .EmailAddress()
             .MaximumLength(CustomerDetails.MaxEmailLength);
 
-        RuleFor(p => p.BillingAddressLineOne)
+        RuleFor(p => p.CustomerDetails.BillingAddressLineOne)
             .NotEmpty().WithMessage("{PropertyName} is required")
             .NotNull()
             .MaximumLength(Address.MaxAddressLineLength);
-        RuleFor(p => p.BillingAddressLineTwo)
+        RuleFor(p => p.CustomerDetails.BillingAddressLineTwo)
             .MaximumLength(Address.MaxAddressLineLength);
-        RuleFor(p => p.BillingPostCode)
+        RuleFor(p => p.CustomerDetails.BillingPostCode)
             .NotEmpty().WithMessage("{PropertyName} is required")
             .NotNull()
             .MaximumLength(Address.MaxPostCodeLength);
-        RuleFor(p => p.BillingCity)
+        RuleFor(p => p.CustomerDetails.BillingCity)
             .NotEmpty().WithMessage("{PropertyName} is required")
             .NotNull()
             .MaximumLength(Address.MaxCityLength);
-        RuleFor(p => p.BillingCountry)
+        RuleFor(p => p.CustomerDetails.BillingCountry)
             .NotEmpty().WithMessage("{PropertyName} is required")
             .NotNull()
             .MaximumLength(Address.MaxCountryLength);
 
-        RuleFor(p => p.DeliveryAddressLineOne)
+        RuleFor(p => p.CustomerDetails.DeliveryAddressLineOne)
             .NotEmpty().WithMessage("{PropertyName} is required")
             .NotNull()
             .MaximumLength(Address.MaxAddressLineLength);
-        RuleFor(p => p.DeliveryAddressLineTwo)
+        RuleFor(p => p.CustomerDetails.DeliveryAddressLineTwo)
             .MaximumLength(Address.MaxAddressLineLength);
-        RuleFor(p => p.DeliveryPostCode)
+        RuleFor(p => p.CustomerDetails.DeliveryPostCode)
             .NotEmpty().WithMessage("{PropertyName} is required")
             .NotNull()
             .MaximumLength(Address.MaxPostCodeLength);
-        RuleFor(p => p.DeliveryCity)
+        RuleFor(p => p.CustomerDetails.DeliveryCity)
             .NotEmpty().WithMessage("{PropertyName} is required")
             .NotNull()
             .MaximumLength(Address.MaxCityLength);
-        RuleFor(p => p.DeliveryCountry)
+        RuleFor(p => p.CustomerDetails.DeliveryCountry)
             .NotEmpty().WithMessage("{PropertyName} is required")
             .NotNull()
             .MaximumLength(Address.MaxCountryLength);

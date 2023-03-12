@@ -17,22 +17,11 @@ namespace GloboTicket.Shop.Ordering.Application.Features.Orders.Command.CreateOr
 
 public sealed class CreateOrderDto
 {
+    // TODO: update to more closely align with the api dto and the domain model by adding customer details
+
     public required DateTimeOffset Date { get; init; }
 
-    public required string CustomerName { get; init; }
-    public required string CustomerEmail { get; init; }
-
-    public required string BillingAddressLineOne { get; init; }
-    public required string? BillingAddressLineTwo { get; init; }
-    public required string BillingPostCode { get; init; }
-    public required string BillingCity { get; init; }
-    public required string BillingCountry { get; init; }
-
-    public required string DeliveryAddressLineOne { get; init; }
-    public required string? DeliveryAddressLineTwo { get; init; }
-    public required string DeliveryPostCode { get; init; }
-    public required string DeliveryCity { get; init; }
-    public required string DeliveryCountry { get; init; }
+    public required CustomerDetailsDto CustomerDetails { get; init; }
 
     public IEnumerable<(Guid ItemId, int TicketCount, int Price)> Items { get; init; } =
         Array.Empty<(Guid, int, int)>();
@@ -43,18 +32,43 @@ public sealed class CreateOrderDto
     /// <exception cref="ArgumentException">
     /// if one or more properties to do not meet the rquirements of <see cref="OrderForCreation"/>
     /// </exception>
-    public OrderForCreation ToOrderForCreationOrThrow()
+    public OrderForCreation ToModel()
     {
         OrderForCreation order = new(
             Date,
-            new CustomerDetails(
-                CustomerName,
-                CustomerEmail,
+            CustomerDetails.ToModel(),
+            Items.Select(t => new OrderLine(t.ItemId, t.TicketCount, t.Price)).ToList().AsReadOnly());
+        return order;
+    }
+
+    public sealed class CustomerDetailsDto
+    {
+        public required string Name { get; init; }
+        public required string Email { get; init; }
+        public required string BillingAddressLineOne { get; init; }
+        public required string BillingAddressLineTwo { get; init; }
+        public required string BillingCity { get; init; }
+        public required string BillingCountry { get; init; }
+        public required string BillingPostCode { get; init; }
+
+        public required string DeliveryAddressLineOne { get; init; }
+        public required string DeliveryAddressLineTwo { get; init; }
+        public required string DeliveryCity { get; init; }
+        public required string DeliveryCountry { get; init; }
+        public required string DeliveryPostCode { get; init; }
+
+        public required string CreditCardNumber { get; init; }
+        public required string CreditCardExpiryDate { get; init; }
+
+        public CustomerDetails ToModel()
+        {
+            return new CustomerDetails(
+                Name,
+                Email,
                 new Address(DeliveryAddressLineOne, DeliveryAddressLineTwo, DeliveryPostCode, DeliveryCity,
                     DeliveryCountry),
                 new Address(BillingAddressLineOne, BillingAddressLineTwo, BillingPostCode, BillingCity,
-                    BillingCountry)),
-            Items.Select(t => new OrderLine(t.ItemId, t.TicketCount, t.Price)).ToList().AsReadOnly());
-        return order;
+                    BillingCountry));
+        }
     }
 }

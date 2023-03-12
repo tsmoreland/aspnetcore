@@ -1,4 +1,7 @@
-﻿using GloboTicket.FrontEnd.Mvc.App.Models.Api;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
+using GloboTicket.FrontEnd.Mvc.App.Extensions;
+using GloboTicket.FrontEnd.Mvc.App.Models.Api;
 using GloboTicket.FrontEnd.Mvc.App.Models.View;
 using GloboTicket.FrontEnd.Mvc.App.Services.ShoppingBasket;
 
@@ -30,7 +33,6 @@ public sealed class HttpOrderSubmissionService : IOrderSubmissionService
         OrderForCreation order = new()
         {
             Date = DateTimeOffset.Now,
-            OrderId = Guid.NewGuid(),
             Lines = orderLines,
             CustomerDetails = new CustomerDetails()
             {
@@ -40,21 +42,25 @@ public sealed class HttpOrderSubmissionService : IOrderSubmissionService
                 BillingAddressLineTwo = checkoutViewModel.BillingAddressLineTwo,
                 BillingCity = checkoutViewModel.BillingCity,
                 BillingCountry = checkoutViewModel.BillingCountry,
-                BillingPostalCode = checkoutViewModel.BillingPostalCode,
+                BillingPostCode = checkoutViewModel.BillingPostCode,
                 DeliveryAddressLineOne = checkoutViewModel.DeliveryAddressLineOne,
                 DeliveryAddressLineTwo = checkoutViewModel.DeliveryAddressLineTwo,
                 DeliveryCity = checkoutViewModel.DeliveryCity,
                 DeliveryCountry = checkoutViewModel.DeliveryCountry,
-                DeliveryPostalCode = checkoutViewModel.DeliveryPostalCode,
+                DeliveryPostCode = checkoutViewModel.DeliveryPostCode,
                 CreditCardNumber = checkoutViewModel.CreditCard,
                 CreditCardExpiryDate = checkoutViewModel.CreditCardDate
             },
         };
+
+        string json = JsonSerializer.Serialize(order);
+
         // make a synchronous call to the ordering microservice
         HttpResponseMessage response = await _orderingClient.PostAsJsonAsync("api/orders", order, cancellationToken);
         if (response.IsSuccessStatusCode)
         {
-            return order.OrderId;
+            return await response.Content.ReadFromJsonAsync<Guid>(cancellationToken: cancellationToken)
+                .ConfigureAwait(false);
         }
         else
         {

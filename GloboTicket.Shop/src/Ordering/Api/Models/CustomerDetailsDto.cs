@@ -1,21 +1,54 @@
-﻿namespace GloboTicket.Shop.Ordering.Api.Models;
+﻿// 
+// Copyright © 2023 Terry Moreland
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
 
-public sealed class CustomerDetailsDto
+using GloboTicket.Shop.Ordering.Application.Features.Orders.Command.CreateOrder;
+
+namespace GloboTicket.Shop.Ordering.Api.Models;
+
+public sealed record class CustomerDetailsDto(
+    string Name,
+    string Email,
+    string BillingAddressLineOne,
+    string BillingAddressLineTwo,
+    string BillingCity,
+    string BillingCountry,
+    string BillingPostCode,
+    string DeliveryAddressLineOne,
+    string DeliveryAddressLineTwo,
+    string DeliveryCity,
+    string DeliveryCountry,
+    string DeliveryPostCode,
+    string CreditCardNumber,
+    string CreditCardExpiryDate)
 {
-    public string Name { get; init; } = string.Empty;
-    public string Email { get; init; } = string.Empty;
-    public string BillingAddressLineOne { get; init; } = string.Empty;
-    public string BillingAddressLineTwo { get; init; } = string.Empty;
-    public string BillingCity { get; init; } = string.Empty;
-    public string BillingCountry { get; init; } = string.Empty;
-    public string BillingPostalCode { get; init; } = string.Empty;
-
-    public string DeliveryAddressLineOne { get; init; } = string.Empty;
-    public string DeliveryAddressLineTwo { get; init; } = string.Empty;
-    public string DeliveryCity { get; init; } = string.Empty;
-    public string DeliveryCountry { get; init; } = string.Empty;
-    public string DeliveryPostalCode { get; init; } = string.Empty;
-
-    public string CreditCardNumber { get; init; } = string.Empty;
-    public string CreditCardExpiryDate { get; init; } = string.Empty;
+    public CreateOrderDto.CustomerDetailsDto ToCommandDto()
+    {
+        return new CreateOrderDto.CustomerDetailsDto()
+        {
+            Name = Name,
+            Email = Email,
+            BillingAddressLineOne = BillingAddressLineOne,
+            BillingAddressLineTwo = BillingAddressLineTwo,
+            BillingPostCode = BillingPostCode,
+            BillingCity = BillingCity,
+            BillingCountry = BillingCountry,
+            DeliveryAddressLineOne = DeliveryAddressLineOne,
+            DeliveryAddressLineTwo = DeliveryAddressLineTwo,
+            DeliveryPostCode = DeliveryPostCode,
+            DeliveryCity = DeliveryCity,
+            DeliveryCountry = DeliveryCountry,
+            CreditCardNumber = CreditCardNumber,
+            CreditCardExpiryDate = CreditCardExpiryDate
+        };
+    }
 }

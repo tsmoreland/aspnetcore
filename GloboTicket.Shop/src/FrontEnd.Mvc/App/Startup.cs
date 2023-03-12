@@ -11,6 +11,7 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using System.Text.Json;
 using GloboTicket.FrontEnd.Mvc.App.HealthChecks;
 using GloboTicket.FrontEnd.Mvc.App.Models;
 using GloboTicket.FrontEnd.Mvc.App.Services.ConcertCatalog;
@@ -43,7 +44,14 @@ internal static class Startup
 
         IServiceCollection services = builder.Services;
 
-        services.AddControllersWithViews();
+        services
+            .AddControllersWithViews()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.DefaultIgnoreCondition =
+                    System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault;
+                options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+            });
 
         services
             .AddHttpClient<IConcertCatalogService, ConcertCatalogService>((provider, client) =>
