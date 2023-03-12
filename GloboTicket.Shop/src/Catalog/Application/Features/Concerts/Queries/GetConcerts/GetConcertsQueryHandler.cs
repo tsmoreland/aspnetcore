@@ -16,7 +16,7 @@ using MediatR;
 
 namespace GloboTicket.Shop.Catalog.Application.Features.Concerts.Queries.GetConcerts;
 
-public sealed class GetConcertsQueryHandler : IStreamRequestHandler<GetConcertsQuery, ConcertDto>
+public sealed class GetConcertsQueryHandler : IStreamRequestHandler<GetConcertsQuery, ConcertSummaryDto>
 {
     private readonly IReadOnlyConcertRepository _repository;
 
@@ -26,7 +26,7 @@ public sealed class GetConcertsQueryHandler : IStreamRequestHandler<GetConcertsQ
     }
 
     /// <inheritdoc />
-    public IAsyncEnumerable<ConcertDto> Handle(GetConcertsQuery request, CancellationToken cancellationToken)
+    public IAsyncEnumerable<ConcertSummaryDto> Handle(GetConcertsQuery request, CancellationToken cancellationToken)
     {
         _ = request;
 

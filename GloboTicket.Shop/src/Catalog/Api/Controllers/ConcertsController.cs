@@ -12,6 +12,7 @@
 //
 
 using System.Net.Mime;
+using GloboTicket.Shop.Catalog.Application.Features.Concerts.Queries.GetConcertById;
 using GloboTicket.Shop.Catalog.Application.Features.Concerts.Queries.GetConcerts;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -41,5 +42,20 @@ public class ConcertsController : ControllerBase
     public IActionResult GetConcerts(CancellationToken cancellationToken)
     {
         return Ok(_mediator.CreateStream(new GetConcertsQuery(), cancellationToken));
+    }
+
+    /// <summary>
+    /// Get concert by id
+    /// </summary>
+    /// <param name="id" example="711d5646-81ea-4fe3-a6fa-03307f29feef">id to retrieve</param>
+    /// <param name="cancellationToken">A cancellation token.</param>
+    /// <returns></returns>
+    [HttpGet("{id}", Name = nameof(GetConcertById))]
+    public async Task<IActionResult> GetConcertById(Guid id, CancellationToken cancellationToken)
+    {
+        ConcertDto? dto = await (_mediator.Send(new GetConcertByIdQuery(id), cancellationToken).ConfigureAwait(false));
+        return dto is not null
+            ? Ok(dto)
+            : NotFound();
     }
 }

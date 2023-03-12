@@ -18,16 +18,16 @@ using GloboTicket.Shop.Shared.Contracts.Persistence.Specifications;
 
 namespace GloboTicket.Shop.Catalog.Application.Features.Concerts.Queries.GetConcerts;
 
-public sealed class ConcertDtoSelectorSpecification : ISelectorSpecification<Concert, ConcertDto>
+public sealed class ConcertDtoSelectorSpecification : ISelectorSpecification<Concert, ConcertSummaryDto>
 {
     /// <inheritdoc />
-    public Expression<Func<Concert, ConcertDto>> Selector => c => new ConcertDto(c);
+    public Expression<Func<Concert, ConcertSummaryDto>> Selector => c => new ConcertSummaryDto(c);
 
     /// <inheritdoc />
-    public IAsyncEnumerable<ConcertDto> ProjectToAsyncEnumerable(IQueryable<Concert> query, IQueryableToEnumerableConverter queryableConverter)
+    public IAsyncEnumerable<ConcertSummaryDto> ProjectToAsyncEnumerable(IQueryable<Concert> query, IQueryableToEnumerableConverter queryableConverter)
     {
         return queryableConverter
             .ConvertToAsyncEnumerable(query.Select(c => new { c.ConcertId, c.Name, c.Artist, c.Price, c.Date, c.Description, c.ImageUrl }))
-            .Select(c => new ConcertDto(c.ConcertId, c.Name, c.Artist, c.Date, c.Price, c.Description, c.ImageUrl));
+            .Select(c => new ConcertSummaryDto(c.ConcertId, c.Name, c.Artist, c.Date, c.Price, c.Description, c.ImageUrl));
     }
 }

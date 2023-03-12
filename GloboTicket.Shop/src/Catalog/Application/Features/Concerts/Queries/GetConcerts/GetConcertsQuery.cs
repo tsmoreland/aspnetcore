@@ -15,4 +15,4 @@ using MediatR;
 
 namespace GloboTicket.Shop.Catalog.Application.Features.Concerts.Queries.GetConcerts;
 
-public sealed record class GetConcertsQuery : IStreamRequest<ConcertDto>;
+public sealed record class GetConcertsQuery : IStreamRequest<ConcertSummaryDto>;

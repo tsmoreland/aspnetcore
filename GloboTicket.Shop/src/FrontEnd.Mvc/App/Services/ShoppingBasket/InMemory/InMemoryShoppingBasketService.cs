@@ -30,15 +30,15 @@ public sealed class InMemoryShoppingBasketService : IShoppingBasketService
             _baskets.Add(basket.BasketId, basket);
         }
 
-        if (_concertsCache.TryGetValue(basketLine.ConcertId, out Concert? concert))
+        if (_concertsCache.TryGetValue(basketLine.Id, out Concert? concert))
         {
             return basket.Add(basketLine, concert);
         }
 
-        concert = await _concertCatalogService.GetConcert(basketLine.ConcertId, cancellationToken);
+        concert = await _concertCatalogService.GetConcert(basketLine.Id, cancellationToken);
         if (concert is not null)
         {
-            _concertsCache.Add(basketLine.ConcertId, concert);
+            _concertsCache.Add(basketLine.Id, concert);
         }
         else
         {

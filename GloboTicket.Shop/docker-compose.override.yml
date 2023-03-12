@@ -5,8 +5,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:4430;http://+:8080
-      - ApiConfigs__ConcertCatalog__Uri=http://catalog
-      - ApiConfigs:Ordering:Uri=http://ordering
+      - ApiConfigs__ConcertCatalog__Uri=http://catalog/api
+      - ApiConfigs:Ordering:Uri=http://ordering/api
     ports:
       - "8088:8080"
       - "4433:4430"

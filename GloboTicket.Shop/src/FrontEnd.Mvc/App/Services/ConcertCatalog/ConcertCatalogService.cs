@@ -16,7 +16,7 @@ public sealed class ConcertCatalogService : IConcertCatalogService
     /// <inheritdoc />
     public async IAsyncEnumerable<Concert> GetAll([EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        HttpResponseMessage response = await _client.GetAsync("concerts", cancellationToken);
+        HttpResponseMessage response = await _client.GetAsync("api/concerts", cancellationToken);
         await foreach (Concert concert in response.StreamResponseAs<Concert>(cancellationToken))
         {
             yield return concert;
@@ -26,7 +26,9 @@ public sealed class ConcertCatalogService : IConcertCatalogService
     /// <inheritdoc />
     public async Task<Concert?> GetConcert(Guid id, CancellationToken cancellationToken)
     {
-        HttpResponseMessage response = await _client.GetAsync($"concerts/{id}", cancellationToken);
-        return await response.ReadAs<Concert>(cancellationToken);
+        HttpResponseMessage response = await _client.GetAsync($"api/concerts/{id}", cancellationToken);
+        return response.IsSuccessStatusCode
+            ? await response.ReadAs<Concert>(cancellationToken)
+            : null;
     }
 }

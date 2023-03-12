@@ -26,3 +26,8 @@ Working through pluralsight [Deplooying ASP.NET Core 6 Using Kubernetes](https:/
 ## Banshee5.IdentityProvider
 
 An implemented built primarily with Duende Identity Server of Microsoft Identity to serve as an IdP to various other solutions here
+
+## CarvedRock.v1
+ 
+Working through pluralsight course [Mapping Real-world Classes in EF Core 6](https://app.pluralsight.com/library/courses/ef-core-6-mapping-real-world-cases), which is mostly using a console app to test the concepts, I'm
+planning to eventually add the site, maybe split the database across a few services (maybe using different databases) and moving to docker/kubernetes deployment

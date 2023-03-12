@@ -19,7 +19,7 @@ internal sealed class InMemoryBasket
     {
         BasketLine basketLine = new BasketLine()
         {
-            ConcertId = line.ConcertId,
+            ConcertId = line.Id,
             TicketAmount = line.TicketAmount,
             Concert = concert,
             BasketId = BasketId,
