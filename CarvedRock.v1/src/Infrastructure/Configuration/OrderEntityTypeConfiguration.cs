@@ -52,6 +52,31 @@ public sealed class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Orde
 
         builder
             .HasMany(e => e.Items)
-            .WithMany(e => e.Orders);
+            .WithMany(e => e.Orders)
+            .UsingEntity<ItemOrder>(
+                static rightBuilder =>
+                    rightBuilder
+                        .HasOne(e => e.Item)
+                        .WithMany()
+                        .HasForeignKey(e => e.ItemsId),
+                static leftBuilder =>
+                    leftBuilder
+                        .HasOne(e => e.Order)
+                        .WithMany()
+                        .HasForeignKey(e => e.OrdersId),
+                static joinBuilder =>
+                {
+                    joinBuilder.ToTable("item_order");
+                    joinBuilder.HasKey(e => new { e.ItemsId, e.OrdersId });
+                    joinBuilder.Property(e => e.ItemsId)
+                        .HasColumnName("items_id");
+                    joinBuilder.Property(e => e.OrdersId)
+                        .HasColumnName("orders_id");
+                    joinBuilder.Property(e => e.OrderDate)
+                        .HasColumnName("order_date")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                    joinBuilder.Property(e => e.Quantity)
+                        .HasColumnName("quantity");
+                });
     }
 }
