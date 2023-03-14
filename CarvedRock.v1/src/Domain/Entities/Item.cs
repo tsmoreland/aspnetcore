@@ -1,6 +1,6 @@
 ﻿namespace CarvedRock.Domain.Entities;
 
-public sealed class Item
+public class Item
 {
     public Item(string description, decimal price, float weight)
         : this(description, price, weight, new HashSet<ItemOrder>())
@@ -12,7 +12,7 @@ public sealed class Item
     {
     }
 
-    private Item(int id, string description, decimal price, float weight, ICollection<ItemOrder> itemOrders)
+    protected Item(int id, string description, decimal price, float weight, ICollection<ItemOrder> itemOrders)
     {
         Id = id;
         Description = description;

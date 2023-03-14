@@ -45,6 +45,24 @@ public sealed class ItemEntityTypeConfiguration : IEntityTypeConfiguration<Item>
             .HasColumnType("float(36)")
             .IsRequired();
 
+#if USING_TABLE_PER_HIERARCHY
+        builder
+            .HasDiscriminator<string>("ItemType")
+            .HasValue<Item>("UncatagorizedItem");
+        builder.Property("ItemType")
+            .HasColumnName("item_type")
+            .HasDefaultValue("UncatagorizedItem");
+
+        // this part would have to go in sql model configuration or a food item entity type configuration
+        // this code would configure a shared column between dried and canned food item as both have production date
+        modelBinder.Entity<DriedFoodItem>().Property(e => e.ProductionDate)
+            .HasColumnName("production_date")
+            .IsSparse();
+        modelBinder.Entity<CannedFoodItem>().Property(e => e.ProductionDate)
+            .HasColumnName("production_date")
+            .IsSparse(); // optimized for usually null columns
+#endif
+
         builder.HasMany(e => e.ItemOrders)
             .WithOne(e => e.Item)
             .HasForeignKey(e => e.ItemsId);

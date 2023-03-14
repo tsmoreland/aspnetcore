@@ -24,6 +24,11 @@ public sealed class CarvedRockDbContext : DbContext
 
     public DbSet<Item> Items { get; init; } = default!;
 
+    public DbSet<DriedFoodItem> DriedFoodItems { get; init; } = default!;
+    public DbSet<CannedFoodItem> CannedFoodItems { get; init; } = default!;
+    public DbSet<ClothesItem> ClothesItems { get; init; } = default!;
+    public DbSet<MagazineItem> MagazineItems { get; init; } = default!;
+
     public DbSet<Dictionary<string, object?>> Tags => Set<Dictionary<string, object?>>("Tag");
 
     public DbSet<CustomerOrder> CustomerOrders { get; init; } = default!;
