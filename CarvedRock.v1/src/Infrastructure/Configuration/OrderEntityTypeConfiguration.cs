@@ -50,9 +50,16 @@ public sealed class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Orde
             .WithMany(e => e.Orders)
             .HasForeignKey(e => e.CustomerId);
 
+        builder.HasMany(e => e.ItemOrders)
+            .WithOne(e => e.Order)
+            .HasForeignKey(e => e.OrdersId);
+
+#if USE_DIRECT_SKIP_NAVIGATION_WITH_PAYLOAD
+        // this would setup skip navigation with payload, doing this would expect Items and ItemOrders to have collecitons of
+        // eachother rather than collections of ItemOrder
         builder
-            .HasMany(e => e.Items)
-            .WithMany(e => e.Orders)
+            .HasMany(e => e.ItemOrders)
+            .WithMany(e => e.ItemOrders)
             .UsingEntity<ItemOrder>(
                 static rightBuilder =>
                     rightBuilder
@@ -78,5 +85,6 @@ public sealed class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Orde
                     joinBuilder.Property(e => e.Quantity)
                         .HasColumnName("quantity");
                 });
+#endif
     }
 }

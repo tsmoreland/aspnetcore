@@ -9,44 +9,41 @@
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
+
 using CarvedRock.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CarvedRock.Infrastructure.Configuration;
 
-public sealed class ItemEntityTypeConfiguration : IEntityTypeConfiguration<Item>
+public sealed class ItemOrderEntityTypeConfiguration : IEntityTypeConfiguration<ItemOrder>
 {
     /// <inheritdoc />
-    public void Configure(EntityTypeBuilder<Item> builder)
+    public void Configure(EntityTypeBuilder<ItemOrder> builder)
     {
-        builder.ToTable("items");
-        builder.HasKey(e => e.Id);
-        builder.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
+        builder.ToTable("item_order");
 
-        builder.Property(e => e.Description)
-            .HasColumnName("description")
-            .IsRequired()
-            .IsUnicode()
-            .HasMaxLength(500);
-
-        builder.Property(e => e.Price)
-            .HasColumnName("price")
-            .HasColumnType("decimal(22,2)")
-            .IsRequired();
-
-        builder.Property(e => e.PriceAfterVat)
-            .HasColumnName("price_after_vat")
-            .HasColumnType("decimal(22,2)")
-            .HasComputedColumnSql("[price]*1.20");
-
-        builder.Property(e => e.Weight)
-            .HasColumnName("unit_weight")
-            .HasColumnType("float(36)")
-            .IsRequired();
-
-        builder.HasMany(e => e.ItemOrders)
-            .WithOne(e => e.Item)
+        builder
+            .HasOne(e => e.Item)
+            .WithMany(e => e.ItemOrders)
             .HasForeignKey(e => e.ItemsId);
+
+        builder
+            .HasOne(e => e.Order)
+            .WithMany(e => e.ItemOrders)
+            .HasForeignKey(e => e.OrdersId);
+
+        builder.HasKey(e => new { e.ItemsId, e.OrdersId });
+
+        builder.Property(e => e.ItemsId)
+            .HasColumnName("items_id");
+        builder.Property(e => e.OrdersId)
+            .HasColumnName("orders_id");
+        builder.Property(e => e.OrderDate)
+            .HasColumnName("order_date")
+            .HasDefaultValueSql("CURRENT_TIMESTAMP");
+        builder.Property(e => e.Quantity)
+            .HasColumnName("quantity");
     }
 }
