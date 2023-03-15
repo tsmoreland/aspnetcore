@@ -22,7 +22,15 @@ public sealed class ItemEntityTypeConfiguration : IEntityTypeConfiguration<Item>
     {
         builder.ToTable("items");
         builder.HasKey(e => e.Id);
-        builder.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
+        builder.Property(e => e.Id)
+            .HasColumnName("id")
+            .ValueGeneratedOnAdd();
+#if USEING_TABLE_PER_CONCRETE_TYPE 
+            .UseIdentityColumn(1, 1);
+            // in this case all derived types would also need
+            //  tb => tb.Property(e => e.Id).UseIdentityColumn(10_000)
+            // - that option is best chosen from the start otherwise handling id generation gets awkward
+#endif
 
         builder.Property(e => e.Description)
             .HasColumnName("description")
@@ -45,7 +53,6 @@ public sealed class ItemEntityTypeConfiguration : IEntityTypeConfiguration<Item>
             .HasColumnType("float(36)")
             .IsRequired();
 
-#if USING_TABLE_PER_HIERARCHY
         builder
             .HasDiscriminator<string>("ItemType")
             .HasValue<Item>("UncatagorizedItem");
@@ -53,18 +60,22 @@ public sealed class ItemEntityTypeConfiguration : IEntityTypeConfiguration<Item>
             .HasColumnName("item_type")
             .HasDefaultValue("UncatagorizedItem");
 
-        // this part would have to go in sql model configuration or a food item entity type configuration
-        // this code would configure a shared column between dried and canned food item as both have production date
-        modelBinder.Entity<DriedFoodItem>().Property(e => e.ProductionDate)
-            .HasColumnName("production_date")
-            .IsSparse();
-        modelBinder.Entity<CannedFoodItem>().Property(e => e.ProductionDate)
-            .HasColumnName("production_date")
-            .IsSparse(); // optimized for usually null columns
-#endif
-
         builder.HasMany(e => e.ItemOrders)
             .WithOne(e => e.Item)
             .HasForeignKey(e => e.ItemsId);
+
+
+        // the 3 options here are
+        // 1. table per hierarchy (default) - one table to rule them all
+        // 2. table per type, each table contains the unique properties it has, lots of joins to get everything (not recommeded)
+        // 3. table per concreate type - table with all the properties for the full type, better performance but only way to get
+        //    all the items is to query each set seperately
+
+        // table per hierachy - one table to rule them all with null columns when a specific type doesn't use
+        // that column
+        builder.UseTphMappingStrategy();
+#if USEING_TABLE_PER_CONCRETE_TYPE
+        builder.UseTpcMappingStrategy();
+#endif
     }
 }

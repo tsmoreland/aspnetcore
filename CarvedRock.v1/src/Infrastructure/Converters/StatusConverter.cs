@@ -1,5 +1,4 @@
-﻿using System.Linq.Expressions;
-using CarvedRock.Domain.ValueObjects;
+﻿using CarvedRock.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CarvedRock.Infrastructure.Converters;
