@@ -5,15 +5,15 @@ namespace CarvedRock.Domain.Entities;
 public sealed class Order
 {
     public Order(string name, Customer customer, Status status)
-        : this(name, customer, status, new HashSet<Item>())
+        : this(name, customer, status, new HashSet<ItemOrder>())
     {
     }
 
-    public Order(string name, Customer customer, Status status, ICollection<Item> items)
+    public Order(string name, Customer customer, Status status, ICollection<ItemOrder> itemOrders)
         : this(0, name, customer.Id, status)
     {
         Customer = customer;
-        Items = items;
+        ItemOrders = itemOrders;
     }
 
     private Order(int id, string name, int customerId, Status status)
@@ -22,6 +22,7 @@ public sealed class Order
         Name = name;
         CustomerId = customerId;
         Status = status;
+        ItemOrders = new HashSet<ItemOrder>();
     }
 
     public required int Id { get; init; }
@@ -33,5 +34,5 @@ public sealed class Order
     public required Customer Customer { get; init; }
     public Status Status { get; set; }
 
-    public required ICollection<Item> Items { get; init; }
+    public required ICollection<ItemOrder> ItemOrders { get; init; }
 }

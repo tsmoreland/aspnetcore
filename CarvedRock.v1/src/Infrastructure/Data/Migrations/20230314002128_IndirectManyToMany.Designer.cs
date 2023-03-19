@@ -4,6 +4,7 @@ using CarvedRock.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarvedRock.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(CarvedRockDbContext))]
-    partial class CarvedRockDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230314002128_IndirectManyToMany")]
+    partial class IndirectManyToMany
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -100,13 +103,6 @@ namespace CarvedRock.Infrastructure.Data.Migrations
                         .HasColumnType("nvarchar(500)")
                         .HasColumnName("description");
 
-                    b.Property<string>("ItemType")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(100)")
-                        .HasDefaultValue("UncatagorizedItem")
-                        .HasColumnName("item_type");
-
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(22,2)")
                         .HasColumnName("price");
@@ -124,10 +120,6 @@ namespace CarvedRock.Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("items", (string)null);
-
-                    b.HasDiscriminator<string>("ItemType").HasValue("UncatagorizedItem");
-
-                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("CarvedRock.Domain.Entities.ItemOrder", b =>
@@ -279,73 +271,6 @@ namespace CarvedRock.Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("tag", (string)null);
-                });
-
-            modelBuilder.Entity("CarvedRock.Domain.Entities.CannedFoodItem", b =>
-                {
-                    b.HasBaseType("CarvedRock.Domain.Entities.Item");
-
-                    b.Property<string>("CanningMaterial")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("canning_material");
-
-                    b.Property<DateTime>("ExpiryDate")
-                        .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("datetime2")
-                        .HasColumnName("expiry_date");
-
-                    b.Property<DateTime>("ProductionDate")
-                        .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("datetime2")
-                        .HasColumnName("production_date");
-
-                    SqlServerPropertyBuilderExtensions.IsSparse(b.Property<DateTime>("ProductionDate"));
-
-                    b.HasDiscriminator().HasValue("CannedFoodItem");
-                });
-
-            modelBuilder.Entity("CarvedRock.Domain.Entities.ClothesItem", b =>
-                {
-                    b.HasBaseType("CarvedRock.Domain.Entities.Item");
-
-                    b.Property<string>("Fabric")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("fabric");
-
-                    b.HasDiscriminator().HasValue("ClothesItem");
-                });
-
-            modelBuilder.Entity("CarvedRock.Domain.Entities.DriedFoodItem", b =>
-                {
-                    b.HasBaseType("CarvedRock.Domain.Entities.Item");
-
-                    b.Property<DateTime>("ExpiryDate")
-                        .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("datetime2")
-                        .HasColumnName("expiry_date");
-
-                    b.Property<DateTime>("ProductionDate")
-                        .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("datetime2")
-                        .HasColumnName("production_date");
-
-                    SqlServerPropertyBuilderExtensions.IsSparse(b.Property<DateTime>("ProductionDate"));
-
-                    b.HasDiscriminator().HasValue("DriedFoodItem");
-                });
-
-            modelBuilder.Entity("CarvedRock.Domain.Entities.MagazineItem", b =>
-                {
-                    b.HasBaseType("CarvedRock.Domain.Entities.Item");
-
-                    b.Property<string>("PublicationFrequency")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("publication_frequency");
-
-                    b.HasDiscriminator().HasValue("MagazineItem");
                 });
 
             modelBuilder.Entity("CarvedRock.Domain.Entities.Customer", b =>

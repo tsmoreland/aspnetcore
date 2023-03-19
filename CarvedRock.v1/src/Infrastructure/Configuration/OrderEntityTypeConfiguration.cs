@@ -50,8 +50,41 @@ public sealed class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Orde
             .WithMany(e => e.Orders)
             .HasForeignKey(e => e.CustomerId);
 
+        builder.HasMany(e => e.ItemOrders)
+            .WithOne(e => e.Order)
+            .HasForeignKey(e => e.OrdersId);
+
+#if USE_DIRECT_SKIP_NAVIGATION_WITH_PAYLOAD
+        // this would setup skip navigation with payload, doing this would expect Items and ItemOrders to have collecitons of
+        // eachother rather than collections of ItemOrder
         builder
-            .HasMany(e => e.Items)
-            .WithMany(e => e.Orders);
+            .HasMany(e => e.ItemOrders)
+            .WithMany(e => e.ItemOrders)
+            .UsingEntity<ItemOrder>(
+                static rightBuilder =>
+                    rightBuilder
+                        .HasOne(e => e.Item)
+                        .WithMany()
+                        .HasForeignKey(e => e.ItemsId),
+                static leftBuilder =>
+                    leftBuilder
+                        .HasOne(e => e.Order)
+                        .WithMany()
+                        .HasForeignKey(e => e.OrdersId),
+                static joinBuilder =>
+                {
+                    joinBuilder.ToTable("item_order");
+                    joinBuilder.HasKey(e => new { e.ItemsId, e.OrdersId });
+                    joinBuilder.Property(e => e.ItemsId)
+                        .HasColumnName("items_id");
+                    joinBuilder.Property(e => e.OrdersId)
+                        .HasColumnName("orders_id");
+                    joinBuilder.Property(e => e.OrderDate)
+                        .HasColumnName("order_date")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                    joinBuilder.Property(e => e.Quantity)
+                        .HasColumnName("quantity");
+                });
+#endif
     }
 }

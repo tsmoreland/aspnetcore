@@ -1,24 +1,24 @@
 ﻿namespace CarvedRock.Domain.Entities;
 
-public sealed class Item
+public class Item
 {
     public Item(string description, decimal price, float weight)
-        : this(description, price, weight, new HashSet<Order>())
+        : this(description, price, weight, new HashSet<ItemOrder>())
     {
     }
 
-    public Item(string description, decimal price, float weight, ICollection<Order> orders)
+    public Item(string description, decimal price, float weight, ICollection<ItemOrder> orders)
         : this(0, description, price, weight, orders)
     {
     }
 
-    private Item(int id, string description, decimal price, float weight, ICollection<Order> orders)
+    protected Item(int id, string description, decimal price, float weight, ICollection<ItemOrder> itemOrders)
     {
         Id = id;
         Description = description;
         Price = price;
         Weight = weight;
-        Orders = orders;
+        ItemOrders = itemOrders;
     }
 
     public required int Id { get; init; }
@@ -27,5 +27,5 @@ public sealed class Item
     public required decimal PriceAfterVat { get; init; }
     public required float Weight { get; set; }
 
-    public required ICollection<Order> Orders { get; init; } 
+    public required ICollection<ItemOrder> ItemOrders { get; init; } 
 }
