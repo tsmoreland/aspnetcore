@@ -48,7 +48,7 @@ public class CheckoutController : Controller
             Guid currentBasketId = Request.Cookies.GetCurrentBasketId(_settings);
             checkout.BasketId = currentBasketId;
 
-            _logger.LogInformation($"Received an order from {checkout.Name}");
+            _logger.LogInformation("Received an order from {CheckoutName}", checkout.Name);
             SendAppInsightsTelemetryOrderPlaced();
 
             Guid orderId = await _orderSubmissionService.SubmitOrder(checkout, cancellationToken);
