@@ -4,82 +4,82 @@
     <h2>Checkout</h2>
     <!-- Tag helpers https://docs.microsoft.com/en-US/aspnet/core/mvc/views/tag-helpers/intro?view=aspnetcore-5.0 -->
 
-    <form class="form" asp-action="Purchase">
-        <div class="form-group">
+    <form asp-action="Purchase">
+        <div class="mb-3">
             <label asp-for="Name">Name</label>
             <span class="text-danger" asp-validation-for="Name"></span>
             <input class="form-control" asp-for="Name" />
         </div>
-        <div class="form-group">
+        <div class="mb-3">
             <label asp-for="Email">Email</label>
             <span class="text-danger" asp-validation-for="Email"></span>
             <input class="form-control" asp-for="Email" />
         </div>
         <div>
-            <div class="form-group">
-                <label asp-for="BillingAddressLineOne">Address Line One</label>
+            <div class="mb-3">
+                <label asp-for="BillingAddressLineOne">Billing Address Line One</label>
                 <span class="text-danger" asp-validation-for="BillingAddressLineOne"></span>
                 <input class="form-control" asp-for="BillingAddressLineOne" />
             </div>
-            <div class="form-group">
-                <label asp-for="BillingAddressLineTwo">Address Line Two</label>
+            <div class="mb-3">
+                <label asp-for="BillingAddressLineTwo">Billing Address Line Two</label>
                 <span class="text-danger" asp-validation-for="BillingAddressLineTwo"></span>
                 <input class="form-control" asp-for="BillingAddressLineTwo" />
             </div>
-            <div class="form-group">
-                <label asp-for="BillingCity">City</label>
+            <div class="mb-3">
+                <label asp-for="BillingCity">Billing City</label>
                 <span class="text-danger" asp-validation-for="BillingCity"></span>
                 <input class="form-control" asp-for="BillingCity" />
             </div>
-            <div class="form-group">
-                <label asp-for="BillingCountry">Country</label>
+            <div class="mb-3">
+                <label asp-for="BillingCountry">Billing Country</label>
                 <span class="text-danger" asp-validation-for="BillingCountry"></span>
                 <input class="form-control" asp-for="BillingCountry" />
             </div>
-            <div class="form-group">
-                <label asp-for="BillingPostalCode">Postal Code</label>
-                <span class="text-danger" asp-validation-for="BillingPostalCode"></span>
-                <input class="form-control" asp-for="BillingPostalCode" />
+            <div class="mb-3">
+                <label asp-for="BillingPostCode">Billing Postcode</label>
+                <span class="text-danger" asp-validation-for="BillingPostCode"></span>
+                <input class="form-control" asp-for="BillingPostCode" />
             </div>
         </div>
         <div>
-            <div class="form-group">
-                <label asp-for="DeliveryAddressLineOne">Address Line One</label>
+            <div class="mb-3">
+                <label asp-for="DeliveryAddressLineOne">Delivery Address Line One</label>
                 <span class="text-danger" asp-validation-for="DeliveryAddressLineOne"></span>
                 <input class="form-control" asp-for="DeliveryAddressLineOne" />
             </div>
-            <div class="form-group">
-                <label asp-for="DeliveryAddressLineTwo">Address Line Two</label>
+            <div class="mb-3">
+                <label asp-for="DeliveryAddressLineTwo">Delivery Address Line Two</label>
                 <span class="text-danger" asp-validation-for="DeliveryAddressLineTwo"></span>
                 <input class="form-control" asp-for="DeliveryAddressLineTwo" />
             </div>
-            <div class="form-group">
-                <label asp-for="DeliveryCity">City</label>
+            <div class="mb-3">
+                <label asp-for="DeliveryCity">Delivery City</label>
                 <span class="text-danger" asp-validation-for="DeliveryCity"></span>
                 <input class="form-control" asp-for="DeliveryCity" />
             </div>
-            <div class="form-group">
-                <label asp-for="DeliveryCountry">Country</label>
+            <div class="mb-3">
+                <label asp-for="DeliveryCountry">Delivery Country</label>
                 <span class="text-danger" asp-validation-for="DeliveryCountry"></span>
                 <input class="form-control" asp-for="DeliveryCountry" />
             </div>
-            <div class="form-group">
-                <label asp-for="DeliveryPostalCode">Postal Code</label>
-                <span class="text-danger" asp-validation-for="DeliveryPostalCode"></span>
-                <input class="form-control" asp-for="DeliveryPostalCode" />
+            <div class="mb-3">
+                <label asp-for="DeliveryPostCode">Delivery Postcode</label>
+                <span class="text-danger" asp-validation-for="DeliveryPostCode"></span>
+                <input class="form-control" asp-for="DeliveryPostCode" />
             </div>
         </div>
-        <div class="form-group">
+        <div class="mb-3">
             <label asp-for="CreditCard">Credit Card</label>
             <span class="text-danger" asp-validation-for="CreditCard"></span>
             <input class="form-control" asp-for="CreditCard" />
         </div>
-        <div class="form-group">
+        <div class="mb-3">
             <label asp-for="CreditCardDate">Expiry Date</label>
             <span class="text-danger" asp-validation-for="CreditCardDate"></span>
             <input class="form-control" asp-for="CreditCardDate" />
         </div>
-        <button type="submit" class="btn btn-primary ml-4 w-50">SUBMIT ORDER</button>
+        <button type="submit" class="btn btn-primary ms-4 w-50">SUBMIT ORDER</button>
     </form>
 
 </div>

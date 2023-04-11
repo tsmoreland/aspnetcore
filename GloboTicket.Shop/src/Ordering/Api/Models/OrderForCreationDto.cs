@@ -11,37 +11,23 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System.Net.Mime;
-using GloboTicket.Shop.Ordering.Api.Models;
 using GloboTicket.Shop.Ordering.Application.Features.Orders.Command.CreateOrder;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
 
-namespace GloboTicket.Shop.Ordering.Api.Controllers;
+namespace GloboTicket.Shop.Ordering.Api.Models;
 
-[Route("api/orders")]
-[ApiController]
-[Produces(MediaTypeNames.Application.Json)]
-[Consumes(MediaTypeNames.Application.Json)]
-public class OrderController : ControllerBase
+public sealed record class OrderForCreationDto(
+    DateTimeOffset Date,
+    CustomerDetailsDto CustomerDetails,
+    IEnumerable<OrderLineDto> Lines)
 {
-    private readonly IMediator _mediator;
 
-    /// <inheritdoc />
-    public OrderController(IMediator mediator)
+    public CreateOrderDto ToCommandDto()
     {
-        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
-    }
-
-    /// <summary>
-    /// Submit a new order
-    /// </summary>
-    [HttpPost(Name = nameof(SubmitOrder))]
-    public async Task<IActionResult> SubmitOrder([FromBody] OrderForCreationDto orderDto, CancellationToken cancellationToken)
-    {
-        await _mediator.Send(new CreateOrderCommand(orderDto.ToCommandDto()), cancellationToken);
-
-        // TODO: provide get route and use alongside CreatedAtRoute
-        return new StatusCodeResult(StatusCodes.Status201Created);
+        return new CreateOrderDto
+        {
+            Date = Date,
+            CustomerDetails = CustomerDetails.ToCommandDto(),
+            Items = Lines.Select(l => (l.ConcertId, l.TicketCount, l.Price)).ToList(),
+        };
     }
 }

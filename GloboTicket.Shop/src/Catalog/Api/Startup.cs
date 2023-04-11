@@ -10,6 +10,7 @@
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+using System.Text.Json;
 using GloboTicket.Shop.Catalog.Api.Services;
 using GloboTicket.Shop.Catalog.Application;
 using GloboTicket.Shop.Catalog.Infrastructure;
@@ -44,7 +45,13 @@ internal static class Startup
             .AddHealthChecks();
 
         services
-            .AddControllers(options => options.Filters.Add(new AddModelStateFeatureFilter()));
+            .AddControllers(options => options.Filters.Add(new AddModelStateFeatureFilter()))
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.DefaultIgnoreCondition =
+                    System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault;
+                options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+            });
 
         services
             .AddProblemDetails()

@@ -40,7 +40,7 @@ public sealed class CreateOrderCommandHandler : IRequestHandler<CreateOrderComma
             .ConfigureAwait(false);
         ValidationFailureException.ThrowIfHasErrors(validationResult);
 
-        OrderForCreation order = orderDto.ToOrderForCreationOrThrow();
+        OrderForCreation order = orderDto.ToModel();
         Guid orderId = Guid.NewGuid();
 
         await _emailService
