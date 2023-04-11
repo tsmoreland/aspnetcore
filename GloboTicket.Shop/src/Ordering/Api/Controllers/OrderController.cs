@@ -12,6 +12,7 @@
 //
 
 using System.Net.Mime;
+using GloboTicket.Shop.Ordering.Api.Models;
 using GloboTicket.Shop.Ordering.Application.Features.Orders.Command.CreateOrder;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -36,9 +37,10 @@ public class OrderController : ControllerBase
     /// Submit a new order
     /// </summary>
     [HttpPost(Name = nameof(SubmitOrder))]
-    public async Task<IActionResult> SubmitOrder([FromBody] CreateOrderDto orderDto, CancellationToken cancellationToken)
+    public async Task<IActionResult> SubmitOrder([FromBody] OrderForCreation orderDto, CancellationToken cancellationToken)
     {
-        await _mediator.Send(new CreateOrderCommand(orderDto), cancellationToken);
+        // TODO: rework this so it's not mapping one dto to another, either have a shared library or maybe generated from swagger?
+        await _mediator.Send(new CreateOrderCommand(orderDto.ToCreateOrderDto()), cancellationToken);
 
         // TODO: provide get route and use alongside CreatedAtRoute
         return new StatusCodeResult(StatusCodes.Status201Created);
