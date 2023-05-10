@@ -30,6 +30,11 @@ spec:
       labels:
         app: catalog
     spec:
+      securityContext:
+        runAsUser: 10000
+        runAsGroup: 2000
+        fsGroup: 2000
+        runAsNonRoot: true
       containers:
       - name: catalog
         image: catalog:dev
@@ -41,3 +46,9 @@ spec:
         ports:
         - containerPort: 8080
         imagePullPolicy: Never
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+              - all
