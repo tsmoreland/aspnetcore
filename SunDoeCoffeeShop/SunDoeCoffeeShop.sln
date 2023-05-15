@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33706.43
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SunDoeCoffeeShop.App", "src\App\SunDoeCoffeeShop.App.csproj", "{67AD1926-3B0A-41F7-A99E-71355B7D451F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "src\Shared\Shared.csproj", "{DE104CF5-9861-4D3E-B6B7-CE642EC8226C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{67AD1926-3B0A-41F7-A99E-71355B7D451F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67AD1926-3B0A-41F7-A99E-71355B7D451F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67AD1926-3B0A-41F7-A99E-71355B7D451F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67AD1926-3B0A-41F7-A99E-71355B7D451F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE104CF5-9861-4D3E-B6B7-CE642EC8226C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE104CF5-9861-4D3E-B6B7-CE642EC8226C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE104CF5-9861-4D3E-B6B7-CE642EC8226C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE104CF5-9861-4D3E-B6B7-CE642EC8226C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F38A6ADF-4024-4104-BDDA-9B1D4B4A4FBE}
+	EndGlobalSection
+EndGlobal
