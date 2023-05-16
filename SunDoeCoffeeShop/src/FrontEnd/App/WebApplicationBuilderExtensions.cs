@@ -11,18 +11,10 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using Microsoft.AspNetCore.Authentication.Certificate;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Server.Kestrel.Https;
-using Microsoft.EntityFrameworkCore;
 using Serilog;
-using SunDoeCoffeeShop.FrontEnd.App.Application.Contracts.Authentication;
-using SunDoeCoffeeShop.FrontEnd.App.Application.Features.Authentication.Commands.CertificateAuthenticationChallenged;
-using SunDoeCoffeeShop.FrontEnd.App.Application.Features.Authentication.Commands.CertificateValidated;
-using SunDoeCoffeeShop.FrontEnd.App.Application.Features.Authentication.Commands.CertificationAuthenticationFailed;
-using SunDoeCoffeeShop.FrontEnd.App.Data;
-using SunDoeCoffeeShop.FrontEnd.App.Services;
+using SunDoeCoffeeShop.Shared.AuthPersistence;
 
 namespace SunDoeCoffeeShop.FrontEnd.App;
 
@@ -38,13 +30,6 @@ internal static class WebApplicationBuilderExtensions
             .ConfigureKestrel(static options =>
             {
                 options.AddServerHeader = true; // normally this would be false
-                options.ConfigureHttpsDefaults(static options =>
-                {
-                    options.CheckCertificateRevocation = false;
-                    options.ClientCertificateValidation = (_, _, _) => true; // really not secure
-                    options.CheckCertificateRevocation = false; // also a bad idea
-                    options.ClientCertificateMode = ClientCertificateMode.AllowCertificate;
-                });
             });
 
         builder.Host
@@ -55,9 +40,8 @@ internal static class WebApplicationBuilderExtensions
         IServiceCollection services = builder.Services;
         IConfiguration configuration = builder.Configuration;
 
-        string connectionString = configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
         services
-            .AddDbContext<ApplicationDbContext>(options => options.UseSqlite(connectionString))
+            .AddAuthPersistence(configuration)
             .AddDatabaseDeveloperPageExceptionFilter();
 
         services
@@ -76,28 +60,13 @@ internal static class WebApplicationBuilderExtensions
                 options.Password.RequireLowercase = false;
                 options.Password.RequiredLength = 1;
             })
-            .AddEntityFrameworkStores<ApplicationDbContext>();
+            .AddEntityFrameworkStores<AuthDbContext>();
 
         services
-            .AddTransient<ICertificateAuthenticationFailedHandler, CertificateAuthenticationFailedHandler>()
-            .AddTransient<ICertificateAuthenticationChallengedHandler, CertificateAuthenticationChallengedHandler>()
-            .AddTransient<ICertificateValidatedHandler, CertificateValidatedHandler>()
             .AddAuthentication(static options =>
             {
                 options.DefaultScheme = IdentityConstants.ApplicationScheme;
                 options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
-                options.DefaultAuthenticateScheme = CertificateAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = CertificateAuthenticationDefaults.AuthenticationScheme;
-            })
-            .AddCertificate(options =>
-            {
-                options.AllowedCertificateTypes = CertificateTypes.All;
-                options.Events = new CertificateAuthenticationEvents
-                {
-                    OnAuthenticationFailed = CertificateAuthenticationEventHandler.OnAuthenticationFailed,
-                    OnCertificateValidated = CertificateAuthenticationEventHandler.OnCertificateValidated,
-                    OnChallenge = CertificateAuthenticationEventHandler.OnChallenge,
-                };
             });
 
         services

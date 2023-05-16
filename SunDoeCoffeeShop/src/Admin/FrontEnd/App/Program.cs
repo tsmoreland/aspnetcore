@@ -12,16 +12,38 @@
 //
 
 using SunDoeCoffeeShop.Admin.FrontEnd.App;
+using Serilog;
 
-WebApplicationBuilder builder = WebApplication
-    .CreateBuilder(args)
-    .ConfigureServices();
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .CreateBootstrapLogger();
 
-// Add services to the container.
-builder.Services.AddRazorPages();
+try
+{
+    Log.Information("Configuring Services...");
+    WebApplicationBuilder builder = WebApplication
+        .CreateBuilder(args)
+        .ConfigureServices();
 
-WebApplication app = builder
-    .Build()
-    .Configure();
+    Log.Information("Configuring Application...");
+    WebApplication app = builder
+        .Build()
+        .Configure();
 
-app.Run();
+    await app.RunAsync();
+}
+catch (Exception ex) when (ex.GetType().Name is not "StopTheHostException")
+{
+    if (args.FirstOrDefault() == "--applicationName" && ex is HostAbortedException)
+    {
+        return; // efcore migration
+    }
+
+    // https://github.com/dotnet/runtime/issues/60600 for StopTheHostException
+    Log.Fatal(ex, "Unhandled exception");
+}
+finally
+{
+    Log.Information("Shutdown complete.");
+    await Log.CloseAndFlushAsync();
+}
