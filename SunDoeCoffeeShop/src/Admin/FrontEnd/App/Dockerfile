@@ -19,6 +19,8 @@ FROM build AS publish
 RUN dotnet publish "SunDoeCoffeeShop.Admin.FrontEnd.App.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
+ENV ASPNETCORE_ENVIRONMENT=Production
+ENV CONNECTIONSTRINGS__AuthConnection=Server=localhost;Database=SunDoeCoffeeApp;User Id=sa;Password=P@55W0rd!;MultipleActiveResultSets=True;TrustServerCertificate=true;
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "SunDoeCoffeeShop.Admin.FrontEnd.App.dll"]

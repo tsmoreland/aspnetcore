@@ -11,15 +11,10 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace SunDoeCoffeeShop.Shared.AuthPersistence;
 
@@ -28,13 +23,24 @@ public static class ServiceCollectionExtensions
 {
 
     /// <summary/>
-    public static IServiceCollection AddAuthPersistence(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddAuthPersistence(this IServiceCollection services, IConfiguration configuration, IHostEnvironment hostEnvironment)
     {
         ArgumentNullException.ThrowIfNull(services);
 
         string connectionString = configuration.GetConnectionString("AuthConnection") ?? throw new InvalidOperationException("Connection string 'AuthConnection' not found.");
         services
-            .AddDbContext<AuthDbContext>(options => options.UseSqlite(connectionString));
+            .AddDbContext<AuthDbContext>(options =>
+            {
+                if (hostEnvironment.IsProduction())
+                {
+                    options.UseSqlServer(connectionString);
+                }
+                else
+                {
+                    options.UseSqlite(connectionString);
+                }
+            })
+            .AddScoped<IUserRepository, UserRepository>();
 
         return services;
     }

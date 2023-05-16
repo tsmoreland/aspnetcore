@@ -11,7 +11,8 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System.Runtime.CompilerServices;
+using Microsoft.EntityFrameworkCore;
+using SunDoeCoffeeShop.Shared.AuthPersistence;
 
 namespace SunDoeCoffeeShop.Admin.FrontEnd.App;
 
@@ -40,5 +41,51 @@ internal static class WebApplicationExtensions
         app.MapRazorPages();
 
         return app;
+    }
+
+    public static async Task MigrateIfProduction(this WebApplication app, ILogger logger)
+    {
+        ArgumentNullException.ThrowIfNull(app);
+
+        if (!app.Environment.IsProduction())
+        {
+            return;
+        }
+
+        logger.LogInformation("Performing database migration.");
+        using IServiceScope scope = app.Services.CreateAsyncScope();
+        AuthDbContext dbContext = scope.ServiceProvider.GetRequiredService<AuthDbContext>();
+        await WaitForSqlServer(dbContext, logger);
+        await dbContext.Database.MigrateAsync();
+    }
+
+
+    private static async Task WaitForSqlServer(DbContext dbContext, ILogger logger)
+    {
+        bool ready = false;
+        int failures = 0;
+        const int maxFailures = 5;
+        while (!ready)
+        {
+            try
+            {
+                logger.LogInformation("Attempting to connect to database");
+                ready = await dbContext.Database.CanConnectAsync();
+            }
+            catch (Exception)
+            {
+                failures++;
+            }
+
+            if (!ready && failures >= maxFailures)
+            {
+                logger.LogWarning("Unable to connect to database, attempt #{Attempt} out of {MaxFailures}", failures, maxFailures);
+                await Task.Delay(TimeSpan.FromSeconds(2.5));
+            }
+            else if (failures > maxFailures)
+            {
+                throw new ApplicationException("Unable to start due to database not being available");
+            }
+        }
     }
 }
