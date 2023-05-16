@@ -53,9 +53,10 @@ internal static class WebApplicationBuilderExtensions
 
         IServiceCollection services = builder.Services;
         IConfiguration configuration = builder.Configuration;
+        IHostEnvironment env = builder.Environment;
 
         services
-            .AddAuthPersistence(configuration)
+            .AddAuthPersistence(configuration, env)
             .AddDatabaseDeveloperPageExceptionFilter();
 
         services
