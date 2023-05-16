@@ -12,26 +12,32 @@
 //
 
 using Microsoft.AspNetCore.Authentication.Certificate;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using SunDoeCoffeeShop.Shared.Roles;
+using SunDoeCoffeeShop.Admin.FrontEnd.App.Application.Contracts.Authentication;
 
-namespace SunDoeCoffeeShop.FrontEnd.App.Pages.Admin;
+namespace SunDoeCoffeeShop.Admin.FrontEnd.App.Services;
 
-[Authorize(AuthenticationSchemes = CertificateAuthenticationDefaults.AuthenticationScheme, Roles = RoleName.Administrator)]
-public sealed class Employees : PageModel
+/// <summary/>
+public static class CertificateAuthenticationEventHandler
 {
-    private readonly ILogger<Employees> _logger;
 
-    public Employees(ILogger<Employees> logger)
+    /// <summary/>
+    public static Task OnAuthenticationFailed(CertificateAuthenticationFailedContext context)
     {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        ICertificateAuthenticationFailedHandler handler = context.HttpContext.RequestServices.GetRequiredService<ICertificateAuthenticationFailedHandler>();
+        return handler.Handle(context);
     }
 
-    public async Task OnGetAsync([FromQuery] string? filter = null)
+    /// <summary/>
+    public static Task OnCertificateValidated(CertificateValidatedContext context)
     {
-        _ = filter;
-        await Task.CompletedTask;
+        ICertificateValidatedHandler handler = context.HttpContext.RequestServices.GetRequiredService<ICertificateValidatedHandler>();
+        return handler.Handle(context);
+    }
+
+    /// <summary/>
+    public static Task OnChallenge(CertificateChallengeContext context)
+    {
+        ICertificateAuthenticationChallengedHandler handler = context.HttpContext.RequestServices.GetRequiredService<ICertificateAuthenticationChallengedHandler>();
+        return handler.Handle(context);
     }
 }

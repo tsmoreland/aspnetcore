@@ -2,19 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
-using SunDoeCoffeeShop.FrontEnd.App.Data;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using SunDoeCoffeeShop.Shared.AuthPersistence;
 
 #nullable disable
 
-namespace SunDoeCoffeeShop.App.Data.Migrations
+namespace SunDoeCoffeeShop.Shared.AuthPersistence.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230515095849_AuthService")]
-    partial class AuthService
+    [DbContext(typeof(AuthDbContext))]
+    partial class AuthDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
@@ -158,11 +156,9 @@ namespace SunDoeCoffeeShop.App.Data.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ProviderDisplayName")
@@ -200,11 +196,9 @@ namespace SunDoeCoffeeShop.App.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Value")

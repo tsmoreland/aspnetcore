@@ -28,7 +28,7 @@ public sealed class AuthDesignTimeDbContextFactory : IDesignTimeDbContextFactory
             .EnableSensitiveDataLogging(true)
             .LogTo(Console.WriteLine)
             .UseSqlite(
-                "Data Source=SunDoeCoffee.db",
+                @"Data Source=..\..\..\data\SunDoeCoffee.db",
                 options => options
                     .MigrationsAssembly(typeof(AuthDesignTimeDbContextFactory).Assembly.FullName));
 
