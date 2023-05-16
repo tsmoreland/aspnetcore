@@ -37,12 +37,18 @@ public class CertificateValidatedHandler : ICertificateValidatedHandler
             return Task.CompletedTask;
         }
 
+
+        string name = context.ClientCertificate.FriendlyName;
+        if (name is not { Length: > 0 })
+        {
+            name = context.ClientCertificate.SubjectName.Name.Replace("CN=", "");
+        }
+
         Claim[] claims = new[]
         {
-            new Claim(ClaimTypes.NameIdentifier, context.ClientCertificate.Subject, ClaimValueTypes.String, context.Options.ClaimsIssuer),
-            new Claim(ClaimTypes.Name, context.ClientCertificate.Subject, ClaimValueTypes.String, context.Options.ClaimsIssuer),
+            new Claim(ClaimTypes.NameIdentifier, context.ClientCertificate.Thumbprint, ClaimValueTypes.String, context.Options.ClaimsIssuer),
+            new Claim(ClaimTypes.Name, name, ClaimValueTypes.String, context.Options.ClaimsIssuer),
             new Claim(ClaimTypes.Role, Role.Administrator.ToString(), ClaimValueTypes.String, context.Options.ClaimsIssuer),
-            
         };
 
         context.Principal = new ClaimsPrincipal(new ClaimsIdentity(claims, context.Scheme.Name));

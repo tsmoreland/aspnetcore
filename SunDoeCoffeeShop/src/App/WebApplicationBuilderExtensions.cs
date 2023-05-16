@@ -79,7 +79,7 @@ internal static class WebApplicationBuilderExtensions
             })
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
-        AuthenticationBuilder authenticationBuilder = services
+        services
             .AddTransient<ICertificateAuthenticationFailedHandler, CertificateAuthenticationFailedHandler>()
             .AddTransient<ICertificateAuthenticationChallengedHandler, CertificateAuthenticationChallengedHandler>()
             .AddTransient<ICertificateValidatedHandler, CertificateValidatedHandler>()
@@ -87,9 +87,9 @@ internal static class WebApplicationBuilderExtensions
             {
                 options.DefaultScheme = IdentityConstants.ApplicationScheme;
                 options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
-            });
-
-        authenticationBuilder
+                options.DefaultAuthenticateScheme = CertificateAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = CertificateAuthenticationDefaults.AuthenticationScheme;
+            })
             .AddCertificate(options =>
             {
                 options.AllowedCertificateTypes = CertificateTypes.All;
