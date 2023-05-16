@@ -16,6 +16,7 @@ using Serilog;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
+    .MinimumLevel.Debug()
     .CreateBootstrapLogger();
 
 try
@@ -30,6 +31,7 @@ try
         .Build()
         .Configure();
 
+    Log.Information("Maybe perform dabase migration...");
     await app.MigrateIfProduction(Log.Logger);
 
     Log.Information("Starting Application...");

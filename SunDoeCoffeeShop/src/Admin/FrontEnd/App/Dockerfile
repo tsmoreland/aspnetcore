@@ -17,10 +17,12 @@ RUN dotnet build "SunDoeCoffeeShop.Admin.FrontEnd.App.csproj" -c Release -o /app
 
 FROM build AS publish
 RUN dotnet publish "SunDoeCoffeeShop.Admin.FrontEnd.App.csproj" -c Release -o /app/publish /p:UseAppHost=false
+COPY ["data/admin-certificate.pfx", "/app/publish/admin-certificate.pfx"]
 
 FROM base AS final
 ENV ASPNETCORE_ENVIRONMENT=Production
-ENV CONNECTIONSTRINGS__AuthConnection=Server=localhost;Database=SunDoeCoffeeApp;User Id=sa;Password=P@55W0rd!;MultipleActiveResultSets=True;TrustServerCertificate=true;
+WORKDIR /build
+COPY --from=publish /app/build .
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "SunDoeCoffeeShop.Admin.FrontEnd.App.dll"]

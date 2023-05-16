@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SunDoeCoffeeShop.Shared.AuthPersistence;
+using SunDoeCoffeeShop.Shared.AuthPersistence.Contracts;
 
 namespace SunDoeCoffeeShop.Admin.FrontEnd.App.Pages.Uesrs;
 
@@ -7,7 +7,11 @@ namespace SunDoeCoffeeShop.Admin.FrontEnd.App.Pages.Uesrs;
 public class IndexModel : PageModel
 {
     private readonly IUserRepository _userRepository;
-    public List<UserModel>? Users { get; private set; } 
+    public IList<UserModel>? Users { get; private set; }
+    public string UserNameSort { get; set; } = string.Empty;
+    public string EmailSort { get; set; } = string.Empty;
+    public string? Sort { get; set; }
+    public string? Filter { get; set; }
 
     /// <inheritdoc />
     public IndexModel(IUserRepository userRepository)

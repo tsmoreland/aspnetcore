@@ -24,13 +24,14 @@ public sealed class AuthDesignTimeDbContextFactory : IDesignTimeDbContextFactory
     {
         DbContextOptionsBuilder<AuthDbContext> optionsBuilder = new();
 
+        string connectionString = Environment.GetEnvironmentVariable("CONNECTIONSTRINGS_AUTHCONNECTION") ??
+                                  "Server=localhost;Database=SunDoeCoffeeApp;User Id=sa;Password=P@55W0rd!;MultipleActiveResultSets=True;TrustServerCertificate=true;";
+
         optionsBuilder
             .EnableSensitiveDataLogging(true)
             .LogTo(Console.WriteLine)
-            .UseSqlite(
-                @"Data Source=..\..\..\data\SunDoeCoffee.db",
-                options => options
-                    .MigrationsAssembly(typeof(AuthDesignTimeDbContextFactory).Assembly.FullName));
+            .UseSqlServer(connectionString, options => options
+                .MigrationsAssembly(typeof(AuthDesignTimeDbContextFactory).Assembly.FullName));
 
         AuthDbContext dbContext = new(optionsBuilder.Options);
         return dbContext;

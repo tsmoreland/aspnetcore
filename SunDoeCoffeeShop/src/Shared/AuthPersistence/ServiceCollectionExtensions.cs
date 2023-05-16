@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SunDoeCoffeeShop.Shared.AuthPersistence.Contracts;
 
 namespace SunDoeCoffeeShop.Shared.AuthPersistence;
 
@@ -31,7 +32,7 @@ public static class ServiceCollectionExtensions
         services
             .AddDbContext<AuthDbContext>(options =>
             {
-                if (hostEnvironment.IsProduction())
+                if (hostEnvironment.IsProduction() || connectionString.StartsWith("Server="))
                 {
                     options.UseSqlServer(connectionString);
                 }

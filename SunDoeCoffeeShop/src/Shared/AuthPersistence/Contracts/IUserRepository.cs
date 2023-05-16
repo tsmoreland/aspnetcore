@@ -18,7 +18,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 
-namespace SunDoeCoffeeShop.Shared.AuthPersistence;
+namespace SunDoeCoffeeShop.Shared.AuthPersistence.Contracts;
 
 public interface IUserRepository
 {

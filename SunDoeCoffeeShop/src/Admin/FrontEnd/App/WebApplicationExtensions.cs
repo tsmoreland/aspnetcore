@@ -43,24 +43,27 @@ internal static class WebApplicationExtensions
         return app;
     }
 
-    public static async Task MigrateIfProduction(this WebApplication app, ILogger logger)
+    public static async Task MigrateIfProduction(this WebApplication app, Serilog.ILogger logger)
     {
         ArgumentNullException.ThrowIfNull(app);
 
-        if (!app.Environment.IsProduction())
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseMigrationsEndPoint();
+        }
+        else
         {
             return;
         }
 
-        logger.LogInformation("Performing database migration.");
+        logger.Information("Performing database migration.");
         using IServiceScope scope = app.Services.CreateAsyncScope();
         AuthDbContext dbContext = scope.ServiceProvider.GetRequiredService<AuthDbContext>();
-        await WaitForSqlServer(dbContext, logger);
-        await dbContext.Database.MigrateAsync();
+        await WaitUntilMigrationComplete(dbContext, logger);
     }
 
 
-    private static async Task WaitForSqlServer(DbContext dbContext, ILogger logger)
+    private static async Task WaitUntilMigrationComplete(DbContext dbContext, Serilog.ILogger logger)
     {
         bool ready = false;
         int failures = 0;
@@ -69,8 +72,9 @@ internal static class WebApplicationExtensions
         {
             try
             {
-                logger.LogInformation("Attempting to connect to database");
-                ready = await dbContext.Database.CanConnectAsync();
+                logger.Information("Attempting to connect to database");
+                await dbContext.Database.MigrateAsync();
+                ready = true;
             }
             catch (Exception)
             {
@@ -79,7 +83,7 @@ internal static class WebApplicationExtensions
 
             if (!ready && failures >= maxFailures)
             {
-                logger.LogWarning("Unable to connect to database, attempt #{Attempt} out of {MaxFailures}", failures, maxFailures);
+                logger.Warning("Unable to connect to database, attempt #{Attempt} out of {MaxFailures}", failures, maxFailures);
                 await Task.Delay(TimeSpan.FromSeconds(2.5));
             }
             else if (failures > maxFailures)

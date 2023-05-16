@@ -13,11 +13,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SharedFolder", "SharedFolde
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SunDoeCoffeeShop.Shared.Roles", "src\Shared\Roles\SunDoeCoffeeShop.Shared.Roles.csproj", "{2EC47355-335B-46A5-900A-9F0560C684CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SunDoeCoffeeShop.Admin.FrontEnd.App", "src\Admin\FrontEnd\App\SunDoeCoffeeShop.Admin.FrontEnd.App.csproj", "{EB01D9F4-F39D-485D-AFF0-839B3D792D29}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SunDoeCoffeeShop.Admin.FrontEnd.App", "src\Admin\FrontEnd\App\SunDoeCoffeeShop.Admin.FrontEnd.App.csproj", "{EB01D9F4-F39D-485D-AFF0-839B3D792D29}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FrontEnd", "FrontEnd", "{3381DAE8-B860-490E-AEBB-90F52E2946A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SunDoeCoffeeShop.Shared.AuthPersistence", "src\Shared\AuthPersistence\SunDoeCoffeeShop.Shared.AuthPersistence.csproj", "{CCEDC325-B13A-4D52-98D7-C96193BE66BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SunDoeCoffeeShop.Shared.AuthPersistence", "src\Shared\AuthPersistence\SunDoeCoffeeShop.Shared.AuthPersistence.csproj", "{CCEDC325-B13A-4D52-98D7-C96193BE66BA}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{9F6E6DC9-8175-44C3-989B-18A0708849A8}"
 EndProject

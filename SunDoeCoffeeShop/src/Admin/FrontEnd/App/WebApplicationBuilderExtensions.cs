@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Authentication.Certificate;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Server.Kestrel;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.AspNetCore.Server.Kestrel.Https;
 using Serilog;
 using SunDoeCoffeeShop.Admin.FrontEnd.App.Application.Contracts.Authentication;
@@ -34,12 +36,25 @@ internal static class WebApplicationBuilderExtensions
         ArgumentNullException.ThrowIfNull(builder);
 
         builder.WebHost
-            .ConfigureKestrel(static options =>
+            .ConfigureKestrel(static (context, options) =>
             {
-                options.AddServerHeader = true; // normally this would be false
+                IConfigurationSection kestrelSection = context.Configuration.GetSection("Kestrel");
+                KestrelServerOptions kestrelOptions = options.Configure(kestrelSection)
+                    .Endpoint("HTTPS", static endPointConfiguration =>
+                    {
+                        try
+                        {
+                        }
+                        catch (Exception)
+                        {
+                            // ...
+                        }
+
+                    }).Options;
+
+                kestrelOptions.AddServerHeader = true;// normally this would be false
                 options.ConfigureHttpsDefaults(static options =>
                 {
-                    options.CheckCertificateRevocation = false;
                     options.ClientCertificateValidation = (_, _, _) => true; // really not secure
                     options.CheckCertificateRevocation = false; // also a bad idea
                     options.ClientCertificateMode = ClientCertificateMode.AllowCertificate;
