@@ -11,11 +11,31 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using Microsoft.AspNetCore.Authentication.Certificate;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace SunDoeCoffeeShop.FrontEnd.App.Application.Contracts.Authentication;
+namespace SunDoeCoffeeShop.Shared.AuthPersistence;
 
-public interface ICertificateAuthenticationChallengedHandler
+/// <summary/>
+public static class ServiceCollectionExtensions
 {
-    Task Handle(CertificateChallengeContext context);
+
+    /// <summary/>
+    public static IServiceCollection AddAuthPersistence(this IServiceCollection services, IConfiguration configuration)
+    {
+        ArgumentNullException.ThrowIfNull(services);
+
+        string connectionString = configuration.GetConnectionString("AuthConnection") ?? throw new InvalidOperationException("Connection string 'AuthConnection' not found.");
+        services
+            .AddDbContext<AuthDbContext>(options => options.UseSqlite(connectionString));
+
+        return services;
+    }
 }

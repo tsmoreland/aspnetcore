@@ -11,6 +11,20 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using Microsoft.AspNetCore.Authentication.Certificate;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Server.Kestrel.Https;
+using Serilog;
+using SunDoeCoffeeShop.Admin.FrontEnd.App.Application.Contracts.Authentication;
+using SunDoeCoffeeShop.Admin.FrontEnd.App.Application.Features.Authentication.Commands.CertificateAuthenticationChallenged;
+using SunDoeCoffeeShop.Admin.FrontEnd.App.Application.Features.Authentication.Commands.CertificateValidated;
+using SunDoeCoffeeShop.Admin.FrontEnd.App.Application.Features.Authentication.Commands.CertificationAuthenticationFailed;
+using SunDoeCoffeeShop.Admin.FrontEnd.App.Services;
+using SunDoeCoffeeShop.Shared.AuthPersistence;
+using SunDoeCoffeeShop.Shared.Roles;
+
 namespace SunDoeCoffeeShop.Admin.FrontEnd.App;
 
 internal static class WebApplicationBuilderExtensions
@@ -19,9 +33,73 @@ internal static class WebApplicationBuilderExtensions
     {
         ArgumentNullException.ThrowIfNull(builder);
 
+        builder.WebHost
+            .ConfigureKestrel(static options =>
+            {
+                options.AddServerHeader = true; // normally this would be false
+                options.ConfigureHttpsDefaults(static options =>
+                {
+                    options.CheckCertificateRevocation = false;
+                    options.ClientCertificateValidation = (_, _, _) => true; // really not secure
+                    options.CheckCertificateRevocation = false; // also a bad idea
+                    options.ClientCertificateMode = ClientCertificateMode.AllowCertificate;
+                });
+            });
+
+        builder.Host
+            .UseSerilog(static (context, loggerConfiguration) => loggerConfiguration
+                .WriteTo.Console()
+                .ReadFrom.Configuration(context.Configuration));
+
         IServiceCollection services = builder.Services;
+        IConfiguration configuration = builder.Configuration;
 
         services
+            .AddAuthPersistence(configuration)
+            .AddDatabaseDeveloperPageExceptionFilter();
+
+        services
+            .AddAuthorization(static options =>
+            {
+                options
+                    .AddPolicy("administrator", static policy =>
+                        policy
+                            .RequireRole(RoleName.Administrator)
+                            .RequireAuthenticatedUser());
+
+            });
+
+        services
+            .AddTransient<ICertificateAuthenticationFailedHandler, CertificateAuthenticationFailedHandler>()
+            .AddTransient<ICertificateAuthenticationChallengedHandler, CertificateAuthenticationChallengedHandler>()
+            .AddTransient<ICertificateValidatedHandler, CertificateValidatedHandler>()
+            .AddAuthentication(static options =>
+            {
+                options.DefaultScheme = IdentityConstants.ApplicationScheme;
+                options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+                options.DefaultAuthenticateScheme = CertificateAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = CertificateAuthenticationDefaults.AuthenticationScheme;
+            })
+            .AddCertificate(options =>
+            {
+                options.AllowedCertificateTypes = CertificateTypes.All;
+                options.Events = new CertificateAuthenticationEvents
+                {
+                    OnAuthenticationFailed = CertificateAuthenticationEventHandler.OnAuthenticationFailed,
+                    OnCertificateValidated = CertificateAuthenticationEventHandler.OnCertificateValidated,
+                    OnChallenge = CertificateAuthenticationEventHandler.OnChallenge,
+                };
+            });
+
+        services
+            .AddMvcCore(static options =>
+            {
+                AuthorizationPolicy policy = new AuthorizationPolicyBuilder()
+                        .RequireAuthenticatedUser()
+                        .RequireRole(RoleName.Administrator)
+                        .Build();
+                options.Filters.Add(new AuthorizeFilter(policy));
+            })
             .AddRazorPages();
 
         return builder;

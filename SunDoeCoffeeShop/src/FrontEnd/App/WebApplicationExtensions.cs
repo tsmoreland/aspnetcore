@@ -32,13 +32,13 @@ public static class WebApplicationExtensions
             app.UseHsts();
         }
 
+        app.UseAuthentication();
+        app.UseAuthorization();
+
         app.UseHttpsRedirection();
         app.UseStaticFiles();
 
         app.UseRouting();
-
-        app.UseAuthentication();
-        app.UseAuthorization();
 
         app.MapRazorPages();
 
