@@ -11,13 +11,28 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-namespace Shared;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 
-public enum Role
+namespace SunDoeCoffeeShop.Shared.AuthPersistence;
+
+/// <summary/>
+public sealed class AuthDesignTimeDbContextFactory : IDesignTimeDbContextFactory<AuthDbContext>
 {
-    None,
-    Administrator,
-    Manager,
-    Employee,
-    Customer,
+    /// <inheritdoc />
+    public AuthDbContext CreateDbContext(string[] args)
+    {
+        DbContextOptionsBuilder<AuthDbContext> optionsBuilder = new();
+
+        optionsBuilder
+            .EnableSensitiveDataLogging(true)
+            .LogTo(Console.WriteLine)
+            .UseSqlite(
+                "Data Source=SunDoeCoffee.db",
+                options => options
+                    .MigrationsAssembly(typeof(AuthDesignTimeDbContextFactory).Assembly.FullName));
+
+        AuthDbContext dbContext = new(optionsBuilder.Options);
+        return dbContext;
+    }
 }
