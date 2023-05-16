@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright © 2023 Terry Moreland
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
@@ -11,42 +11,27 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using SunDoeCoffeeShop.Admin.FrontEnd.App;
-using Serilog;
+using Microsoft.AspNetCore.Identity;
 
-Log.Logger = new LoggerConfiguration()
-    .WriteTo.Console()
-    .CreateBootstrapLogger();
+namespace SunDoeCoffeeShop.Admin.FrontEnd.App.Pages.Uesrs;
 
-try
+public sealed class UserModel
 {
-    Log.Information("Configuring Services...");
-    WebApplicationBuilder builder = WebApplication
-        .CreateBuilder(args)
-        .ConfigureServices();
-
-    Log.Information("Configuring Application...");
-    WebApplication app = builder
-        .Build()
-        .Configure();
-
-    await app.MigrateIfProduction(Log.Logger);
-
-    Log.Information("Starting Application...");
-    await app.RunAsync();
-}
-catch (Exception ex) when (ex.GetType().Name is not "StopTheHostException")
-{
-    if (args.FirstOrDefault() == "--applicationName" && ex is HostAbortedException)
+    public UserModel()
     {
-        return; // efcore migration
     }
 
-    // https://github.com/dotnet/runtime/issues/60600 for StopTheHostException
-    Log.Fatal(ex, "Unhandled exception");
-}
-finally
-{
-    Log.Information("Shutdown complete.");
-    await Log.CloseAndFlushAsync();
+    public UserModel(IdentityUser identityUser)
+    {
+        ArgumentNullException.ThrowIfNull(identityUser);
+
+        Id = identityUser.Id;
+        Email = identityUser.Email ?? string.Empty;
+        UserName = identityUser.UserName ?? string.Empty;
+    }
+
+    public string Id { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
+    public string UserName { get; set; } = string.Empty;
+
 }
