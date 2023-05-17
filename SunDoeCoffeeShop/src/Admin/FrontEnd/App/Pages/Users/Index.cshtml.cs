@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SunDoeCoffeeShop.Shared.AuthPersistence.Contracts;
 
-namespace SunDoeCoffeeShop.Admin.FrontEnd.App.Pages.Uesrs;
+namespace SunDoeCoffeeShop.Admin.FrontEnd.App.Pages.Users;
 
 /// <summary/>
 public class IndexModel : PageModel

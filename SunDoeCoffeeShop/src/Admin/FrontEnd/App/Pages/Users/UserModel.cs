@@ -13,7 +13,7 @@
 
 using Microsoft.AspNetCore.Identity;
 
-namespace SunDoeCoffeeShop.Admin.FrontEnd.App.Pages.Uesrs;
+namespace SunDoeCoffeeShop.Admin.FrontEnd.App.Pages.Users;
 
 public sealed class UserModel
 {
