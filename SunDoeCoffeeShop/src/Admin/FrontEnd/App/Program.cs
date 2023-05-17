@@ -25,12 +25,13 @@ try
         .CreateBuilder(args)
         .ConfigureServices();
 
-    Log.Information("Configuring Application...");
-    WebApplication app = builder
-        .Build()
-        .Configure();
+    Log.Information("Building application...");
+    WebApplication app = builder.Build();
 
-    await app.MigrateIfProduction(Log.Logger);
+    Log.Information("Configuring Application...");
+    await app
+        .Configure()
+        .Migrate(Log.Logger);
 
     Log.Information("Starting Application...");
     await app.RunAsync();

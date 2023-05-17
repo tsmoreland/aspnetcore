@@ -42,13 +42,13 @@ internal static class WebApplicationBuilderExtensions
         IHostEnvironment env = builder.Environment;
 
         services
-            .AddAuthPersistence(configuration, env)
+            .AddAuthPersistence(configuration)
             .AddDatabaseDeveloperPageExceptionFilter();
 
         services
             .AddDefaultIdentity<IdentityUser>(static options =>
             {
-                options.SignIn.RequireConfirmedAccount = true;
+                options.SignIn.RequireConfirmedAccount = false;
 
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromSeconds(5);
                 options.Lockout.MaxFailedAccessAttempts = 100;

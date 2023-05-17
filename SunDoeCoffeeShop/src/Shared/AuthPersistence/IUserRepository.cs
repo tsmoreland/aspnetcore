@@ -14,6 +14,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
@@ -22,7 +23,7 @@ namespace SunDoeCoffeeShop.Shared.AuthPersistence;
 
 public interface IUserRepository
 {
-    IAsyncEnumerable<IdentityUser> GetAll(CancellationToken cancellationToken);
+    IAsyncEnumerable<IdentityUser> GetAll(bool accending = true, CancellationToken cancellationToken = default);
     Task<IdentityUser?> GetUserById(string id, CancellationToken cancellationToken);
     Task<IdentityUser?> GetUserByUsername(string username, CancellationToken cancellationToken);
     Task<IdentityUser?> GetUserByEmail(string email, CancellationToken cancellationToken);

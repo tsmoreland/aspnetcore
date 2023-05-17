@@ -32,9 +32,16 @@ public sealed class UserRepository : IUserRepository
     }
 
     /// <inheritdoc />
-    public async IAsyncEnumerable<IdentityUser> GetAll([EnumeratorCancellation] CancellationToken cancellationToken)
+    public async IAsyncEnumerable<IdentityUser> GetAll(bool ascending = true, [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        await foreach (IdentityUser user in _dbContext.Users.AsAsyncEnumerable().WithCancellation(cancellationToken))
+        IQueryable<IdentityUser> queryable = _dbContext.Users.AsNoTracking();
+
+        queryable = ascending
+            ? queryable.OrderBy(u => u.Email)
+            : queryable.OrderByDescending(u => u.Email);
+
+        ConfiguredCancelableAsyncEnumerable<IdentityUser> enumerable = queryable.AsAsyncEnumerable().WithCancellation(cancellationToken);
+        await foreach (IdentityUser user in enumerable)
         {
             yield return user;
         }

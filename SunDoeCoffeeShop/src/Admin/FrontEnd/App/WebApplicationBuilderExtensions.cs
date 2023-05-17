@@ -56,8 +56,27 @@ internal static class WebApplicationBuilderExtensions
         IHostEnvironment env = builder.Environment;
 
         services
-            .AddAuthPersistence(configuration, env)
+            .AddAuthPersistence(configuration)
             .AddDatabaseDeveloperPageExceptionFilter();
+
+        services
+            .AddIdentityCore<IdentityUser>(static options =>
+            {
+                options.SignIn.RequireConfirmedAccount = false;
+
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromSeconds(5);
+                options.Lockout.MaxFailedAccessAttempts = 100;
+                options.Lockout.AllowedForNewUsers = false;
+
+                // intentionally insecure.
+                options.Password.RequireUppercase = false;
+                options.Password.RequireDigit = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequiredLength = 1;
+                options.Stores.MaxLengthForKeys = 128;
+            })
+            .AddEntityFrameworkStores<AuthDbContext>();
 
         services
             .AddAuthorization(static options =>

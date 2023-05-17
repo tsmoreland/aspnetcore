@@ -23,7 +23,7 @@ public static class ServiceCollectionExtensions
 {
 
     /// <summary/>
-    public static IServiceCollection AddAuthPersistence(this IServiceCollection services, IConfiguration configuration, IHostEnvironment hostEnvironment)
+    public static IServiceCollection AddAuthPersistence(this IServiceCollection services, IConfiguration configuration)
     {
         ArgumentNullException.ThrowIfNull(services);
 
@@ -31,14 +31,7 @@ public static class ServiceCollectionExtensions
         services
             .AddDbContext<AuthDbContext>(options =>
             {
-                if (hostEnvironment.IsProduction())
-                {
-                    options.UseSqlServer(connectionString);
-                }
-                else
-                {
-                    options.UseSqlite(connectionString);
-                }
+                options.UseSqlite(connectionString);
             })
             .AddScoped<IUserRepository, UserRepository>();
 

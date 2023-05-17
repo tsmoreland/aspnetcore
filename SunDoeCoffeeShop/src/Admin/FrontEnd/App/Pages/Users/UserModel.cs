@@ -13,25 +13,12 @@
 
 using Microsoft.AspNetCore.Identity;
 
-namespace SunDoeCoffeeShop.Admin.FrontEnd.App.Pages.Uesrs;
+namespace SunDoeCoffeeShop.Admin.FrontEnd.App.Pages.Users;
 
-public sealed class UserModel
+public sealed record class UserModel(string Id, string Email)
 {
-    public UserModel()
+    public UserModel(IdentityUser user)
+        : this(user.Id, user.Email ?? string.Empty)
     {
     }
-
-    public UserModel(IdentityUser identityUser)
-    {
-        ArgumentNullException.ThrowIfNull(identityUser);
-
-        Id = identityUser.Id;
-        Email = identityUser.Email ?? string.Empty;
-        UserName = identityUser.UserName ?? string.Empty;
-    }
-
-    public string Id { get; set; } = string.Empty;
-    public string Email { get; set; } = string.Empty;
-    public string UserName { get; set; } = string.Empty;
-
 }

@@ -1,0 +1,42 @@
+﻿@page
+@model SunDoeCoffeeShop.Admin.FrontEnd.App.Pages.Users.IndexModel
+
+<a asp-page="./Create">Add new user</a>
+
+@if (Model.Users is null)
+{
+    <p>Loading Users...</p>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-sm">
+            <caption>Users</caption>
+            <thead>
+                <tr>
+                    <th scope="col">
+                        <a class="page-link" asp-page="./Index" asp-route-sortOrder="@Model.EmailSort">
+                            @Html.DisplayNameFor(m => m.Users![0].Email)
+                        </a>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Users)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            <a class="btn btn-sm btn-outline-secondary" asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a class="btn btn-sm btn-outline-secondary" asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                            <a class="btn-sm btn btn-outline-danger" asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+}
