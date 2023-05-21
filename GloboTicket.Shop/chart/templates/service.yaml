@@ -1,0 +1,67 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Values.frontendServiceName }}
+  labels:
+    app: {{ .Values.frontendAppName }}
+spec:
+  selector:
+    app: {{ .Values.frontendAppName }}
+  ports:
+  - protocol: TCP
+    port: {{ .Values.frontendSourcePort }}
+    targetPort: 8080
+    name: http
+  - protocol: TCP
+    port: {{ .Values.frontendSecureSourcePort }}
+    targetPort: 4430
+    name: https
+  type: ClusterIP
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Values.orderingServiceName }}
+  labels:
+    app: {{ .Values.orderingAppName }}
+spec:
+  selector:
+    app: {{ .Values.orderingAppName }}
+  ports:
+  - protocol: TCP
+    port: {{ .Values.orderingSourcePort }} 
+    targetPort: 8080
+    name: http
+  type: ClusterIP
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Values.catalogServiceName }}
+  labels:
+    app: {{ .Values.catalogAppName }}
+spec:
+  selector:
+    app: {{ .Values.catalogAppName }}
+  ports:
+  - protocol: TCP
+    port: {{ .Values.catalogSourcePort }}
+    targetPort: 8080
+    name: http
+  type: ClusterIP
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Values.sqlserverServiceName }}
+  labels:
+    app: {{ .Values.sqlserverAppName }}
+spec:
+  selector:
+    app: {{ .Values.sqlserverAppName }}
+  ports:
+  - protocol: TCP
+    port: {{ .Values.sqlserverPort }}
+    targetPort: {{ .Values.sqlserverPort }}
+    name: http
+  type: ClusterIP

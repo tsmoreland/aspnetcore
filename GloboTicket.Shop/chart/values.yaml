@@ -1,0 +1,16 @@
+frontendAppName: globoticket-shop
+frontendImage: localhost:6000/frontend
+frontendServiceName: globoticketshop-frontend
+frontendSourcePort: 8080
+frontendSecureSourcePort: 4433
+replicas: 1
+orderingAppName: globoticket-ordering
+orderingImage: localhost:6000/ordering
+orderingSourcePort: 8080
+catalogAppName: globoticket-catalog
+catalogImage: localhost:6000/catalog
+catalogSourcePort: 8080
+sqlserverAppName: sqlserver
+sqlserverServiceName: sqlserver
+sqlserverImageName: mcr.microsoft.com/mssql/server:latest
+sqlserverPort: 1433

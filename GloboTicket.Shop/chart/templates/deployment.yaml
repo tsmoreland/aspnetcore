@@ -1,0 +1,146 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  labels:
+    app: {{ .Values.frontendAppName }}
+  name: {{ .Values.frontendAppName }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.frontendAppName }}
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app:  {{ .Values.frontendAppName }}
+    spec:
+      securityContext:
+        runAsUser: 10000
+        runAsGroup: 2000
+        fsGroup: 2000
+        runAsNonRoot: true
+      containers:
+      - name: {{ .Values.frontendAppName }}-{{ randAlphaNum 5 | lower }}
+        image: {{ .Values.frontendImageName }}
+        resources: {}
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Development
+        - name: ApiConfigs__ConcertCatalog__Uri
+          value: http://catalog/api:8080
+        - name: ApiConfigs__Ordering__Uri
+          value: http://ordering/api:8080
+        ports:
+        - containerPort: 8080
+        imagePullPolicy: Never
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+              - all
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  labels:
+    app: {{ .Values.orderingAppName }}
+  name: {{ .Values.orderingAppName }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.orderingAppName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.orderingAppName }}
+    spec:
+      securityContext:
+        runAsUser: 10000
+        runAsGroup: 2000
+        fsGroup: 2000
+        runAsNonRoot: true
+      containers:
+      - name: {{ .Values.orderingAppName }}-{{ randAlphaNum 5 | lower }}
+        image: {{ .Values.orderingImageName }}
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Development
+        ports:
+        - containerPort: 8080
+        imagePullPolicy: Never
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+              - all
+---
+kind: Deployment
+apiVersion: v1
+metadata:
+  name: {{ .Values.catalogAppName }}
+  labels:
+    app: {{ .Values.catalogAppName }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.catalogAppName }}
+  template:
+    metadata:
+      labels:
+        app: catalog
+    spec:
+      securityContext:
+        runAsUser: 10000
+        runAsGroup: 2000
+        fsGroup: 2000
+        runAsNonRoot: true
+      containers:
+      - name: {{ .Values.catalogAppName }}-{{ randAlphaNum 5 | lower }}
+        image: {{ .Values.catalogImageName }}
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Development
+        - name: CONNECTIONSTRINGS__DEFAULT
+          value: Server=sqlserver;Database=EventCatalogDb;User=sa;pwd=P@ssW0rd!;MultipleActiveResultSets=true
+        ports:
+        - containerPort: 8080
+        imagePullPolicy: Never
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+              - all
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: {{ .Values.sqlserverAppName }}
+  labels:
+    app: {{ .Values.sqlserverAppName }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.sqlserverAppName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.sqlserverAppName }}
+    spec:
+      containers:
+      - name: {{ .Values.sqlserverAppName }}-{{ randAlphaNum 5 | lower }}
+        image: {{ .Values.sqlserverImageName }}
+        env:
+        - name: ACCEPT_EULA
+          value: "TRUE"
+        - name: MSSQL_SA_PASSWORD
+          value: P@ssW0rd!
+        ports:
+        - containerPort: {{ .Values.sqlserverPort }}
+        imagePullPolicy: Never
