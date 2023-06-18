@@ -1,30 +1,26 @@
-using GloboTicket.TicketManagement.Api;
 using Serilog;
+using TennisByTheSea.App;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .CreateBootstrapLogger();
 
-Log.Information("GloboTicket API Starting...");
-
 try
 {
-    WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+    WebApplicationBuilder builder = WebApplication
+        .CreateBuilder(args)
+        .ConfigureBuilder();
+
     builder.Host
         .UseSerilog((context, loggerConfiguration) => loggerConfiguration
+#if DEBUG
             .WriteTo.Console()
+#endif
             .ReadFrom.Configuration(context.Configuration));
 
-
     WebApplication app = builder
-        .ConfigureServices()
+        .Build()
         .ConfigurePipeline();
-
-    app.UseSerilogRequestLogging();
-
-#if DEBUG
-    await app.ResetDatabaseAsync();
-#endif
 
     app.Run();
 }
@@ -35,7 +31,6 @@ catch (Exception ex) when (ex.GetType().Name is not "StopTheHostException")
 }
 finally
 {
-    Log.Information("Shut down complete");
+    Log.Information("Shutdown complete.");
     Log.CloseAndFlush();
 }
-
