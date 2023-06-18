@@ -15,7 +15,6 @@ using System.Text.Json.Serialization;
 namespace TennisByTheSea.Shared.WeatherApi;
 
 public sealed record class WeatherForecast(
-    [property: JsonPropertyName("city")]
-    string City,
+    [property: JsonPropertyName("city")] string City,
     [property: JsonPropertyName("weather")]
     WeatherConditions Weather);

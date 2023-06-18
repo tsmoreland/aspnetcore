@@ -11,9 +11,13 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using MediatR;
 using TennisByTheSea.Shared.WeatherApi;
 
-namespace TennisByTheSea.Application.ExternalServices.Weather.Queries.GetWeatherForecast;
+namespace TennisByTheSea.Domain.Contracts.Services.Weather;
 
-public sealed record class WeatherForecastQuery(string City) : IRequest<WeatherForecast?>;
+public interface IWeatherForecaster
+{
+	bool ForecastEnabled { get; }
+
+	Task<WeatherResult> GetCurrentWeatherAsync(string city);
+}

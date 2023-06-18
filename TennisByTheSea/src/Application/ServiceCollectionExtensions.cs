@@ -12,20 +12,21 @@
 //
 
 using System.Reflection;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TennisByTheSea.Application.BackgroundServices.FileProcessing;
-using TennisByTheSea.Application.BackgroundServices.WeatherCache;
+using TennisByTheSea.Application.Services.Weather;
 
 namespace TennisByTheSea.Application;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddApplicationServices(this IServiceCollection services)
+    public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
     {
         ArgumentNullException.ThrowIfNull(services);
 
         services
-            .AddHostedService<WeatherCacheService>()
+            .AddWeatherForecasting(configuration)
             .AddHostedService<FileProcessingService>()
             .AddMediatR(options => options.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 

@@ -18,6 +18,18 @@ public static class WebApplicationExtensions
     {
         ArgumentNullException.ThrowIfNull(app);
 
+        // Configure the HTTP request pipeline.
+        if (app.Environment.IsDevelopment())
+        {
+            // app.UseMigrationsEndPoint(); // TODO
+            app.UseDeveloperExceptionPage();
+        }
+        else
+        {
+            app.UseExceptionHandler("/Error");
+            app.UseHsts();
+        }
+
         if (!app.Environment.IsDevelopment())
         {
             app.UseExceptionHandler("/Home/Error");
@@ -30,11 +42,13 @@ public static class WebApplicationExtensions
 
         app.UseRouting();
 
+        app.UseAuthentication();
         app.UseAuthorization();
 
         app.MapControllerRoute(
             name: "default",
             pattern: "{controller=Home}/{action=Index}/{id?}");
+        app.MapRazorPages();
 
 
         return app;

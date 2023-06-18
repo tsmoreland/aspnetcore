@@ -12,7 +12,6 @@
 //
 
 using System.Text.Json.Serialization;
-using TennisByTheSea.Application.BackgroundServices;
 
 namespace TennisByTheSea.Shared.WeatherApi;
 
@@ -22,4 +21,18 @@ public sealed record class WeatherConditions(
     [property: JsonPropertyName("wind")]
     Wind Wind,
     [property: JsonPropertyName("temperature")]
-    Temperature Temperature);
+    Temperature Temperature)
+{
+    public WeatherConditions DeepCopy()
+    {
+        return new WeatherConditions(Summary, Wind, Temperature); 
+    }
+
+    public static WeatherConditions Unkown()
+    {
+        return new WeatherConditions(
+            "Unknown",
+            new Wind(new decimal(0.0), new decimal(0.0)),
+            new Temperature(new decimal(0.0), new decimal(0.0)));
+    }
+}

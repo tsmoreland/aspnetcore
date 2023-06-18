@@ -1,0 +1,76 @@
+@page
+@*
+
+@model FindAvailableCourtsModel
+@{
+    ViewData["Title"] = "Find Available Courts";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="row">
+    <div class="col-md-12">
+        <p>Please choose the date for your booking:<br /></p>
+        <form method="POST">
+            <div class="col-md-6">
+                <label asp-for="SearchDate" class="control-label"></label>
+                <input asp-for="SearchDate" type="date" class="form-control" />
+            </div>
+            <div class="col-md-2">
+                <br />
+                <input type="submit" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<br />
+
+@if (Model.HasNoAvailability)
+{
+    <div class="row">
+        <div class="col-md-12">
+            <p>Sorry there is no availability on this date.</p>
+        </div>
+    </div>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Hour</th>
+                        @foreach (var court in Model.Availability.First().CourtAvailability)
+                        {
+                            <th class="text-center" style="width:20%">Court @court.CourtId</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var hour in Model.Availability)
+                    {
+                        <tr>
+                            <td>@hour.HourText</td>
+                            @foreach (var court in hour.CourtAvailability)
+                            {
+                                <td class="text-center">
+                                    @if (court.Available)
+                                    {
+                                        <a asp-page="/BookCourt" asp-route-Courtid=@court.CourtId asp-route-BookingStartTime=@hour.BookingStartDate type="button" class="btn btn-success">BOOK</a>
+                                    }
+                                    else
+                                    {
+                                        @: <button type="button" class="btn btn-danger">UNAVAILABLE</button>
+                                    }
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+*@

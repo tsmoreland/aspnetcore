@@ -11,30 +11,30 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System.Reflection;
-using TennisByTheSea.Application;
-using TennisByTheSea.Shared.Configuration;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using TennisByTheSea.Application.BackgroundServices.WeatherCache;
+using TennisByTheSea.Domain.Contracts.Services.Weather;
 
-namespace TennisByTheSea.App;
+namespace TennisByTheSea.Application.Services.Weather;
 
-public static class WebApplicationBuilderExtensions
+public static class ServiceCollectionExttensions
 {
-    public static WebApplicationBuilder ConfigureBuilder(this WebApplicationBuilder builder)
-    {
-        ArgumentNullException.ThrowIfNull(builder);
+	public static IServiceCollection AddWeatherForecasting(this IServiceCollection services,
+		IConfiguration config)
+	{
+		if (config.GetValue<bool>("Features:WeatherForecasting:Enable"))
+		{
+			services.TryAddSingleton<IWeatherForecaster, WeatherForecaster>();
+			services.Decorate<IWeatherForecaster, CachedWeatherForecaster>();
+			services.AddHostedService<WeatherCacheService>();
+		}
+		else
+		{
+			services.TryAddSingleton<IWeatherForecaster, DisabledWeatherForecaster>();
+		}
 
-        IServiceCollection services = builder.Services;
-        IConfiguration configuration = builder.Configuration;
-
-        services
-            .AddControllers();
-        services
-            .AddEndpointsApiExplorer()
-            .AddSwaggerGen()
-            .Configure<WeatherApiOptions>(configuration.GetSection("ExternalServices::WeatherApi"))
-            .AddMediatR(options => options.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()))
-            .AddApplicationServices();
-
-        return builder;
-    }
+		return services;
+	}
 }

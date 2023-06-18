@@ -1,0 +1,72 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Welcome to Tennis by the Sea";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if (User?.Identity is not null && User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <a class="btn btn-primary" asp-area="Admin" asp-controller="Home" asp-action="Index">Admin Home</a>
+        </div>
+    </div>
+    <div class="row"><br/></div>
+}
+
+@if (Model.ShowWeatherForecast)
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-info" role="alert">
+                <h4>@Model.ForecastSectionTitle</h4>
+                <p>@Model.WeatherDescription</p>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="row">
+    <div class="col-md-12">
+        @if (Model.ShowGreeting)
+        {
+            <h3 style="color: @Model.GreetingColour">@Model.Greeting</h3>
+        }
+        <p>
+            We are a friendly and well-equipped tennis club in the sunny seaside town of Brighton. We cater to players of all standards
+            with our award-winning courts and training. Whether you want a friendly game, some serious competition
+            or to improve your skills, we are the club for you.
+        </p>
+        <p>
+            We have three fantastic grass courts and for the winter season and rainy days, high quality air-conditioned indoor courts for our premium members. Our
+            clubhouse is equipped with changing and shower facilities for those before work sessions!
+        </p>
+    </div>
+</div>
+
+<h3>Want to take a look around?</h3>
+
+<div class="row">
+    <div class="col-md-12">
+        <p>
+            We offer a free trial day to all prospective members where you can try out the courts and facilities. Our membership starts at only £40
+            per month which includes some training time with our club pro.
+        </p>
+    </div>
+</div>
+
+<div class="row">
+    @*
+
+    @foreach (var product in Model.Products)
+    {
+        <div class="col-lg-4">
+            <h4>@product.Name</h4>
+            <p>@product.Description</p>
+            <p><strong>@product.Price.ToString("C")</strong></p>
+        </div>
+    }
+    *@
+</div>

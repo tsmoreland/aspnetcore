@@ -24,6 +24,8 @@ public static class WebApplicationBuilderExtensions
     {
         ArgumentNullException.ThrowIfNull(builder);
 
+        builder.WebHost.ConfigureKestrel(options => options.AddServerHeader = false);
+
         IServiceCollection services = builder.Services;
         IConfiguration configuration = builder.Configuration;
 
@@ -32,7 +34,7 @@ public static class WebApplicationBuilderExtensions
         services
             .Configure<WeatherApiOptions>(configuration.GetSection("ExternalServices::WeatherApi"))
             .AddMediatR(options => options.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()))
-            .AddApplicationServices()
+            .AddApplicationServices(configuration)
             .AddInfrastructureServices(configuration);
 
         return builder;

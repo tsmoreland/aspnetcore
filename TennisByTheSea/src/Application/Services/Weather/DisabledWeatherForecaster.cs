@@ -11,37 +11,19 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using MediatR;
-using Microsoft.Extensions.Logging;
-using TennisByTheSea.Domain.Contracts;
+using TennisByTheSea.Domain.Contracts.Services.Weather;
 using TennisByTheSea.Shared.WeatherApi;
 
-namespace TennisByTheSea.Application.ExternalServices.Weather.Queries.GetWeatherForecast;
+namespace TennisByTheSea.Application.Services.Weather;
 
-public sealed class WeatherForecastQueryHandler : IRequestHandler<WeatherForecastQuery, WeatherForecast?>
+public sealed class DisabledWeatherForecaster : IWeatherForecaster
 {
-    private readonly IWeatherApiClient _weatherApiClient;
-    private readonly ILogger<WeatherForecastQueryHandler> _logger;
-
-    public WeatherForecastQueryHandler(IWeatherApiClient weatherApiClient, ILogger<WeatherForecastQueryHandler> logger)
-    {
-        _weatherApiClient = weatherApiClient;
-        _logger = logger;
-    }
-
+    /// <inheritdoc />
+    public bool ForecastEnabled => false;
 
     /// <inheritdoc />
-    public async Task<WeatherForecast?> Handle(WeatherForecastQuery request, CancellationToken cancellationToken)
+    public Task<WeatherResult> GetCurrentWeatherAsync(string city)
     {
-        try
-        {
-            return await _weatherApiClient.GetWeatherForecastAsync(request.City, cancellationToken);
-
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "unexpected exception occurred.");
-            return null;
-        }
+        return Task.FromResult(new WeatherResult(city, WeatherConditions.Unkown()));
     }
 }
