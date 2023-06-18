@@ -1,11 +1,11 @@
 #See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:7.0.5 AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:7.0.302 AS build
 WORKDIR /src
 COPY ["src/Admin/FrontEnd/App/SunDoeCoffeeShop.Admin.FrontEnd.App.csproj", "src/Admin/FrontEnd/App/"]
 COPY ["src/Shared/AuthPersistence/SunDoeCoffeeShop.Shared.AuthPersistence.csproj", "src/Shared/AuthPersistence/"]
@@ -20,6 +20,10 @@ RUN dotnet publish "SunDoeCoffeeShop.Admin.FrontEnd.App.csproj" -c Release -o /a
 COPY ["data/admin-certificate.pfx", "/app/admin-certificate.pfx"]
 
 FROM base AS final
+ENV ASPNETCORE_URLS=https://+:443\;http://+:80
+ENV DOTNET_URLS=https://+:443\;http://+:80
+ENV ASPNETCORE_Kestrel__Certificates__Default__Path=/certs/admin-certificate.pfx
+ENV ASPNETCORE_Kestrel__Certificates__Default__Password=P@55W0rd!
 WORKDIR /certs
 COPY --from=publish /app/admin-certificate.pfx .
 WORKDIR /app
