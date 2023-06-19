@@ -1,33 +1,36 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Options;
+using TennisByTheSea.Domain.Contracts.Services.Weather;
+using TennisByTheSea.MvcApp.Models.Configuration;
+using TennisByTheSea.Shared.WeatherApi;
 
 namespace TennisByTheSea.MvcApp.Pages;
 
 public class IndexModel : PageModel
 {
     private const string DefaultForecastSectionTitle = "How's the weather";
-    /*
+	private readonly IWeatherForecaster _weatherForecaster;
 	private readonly ILogger<IndexModel> _logger;
+	private readonly HomePageOptions _options;
+    /*
 
 	private readonly IGreetingService _greetingService;
-	private readonly HomePageConfiguration _homePageConfig;
-	private readonly IWeatherForecaster _weatherForecaster;
 	private readonly IProductsApiClient _productsApiClient;
+    */
 
 	public IndexModel(
 		ILogger<IndexModel> logger,		
-		IGreetingService greetingService,
-		IOptionsSnapshot<HomePageConfiguration> options,
-		IWeatherForecaster weatherForecaster,
-		IProductsApiClient productsApiClient)
+		//IGreetingService greetingService,
+		IOptionsSnapshot<HomePageOptions> options,
+		IWeatherForecaster weatherForecaster//,
+		/*IProductsApiClient productsApiClient*/)
 	{
 		_logger = logger;
-		_greetingService = greetingService;
-		_homePageConfig = options.Value;
+		//_greetingService = greetingService;
+		_options = options.Value;
 		_weatherForecaster = weatherForecaster;
-		_productsApiClient = productsApiClient;
+		//_productsApiClient = productsApiClient;
 	}
-    */
 
     public string WeatherDescription { get; private set; } =
             "We don't have the latest weather information right now, " +
@@ -42,6 +45,7 @@ public class IndexModel : PageModel
     /*
     public string GreetingColour => _greetingService.GreetingColour;
 	public IReadOnlyCollection<Product> Products { get; private set; } = Array.Empty<Product>();
+    */
 
 	public async Task OnGet()
 	{
@@ -50,46 +54,34 @@ public class IndexModel : PageModel
 		{
 			Greeting = _greetingService.GetRandomGreeting();
 		}
-        * /
+        */
 
-		ShowWeatherForecast = _homePageConfig.EnableWeatherForecast
+		ShowWeatherForecast = _options.EnableWeatherForecast
 			&& _weatherForecaster.ForecastEnabled;
 
 		if (ShowWeatherForecast)
 		{
-			var title = _homePageConfig.ForecastSectionTitle;
+			string title = _options.ForecastSectionTitle;
 			ForecastSectionTitle = string.IsNullOrEmpty(title)
 				? DefaultForecastSectionTitle : title;
 
-			var currentWeather = await _weatherForecaster
+			WeatherResult? currentWeather = await _weatherForecaster
 				.GetCurrentWeatherAsync("Eastbourne");
 
-			if (currentWeather?.Weather is not null)
-			{
-				switch (currentWeather.Weather.Summary)
-				{
-					case "Sun":
-						WeatherDescription = "It's sunny right now. " +
-							"A great day for tennis!";
-						break;
-					case "Cloud":
-						WeatherDescription = "It's cloudy at the moment and " +
-							"the outdoor courts are availale.";
-						break;
-					case "Rain":
-						WeatherDescription = "We're sorry but it's raining here. " +
-							"No outdoor courts are available.";
-						break;
-					case "Snow":
-						WeatherDescription = "It's snowing!! Outdoor courts " +
-							"will remain closed until the snow clears.";
-						break;
-				}
-			}
+			if (currentWeather.Weather is not null)
+            {
+                WeatherDescription = currentWeather.Weather.Summary switch
+                {
+                    "Sun" => "It's sunny right now. A great day for tennis!",
+                    "Cloud" => "It's cloudy at the moment and the outdoor courts are availale.",
+                    "Rain" => "We're sorry but it's raining here. No outdoor courts are available.",
+                    "Snow" => "It's snowing!! Outdoor courts will remain closed until the snow clears.",
+                    _ => WeatherDescription
+                };
+            }
 		}
 
-		var productsResult = await _productsApiClient.GetProducts();
-		Products = productsResult?.Products ?? Array.Empty<Product>();
+		//var productsResult = await _productsApiClient.GetProducts();
+		//Products = productsResult?.Products ?? Array.Empty<Product>();
 	}
-*/
 }

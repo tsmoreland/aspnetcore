@@ -1,5 +1,4 @@
 @page
-@*
 
 @model BookingsModel
 @{
@@ -10,8 +9,10 @@
 
 <div class="row">
     <div class="col-md-12">
+        @*
         <h6>@Model.Greeting</h6>
         <br/>
+        *@
     </div>
 </div>
 
@@ -34,11 +35,10 @@
 
             @foreach (var booking in date)
             {
-                <p><strong>Court @booking.CourtId</strong>: @booking.StartDateTime.Hour.To12HourClockString() to @booking.EndDateTime.Hour.To12HourClockString()</p>
+                <p><strong>Court @booking.Court.Id</strong>: @booking.StartDateTime.Hour.To12HourClockString() to @booking.EndDateTime.Hour.To12HourClockString()</p>
             }
 
             <br/>
         </div>
     </div>
 }
-*@

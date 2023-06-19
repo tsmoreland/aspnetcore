@@ -15,6 +15,7 @@ using System.Reflection;
 using TennisByTheSea.Application;
 using TennisByTheSea.Domain.Configuration;
 using TennisByTheSea.Infrastructure;
+using TennisByTheSea.MvcApp.Models.Configuration;
 
 namespace TennisByTheSea.MvcApp;
 
@@ -32,6 +33,8 @@ public static class WebApplicationBuilderExtensions
         services
             .AddControllersWithViews();
         services
+            .ConfigureTennisOptions(configuration)
+            .ConfigureFeatureOptions(configuration)
             .Configure<WeatherApiOptions>(configuration.GetSection("ExternalServices::WeatherApi"))
             .AddMediatR(options => options.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()))
             .AddApplicationServices(configuration)

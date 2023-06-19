@@ -1,5 +1,4 @@
 @page "{courtId}"
-@*
 
 @model BookCourtModel
 @{
@@ -31,10 +30,12 @@
             <div class="row">
                 <div class="col-md-6">
                     <label asp-for="BookingLengthInHours" class="control-label"></label>
+                    @*
                     <select asp-for="BookingLengthInHours" class="form-control"
                             asp-items="@Model.PossibleHourLengths">
                         <option value="">-- Select Length --</option>
                     </select>
+                    *@
                 </div>
                 <div class="col-md-2">
                     <br />
@@ -44,4 +45,3 @@
         </form>
     </div>
 </div>
-*@
