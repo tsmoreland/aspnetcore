@@ -11,13 +11,12 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using TennisByTheSea.Domain.Models;
+namespace TennisByTheSea.Domain.Extensions;
 
-namespace TennisByTheSea.Domain.Contracts.Services.Unavailability;
-
-public interface IUnavailabilityProvider
+public static class DateTimeExtensions
 {
-    IAsyncEnumerable<HourlyUnavailability> GetHourlyUnavailabilityAsync(DateTime date);
-
-    IAsyncEnumerable<int> GetHourlyUnavailabilityAsync(DateTime date, int courtId);
+    public static DateOnly ToDateOnly(this DateTime date)
+    {
+        return new DateOnly(date.Year, date.Month, date.Day);
+    }
 }

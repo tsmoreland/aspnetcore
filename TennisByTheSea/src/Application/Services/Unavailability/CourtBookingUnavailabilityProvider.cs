@@ -1,39 +1,45 @@
-﻿using TennisByTheSea.Domain.Contracts.Services.Unavailability;
+﻿using MediatR;
+using TennisByTheSea.Domain.Contracts.Requests;
+using TennisByTheSea.Domain.Contracts.Services.Unavailability;
+using TennisByTheSea.Domain.Extensions;
 using TennisByTheSea.Domain.Models;
 
 namespace TennisByTheSea.Application.Services.Unavailability;
 
 public sealed class CourtBookingUnavailabilityProvider : IUnavailabilityProvider
 {
-    //private readonly ICourtBookingService _courtBookingService;
+    private readonly IMediator _mediator;
 
-    public CourtBookingUnavailabilityProvider(/*ICourtBookingService courtBookingService*/)
+    public CourtBookingUnavailabilityProvider(IMediator mediator)
     {
-        //_courtBookingService = courtBookingService;
+        _mediator = mediator;
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<HourlyUnavailability>> GetHourlyUnavailabilityAsync(DateTime date)
+    public async IAsyncEnumerable<HourlyUnavailability> GetHourlyUnavailabilityAsync(DateTime date)
     {
-        await Task.CompletedTask;
-        IEnumerable<CourtBooking> bookings = Array.Empty<CourtBooking>(); // TODO await _courtBookingService.BookingsForDayAsync(date);
-
-        return BookingsToUnavailability(bookings);
+        IEnumerable<CourtBooking> bookings = await _mediator.CreateStream(new GetBookingsForDayQuery(date.ToDateOnly())).ToListAsync();
+        await foreach (HourlyUnavailability unvailableHour in BookingsToUnavailability(bookings))
+        {
+            yield return unvailableHour;
+        }
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<int>> GetHourlyUnavailabilityAsync(DateTime date, int courtId)
+    public async IAsyncEnumerable<int> GetHourlyUnavailabilityAsync(DateTime date, int courtId)
     {
-        await Task.CompletedTask;
-        IEnumerable<CourtBooking> bookings = Array.Empty<CourtBooking>(); // TODO await _courtBookingService.BookingsForDayAsync(date);
+        IEnumerable<CourtBooking> bookings = await _mediator.CreateStream(new GetBookingsForDayQuery(date.ToDateOnly())).ToListAsync();
+        IAsyncEnumerable<HourlyUnavailability> availability = BookingsToUnavailability(bookings);
 
-        IEnumerable<HourlyUnavailability> availability = BookingsToUnavailability(bookings);
-
-        return availability.Select(x => x.Hour);
+        await foreach (int hour in availability.Select(x => x.Hour))
+        {
+            yield return hour;
+        }
     }
 
-    private static IEnumerable<HourlyUnavailability> BookingsToUnavailability(IEnumerable<CourtBooking> courtBookings)
+    private static async IAsyncEnumerable<HourlyUnavailability> BookingsToUnavailability(IEnumerable<CourtBooking> courtBookings)
     {
+        await Task.CompletedTask;
         List<HourlyUnavailability> unavailability = new();
 
         for (int i = 0; i < 24; i++)
@@ -49,6 +55,9 @@ public sealed class CourtBookingUnavailabilityProvider : IUnavailabilityProvider
             }
         }
 
-        return unavailability.Where(x => x.UnavailableCourtIds.Any());
+        foreach (HourlyUnavailability unavailableHour in unavailability.Where(x => x.UnavailableCourtIds.Any()))
+        {
+            yield return unavailableHour;
+        }
     }
 }

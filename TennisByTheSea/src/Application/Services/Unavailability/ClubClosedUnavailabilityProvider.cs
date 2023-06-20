@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.Options;
+﻿using MediatR;
+using Microsoft.Extensions.Options;
 using TennisByTheSea.Domain.Configuration;
+using TennisByTheSea.Domain.Contracts.Requests;
 using TennisByTheSea.Domain.Contracts.Services.Unavailability;
 using TennisByTheSea.Domain.Models;
 
@@ -7,12 +9,12 @@ namespace TennisByTheSea.Application.Services.Unavailability;
 
 public sealed class ClubClosedUnavailabilityProvider : IUnavailabilityProvider
 {
-    //private readonly ICourtService _courtService;
+    private readonly IMediator _mediator;
     private readonly ICollection<int> _closedHours;
 
-    public ClubClosedUnavailabilityProvider(/*ICourtService courtService,*/ IOptions<ClubOptions> options)
+    public ClubClosedUnavailabilityProvider(IMediator mediator, IOptions<ClubOptions> options)
     {
-        //_courtService = courtService;
+        _mediator = mediator;
 
         List<int> closedHours = new();
 
@@ -36,19 +38,24 @@ public sealed class ClubClosedUnavailabilityProvider : IUnavailabilityProvider
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<HourlyUnavailability>> GetHourlyUnavailabilityAsync(DateTime date)
+    public async IAsyncEnumerable<HourlyUnavailability> GetHourlyUnavailabilityAsync(DateTime date)
     {
-        await Task.CompletedTask;
-        IEnumerable<int> courtIds = Array.Empty<int>(); // TODO await _courtService.GetCourtIds();
-
+        IEnumerable<int> courtIds = await _mediator.CreateStream(new GetCourtIdsQuery()).ToListAsync();
         IEnumerable<HourlyUnavailability> hourlyUnavailability = _closedHours.Select(closedHour => new HourlyUnavailability(closedHour, courtIds));
 
-        return hourlyUnavailability;
+        foreach (HourlyUnavailability unavailability in hourlyUnavailability)
+        {
+            yield return unavailability;
+        }
     }
 
     /// <inheritdoc />
-    public Task<IEnumerable<int>> GetHourlyUnavailabilityAsync(DateTime date, int courtId)
+    public async IAsyncEnumerable<int> GetHourlyUnavailabilityAsync(DateTime date, int courtId)
     {
-        return Task.FromResult(_closedHours.AsEnumerable());
+        await Task.CompletedTask;
+        foreach (int hour in _closedHours)
+        {
+            yield return hour;
+        }
     }
 }

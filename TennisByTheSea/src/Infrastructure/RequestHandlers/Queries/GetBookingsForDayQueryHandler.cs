@@ -11,13 +11,21 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using MediatR;
+using TennisByTheSea.Domain.Contracts.Requests;
 using TennisByTheSea.Domain.Models;
 
-namespace TennisByTheSea.Domain.Contracts.Services.Unavailability;
+namespace TennisByTheSea.Infrastructure.RequestHandlers.Queries;
 
-public interface IUnavailabilityProvider
+public sealed class GetBookingsForDayQueryHandler : IStreamRequestHandler<GetBookingsForDayQuery, CourtBooking>
 {
-    IAsyncEnumerable<HourlyUnavailability> GetHourlyUnavailabilityAsync(DateTime date);
+    public GetBookingsForDayQueryHandler()
+    {
+    }
 
-    IAsyncEnumerable<int> GetHourlyUnavailabilityAsync(DateTime date, int courtId);
+    /// <inheritdoc />
+    public IAsyncEnumerable<CourtBooking> Handle(GetBookingsForDayQuery request, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
 }

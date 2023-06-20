@@ -11,6 +11,7 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TennisByTheSea.Domain.Contracts;
@@ -35,7 +36,8 @@ public static class ServiceCollectionExtensions
 
         services
             .AddSingleton<IFileProcessingChannel, FileProcessingChannel>()
-            .AddSingleton<IReadOnlyFileProcessingChannel>(provider => /*(IReadOnlyFileProcessingChannel)*/provider.GetRequiredService<IFileProcessingChannel>());
+            .AddSingleton<IReadOnlyFileProcessingChannel>(provider => provider.GetRequiredService<IFileProcessingChannel>())
+            .AddMediatR(options => options.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
         return services;
     }

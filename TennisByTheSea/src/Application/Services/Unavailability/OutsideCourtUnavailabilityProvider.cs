@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.Options;
+﻿using MediatR;
+using Microsoft.Extensions.Options;
 using TennisByTheSea.Domain.Configuration;
+using TennisByTheSea.Domain.Contracts.Requests;
 using TennisByTheSea.Domain.Contracts.Services.Unavailability;
 using TennisByTheSea.Domain.Models;
 
@@ -7,14 +9,14 @@ namespace TennisByTheSea.Application.Services.Unavailability;
 
 public sealed class OutsideCourtUnavailabilityProvider : IUnavailabilityProvider
 {
-    //private readonly ICourtService _courtService;
+    private readonly IMediator _mediator;
     private readonly ICollection<int> _outdoorCourtWinterClosedHours;
 
     private readonly IReadOnlyList<int> _winterMonths;
 
-    public OutsideCourtUnavailabilityProvider(/* ICourtService courtService, */IOptions<ClubOptions> options)
+    public OutsideCourtUnavailabilityProvider(IMediator mediator, IOptions<ClubOptions> options)
     {
-        //_courtService = courtService;
+        _mediator = mediator;
         _winterMonths = options.Value.WinterMonths.ToList().AsReadOnly();
 
         List<int> outdoorCourtWinterClosedHours = new();
@@ -39,30 +41,37 @@ public sealed class OutsideCourtUnavailabilityProvider : IUnavailabilityProvider
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<HourlyUnavailability>> GetHourlyUnavailabilityAsync(DateTime date)
+    public async IAsyncEnumerable<HourlyUnavailability> GetHourlyUnavailabilityAsync(DateTime date)
     {
         bool isWinter = _winterMonths.Contains(date.Month);
 
         if (!isWinter)
-            return Array.Empty<HourlyUnavailability>();
+        {
+            yield break;
+        }
 
-        await Task.CompletedTask;
-        // TODO var courts = await _courtService.GetOutdoorCourts();
-        IEnumerable<Court> courts = Array.Empty<Court>();
+        IEnumerable<Court> courts = await _mediator.CreateStream(new GetOutdoorCourtsQuery()).ToListAsync();
         var outsideCourtIds = courts.Select(c => c.Id).ToHashSet();
-
         IEnumerable<HourlyUnavailability> hourlyUnavailability = _outdoorCourtWinterClosedHours.Select(closedHour => new HourlyUnavailability(closedHour, outsideCourtIds));
 
-        return hourlyUnavailability;
+        foreach (HourlyUnavailability unavailability in hourlyUnavailability)
+        {
+            yield return unavailability;
+        }
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<int>> GetHourlyUnavailabilityAsync(DateTime date, int courtId)
+    public async IAsyncEnumerable<int> GetHourlyUnavailabilityAsync(DateTime date, int courtId)
     {
-        await Task.CompletedTask;
-        // TODO var courts = await _courtService.GetOutdoorCourts();
-        IEnumerable<Court> courts = Array.Empty<Court>();
+        IEnumerable<Court> courts = await _mediator.CreateStream(new GetOutdoorCourtsQuery()).ToListAsync();
 
-        return courts.Select(x => x.Id).Contains(courtId) ? _outdoorCourtWinterClosedHours : Array.Empty<int>();
+        ICollection<int> unavailableCourts = courts.Select(x => x.Id).Contains(courtId)
+            ? _outdoorCourtWinterClosedHours
+            : Array.Empty<int>();
+
+        foreach (int id in unavailableCourts)
+        {
+            yield return id;
+        }
     }
 }

@@ -1,49 +1,53 @@
-﻿using TennisByTheSea.Domain.Contracts.Services.Unavailability;
+﻿using MediatR;
+using TennisByTheSea.Domain.Contracts.Requests;
+using TennisByTheSea.Domain.Contracts.Services.Unavailability;
 using TennisByTheSea.Domain.Models;
 
 namespace TennisByTheSea.Application.Services.Unavailability;
 
 public sealed class UpcomingHoursUnavailabilityProvider : IUnavailabilityProvider
 {
-    /// <inheritdoc />
-    public async Task<IEnumerable<HourlyUnavailability>> GetHourlyUnavailabilityAsync(DateTime date)
+    private readonly IMediator _mediator;
+
+    public UpcomingHoursUnavailabilityProvider(IMediator mediator)
     {
-        await Task.CompletedTask; // TODO
-        IEnumerable<int> courts = Array.Empty<int>(); //await _courtService.GetCourtIds();
-
-        if (date.Date != DateTime.UtcNow.Date)
-            return Array.Empty<HourlyUnavailability>();
-
-        int firstHourAvailable = GetFirstHourAvailable();
-
-        List<HourlyUnavailability> unavailableHours = new();
-
-        for (int i = 0; i < firstHourAvailable; i++)
-        {
-            unavailableHours.Add(new HourlyUnavailability(i, courts));
-        }
-
-        return unavailableHours;
+        _mediator = mediator;
     }
 
     /// <inheritdoc />
-    public Task<IEnumerable<int>> GetHourlyUnavailabilityAsync(DateTime date, int courtId)
+    public async IAsyncEnumerable<HourlyUnavailability> GetHourlyUnavailabilityAsync(DateTime date)
     {
+        await Task.CompletedTask; // TODO
+        IEnumerable<int> courts = await _mediator.CreateStream(new GetCourtIdsQuery()).ToListAsync();
+
         if (date.Date != DateTime.UtcNow.Date)
         {
-            return Task.FromResult(Enumerable.Empty<int>());
+            yield break;
         }
 
         int firstHourAvailable = GetFirstHourAvailable();
 
-        List<int> unavailableHours = new();
-
         for (int i = 0; i < firstHourAvailable; i++)
         {
-            unavailableHours.Add(i);
+            yield return new HourlyUnavailability(i, courts);
+        }
+    }
+
+    /// <inheritdoc />
+    public async IAsyncEnumerable<int> GetHourlyUnavailabilityAsync(DateTime date, int courtId)
+    {
+        if (date.Date != DateTime.UtcNow.Date)
+        {
+            yield break;
         }
 
-        return Task.FromResult(unavailableHours.AsEnumerable());
+        int firstHourAvailable = GetFirstHourAvailable();
+
+        await Task.CompletedTask;
+        for (int i = 0; i < firstHourAvailable; i++)
+        {
+            yield return i;
+        }
     }
 
     private static int GetFirstHourAvailable()

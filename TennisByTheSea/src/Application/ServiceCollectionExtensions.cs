@@ -18,6 +18,7 @@ using TennisByTheSea.Application.BackgroundServices.FileProcessing;
 using TennisByTheSea.Application.Services.Unavailability;
 using TennisByTheSea.Application.Services.Weather;
 using TennisByTheSea.Domain.Configuration;
+using TennisByTheSea.Domain.Models;
 
 namespace TennisByTheSea.Application;
 
@@ -30,7 +31,7 @@ public static class ServiceCollectionExtensions
         services
             .AddWeatherForecasting(configuration)
             .AddHostedService<FileProcessingService>()
-            .AddMediatR(options => options.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()))
+            .AddMediatR(options => options.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly(), typeof(Court).Assembly))
             .AddUnavailabilityProviders();
 
         services
