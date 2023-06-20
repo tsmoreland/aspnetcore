@@ -11,6 +11,7 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using System.Runtime.CompilerServices;
 using MediatR;
 using TennisByTheSea.Domain.Contracts.Requests;
 using TennisByTheSea.Domain.Models;
@@ -24,8 +25,11 @@ public sealed class GetBookingsForDayQueryHandler : IStreamRequestHandler<GetBoo
     }
 
     /// <inheritdoc />
-    public IAsyncEnumerable<CourtBooking> Handle(GetBookingsForDayQuery request, CancellationToken cancellationToken)
+    public async IAsyncEnumerable<CourtBooking> Handle(GetBookingsForDayQuery request, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        _ = request;
+        _ = cancellationToken;
+        await Task.CompletedTask;
+        yield break;
     }
 }
