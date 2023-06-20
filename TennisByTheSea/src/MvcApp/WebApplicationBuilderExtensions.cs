@@ -33,7 +33,6 @@ public static class WebApplicationBuilderExtensions
         services
             .AddControllersWithViews();
         services
-            .ConfigureTennisOptions(configuration)
             .ConfigureFeatureOptions(configuration)
             .Configure<WeatherApiOptions>(configuration.GetSection("ExternalServices::WeatherApi"))
             .AddMediatR(options => options.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()))

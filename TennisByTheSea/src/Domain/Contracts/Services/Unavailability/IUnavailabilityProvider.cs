@@ -11,21 +11,13 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using TennisByTheSea.Domain.Configuration;
+using TennisByTheSea.Domain.Models;
 
-namespace TennisByTheSea.MvcApp.Models.Configuration;
+namespace TennisByTheSea.Domain.Contracts.Services.Unavailability;
 
-public static class ServiceCollectionExtensions
+public interface IUnavailabilityProvider
 {
-    public static IServiceCollection ConfigureFeatureOptions(this IServiceCollection services,
-        IConfiguration configuration)
-    {
-        services.AddOptions<HomePageOptions>()
-            .Bind(configuration.GetSection("Features:HomePage"))
-            .ValidateOnStart();
-        services.AddOptions<GreetingOptions>()
-            .Bind(configuration.GetSection("Features:Greeting"));
-        return services;
-    }
+    Task<IEnumerable<HourlyUnavailability>> GetHourlyUnavailabilityAsync(DateTime date);
 
+    Task<IEnumerable<int>> GetHourlyUnavailabilityAsync(DateTime date, int courtId);
 }

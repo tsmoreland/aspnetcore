@@ -10,9 +10,11 @@
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-namespace TennisByTheSea.MvcApp.Models.Configuration;
+namespace TennisByTheSea.Domain.Configuration;
 
-public sealed class ContentOptions
+public sealed class BookingOptions
 {
-    public bool CheckForProfanity { get; init; }
+    public int MaxRegularBookingLengthInHours { get; init; }
+
+    public int MaxPeakBookingLengthInHours { get; init; }
 }

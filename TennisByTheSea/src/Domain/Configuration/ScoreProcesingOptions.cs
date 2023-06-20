@@ -10,21 +10,9 @@
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-namespace TennisByTheSea.MvcApp.Models.Configuration;
+namespace TennisByTheSea.Domain.Configuration;
 
-public sealed class ClubOptions
+public class ScoreProcesingOptions
 {
-    public int PeakStartHour { get; init; }
-
-    public int PeakEndHour { get; init; }
-
-    public int OpenHour { get; init; }
-
-    public int CloseHour { get; init; }
-
-    public int WinterCourtStartHour { get; init; }
-
-    public int WinterCourtEndHour { get; init; }
-
-    public IEnumerable<int> WinterMonths { get; init; } = Array.Empty<int>();
+    public string FolderPath { get; init; } = string.Empty;
 }

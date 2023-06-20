@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
+using TennisByTheSea.Domain.Configuration;
 using TennisByTheSea.MvcApp.Models.Accounts;
 using TennisByTheSea.MvcApp.Models.Configuration;
 

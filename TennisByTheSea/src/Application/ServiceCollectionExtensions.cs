@@ -15,7 +15,9 @@ using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TennisByTheSea.Application.BackgroundServices.FileProcessing;
+using TennisByTheSea.Application.Services.Unavailability;
 using TennisByTheSea.Application.Services.Weather;
+using TennisByTheSea.Domain.Configuration;
 
 namespace TennisByTheSea.Application;
 
@@ -28,7 +30,16 @@ public static class ServiceCollectionExtensions
         services
             .AddWeatherForecasting(configuration)
             .AddHostedService<FileProcessingService>()
-            .AddMediatR(options => options.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+            .AddMediatR(options => options.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()))
+            .AddUnavailabilityProviders();
+
+        services
+            .Configure<BookingOptions>(configuration.GetSection("CourtBookings"))
+            .Configure<ClubOptions>(configuration.GetSection("ClubSettings"))
+            .Configure<ContentOptions>(configuration.GetSection("Content"))
+            .Configure<MembershipOptions>(configuration.GetSection("Membership"))
+            .Configure<ScoreProcesingOptions>(configuration.GetSection("ScoreProcessing"))
+            .Configure<WeatherForecastingOptions>(configuration.GetSection("WeatherForecasting"));
 
         return services;
     }

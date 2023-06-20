@@ -11,9 +11,26 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-namespace TennisByTheSea.MvcApp.Models.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using TennisByTheSea.Domain.Contracts.Services.Unavailability;
 
-public sealed class WeatherForecastingOptions 
+namespace TennisByTheSea.Application.Services.Unavailability;
+
+public static class ServiceCollectionExtensions
 {
-    public bool Enable { get; init; }
+    public static IServiceCollection AddUnavailabilityProviders(this IServiceCollection services)
+    {
+        services
+            .TryAddEnumerable(new[]
+            {
+                ServiceDescriptor.Scoped<IUnavailabilityProvider, ClubClosedUnavailabilityProvider>(),
+                ServiceDescriptor.Scoped<IUnavailabilityProvider, CourtBookingUnavailabilityProvider>(),
+                ServiceDescriptor.Scoped<IUnavailabilityProvider, OutsideCourtUnavailabilityProvider>(),
+                ServiceDescriptor.Scoped<IUnavailabilityProvider, UpcomingHoursUnavailabilityProvider>(),
+            });
+
+
+        return services;
+    }
 }

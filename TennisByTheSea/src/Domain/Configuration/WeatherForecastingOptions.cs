@@ -11,21 +11,9 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using TennisByTheSea.Domain.Configuration;
+namespace TennisByTheSea.Domain.Configuration;
 
-namespace TennisByTheSea.MvcApp.Models.Configuration;
-
-public static class ServiceCollectionExtensions
+public sealed class WeatherForecastingOptions 
 {
-    public static IServiceCollection ConfigureFeatureOptions(this IServiceCollection services,
-        IConfiguration configuration)
-    {
-        services.AddOptions<HomePageOptions>()
-            .Bind(configuration.GetSection("Features:HomePage"))
-            .ValidateOnStart();
-        services.AddOptions<GreetingOptions>()
-            .Bind(configuration.GetSection("Features:Greeting"));
-        return services;
-    }
-
+    public bool Enable { get; init; }
 }
