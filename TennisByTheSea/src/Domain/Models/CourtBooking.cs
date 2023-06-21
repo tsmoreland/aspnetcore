@@ -10,63 +10,63 @@
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
+
 namespace TennisByTheSea.Domain.Models;
 
 public sealed class CourtBooking
 {
     private int _memberId;
     private int _courtId;
-    private Court _court;
-    private Member _member;
     private const int NewCourtBookingId = 0;
 
     public static CourtBooking BookCourtForMember(Court court, Member member, DateTime startTime, TimeSpan length)
     {
         return new CourtBooking(
             NewCourtBookingId,
-            court.Id,
             court,
-            member.Id,
             member,
             startTime,
             startTime.Add(length));
 
     }
 
-    private CourtBooking(int id, int courtId, Court court, int memberId, Member member, DateTime startDateTime, DateTime endDateTime)
+    [SetsRequiredMembers]
+    private CourtBooking(int id, Court court, Member member, DateTime startDateTime, DateTime endDateTime)
     {
-        _memberId = memberId;
-        _courtId = courtId;
+        _memberId = member.Id;
+        _courtId = court.Id;
 
         Id = id;
-        _member = member;
-        _court = court;
+        Member = member;
+        Court = court;
         StartDateTime = startDateTime;
         EndDateTime = endDateTime;
     }
 
-
     public int Id { get; }
-    public Member Member
-    {
-        get => _member;
-        set
-        {
-            ArgumentNullException.ThrowIfNull(value);
-            _memberId = value.Id;
-            _member = value;
-        }
-    }
-    public Court Court
-    {
-        get => _court;
-        set
-        {
-            ArgumentNullException.ThrowIfNull(value);
-            _courtId = value.Id;
-            _court = value;
-        }
-    }
+    public required Member Member { get; init; }
+    public required Court Court { get; init;  }
     public DateTime StartDateTime { get; private set; }
     public DateTime EndDateTime { get; private set; }
+
+
+#pragma warning disable IDE0051 // Remove unused private members
+    /// <summary>
+    /// used by EF Core and as such cannot set Court, Member or their IDs - they will be set more directly
+    /// </summary>
+    [SetsRequiredMembers]
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    private CourtBooking(int id, DateTime startDateTime, DateTime endDateTime)
+    {
+        _memberId = 0;
+        _courtId = 0;
+        Id = id;
+        Member = null!;
+        Court = null!;
+        StartDateTime = startDateTime;
+        EndDateTime = endDateTime;
+    }
+#pragma warning restore IDE0051 // Remove unused private members
 }

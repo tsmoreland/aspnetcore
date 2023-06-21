@@ -17,6 +17,8 @@ using Microsoft.Extensions.DependencyInjection;
 using TennisByTheSea.Domain.Contracts;
 using TennisByTheSea.Infrastructure.Channels;
 using TennisByTheSea.Infrastructure.ExternalApiClients;
+using TennisByTheSea.Infrastructure.Persistence;
+using TennisByTheSea.Infrastructure.Persistence.Configuration;
 using TennisByTheSea.Shared.Exceptions;
 
 namespace TennisByTheSea.Infrastructure;
@@ -38,6 +40,11 @@ public static class ServiceCollectionExtensions
             .AddSingleton<IFileProcessingChannel, FileProcessingChannel>()
             .AddSingleton<IReadOnlyFileProcessingChannel>(provider => provider.GetRequiredService<IFileProcessingChannel>())
             .AddMediatR(options => options.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+
+        services
+            .AddDbContext<TennisByTheSeaDbContext>(optionsLifetime: ServiceLifetime.Singleton)
+            .AddDbContextFactory<TennisByTheSeaDbContext>()
+            .AddSingleton<IModelConfiguration, SqliteModelConfiguration>();
 
         return services;
     }

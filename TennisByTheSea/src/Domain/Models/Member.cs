@@ -11,36 +11,71 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using System.ComponentModel;
+using TennisByTheSea.Domain.Extensions;
+
 namespace TennisByTheSea.Domain.Models;
 
 public sealed class Member
 {
-    private readonly HashSet<CourtBooking> _courtBookings;
+    private readonly HashSet<CourtBooking> _courtBookings ;
     private readonly string _userId;
+    private string _forename;
+    private string _surname;
+    private DateTime _joinDate;
     private const int NewMemberId = 0;
 
     public static Member CreateNewMember(string forename, string surname, string userId)
     {
         DateTime now = DateTime.UtcNow;
-        DateOnly joinDate = new(now.Year, now.Month, now.Day);
-        return new Member(NewMemberId, forename, surname, joinDate, new HashSet<CourtBooking>(), userId);
+        return new Member(NewMemberId, forename, surname, now, userId);
     }
 
-    private Member(int id, string forename, string surname, DateOnly joinDate, HashSet<CourtBooking> courtBookings, string userId)
+    private Member(int id, string forename, string surname, DateTime joinDate, string userId)
     {
         _userId = userId;
         Id = id;
-        Forename = forename;
-        Surname = surname;
-        JoinDate = joinDate;
-        _courtBookings = courtBookings;
+        _forename = forename;
+        _surname = surname;
+        _joinDate = joinDate;
+        _userId = userId;
+        _courtBookings = new HashSet<CourtBooking>();
     }
 
-
     public int Id { get; }
-    public string Forename { get; set; }
-    public string Surname { get; set; }
-    public DateOnly JoinDate { get; set; }
+    public string Forename
+    {
+        get => _forename;
+        set
+        {
+            if (value is not { Length: > 0 })
+            {
+                throw new ArgumentException("cannot be null or empty");
+            }
+
+            _forename = value;
+        }
+    }
+    public string Surname
+    {
+        get => _surname;
+        set
+        {
+            if (value is not { Length: > 0 })
+            {
+                throw new ArgumentException("cannot be null or empty");
+            }
+
+            _surname = value;
+        }
+    }
+
+    public DateOnly JoinDate => _joinDate.ToDateOnly();
 
     public IEnumerable<CourtBooking> CourtBookings => _courtBookings.ToList();
+
+    public void AddBoooking(CourtBooking booking)
+    {
+        _courtBookings.Add(booking);
+    }
 }
