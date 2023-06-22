@@ -11,35 +11,24 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TennisByTheSea.Domain.Models;
+using System.Runtime.CompilerServices;
+using MediatR;
+using TennisByTheSea.Domain.Contracts.Queries;
 
-namespace TennisByTheSea.Infrastructure.Persistence.Configuration;
+namespace TennisByTheSea.Infrastructure.Persistence.Queries;
 
-public sealed class CourtBookingEntityTypeConfiguration : IEntityTypeConfiguration<CourtBooking>
+public sealed class GetCourtIdsQueryHandler : IStreamRequestHandler<GetCourtIdsQuery, int>
 {
-    /// <inheritdoc />
-    public void Configure(EntityTypeBuilder<CourtBooking> builder)
+    public GetCourtIdsQueryHandler()
     {
-        builder.HasKey(e => e.Id);
-        builder
-            .Property<int>("_courtId")
-            .HasField("_courtId")
-            .IsRequired();
-        builder
-            .HasOne(e => e.Court)
-            .WithMany(e => e.Bookings)
-            .HasForeignKey("_courtId")
-            .IsRequired();
+    }
 
-        builder.Property<int>("_memberId").IsRequired();
-        builder
-            .HasOne(e => e.Member)
-            .WithMany(e => e.CourtBookings)
-            .HasForeignKey("_memberId");
-
-        builder.Property(e => e.StartDateTime).IsRequired();
-        builder.Property(e => e.EndDateTime).IsRequired();
+    /// <inheritdoc />
+    public async IAsyncEnumerable<int> Handle(GetCourtIdsQuery request, [EnumeratorCancellation] CancellationToken cancellationToken)
+    {
+        _ = request;
+        _ = cancellationToken;
+        await Task.CompletedTask;
+        yield break;
     }
 }

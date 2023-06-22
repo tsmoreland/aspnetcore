@@ -27,7 +27,7 @@ public sealed class MemberEntityTypeConfiguration : IEntityTypeConfiguration<Mem
         builder.Property<string>("_surname").IsRequired().HasMaxLength(100);
         builder.Property<DateTime>("_joinDate").IsRequired();
         builder.Ignore(e => e.JoinDate);
-        builder.Property<string>("_userId").IsRequired();
+        builder.Property(e => e.UserId).IsRequired();
         builder.HasMany(e => e.CourtBookings);
     }
 }

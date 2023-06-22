@@ -13,6 +13,6 @@
 using MediatR;
 using TennisByTheSea.Domain.Models;
 
-namespace TennisByTheSea.Domain.Contracts.Requests;
+namespace TennisByTheSea.Domain.Contracts.Queries;
 
 public sealed record class GetOutdoorCourtsQuery() : IStreamRequest<Court>;

@@ -11,24 +11,13 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System.Runtime.CompilerServices;
-using MediatR;
-using TennisByTheSea.Domain.Contracts.Requests;
+using TennisByTheSea.Domain.Models;
 
-namespace TennisByTheSea.Infrastructure.RequestHandlers.Queries;
+namespace TennisByTheSea.Domain.Contracts;
 
-public sealed class GetCourtIdsQueryHandler : IStreamRequestHandler<GetCourtIdsQuery, int>
+public interface ITennisByTheSeaRepository
 {
-    public GetCourtIdsQueryHandler()
-    {
-    }
-
-    /// <inheritdoc />
-    public async IAsyncEnumerable<int> Handle(GetCourtIdsQuery request, [EnumeratorCancellation] CancellationToken cancellationToken)
-    {
-        _ = request;
-        _ = cancellationToken;
-        await Task.CompletedTask;
-        yield break;
-    }
+    public Task<Court?> GetCourtByIdAsync(int id, CancellationToken cancellationToken = default);
+    public void AddBooking(CourtBooking booking);
+    public Task SaveAsync(CancellationToken cancellationToken = default);
 }

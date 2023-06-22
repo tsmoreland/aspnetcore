@@ -45,10 +45,10 @@ namespace TennisByTheSea.Infrastructure.Persistence.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Forename = table.Column<string>(type: "TEXT", nullable: false),
                     Surname = table.Column<string>(type: "TEXT", nullable: false),
+                    UserId = table.Column<string>(type: "TEXT", nullable: false),
                     _forename = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
                     _joinDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    _surname = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    _userId = table.Column<string>(type: "TEXT", nullable: false)
+                    _surname = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {

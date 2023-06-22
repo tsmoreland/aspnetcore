@@ -19,10 +19,9 @@ namespace TennisByTheSea.Domain.Models;
 public sealed class Member
 {
     private readonly HashSet<CourtBooking> _courtBookings ;
-    private readonly string _userId;
     private string _forename;
     private string _surname;
-    private DateTime _joinDate;
+    private readonly DateTime _joinDate;
     private const int NewMemberId = 0;
 
     public static Member CreateNewMember(string forename, string surname, string userId)
@@ -33,12 +32,11 @@ public sealed class Member
 
     private Member(int id, string forename, string surname, DateTime joinDate, string userId)
     {
-        _userId = userId;
         Id = id;
         _forename = forename;
         _surname = surname;
         _joinDate = joinDate;
-        _userId = userId;
+        UserId = userId;
         _courtBookings = new HashSet<CourtBooking>();
     }
 
@@ -72,9 +70,11 @@ public sealed class Member
 
     public DateOnly JoinDate => _joinDate.ToDateOnly();
 
+    public string UserId { get; init; }
+
     public IEnumerable<CourtBooking> CourtBookings => _courtBookings.ToList();
 
-    public void AddBoooking(CourtBooking booking)
+    public void AddBooking(CourtBooking booking)
     {
         _courtBookings.Add(booking);
     }

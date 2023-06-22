@@ -13,19 +13,19 @@
 
 using System.Runtime.CompilerServices;
 using MediatR;
-using TennisByTheSea.Domain.Contracts.Requests;
+using TennisByTheSea.Domain.Contracts.Queries;
 using TennisByTheSea.Domain.Models;
 
-namespace TennisByTheSea.Infrastructure.RequestHandlers.Queries;
+namespace TennisByTheSea.Infrastructure.Persistence.Queries;
 
-public sealed class GetOutdoorCourtsQueryHandler : IStreamRequestHandler<GetOutdoorCourtsQuery, Court>
+public sealed class GetBookingsForDayQueryHandler : IStreamRequestHandler<GetBookingsForDayQuery, CourtBooking>
 {
-    public GetOutdoorCourtsQueryHandler()
+    public GetBookingsForDayQueryHandler()
     {
     }
 
     /// <inheritdoc />
-    public async IAsyncEnumerable<Court> Handle(GetOutdoorCourtsQuery request, [EnumeratorCancellation] CancellationToken cancellationToken)
+    public async IAsyncEnumerable<CourtBooking> Handle(GetBookingsForDayQuery request, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
         _ = request;
         _ = cancellationToken;

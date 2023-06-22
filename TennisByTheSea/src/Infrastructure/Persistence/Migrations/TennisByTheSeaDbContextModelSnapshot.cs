@@ -125,6 +125,10 @@ namespace TennisByTheSea.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("_forename")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -136,10 +140,6 @@ namespace TennisByTheSea.Infrastructure.Persistence.Migrations
                     b.Property<string>("_surname")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("_userId")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

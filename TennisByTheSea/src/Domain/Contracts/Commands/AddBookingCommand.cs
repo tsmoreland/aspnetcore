@@ -12,7 +12,9 @@
 //
 
 using MediatR;
+using TennisByTheSea.Domain.Models;
+using TennisByTheSea.Shared;
 
-namespace TennisByTheSea.Domain.Contracts.Requests;
+namespace TennisByTheSea.Domain.Contracts.Commands;
 
-public sealed record class GetCourtIdsQuery() : IStreamRequest<int>;
+public sealed record class AddBookingCommand(DateTime StartDateTime, TimeSpan Duration, int CourtId, Member Member) : IRequest<OptionalResult<CourtBooking>>;
