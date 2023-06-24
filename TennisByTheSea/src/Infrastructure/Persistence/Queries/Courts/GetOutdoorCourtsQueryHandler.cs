@@ -12,8 +12,25 @@
 //
 
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using TennisByTheSea.Domain.Contracts.Queries.Courts;
 using TennisByTheSea.Domain.Models;
 
-namespace TennisByTheSea.Domain.Contracts.Queries;
+namespace TennisByTheSea.Infrastructure.Persistence.Queries.Courts;
 
-public sealed record class GetBookingsForDayQuery(DateOnly Date) : IStreamRequest<CourtBooking>;
+public sealed class GetOutdoorCourtsQueryHandler : IStreamRequestHandler<GetOutdoorCourtsQuery, Court>
+{
+    private readonly TennisByTheSeaDbContext _dbContext;
+
+    public GetOutdoorCourtsQueryHandler(TennisByTheSeaDbContext dbContext)
+    {
+        _dbContext = dbContext;
+    }
+
+    /// <inheritdoc />
+    public IAsyncEnumerable<Court> Handle(GetOutdoorCourtsQuery request, CancellationToken cancellationToken)
+    {
+        _ = cancellationToken;
+        return _dbContext.Courts.Where(static e => e.Type == CourtType.Outdoor).AsAsyncEnumerable();
+    }
+}

@@ -12,7 +12,24 @@
 //
 
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using TennisByTheSea.Domain.Contracts.Queries.Courts;
 
-namespace TennisByTheSea.Domain.Contracts.Queries;
+namespace TennisByTheSea.Infrastructure.Persistence.Queries.Courts;
 
-public sealed record class GetCourtIdsQuery() : IStreamRequest<int>;
+public sealed class GetCourtIdsQueryHandler : IStreamRequestHandler<GetCourtIdsQuery, int>
+{
+    private readonly TennisByTheSeaDbContext _dbContext;
+
+    public GetCourtIdsQueryHandler(TennisByTheSeaDbContext dbContext)
+    {
+        _dbContext = dbContext;
+    }
+
+    /// <inheritdoc />
+    public IAsyncEnumerable<int> Handle(GetCourtIdsQuery request, CancellationToken cancellationToken)
+    {
+        _ = cancellationToken;
+        return _dbContext.Courts.Select(e => e.Id).OrderBy(c => c).AsAsyncEnumerable();
+    }
+}

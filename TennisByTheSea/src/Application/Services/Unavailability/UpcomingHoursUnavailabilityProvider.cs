@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using TennisByTheSea.Domain.Contracts.Queries;
+using TennisByTheSea.Domain.Contracts.Queries.Courts;
 using TennisByTheSea.Domain.Contracts.Services.Unavailability;
 using TennisByTheSea.Domain.Models;
 

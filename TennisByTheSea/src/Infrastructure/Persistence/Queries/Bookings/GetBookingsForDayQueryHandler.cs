@@ -13,22 +13,36 @@
 
 using System.Runtime.CompilerServices;
 using MediatR;
-using TennisByTheSea.Domain.Contracts.Queries;
+using Microsoft.EntityFrameworkCore;
+using TennisByTheSea.Domain.Contracts.Queries.Bookings;
+using TennisByTheSea.Domain.Models;
 
-namespace TennisByTheSea.Infrastructure.Persistence.Queries;
+namespace TennisByTheSea.Infrastructure.Persistence.Queries.Bookings;
 
-public sealed class GetCourtIdsQueryHandler : IStreamRequestHandler<GetCourtIdsQuery, int>
+public sealed class GetBookingsForDayQueryHandler : IStreamRequestHandler<GetBookingsForDayQuery, CourtBooking>
 {
-    public GetCourtIdsQueryHandler()
+    private readonly TennisByTheSeaDbContext _dbContext;
+
+    public GetBookingsForDayQueryHandler(TennisByTheSeaDbContext dbContext)
     {
+        _dbContext = dbContext;
     }
 
     /// <inheritdoc />
-    public async IAsyncEnumerable<int> Handle(GetCourtIdsQuery request, [EnumeratorCancellation] CancellationToken cancellationToken)
+    public async IAsyncEnumerable<CourtBooking> Handle(GetBookingsForDayQuery request, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        _ = request;
-        _ = cancellationToken;
-        await Task.CompletedTask;
-        yield break;
+        DateTime date = request.Date.ToDateTime(TimeOnly.FromTimeSpan(TimeSpan.Zero));
+
+        DateTime endTime = date.AddMilliseconds(-1);
+
+        IAsyncEnumerable<CourtBooking> bookings = _dbContext.CourtBookings!
+            .AsNoTracking()
+            .Where(b => b.StartDateTime >= date && b.EndDateTime < endTime)
+            .ToAsyncEnumerable();
+
+        await foreach (CourtBooking booking in bookings.WithCancellation(cancellationToken))
+        {
+            yield return booking;
+        }
     }
 }
