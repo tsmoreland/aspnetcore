@@ -15,6 +15,7 @@ using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TennisByTheSea.Domain.Contracts;
+using TennisByTheSea.Domain.Contracts.Services;
 using TennisByTheSea.Infrastructure.Channels;
 using TennisByTheSea.Infrastructure.ExternalApiClients;
 using TennisByTheSea.Infrastructure.Persistence;
@@ -45,6 +46,9 @@ public static class ServiceCollectionExtensions
             .AddDbContext<TennisByTheSeaDbContext>(optionsLifetime: ServiceLifetime.Singleton)
             .AddDbContextFactory<TennisByTheSeaDbContext>()
             .AddSingleton<IModelConfiguration, SqliteModelConfiguration>();
+
+        services
+            .AddTransient<ITimeService, TimeService>();
 
         return services;
     }

@@ -11,77 +11,45 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MediatR;
 using TennisByTheSea.Domain.Contracts.Queries.Bookings;
+using TennisByTheSea.Domain.Extensions;
 using TennisByTheSea.Domain.ValueObjects;
 
 namespace TennisByTheSea.Infrastructure.Persistence.Queries.Bookings;
 
 public sealed class GetMaxBookingSlotForCourtQueryHandler : IRequestHandler<GetMaxBookingSlotForCourtQuery, int>
 {
-    private readonly TennisByTheSeaDbContext _dbContext;
+    private readonly IMediator _mediator;
 
-    public GetMaxBookingSlotForCourtQueryHandler(TennisByTheSeaDbContext dbContext)
+    public GetMaxBookingSlotForCourtQueryHandler(IMediator mediator)
     {
-        _dbContext = dbContext;
+        _mediator = mediator;
     }
 
     /// <inheritdoc />
     public async Task<int> Handle(GetMaxBookingSlotForCourtQuery request, CancellationToken cancellationToken)
     {
         DateTime startTime = request.StartTime;
-        await Task.CompletedTask;
+        DateTime endTime = startTime.Add(request.Duration);
+        int courtId = request.CourtId;
 
-        /*
-        var hourlyAvailability = await GetBookingAvailabilityForDateAsync(startTime.Date);
-
-        var hoursToCheck = Enumerable.Range(startTime.Hour, endTime.Hour - startTime.Hour);
-
-        var lastHourAvailable = endTime.Hour;
-
-        foreach (var hourToCheck in hoursToCheck)
+        HourlyAvailabilityDictionary hourlyAvailability = await _mediator
+            .Send(new GetBookingAvailabilityForDateQuery(startTime.ToDateOnly()),
+                cancellationToken);
+        IEnumerable<int> hoursToCheck = Enumerable.Range(startTime.Hour, endTime.Hour - startTime.Hour);
+        int lastHourAvailable = endTime.Hour;
+        foreach (int hourToCheck in hoursToCheck)
         {
             if (hourlyAvailability[hourToCheck][courtId])
+            {
                 continue;
+            }
 
             lastHourAvailable = hourToCheck;
             break;
         }
-        */
 
         return lastHourAvailable - startTime.Hour;
-
     }
-
-    /*
-    // TODO:
-    // move this to a separate request and maybe let it be called as a separate request.  
-    // alternatively make it a static internal method that can be called by this class
-    public async Task<HourlyAvailabilityDictionary> GetBookingAvailabilityForDateAsync(DateTime date)
-    {
-        var bookingAvailability = await InitialiseAvailability();
-
-        foreach (var provider in _unavailabilityProviders)
-        {
-            var hourlyUnavailability = await provider.GetHourlyUnavailabilityAsync(date);
-
-            foreach (var unavailability in hourlyUnavailability)
-            {
-                var courtUnavailability = bookingAvailability[unavailability.Hour];
-
-                foreach (var courtId in unavailability.UnavailableCourtIds)
-                {
-                    courtUnavailability[courtId] = false;
-                }
-            }
-        }
-
-        return bookingAvailability;
-    }
-    */
 }
