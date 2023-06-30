@@ -1,0 +1,47 @@
+@page "{courtId}"
+
+@model BookCourtModel
+@{
+    ViewData["Title"] = "Book Court";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@if (Model.Errors?.Any() ?? false)
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-danger">
+                <p><strong>Unable to complete booking!</strong></p>
+                <ul>
+                    @foreach (var error in Model.Errors)
+                    {
+                        <li>@error</li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <form method="POST">
+            <div class="row">
+                <div class="col-md-6">
+                    <label asp-for="BookingLengthInHours" class="control-label"></label>
+                    @*
+                    <select asp-for="BookingLengthInHours" class="form-control"
+                            asp-items="@Model.PossibleHourLengths">
+                        <option value="">-- Select Length --</option>
+                    </select>
+                    *@
+                </div>
+                <div class="col-md-2">
+                    <br />
+                    <input type="submit" class="btn btn-primary" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

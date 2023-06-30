@@ -23,7 +23,7 @@ try
     app.UseSerilogRequestLogging();
 
 #if DEBUG
-await app.ResetDatabaseAsync();
+    await app.ResetDatabaseAsync();
 #endif
 
     app.Run();
