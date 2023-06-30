@@ -31,3 +31,7 @@ An implemented built primarily with Duende Identity Server of Microsoft Identity
  
 Working through pluralsight course [Mapping Real-world Classes in EF Core 6](https://app.pluralsight.com/library/courses/ef-core-6-mapping-real-world-cases), which is mostly using a console app to test the concepts, I'm
 planning to eventually add the site, maybe split the database across a few services (maybe using different databases) and moving to docker/kubernetes deployment
+
+## TennisByTheSea
+
+Working through pluralsight course [Creating Background Services in ASP.NET Core 6 and .NET 6](https://app.pluralsight.com/library/courses/asp-dot-net-core-6-dot-net-6-creating-background-services), while making tweaks and additions 
