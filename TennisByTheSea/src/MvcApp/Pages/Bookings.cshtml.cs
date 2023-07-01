@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using TennisByTheSea.Domain.Contracts.Queries.Bookings;
+using TennisByTheSea.Domain.Contracts.Queries.Greetings;
 using TennisByTheSea.Domain.Models;
 using TennisByTheSea.MvcApp.Models.Accounts;
 
@@ -12,26 +13,19 @@ namespace TennisByTheSea.MvcApp.Pages;
 public class BookingsModel : PageModel
 {
     private readonly UserManager<TennisUser> _userManager;
-
     private readonly IMediator _mediator;
-    /*
-    private readonly IGreetingService _loginGreetingService;
-    */
 
     public BookingsModel(
         UserManager<TennisUser> userManager,
-        IMediator mediator
-        /*, ICourtBookingService courtBookingService, IGreetingService loginGreetingService*/)
+        IMediator mediator)
     {
         _userManager = userManager;
         _mediator = mediator;
-        //_courtBookingService = courtBookingService;
-        //_loginGreetingService = loginGreetingService;
     }
 
     public IEnumerable<IGrouping<DateTime, CourtBooking>> CourtBookings { get; set; } = Array.Empty<IGrouping<DateTime, CourtBooking>>();
 
-    //public string Greeting { get; private set; } = "Hello";
+    public string Greeting { get; private set; } = "Hello";
 
     [TempData]
     public bool BookingSuccess { get; set; }
@@ -46,12 +40,14 @@ public class BookingsModel : PageModel
             return new ChallengeResult();
         }
 
-        //Greeting = _loginGreetingService.GetRandomLoginGreeting($"{user.Member.Forename} {user.Member.Surname}");
+        Task<(string Greeting, string Colour)> greetingTask =
+            _mediator.Send(new GetRandomGreetingQuery($"{user.Member.Forename} {user.Member.Surname}"));
 
         CourtBookings = (await _mediator
                 .CreateStream(new GetFutureBookingsForMemberQuery(user.Member))
                 .ToListAsync())
             .GroupBy(b => b.StartDateTime.Date);
+        (Greeting, _) = await greetingTask;
 
         return Page();
     }
