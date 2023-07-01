@@ -13,7 +13,7 @@
 
 namespace TennisByTheSea.Domain.Configuration;
 
-public sealed class WeatherForecastingOptions 
+public sealed class WeatherForecastingOptions
 {
     public bool Enable { get; init; }
 }

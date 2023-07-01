@@ -14,7 +14,7 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 using TennisByTheSea.Domain.Contracts;
-using TennisByTheSea.Domain.Contracts.Commands;
+using TennisByTheSea.Domain.Contracts.Bookings.Commands;
 using TennisByTheSea.Domain.Models;
 using TennisByTheSea.Shared;
 

@@ -18,7 +18,7 @@ namespace TennisByTheSea.Domain.Models;
 
 public sealed class Member
 {
-    private readonly HashSet<CourtBooking> _courtBookings ;
+    private readonly HashSet<CourtBooking> _courtBookings;
     private string _forename;
     private string _surname;
     private readonly DateTime _joinDate;

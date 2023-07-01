@@ -12,17 +12,8 @@
 //
 
 using MediatR;
+using TennisByTheSea.Domain.ValueObjects;
 
-namespace TennisByTheSea.Domain.Contracts.Queries.Greetings;
+namespace TennisByTheSea.Domain.Contracts.Bookings.Queries;
 
-public sealed record class GetRandomGreetingQuery
-    (string? Name = null) : IRequest<(string Greeting, string GreetingColour)>
-{
-    public bool IsForLogin => Name is { Length: > 0 };
-
-    public void Deconstruct(out bool isForLogin, out string? name)
-    {
-        isForLogin = IsForLogin;
-        name = Name;
-    }
-}
+public sealed record class GetBookingAvailabilityForDateQuery(DateOnly Date) : IRequest<HourlyAvailabilityDictionary>;

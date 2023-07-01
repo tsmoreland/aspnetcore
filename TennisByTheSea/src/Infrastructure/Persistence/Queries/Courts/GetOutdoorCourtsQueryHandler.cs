@@ -13,7 +13,7 @@
 
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using TennisByTheSea.Domain.Contracts.Queries.Courts;
+using TennisByTheSea.Domain.Contracts.Courts.Queries;
 using TennisByTheSea.Domain.Models;
 
 namespace TennisByTheSea.Infrastructure.Persistence.Queries.Courts;

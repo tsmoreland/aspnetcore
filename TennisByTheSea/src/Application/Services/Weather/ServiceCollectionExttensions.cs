@@ -21,20 +21,20 @@ namespace TennisByTheSea.Application.Services.Weather;
 
 public static class ServiceCollectionExttensions
 {
-	public static IServiceCollection AddWeatherForecasting(this IServiceCollection services,
-		IConfiguration config)
-	{
-		if (config.GetValue<bool>("Features:WeatherForecasting:Enable"))
-		{
-			services.TryAddSingleton<IWeatherForecaster, WeatherForecaster>();
-			services.Decorate<IWeatherForecaster, CachedWeatherForecaster>();
-			services.AddHostedService<WeatherCacheService>();
-		}
-		else
-		{
-			services.TryAddSingleton<IWeatherForecaster, DisabledWeatherForecaster>();
-		}
+    public static IServiceCollection AddWeatherForecasting(this IServiceCollection services,
+        IConfiguration config)
+    {
+        if (config.GetValue<bool>("Features:WeatherForecasting:Enable"))
+        {
+            services.TryAddSingleton<IWeatherForecaster, WeatherForecaster>();
+            services.Decorate<IWeatherForecaster, CachedWeatherForecaster>();
+            services.AddHostedService<WeatherCacheService>();
+        }
+        else
+        {
+            services.TryAddSingleton<IWeatherForecaster, DisabledWeatherForecaster>();
+        }
 
-		return services;
-	}
+        return services;
+    }
 }

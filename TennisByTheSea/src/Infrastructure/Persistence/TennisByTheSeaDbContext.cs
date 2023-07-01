@@ -27,16 +27,16 @@ public sealed class TennisByTheSeaDbContext : DbContext
         _modelConfiguration = modelConfiguration;
     }
 
-	public DbSet<Court> Courts => Set<Court>();
+    public DbSet<Court> Courts => Set<Court>();
 
-	public DbSet<CourtBooking> CourtBookings => Set<CourtBooking>();
+    public DbSet<CourtBooking> CourtBookings => Set<CourtBooking>();
 
-	public DbSet<Member> Members => Set<Member>();
+    public DbSet<Member> Members => Set<Member>();
 
     // TODO:
-	//public DbSet<CourtMaintenanceSchedule> CourtMaintenance => Set<CourtMaintenanceSchedule>();
+    //public DbSet<CourtMaintenanceSchedule> CourtMaintenance => Set<CourtMaintenanceSchedule>();
 
-	//public DbSet<ConfigurationEntry> ConfigurationEntries => Set<ConfigurationEntry>();
+    //public DbSet<ConfigurationEntry> ConfigurationEntries => Set<ConfigurationEntry>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

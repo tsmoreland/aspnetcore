@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using TennisByTheSea.Domain.Contracts;
 using TennisByTheSea.Shared.WeatherApi;
 
-namespace TennisByTheSea.Infrastructure.ExternalApiClients;
+namespace TennisByTheSea.Infrastructure.ExternalApi;
 
 public sealed class WeatherApiClient : IWeatherApiClient
 {

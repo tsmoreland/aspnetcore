@@ -12,9 +12,17 @@
 //
 
 using MediatR;
-using TennisByTheSea.Domain.Models;
-using TennisByTheSea.Shared;
 
-namespace TennisByTheSea.Domain.Contracts.Commands;
+namespace TennisByTheSea.Domain.Contracts.Greetings.Queries;
 
-public sealed record class AddBookingCommand(DateTime StartDateTime, TimeSpan Duration, int CourtId, Member Member) : IRequest<OptionalResult<CourtBooking>>;
+public sealed record class GetRandomGreetingQuery
+    (string? Name = null) : IRequest<(string Greeting, string GreetingColour)>
+{
+    public bool IsForLogin => Name is { Length: > 0 };
+
+    public void Deconstruct(out bool isForLogin, out string? name)
+    {
+        isForLogin = IsForLogin;
+        name = Name;
+    }
+}
