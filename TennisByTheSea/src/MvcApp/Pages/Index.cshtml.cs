@@ -1,7 +1,8 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Options;
-using TennisByTheSea.Domain.Contracts.Queries.Greetings;
+using TennisByTheSea.Domain.Contracts.Greetings.Queries;
+using TennisByTheSea.Domain.Contracts.Products.Queries;
 using TennisByTheSea.Domain.Contracts.Services.Weather;
 using TennisByTheSea.MvcApp.Models.Configuration;
 using TennisByTheSea.Shared.WeatherApi;
@@ -13,25 +14,16 @@ public class IndexModel : PageModel
     private const string DefaultForecastSectionTitle = "How's the weather";
     private readonly IWeatherForecaster _weatherForecaster;
     private readonly IMediator _mediator;
-    private readonly ILogger<IndexModel> _logger;
     private readonly HomePageOptions _options;
-    /*
-
-	private readonly IProductsApiClient _productsApiClient;
-    */
 
     public IndexModel(
         IMediator mediator,
-        ILogger<IndexModel> logger,
         IOptionsSnapshot<HomePageOptions> options,
-        IWeatherForecaster weatherForecaster//,
-        /*IProductsApiClient productsApiClient*/)
+        IWeatherForecaster weatherForecaster)
     {
         _mediator = mediator;
-        _logger = logger;
         _options = options.Value;
         _weatherForecaster = weatherForecaster;
-        //_productsApiClient = productsApiClient;
     }
 
     public string WeatherDescription { get; private set; } =
@@ -46,9 +38,7 @@ public class IndexModel : PageModel
 
     public string GreetingColour { get; private set; } = "black";
 
-    /*
-    public IReadOnlyCollection<Product> Products { get; private set; } = Array.Empty<Product>();
-    */
+    public IReadOnlyList<Product> Products { get; private set; } = Array.Empty<Product>();
 
     public async Task OnGet()
     {
@@ -74,7 +64,7 @@ public class IndexModel : PageModel
                 WeatherDescription = currentWeather.Weather.Summary switch
                 {
                     "Sun" => "It's sunny right now. A great day for tennis!",
-                    "Cloud" => "It's cloudy at the moment and the outdoor courts are availale.",
+                    "Cloud" => "It's cloudy at the moment and the outdoor courts are available.",
                     "Rain" => "We're sorry but it's raining here. No outdoor courts are available.",
                     "Snow" => "It's snowing!! Outdoor courts will remain closed until the snow clears.",
                     _ => WeatherDescription
@@ -82,7 +72,6 @@ public class IndexModel : PageModel
             }
         }
 
-        //var productsResult = await _productsApiClient.GetProducts();
-        //Products = productsResult?.Products ?? Array.Empty<Product>();
+        Products = await _mediator.CreateStream(new GetProductsQuery()).ToListAsync();
     }
 }

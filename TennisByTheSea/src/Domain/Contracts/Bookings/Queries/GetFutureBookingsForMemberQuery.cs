@@ -11,35 +11,9 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System.Diagnostics.CodeAnalysis;
+using MediatR;
+using TennisByTheSea.Domain.Models;
 
-namespace TennisByTheSea.Shared.Exceptions;
+namespace TennisByTheSea.Domain.Contracts.Bookings.Queries;
 
-public sealed class InvalidConfigurationException : Exception
-{
-    /// <inheritdoc />
-    public InvalidConfigurationException()
-        : this(null)
-    {
-    }
-
-    /// <inheritdoc />
-    public InvalidConfigurationException(string? message)
-        : this(message, null)
-    {
-    }
-
-    /// <inheritdoc />
-    public InvalidConfigurationException(string? message, Exception? innerException)
-        : base(message, innerException)
-    {
-    }
-
-    public static void ThrowIf([DoesNotReturnIf(true)] bool condition, string? message)
-    {
-        if (condition)
-        {
-            throw new InvalidConfigurationException(message);
-        }
-    }
-}
+public sealed record class GetFutureBookingsForMemberQuery(Member Member) : IStreamRequest<CourtBooking>;

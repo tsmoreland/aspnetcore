@@ -32,8 +32,8 @@ public sealed class Court
     }
 
     public int Id { get; set; }
-	public CourtType Type { get; }
-	public string Name { get; }
+    public CourtType Type { get; }
+    public string Name { get; }
     public IEnumerable<CourtBooking> Bookings => _courtBookings.ToList();
 
     public bool TryBookCourtForMember(Court court, Member member, DateTime startTime, TimeSpan length)

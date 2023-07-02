@@ -47,7 +47,7 @@ public sealed class CourtBooking
 
     public int Id { get; }
     public required Member Member { get; init; }
-    public required Court Court { get; init;  }
+    public required Court Court { get; init; }
     public DateTime StartDateTime { get; private set; }
     public DateTime EndDateTime { get; private set; }
 

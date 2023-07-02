@@ -14,7 +14,7 @@
 using System.Runtime.CompilerServices;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using TennisByTheSea.Domain.Contracts.Queries.Bookings;
+using TennisByTheSea.Domain.Contracts.Bookings.Queries;
 using TennisByTheSea.Domain.Models;
 
 namespace TennisByTheSea.Infrastructure.Persistence.Queries.Bookings;

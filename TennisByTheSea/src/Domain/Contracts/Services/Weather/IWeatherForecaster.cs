@@ -17,7 +17,7 @@ namespace TennisByTheSea.Domain.Contracts.Services.Weather;
 
 public interface IWeatherForecaster
 {
-	bool ForecastEnabled { get; }
+    bool ForecastEnabled { get; }
 
-	Task<WeatherResult> GetCurrentWeatherAsync(string city);
+    Task<WeatherResult> GetCurrentWeatherAsync(string city);
 }

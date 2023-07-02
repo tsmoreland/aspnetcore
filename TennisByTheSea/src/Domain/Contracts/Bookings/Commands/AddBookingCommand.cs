@@ -13,7 +13,8 @@
 
 using MediatR;
 using TennisByTheSea.Domain.Models;
+using TennisByTheSea.Shared;
 
-namespace TennisByTheSea.Domain.Contracts.Queries.Bookings;
+namespace TennisByTheSea.Domain.Contracts.Bookings.Commands;
 
-public sealed record class GetBookingsForDayQuery(DateOnly Date) : IStreamRequest<CourtBooking>;
+public sealed record class AddBookingCommand(DateTime StartDateTime, TimeSpan Duration, int CourtId, Member Member) : IRequest<OptionalResult<CourtBooking>>;

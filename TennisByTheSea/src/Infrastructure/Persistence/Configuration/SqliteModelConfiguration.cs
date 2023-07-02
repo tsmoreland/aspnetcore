@@ -25,7 +25,7 @@ public sealed class SqliteModelConfiguration : IModelConfiguration
     private readonly ILogger<SqliteModelConfiguration> _logger;
     private readonly bool _isDevelopment;
 
-    public SqliteModelConfiguration(IConfiguration configuration, IHostEnvironmentFacade environemnt,  ILogger<SqliteModelConfiguration> logger)
+    public SqliteModelConfiguration(IConfiguration configuration, IHostEnvironmentFacade environemnt, ILogger<SqliteModelConfiguration> logger)
     {
         _configuration = configuration;
         _isDevelopment = environemnt.IsDevelopment;

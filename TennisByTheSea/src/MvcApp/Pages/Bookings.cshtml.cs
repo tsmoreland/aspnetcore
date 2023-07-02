@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using TennisByTheSea.Domain.Contracts.Queries.Bookings;
-using TennisByTheSea.Domain.Contracts.Queries.Greetings;
+using TennisByTheSea.Domain.Contracts.Bookings.Queries;
+using TennisByTheSea.Domain.Contracts.Greetings.Queries;
 using TennisByTheSea.Domain.Models;
 using TennisByTheSea.MvcApp.Models.Accounts;
 

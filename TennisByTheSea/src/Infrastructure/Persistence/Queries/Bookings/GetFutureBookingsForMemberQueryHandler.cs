@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using TennisByTheSea.Domain.Contracts.Queries.Bookings;
+using TennisByTheSea.Domain.Contracts.Bookings.Queries;
 using TennisByTheSea.Domain.Contracts.Services;
 using TennisByTheSea.Domain.Models;
 

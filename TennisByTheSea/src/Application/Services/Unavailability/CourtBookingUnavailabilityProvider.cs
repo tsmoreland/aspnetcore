@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using TennisByTheSea.Domain.Contracts.Queries.Bookings;
+using TennisByTheSea.Domain.Contracts.Bookings.Queries;
 using TennisByTheSea.Domain.Contracts.Services.Unavailability;
 using TennisByTheSea.Domain.Extensions;
 using TennisByTheSea.Domain.Models;
@@ -19,9 +19,9 @@ public sealed class CourtBookingUnavailabilityProvider : IUnavailabilityProvider
     public async IAsyncEnumerable<HourlyUnavailability> GetHourlyUnavailabilityAsync(DateTime date)
     {
         IEnumerable<CourtBooking> bookings = await _mediator.CreateStream(new GetBookingsForDayQuery(date.ToDateOnly())).ToListAsync();
-        await foreach (HourlyUnavailability unvailableHour in BookingsToUnavailability(bookings))
+        await foreach (HourlyUnavailability unavailableHour in BookingsToUnavailability(bookings))
         {
-            yield return unvailableHour;
+            yield return unavailableHour;
         }
     }
 

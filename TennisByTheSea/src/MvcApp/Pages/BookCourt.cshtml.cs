@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using TennisByTheSea.Domain.Configuration;
-using TennisByTheSea.Domain.Contracts.Commands;
-using TennisByTheSea.Domain.Contracts.Queries.Bookings;
+using TennisByTheSea.Domain.Contracts.Bookings.Commands;
+using TennisByTheSea.Domain.Contracts.Bookings.Queries;
 using TennisByTheSea.Domain.Models;
 using TennisByTheSea.MvcApp.Models.Accounts;
 using TennisByTheSea.Shared;
@@ -84,5 +84,4 @@ public class BookCourtModel : PageModel
         Errors = result.Errors.ToArray();
         return Page();
     }
-
 }

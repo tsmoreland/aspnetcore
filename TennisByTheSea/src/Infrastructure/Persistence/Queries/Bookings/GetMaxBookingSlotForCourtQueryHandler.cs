@@ -12,7 +12,7 @@
 //
 
 using MediatR;
-using TennisByTheSea.Domain.Contracts.Queries.Bookings;
+using TennisByTheSea.Domain.Contracts.Bookings.Queries;
 using TennisByTheSea.Domain.Extensions;
 using TennisByTheSea.Domain.ValueObjects;
 
