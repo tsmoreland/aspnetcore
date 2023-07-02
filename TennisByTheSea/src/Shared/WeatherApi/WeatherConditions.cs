@@ -25,7 +25,7 @@ public sealed record class WeatherConditions(
 {
     public WeatherConditions DeepCopy()
     {
-        return new WeatherConditions(Summary, Wind, Temperature); 
+        return new WeatherConditions(Summary, Wind, Temperature);
     }
 
     public static WeatherConditions Unkown()

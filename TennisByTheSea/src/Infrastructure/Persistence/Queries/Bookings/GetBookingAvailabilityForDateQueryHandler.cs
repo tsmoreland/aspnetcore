@@ -12,8 +12,8 @@
 //
 
 using MediatR;
-using TennisByTheSea.Domain.Contracts.Queries.Bookings;
-using TennisByTheSea.Domain.Contracts.Queries.Courts;
+using TennisByTheSea.Domain.Contracts.Bookings.Queries;
+using TennisByTheSea.Domain.Contracts.Courts.Queries;
 using TennisByTheSea.Domain.Contracts.Services.Unavailability;
 using TennisByTheSea.Domain.Models;
 using TennisByTheSea.Domain.ValueObjects;

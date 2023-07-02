@@ -15,7 +15,7 @@ using System.Security.Cryptography;
 using MediatR;
 using Microsoft.Extensions.Options;
 using TennisByTheSea.Domain.Configuration;
-using TennisByTheSea.Domain.Contracts.Queries.Greetings;
+using TennisByTheSea.Domain.Contracts.Greetings.Queries;
 
 namespace TennisByTheSea.Application.Features.Greetings.Queries;
 

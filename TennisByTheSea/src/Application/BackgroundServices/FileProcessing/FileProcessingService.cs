@@ -40,7 +40,7 @@ public sealed class FileProcessingService : BackgroundService
             }
             finally
             {
-                File.Delete(filename); 
+                File.Delete(filename);
             }
         }
     }

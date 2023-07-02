@@ -12,8 +12,7 @@
 //
 
 using MediatR;
-using TennisByTheSea.Domain.ValueObjects;
 
-namespace TennisByTheSea.Domain.Contracts.Queries.Bookings;
+namespace TennisByTheSea.Domain.Contracts.Courts.Queries;
 
-public sealed record class GetBookingAvailabilityForDateQuery(DateOnly Date) : IRequest<HourlyAvailabilityDictionary>;
+public sealed record class GetCourtIdsQuery() : IStreamRequest<int>;

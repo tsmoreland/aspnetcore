@@ -13,7 +13,7 @@
 
 using MediatR;
 
-namespace TennisByTheSea.Domain.Contracts.Queries.Bookings;
+namespace TennisByTheSea.Domain.Contracts.Bookings.Queries;
 
 public sealed record class GetMaxBookingSlotForCourtQuery(
     DateTime StartTime,

@@ -11,9 +11,8 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using MediatR;
-using TennisByTheSea.Domain.Models;
+using System.Text.Json.Serialization;
 
-namespace TennisByTheSea.Domain.Contracts.Queries.Bookings;
+namespace TennisByTheSea.Domain.Contracts.Products.Queries;
 
-public sealed record class GetFutureBookingsForMemberQuery(Member Member) : IStreamRequest<CourtBooking>;
+public sealed record class Product(string Name, string Description, double Price);

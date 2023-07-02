@@ -17,7 +17,7 @@ using Microsoft.Extensions.DependencyInjection;
 using TennisByTheSea.Domain.Contracts;
 using TennisByTheSea.Domain.Contracts.Services;
 using TennisByTheSea.Infrastructure.Channels;
-using TennisByTheSea.Infrastructure.ExternalApiClients;
+using TennisByTheSea.Infrastructure.ExternalApi;
 using TennisByTheSea.Infrastructure.Persistence;
 using TennisByTheSea.Infrastructure.Persistence.Configuration;
 using TennisByTheSea.Shared.Exceptions;
@@ -30,12 +30,17 @@ public static class ServiceCollectionExtensions
     {
         ArgumentNullException.ThrowIfNull(services);
 
-        string url = configuration["ExternalServices::WeatherApi::Url"] ?? string.Empty;
-        InvalidConfigurationException.ThrowIf(!Uri.TryCreate(url, UriKind.Absolute, out Uri? baseUrl), "Invalid URL for weather API");
+        string weatherUrl = configuration["ExternalServices::WeatherApi::Url"] ?? string.Empty;
+        InvalidConfigurationException.ThrowIf(!Uri.TryCreate(weatherUrl, UriKind.Absolute, out Uri? baseWeatherUrl), "Invalid URL for weather API");
+
+        string productsUrl = configuration["ExternalServices::ProductsApi::Url"] ?? string.Empty;
+        InvalidConfigurationException.ThrowIf(!Uri.TryCreate(productsUrl, UriKind.Absolute, out Uri? baseProductsUrl), "Invalid URL for Products API");
 
         services
             .AddTransient<IWeatherApiClient, WeatherApiClient>()
-            .AddHttpClient<WeatherApiClient>(client => client.BaseAddress = baseUrl);
+            .AddHttpClient<WeatherApiClient>(client => client.BaseAddress = baseWeatherUrl);
+        services
+            .AddHttpClient("Products", client => client.BaseAddress = baseProductsUrl);
 
         services
             .AddSingleton<IFileProcessingChannel, FileProcessingChannel>()
