@@ -1,104 +1,112 @@
 using System.ComponentModel;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using TennisByTheSea.Domain.Contracts.Bookings.Queries;
+using TennisByTheSea.Domain.Extensions;
+using TennisByTheSea.Domain.ValueObjects;
+using TennisByTheSea.MvcApp.Extensions;
 
 namespace TennisByTheSea.MvcApp.Pages;
 
 public sealed class FindAvailableCourtsModel : PageModel
 {
-    /*
-        private readonly IBookingService _bookingService;
+    private readonly IMediator _mediator;
 
-        public FindAvailableCourtsModel(IBookingService bookingService)
+
+    public FindAvailableCourtsModel(IMediator mediator)
+    {
+        _mediator = mediator;
+    }
+
+    [DisplayName("Search Date")]
+    [BindProperty(SupportsGet = true)]
+    public DateTime SearchDate { get; set; }
+
+    public IEnumerable<TableData> Availability { get; set; } = Enumerable.Empty<TableData>();
+
+    public bool HasNoAvailability => !Availability.Any();
+
+    public async Task OnGet()
+    {
+        if (SearchDate == default)
         {
-            _bookingService = bookingService;
+            SearchDate = DateTime.UtcNow.Date;
         }
 
-        [DisplayName("Search Date")]
-        [BindProperty(SupportsGet = true)]
-        public DateTime SearchDate { get; set; }
+        await LoadAvailability();
+    }
 
-        public IEnumerable<TableData> Availability { get; set; } = Enumerable.Empty<TableData>();
+    public IActionResult OnPost()
+    {
+        return RedirectToPage("FindAvailableCourts", new { searchDate = SearchDate.ToString("yyyy-MM-dd") });
+    }
 
-        public bool HasNoAvailability => !Availability.Any();
-
-        public async Task OnGet()
+    private async Task LoadAvailability()
+    {
+        if (SearchDate.Date < DateTime.UtcNow.Date)
         {
-            if (SearchDate == default)
-                SearchDate = DateTime.UtcNow.Date;
-
-            await LoadAvailability();
+            Availability = Array.Empty<TableData>();
+            return;
         }
 
-        public IActionResult OnPost()
-        {
-            return RedirectToPage("FindAvailableCourts", new { searchDate = SearchDate.ToString("yyyy-MM-dd") });
-        }
+        HourlyAvailabilityDictionary availability = await _mediator
+            .Send(new GetBookingAvailabilityForDateQuery(SearchDate.ToDateOnly()));
 
-        private async Task LoadAvailability()
+        List<TableData> tableData = new(24);
+
+        bool foundFirstRow = false;
+        int lastHourWithAvailability = 23;
+
+        foreach ((int key, Dictionary<int, bool>? value) in availability)
         {
-            if (SearchDate.Date < DateTime.UtcNow.Date)
+            bool noAvailability = !value.ContainsValue(true);
+
+            if (noAvailability && !foundFirstRow)
             {
-                Availability = Array.Empty<TableData>();
-                return;
+                continue; // skip rows before first availability
             }
 
-            var availability = await _bookingService.GetBookingAvailabilityForDateAsync(SearchDate);
+            foundFirstRow = true;
 
-            var tableData = new List<TableData>(24);
-
-            var foundFirstRow = false;
-            var lastHourWithAvailability = 23;
-
-            foreach (var hour in availability)
+            if (!noAvailability)
             {
-                var noAvailability = !hour.Value.ContainsValue(true);
-
-                if (noAvailability && !foundFirstRow)
-                    continue; // skip rows before first availability
-
-                foundFirstRow = true;
-
-                if (!noAvailability)
-                    lastHourWithAvailability = hour.Key;
-
-                var data = new TableData(hour.Key, SearchDate, hour.Value);
-
-                tableData.Add(data);
+                lastHourWithAvailability = key;
             }
 
-            Availability = tableData.Where(x => x.Hour <= lastHourWithAvailability);
+            TableData data = new(key, SearchDate, value);
+
+            tableData.Add(data);
         }
 
-        public class TableData
+        Availability = tableData.Where(x => x.Hour <= lastHourWithAvailability);
+    }
+
+    public sealed class TableData
+    {
+        public TableData(int hour, DateTime date, Dictionary<int, bool> courtAvailability)
         {
-            public TableData(int hour, DateTime date, Dictionary<int, bool> courtAvailability)
+            if (hour is < 0 or > 23)
             {
-                if (hour < 0 || hour > 23)
-                    throw new ArgumentOutOfRangeException(nameof(hour));
-
-                if (courtAvailability == null)
-                    throw new ArgumentNullException(nameof(courtAvailability));
-
-                Hour = hour;
-                HourText = hour.To12HourClockString();
-                BookingStartDate = date.Date.AddHours(hour).ToString("O");
-                CourtAvailability = courtAvailability.Select(v => new CourtData { CourtId = v.Key, Available = v.Value });
+                throw new ArgumentOutOfRangeException(nameof(hour));
             }
 
-            public int Hour { get; }
+            ArgumentNullException.ThrowIfNull(courtAvailability);
 
-            public string HourText { get; }
-
-            public string BookingStartDate { get; }
-
-            public IEnumerable<CourtData> CourtAvailability { get; }
+            Hour = hour;
+            HourText = hour.To12HourClockString();
+            BookingStartDate = date.Date.AddHours(hour).ToString("O");
+            CourtAvailability = courtAvailability.Select(v => new CourtData(v.Key, v.Value));
         }
 
-        public class CourtData
-        {
-            public int CourtId { get; set; }
-            public bool Available { get; set; }
-        }
-    */
+        public int Hour { get; }
+
+        public string HourText { get; }
+
+        public string BookingStartDate { get; }
+
+        public IEnumerable<CourtData> CourtAvailability { get; }
+    }
+
+    public sealed record class CourtData(int CourtId, bool Available);
 }
