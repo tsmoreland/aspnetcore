@@ -11,7 +11,7 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using GloboTicket.Shop.Catalog.Application.Contracts.Persistence;
+using GloboTicket.Shop.Catalog.Domain.Contracts.Persistence;
 using GloboTicket.Shop.Catalog.Infrastructure.Persistence;
 using GloboTicket.Shop.Catalog.Infrastructure.Persistence.Configuration;
 using GloboTicket.Shop.Catalog.Infrastructure.Persistence.Repositories;

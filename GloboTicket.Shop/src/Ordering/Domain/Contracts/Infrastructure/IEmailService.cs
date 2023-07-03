@@ -11,9 +11,9 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using GloboTicket.Shop.Ordering.Application.Models.Mail;
+using GloboTicket.Shop.Ordering.Domain.Models.Mail;
 
-namespace GloboTicket.Shop.Ordering.Application.Contracts.Infrastructure;
+namespace GloboTicket.Shop.Ordering.Domain.Contracts.Infrastructure;
 
 public interface IEmailService
 {

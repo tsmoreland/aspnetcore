@@ -1,5 +1,5 @@
 ﻿
-namespace GloboTicket.Shop.Ordering.Application.Models.Mail;
+namespace GloboTicket.Shop.Ordering.Domain.Models.Mail;
 
 public sealed class EmailSettings
 {

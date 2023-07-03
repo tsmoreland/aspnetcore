@@ -11,8 +11,8 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using GloboTicket.Shop.Ordering.Application.Contracts.Infrastructure;
-using GloboTicket.Shop.Ordering.Application.Models.Mail;
+using GloboTicket.Shop.Ordering.Domain.Contracts.Infrastructure;
+using GloboTicket.Shop.Ordering.Domain.Models.Mail;
 using GloboTicket.Shop.Ordering.Infrastructure.Mail;
 using GloboTicket.Shop.Ordering.Infrastructure.Telemetry;
 using Microsoft.Extensions.Configuration;
@@ -25,7 +25,7 @@ public static class InfrastructureServiceExtensions
     public static IServiceCollection AddOrderingInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         ArgumentNullException.ThrowIfNull(services);
-        
+
         services
             .Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
 

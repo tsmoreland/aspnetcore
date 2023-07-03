@@ -12,7 +12,7 @@
 //
 
 
-using GloboTicket.Shop.Ordering.Application.Contracts.Infrastructure;
+using GloboTicket.Shop.Ordering.Domain.Contracts.Infrastructure;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DataContracts;
 
