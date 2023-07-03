@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using FluentValidation.Results;
-using GloboTicket.TicketManagement.Application.Contracts.Exceptions;
-using GloboTicket.TicketManagement.Application.Contracts.Infrastructure;
-using GloboTicket.TicketManagement.Application.Contracts.Persistence;
-using GloboTicket.TicketManagement.Application.Models.Mail;
+using GloboTicket.TicketManagement.Domain.Contracts.Exceptions;
+using GloboTicket.TicketManagement.Domain.Contracts.Infrastructure;
+using GloboTicket.TicketManagement.Domain.Contracts.Persistence;
 using GloboTicket.TicketManagement.Domain.Entities;
+using GloboTicket.TicketManagement.Domain.Models.Mail;
 using MediatR;
 
 namespace GloboTicket.TicketManagement.Application.Features.Events.Commands.CreateEvent;

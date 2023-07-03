@@ -11,8 +11,8 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System.Linq.Expressions;
-using GloboTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
 using GloboTicket.TicketManagement.Domain.Common;
+using GloboTicket.TicketManagement.Domain.Contracts.Persistence.Specifications;
 using GloboTicket.TicketManagement.Persistence.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 

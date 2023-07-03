@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using GloboTicket.TicketManagement.Application.Contracts.Persistence;
+using GloboTicket.TicketManagement.Domain.Contracts.Persistence;
 
 namespace GloboTicket.TicketManagement.Application.Features.Events.Commands.CreateEvent;
 

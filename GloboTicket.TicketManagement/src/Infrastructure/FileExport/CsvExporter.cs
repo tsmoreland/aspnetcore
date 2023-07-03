@@ -13,8 +13,8 @@
 
 using System.Globalization;
 using CsvHelper;
-using GloboTicket.TicketManagement.Application.Contracts.Infrastructure;
-using GloboTicket.TicketManagement.Application.Features.Events.Queries.GetEventsExport;
+using GloboTicket.TicketManagement.Domain.Contracts.Events.Queries;
+using GloboTicket.TicketManagement.Domain.Contracts.Infrastructure;
 
 namespace GloboTicket.TicketManagement.Infrastructure.FileExport;
 
