@@ -1,6 +1,6 @@
 ﻿
 using System.Security.Claims;
-using GloboTicket.TicketManagement.Application.Contracts.Identity;
+using GloboTicket.TicketManagement.Domain.Contracts.Identity;
 
 namespace GloboTicket.TicketManagement.Api.Services;
 

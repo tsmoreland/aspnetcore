@@ -1,16 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="Features\Orders\Commands\**" />
-    <EmbeddedResource Remove="Features\Orders\Commands\**" />
-    <None Remove="Features\Orders\Commands\**" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
@@ -25,11 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Contracts\Infrastructure\" />
     <Folder Include="Features\Events\Commands\DeleteEvent\" />
     <Folder Include="Features\Orders\Queries\GetOrdersForMonth\" />
     <Folder Include="Features\Orders\Specifications\" />
-    <Folder Include="Models\Mail\" />
     <Folder Include="Responses\" />
   </ItemGroup>
 

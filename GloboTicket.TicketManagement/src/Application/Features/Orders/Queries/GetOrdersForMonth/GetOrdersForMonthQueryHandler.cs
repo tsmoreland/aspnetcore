@@ -1,7 +1,7 @@
-﻿using GloboTicket.TicketManagement.Application.Contracts.Persistence;
-using GloboTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
-using GloboTicket.TicketManagement.Application.Features.Orders.Specifications;
+﻿using GloboTicket.TicketManagement.Application.Features.Orders.Specifications;
 using GloboTicket.TicketManagement.Domain.Common;
+using GloboTicket.TicketManagement.Domain.Contracts.Persistence;
+using GloboTicket.TicketManagement.Domain.Contracts.Persistence.Specifications;
 using GloboTicket.TicketManagement.Domain.Entities;
 using MediatR;
 

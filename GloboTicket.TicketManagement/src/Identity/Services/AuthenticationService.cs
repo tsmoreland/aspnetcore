@@ -1,15 +1,15 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using GloboTicket.TicketManagement.Application.Contracts.Exceptions;
-using GloboTicket.TicketManagement.Application.Contracts.Identity;
-using GloboTicket.TicketManagement.Application.Models.Authentication;
+using GloboTicket.TicketManagement.Domain.Contracts.Exceptions;
+using GloboTicket.TicketManagement.Domain.Contracts.Identity;
+using GloboTicket.TicketManagement.Domain.Models.Authentication;
 using GloboTicket.TicketManagement.Identity.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using IdentityError = GloboTicket.TicketManagement.Application.Models.Authentication.IdentityError;
+using IdentityError = GloboTicket.TicketManagement.Domain.Models.Authentication.IdentityError;
 
 namespace GloboTicket.TicketManagement.Identity.Services;
 

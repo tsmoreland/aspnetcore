@@ -12,7 +12,7 @@
 //
 
 using System.Runtime.CompilerServices;
-using GloboTicket.Shop.Catalog.Application.Contracts.Persistence;
+using GloboTicket.Shop.Catalog.Domain.Contracts.Persistence;
 using GloboTicket.Shop.Catalog.Domain.Models;
 using GloboTicket.Shop.Shared.Contracts.Persistence;
 using GloboTicket.Shop.Shared.Contracts.Persistence.Specifications;
