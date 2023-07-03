@@ -1,6 +1,6 @@
 ﻿using System.Text;
 using System.Text.Json;
-using GloboTicket.TicketManagement.Application.Models.Authentication;
+using GloboTicket.TicketManagement.Domain.Models.Authentication;
 using GloboTicket.TicketManagement.Identity.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -13,7 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using IAuthenticationService = GloboTicket.TicketManagement.Application.Contracts.Identity.IAuthenticationService;
+using IAuthenticationService = GloboTicket.TicketManagement.Domain.Contracts.Identity.IAuthenticationService;
 using AuthenticationService = GloboTicket.TicketManagement.Identity.Services.AuthenticationService;
 
 namespace GloboTicket.TicketManagement.Identity;

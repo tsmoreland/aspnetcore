@@ -12,8 +12,9 @@
 //
 
 using System.Linq.Expressions;
-using GloboTicket.TicketManagement.Application.Contracts.Persistence;
-using GloboTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
+using GloboTicket.TicketManagement.Domain.Contracts.Events.Queries;
+using GloboTicket.TicketManagement.Domain.Contracts.Persistence;
+using GloboTicket.TicketManagement.Domain.Contracts.Persistence.Specifications;
 using GloboTicket.TicketManagement.Domain.Entities;
 
 namespace GloboTicket.TicketManagement.Application.Features.Events.Queries.GetEventsExport;

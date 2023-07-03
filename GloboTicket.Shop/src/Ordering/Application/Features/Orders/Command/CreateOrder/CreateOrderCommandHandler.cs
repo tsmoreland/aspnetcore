@@ -12,9 +12,9 @@
 //
 
 using FluentValidation.Results;
-using GloboTicket.Shop.Ordering.Application.Contracts.Infrastructure;
-using GloboTicket.Shop.Ordering.Application.Models.Mail;
+using GloboTicket.Shop.Ordering.Domain.Contracts.Infrastructure;
 using GloboTicket.Shop.Ordering.Domain.Models;
+using GloboTicket.Shop.Ordering.Domain.Models.Mail;
 using GloboTicket.Shop.Shared.Contracts.Exceptions;
 using MediatR;
 

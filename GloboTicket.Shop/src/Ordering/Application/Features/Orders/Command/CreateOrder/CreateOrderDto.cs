@@ -30,7 +30,7 @@ public sealed class CreateOrderDto
     /// Convert DTO to <see cref="OrderForCreation"/> without validating the parameters
     /// </summary>
     /// <exception cref="ArgumentException">
-    /// if one or more properties to do not meet the rquirements of <see cref="OrderForCreation"/>
+    /// if one or more properties to do not meet the requirements of <see cref="OrderForCreation"/>
     /// </exception>
     public OrderForCreation ToModel()
     {

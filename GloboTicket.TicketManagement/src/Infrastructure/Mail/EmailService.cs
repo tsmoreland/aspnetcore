@@ -1,5 +1,5 @@
-﻿using GloboTicket.TicketManagement.Application.Contracts.Infrastructure;
-using GloboTicket.TicketManagement.Application.Models.Mail;
+﻿using GloboTicket.TicketManagement.Domain.Contracts.Infrastructure;
+using GloboTicket.TicketManagement.Domain.Models.Mail;
 using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;

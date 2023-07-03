@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using FluentValidation.Results;
-using GloboTicket.TicketManagement.Application.Contracts.Persistence;
+using GloboTicket.TicketManagement.Domain.Contracts.Persistence;
 using GloboTicket.TicketManagement.Domain.Entities;
 using MediatR;
 

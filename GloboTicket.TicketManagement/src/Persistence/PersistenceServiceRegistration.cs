@@ -1,5 +1,5 @@
-﻿using GloboTicket.TicketManagement.Application.Contracts.Persistence;
-using GloboTicket.TicketManagement.Application.Contracts.Persistence.Specifications;
+﻿using GloboTicket.TicketManagement.Domain.Contracts.Persistence;
+using GloboTicket.TicketManagement.Domain.Contracts.Persistence.Specifications;
 using GloboTicket.TicketManagement.Persistence.Configuration;
 using GloboTicket.TicketManagement.Persistence.Infrastructure;
 using GloboTicket.TicketManagement.Persistence.Repositories;

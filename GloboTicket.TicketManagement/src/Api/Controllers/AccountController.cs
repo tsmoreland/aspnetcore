@@ -1,6 +1,6 @@
 ﻿using System.Net.Mime;
-using GloboTicket.TicketManagement.Application.Contracts.Identity;
-using GloboTicket.TicketManagement.Application.Models.Authentication;
+using GloboTicket.TicketManagement.Domain.Contracts.Identity;
+using GloboTicket.TicketManagement.Domain.Models.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
