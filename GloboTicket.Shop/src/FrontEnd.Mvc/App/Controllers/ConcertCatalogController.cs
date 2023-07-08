@@ -16,10 +16,12 @@ public sealed class ConcertCatalogController : Controller
 
     public ConcertCatalogController(IConcertCatalogService concertCatalogService, IShoppingBasketService shoppingBasketService, Settings settings)
     {
-        this._concertCatalogService = concertCatalogService;
-        this._shoppingBasketService = shoppingBasketService;
-        this._settings = settings;
+        _concertCatalogService = concertCatalogService;
+        _shoppingBasketService = shoppingBasketService;
+        _settings = settings;
     }
+
+    [HttpGet]
     public async Task<IActionResult> Index(CancellationToken cancellationToken)
     {
         Guid currentBasketId = Request.Cookies.GetCurrentBasketId(_settings);
@@ -40,6 +42,7 @@ public sealed class ConcertCatalogController : Controller
         );
     }
 
+    [HttpGet]
     public async Task<IActionResult> Detail(Guid concertId, CancellationToken cancellationToken)
     {
         Concert? ev = await _concertCatalogService.GetConcert(concertId, cancellationToken);

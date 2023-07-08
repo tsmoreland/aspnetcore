@@ -28,6 +28,7 @@ public class CheckoutController : Controller
         _telemetryClient = telemetry;
     }
 
+    [HttpGet]
     public IActionResult Index()
     {
         Guid currentBasketId = Request.Cookies.GetCurrentBasketId(_settings);
@@ -35,6 +36,7 @@ public class CheckoutController : Controller
         return View(new CheckoutViewModel() { BasketId = currentBasketId });
     }
 
+    [HttpGet]
     public IActionResult Thanks()
     {
         return View();

@@ -31,7 +31,6 @@ public sealed class CustomerDetails
         Email = RequiresNonEmptyStringWithMaxLength(email, MaxEmailLength);
         DeliveryAddress = deliveryAddress ?? throw new ArgumentNullException(nameof(deliveryAddress));
         BillingAddress = billingAddress ?? throw new ArgumentNullException(nameof(billingAddress));
-
     }
 
     public string Name { get; init; } = string.Empty;
