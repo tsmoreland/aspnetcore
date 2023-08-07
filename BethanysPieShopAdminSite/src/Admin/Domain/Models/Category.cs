@@ -6,12 +6,21 @@ public sealed class Category
 {
     private string _name;
     private string? _description;
+    private readonly HashSet<Pie> _pies;
+
 
     public Category(string name, string? description)
+        : this(Guid.NewGuid(), NameValidator.Instance.ValidateOrThrow(name), DescriptionValidator.Instance.ValidateOrThrow(description), DateTime.UtcNow)
     {
-        CategoryId = Guid.NewGuid();
+    }
+
+    private Category(Guid categoryId, string name, string? description, DateTime? dateAdded)
+    {
+        CategoryId = categoryId;
         _name = name;
         _description = description;
+        DateAdded = dateAdded;
+        _pies = new HashSet<Pie>();
     }
 
     /// <summary>
@@ -36,4 +45,8 @@ public sealed class Category
         get => _description;
         set => _description = DescriptionValidator.Instance.GetValidatedValueOrThrow(value);
     }
+
+    public DateTime? DateAdded { get; init; }
+
+    public ICollection<Pie> Pies => _pies.ToList();
 }

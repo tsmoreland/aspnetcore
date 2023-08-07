@@ -11,23 +11,28 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using FluentValidation;
-
 namespace BethanysPieShop.Admin.Domain.Validation;
 
-internal sealed class NameValidator : AbstractValidator<string>
+internal sealed class NameValidator : StringValidator
 {
     private static readonly Lazy<NameValidator> s_instance = new(() => new NameValidator());
 
     /// <inheritdoc />
     public NameValidator()
     {
-        RuleFor<string>(name => name)
-            .Must(name => !string.IsNullOrWhiteSpace(name))
-            .MinimumLength(5)
-            .MaximumLength(200)
-            .WithMessage("Name cannot be empty and must be between 5 and 200 characters in length");
+        Initialize();
     }
 
     public static NameValidator Instance => s_instance.Value;
+
+    /// <inheritdoc />
+    protected override int MinimumLength => 5;
+
+    /// <inheritdoc />
+    protected override int MaximumLength => 200;
+
+    /// <inheritdoc />
+    protected override bool AllowNull => false;
+
+    protected override string ErrorMessage => "Name cannot be empty and must be between 5 and 200 characters in length";
 }
