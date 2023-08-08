@@ -9,23 +9,30 @@
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
 
 using FluentValidation;
 
 namespace BethanysPieShop.Admin.Domain.Validation;
 
-internal sealed class DescriptionValidator : AbstractValidator<string?>
+internal sealed class DescriptionValidator : NullableStringValidator
 {
     private static readonly Lazy<DescriptionValidator> s_instance = new(() => new DescriptionValidator());
 
     /// <inheritdoc />
     public DescriptionValidator()
     {
-        RuleFor<string>(vvalue => value)
-            .Must(value => value is null || !string.IsNullOrWhiteSpace(value))
-            .Must(value => value is null || value.Length is >= 5 and <= 500)
-            .WithMessage("Description must eithe be null or have a length between 5 and 500");
+        Initialize();
     }
 
     public static DescriptionValidator Instance => s_instance.Value;
+
+    /// <inheritdoc />
+    protected override int MinimumLength => 5;
+
+    /// <inheritdoc />
+    protected override int MaximumLength => 500;
+
+    /// <inheritdoc />
+    protected override bool AllowNull => true;
 }

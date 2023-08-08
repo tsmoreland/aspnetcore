@@ -65,7 +65,7 @@ public sealed class Order
     public string PostCode { get => _postCode; set => _postCode = PostCodeValidator.Instance.ValidateOrThrow(value); }
     public string City { get => _city; set => _city = NameValidator.Instance.ValidateOrThrow(value); }
 
-    public string PhoneNumber { get => _phoneNumber; set; }
+    public string PhoneNumber { get => _phoneNumber; set => _phoneNumber = PhoneNumberValidator.Instance.ValidateOrThrow(value); }
 
     public string Email { get => _email; set => _email = EmailValidator.Instance.ValidateOrThrow(value); }
     

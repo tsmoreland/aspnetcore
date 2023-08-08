@@ -12,13 +12,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BethanysPieShop.MVC.App", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MVC", "MVC", "{7C702C2E-C055-45D0-8895-4C0D8DCC8E6F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BethanysPieShop.Admin.Domain", "src\Admin\Domain\BethanysPieShop.Admin.Domain.csproj", "{714AF9BE-AD11-4F93-A9D7-4128B71DA3EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BethanysPieShop.Admin.Domain", "src\Admin\Domain\BethanysPieShop.Admin.Domain.csproj", "{714AF9BE-AD11-4F93-A9D7-4128B71DA3EF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Admin", "Admin", "{B60C2162-366B-4A2A-B762-CFA189011F01}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BethanysPieShop.Admin,Infrastructure", "src\Admin\Infrastructure\BethanysPieShop.Admin,Infrastructure.csproj", "{954D33A5-6E94-4C76-92A4-CFA6E7F88379}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BethanysPieShop.Admin.Infrastructure", "src\Admin\Infrastructure\BethanysPieShop.Admin.Infrastructure.csproj", "{954D33A5-6E94-4C76-92A4-CFA6E7F88379}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BethanysPieShop.Admin.Application", "src\Admin\Application\BethanysPieShop.Admin.Application.csproj", "{14F1B03C-A810-4F78-ABF2-1E207ACFE320}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BethanysPieShop.Admin.Application", "src\Admin\Application\BethanysPieShop.Admin.Application.csproj", "{14F1B03C-A810-4F78-ABF2-1E207ACFE320}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

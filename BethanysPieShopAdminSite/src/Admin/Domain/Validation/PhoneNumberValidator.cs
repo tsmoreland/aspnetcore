@@ -17,7 +17,7 @@ namespace BethanysPieShop.Admin.Domain.Validation;
 
 internal sealed class PhoneNumberValidator : AbstractValidator<string>
 {
-    private static readonly Lazy<PhoneNumberValidator> s_instance = new(() => new CurrencyValidator());
+    private static readonly Lazy<PhoneNumberValidator> s_instance = new(() => new PhoneNumberValidator());
     /// <inheritdoc />
     public PhoneNumberValidator()
     {
