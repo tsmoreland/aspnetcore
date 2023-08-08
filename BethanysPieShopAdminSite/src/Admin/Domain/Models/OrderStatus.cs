@@ -2,5 +2,9 @@
 
 public enum OrderStatus
 {
-    Pending,
+    Received,
+    Paid,
+    Processing,
+    OutForDelivery,
+    Delivered
 }

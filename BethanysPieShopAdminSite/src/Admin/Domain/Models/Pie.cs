@@ -21,9 +21,9 @@ public sealed class Pie
               ShortDescriptionValidator.Instance.ValidateOrThrow(shortDescription),
               LongDescriptionValidator.Instance.ValidateOrThrow(longDescription),
               AllergyInformationValidator.Instance.ValidateOrThrow(allergyInformation),
-              price,
-              imageFilename,
-              imageThumbnailFilename,
+              CurrencyValidator.Instance.ValidateOrThrow(price),
+              NullableFilenameValidatior.Instance.ValidateOrThrow(imageFilename),
+              NullableFilenameValidatior.Instance.ValidateOrThrow(imageThumbnailFilename),
               categoryId)
     {
     }
@@ -82,7 +82,7 @@ public sealed class Pie
         get => _price;
         set
         {
-            _price = value;
+            _price = CurrencyValidator.Instance.ValidateOrThrow(value);
         }
     }
     public string? ImageFilename
@@ -90,7 +90,7 @@ public sealed class Pie
         get => _imageFilename;
         set
         {
-            _imageFilename = value;
+            _imageFilename = NullableFilenameValidatior.Instance.ValidateOrThrow(value);
         }
     }
     public string? ImageThumbnailFilename
@@ -98,7 +98,7 @@ public sealed class Pie
         get => _imageThumbnailFilename;
         set
         {
-            _imageThumbnailFilename = value;
+            _imageThumbnailFilename = NullableFilenameValidatior.Instance.ValidateOrThrow(value);
         }
     }
 
@@ -126,4 +126,10 @@ public sealed class Pie
     }
 
     public ICollection<Ingredient> Ingredients => _ingredients.ToList();
+
+    public void AddIngredient(Ingredient ingredient)
+    {
+        ArgumentNullException.ThrowIfNull(ingredient);
+        _ingredients.Add(ingredient);
+    }
 }

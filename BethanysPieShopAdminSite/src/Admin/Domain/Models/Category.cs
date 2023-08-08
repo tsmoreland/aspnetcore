@@ -49,4 +49,10 @@ public sealed class Category
     public DateTime? DateAdded { get; init; }
 
     public ICollection<Pie> Pies => _pies.ToList();
+
+    public void AddPie(Pie pie)
+    {
+        ArgumentNullException.ThrowIfNull(pie);
+        _pies.Add(pie);
+    }
 }
