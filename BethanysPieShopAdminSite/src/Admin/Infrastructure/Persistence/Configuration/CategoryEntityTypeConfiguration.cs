@@ -11,14 +11,17 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using BethanysPieShop.Admin.Domain.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BethanysPieShop.Admin.Infrastructure.Persistence.Configuration;
 
-public sealed class CategoryEntityTypeConfiguration
+public sealed class CategoryEntityTypeConfiguration : IEntityTypeConfiguration<Category>
 {
+    /// <inheritdoc />
+    public void Configure(EntityTypeBuilder<Category> builder)
+    {
+        throw new NotImplementedException();
+    }
 }
