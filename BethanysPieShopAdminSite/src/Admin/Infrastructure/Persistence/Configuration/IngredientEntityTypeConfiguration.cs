@@ -17,9 +17,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BethanysPieShop.Admin.Infrastructure.Persistence.Configuration
+namespace BethanysPieShop.Admin.Infrastructure.Persistence.Configuration;
+
+public sealed class IngredientEntityTypeConfiguration
 {
-    internal class IngredientEntityTypeConfiguration
-    {
-    }
 }
