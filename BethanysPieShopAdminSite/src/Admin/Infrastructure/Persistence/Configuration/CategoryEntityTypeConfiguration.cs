@@ -22,6 +22,22 @@ public sealed class CategoryEntityTypeConfiguration : IEntityTypeConfiguration<C
     /// <inheritdoc />
     public void Configure(EntityTypeBuilder<Category> builder)
     {
-        throw new NotImplementedException();
+        builder.HasKey(e => e.Id);
+
+        builder.Property(e => e.Name)
+            .HasField("_name")
+            .UsePropertyAccessMode(PropertyAccessMode.PreferField)
+            .IsRequired()
+            .HasMaxLength(200);
+        builder.Property(e => e.Description)
+            .HasField("_description")
+            .UsePropertyAccessMode(PropertyAccessMode.PreferField)
+            .HasMaxLength(500);
+        builder.Property(e => e.DateAdded);
+
+        builder.HasMany(e => e.Pies)
+            .WithOne(e => e.Category)
+            .HasForeignKey(e => e.CategoryId)
+            .OnDelete(DeleteBehavior.SetNull);
     }
 }

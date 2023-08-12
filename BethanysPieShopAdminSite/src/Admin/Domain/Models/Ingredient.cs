@@ -25,9 +25,9 @@ public sealed class Ingredient
         set => _name = NameValidator.Instance.ValidateOrThrow(value);
     }
 
-    public string Ammount
+    public string Amount
     {
         get => _amount;
-        set => _amount = NameValidator.Instance.ValidateOrThrow(value); // TODO change to amount validator
+        set => _amount = IngredientAmountValidator.Instance.ValidateOrThrow(value); 
     }
 }

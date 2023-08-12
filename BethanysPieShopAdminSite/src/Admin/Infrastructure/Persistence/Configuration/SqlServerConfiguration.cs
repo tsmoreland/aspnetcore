@@ -27,6 +27,7 @@ internal sealed class SqlServerConfiguration : ISqlConfiguration
     public ModelBuilder ConfigureModel(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(SqlServerConfiguration).Assembly);
+        modelBuilder.HasDefaultSchema("bas");
         return modelBuilder;
     }
 

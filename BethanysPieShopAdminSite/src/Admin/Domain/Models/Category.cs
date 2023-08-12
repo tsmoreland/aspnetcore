@@ -14,9 +14,9 @@ public sealed class Category
     {
     }
 
-    private Category(Guid categoryId, string name, string? description, DateTime? dateAdded)
+    private Category(Guid id, string name, string? description, DateTime? dateAdded)
     {
-        CategoryId = categoryId;
+        Id = id;
         _name = name;
         _description = description;
         DateAdded = dateAdded;
@@ -26,7 +26,7 @@ public sealed class Category
     /// <summary>
     /// Category Id
     /// </summary>
-    public Guid CategoryId { get; }
+    public Guid Id { get; }
 
     /// <summary>
     /// Category Name

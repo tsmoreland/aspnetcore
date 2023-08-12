@@ -22,6 +22,54 @@ public sealed class PieEntityTypeConfiguration : IEntityTypeConfiguration<Pie>
     /// <inheritdoc />
     public void Configure(EntityTypeBuilder<Pie> builder)
     {
-        throw new NotImplementedException();
+        builder.HasKey(e => e.Id);
+        builder.HasIndex(e => e.Name);
+        builder.HasIndex(e => e.Price);
+
+        builder.Property(e => e.Name)
+            .HasColumnName("name")
+            .HasField("_name")
+            .UsePropertyAccessMode(PropertyAccessMode.PreferField)
+            .IsRequired()
+            .HasMaxLength(200);
+        builder.Property(e => e.ShortDescription)
+            .HasColumnName("short_description")
+            .HasField("_shortDescription")
+            .UsePropertyAccessMode(PropertyAccessMode.PreferField)
+            .HasMaxLength(100);
+        builder.Property(e => e.LongDescription)
+            .HasColumnName("long_description")
+            .HasField("_longDescription")
+            .UsePropertyAccessMode(PropertyAccessMode.PreferField)
+            .HasMaxLength(1000);
+        builder.Property(e => e.AllergyInformation)
+            .HasColumnName("allergy_information")
+            .HasField("_allergyInformation")
+            .UsePropertyAccessMode(PropertyAccessMode.PreferField)
+            .HasMaxLength(1000);
+        builder.Property(e => e.Price)
+            .HasColumnName("price")
+            .HasField("_price")
+            .UsePropertyAccessMode(PropertyAccessMode.PreferField)
+            .HasPrecision(18, 2);
+        builder.Property(e => e.ImageFilename)
+            .HasColumnName("image_filename")
+            .HasField("_imageFilename")
+            .UsePropertyAccessMode(PropertyAccessMode.PreferField)
+            .HasMaxLength(100);
+        builder.Property(e => e.ImageThumbnailFilename)
+            .HasColumnName("image_thumbnail_filename")
+            .HasField("_imageThumbnailFilename")
+            .UsePropertyAccessMode(PropertyAccessMode.PreferField)
+            .HasMaxLength(100);
+
+        builder.Property(e => e.CategoryId).HasColumnName("category_id");
+        builder.HasOne(e => e.Category)
+            .WithMany(e => e.Pies)
+            .IsRequired(false)
+            .HasForeignKey(e => e.CategoryId);
+
+        builder
+            .HasMany(e => e.Ingredients);
     }
 }

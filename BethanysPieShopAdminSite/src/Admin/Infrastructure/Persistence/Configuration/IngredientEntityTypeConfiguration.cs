@@ -22,6 +22,19 @@ public sealed class IngredientEntityTypeConfiguration : IEntityTypeConfiguration
     /// <inheritdoc />
     public void Configure(EntityTypeBuilder<Ingredient> builder)
     {
-        throw new NotImplementedException();
+        builder.HasKey(e => e.Id);
+
+        builder.Property(e => e.Name)
+            .HasColumnName("name")
+            .HasField("_name")
+            .UsePropertyAccessMode(PropertyAccessMode.PreferField)
+            .IsRequired()
+            .HasMaxLength(200);
+        builder.Property(e => e.Amount)
+            .HasColumnName("amount")
+            .HasField("_amount")
+            .UsePropertyAccessMode(PropertyAccessMode.PreferField)
+            .IsRequired()
+            .HasMaxLength(100);
     }
 }

@@ -11,17 +11,20 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using BethanysPieShop.Admin.Domain.Models;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+namespace BethanysPieShop.Admin.Domain.Validation;
 
-namespace BethanysPieShop.Admin.Infrastructure.Persistence.Configuration;
-
-public sealed class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Order>
+internal sealed class IngredientAmountValidator : StringValidator
 {
+    private static readonly Lazy<IngredientAmountValidator> s_instance = new(() => new IngredientAmountValidator());
+
     /// <inheritdoc />
-    public void Configure(EntityTypeBuilder<Order> builder)
-    {
-        builder.HasKey(e => e.Id);
-    }
+    protected override int MinimumLength => 5;
+
+    /// <inheritdoc />
+    protected override int MaximumLength => 100;
+
+    /// <inheritdoc />
+    protected override bool AllowNull => false;
+
+    public static IngredientAmountValidator Instance => s_instance.Value;
 }

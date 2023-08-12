@@ -22,6 +22,6 @@ public sealed class OrderDetailEntityTypeConfiguration : IEntityTypeConfiguratio
     /// <inheritdoc />
     public void Configure(EntityTypeBuilder<OrderDetail> builder)
     {
-        throw new NotImplementedException();
+        builder.HasKey(e => e.Id);
     }
 }

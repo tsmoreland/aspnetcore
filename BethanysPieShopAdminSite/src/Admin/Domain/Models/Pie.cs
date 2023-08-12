@@ -114,7 +114,7 @@ public sealed class Pie
         {
             if (value is not null)
             {
-                CategoryId = value.CategoryId;
+                CategoryId = value.Id;
                 _category = value;
             }
             else

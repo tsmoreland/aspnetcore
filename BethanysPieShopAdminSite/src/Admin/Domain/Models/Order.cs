@@ -15,7 +15,7 @@ public sealed class Order
     private string _phoneNumber;
 
 
-    private Order(OrderStatus orderStatus, string firstName, string lastName, string addressLine1, string? addressLine2, string postCode, string city, string phoneNumber, string email, IEnumerable<OrderDetail> orderDetails)
+    public Order(OrderStatus orderStatus, string firstName, string lastName, string addressLine1, string? addressLine2, string postCode, string city, string phoneNumber, string email, IEnumerable<OrderDetail> orderDetails)
         : this(Guid.NewGuid(), orderStatus,
               NameValidator.Instance.ValidateOrThrow(firstName),
               NameValidator.Instance.ValidateOrThrow(lastName),
