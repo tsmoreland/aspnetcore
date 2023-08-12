@@ -73,10 +73,10 @@ public sealed class Order
 
     public DateTime OrderPlaced { get; }
 
-    public void AddOrderLine(int amount, decimal price, Pie pie)
+    public void AddOrderLine(int amount, Pie pie)
     {
         ArgumentNullException.ThrowIfNull(pie);
-        OrderDetail detail = new(amount, price, this, pie);
+        OrderDetail detail = new(amount, this, pie);
         _orderDetails.Add(detail);
         OrderTotal = CalculateOrderTotal(OrderDetails);
     }
