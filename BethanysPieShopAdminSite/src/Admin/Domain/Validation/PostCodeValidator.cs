@@ -12,6 +12,7 @@ internal sealed class PostCodeValidator : AbstractValidator<string>
         // TODO: add regex to match post code
         RuleFor<string>(value => value)
             .Must(v => !string.IsNullOrWhiteSpace(v))
+            .MaximumLength(20)
             .WithMessage("Must be a valid postcode");
     }
     public static PostCodeValidator Instance => s_instance.Value;

@@ -23,5 +23,22 @@ public sealed class OrderDetailEntityTypeConfiguration : IEntityTypeConfiguratio
     public void Configure(EntityTypeBuilder<OrderDetail> builder)
     {
         builder.HasKey(e => e.Id);
+
+        builder.Property(e => e.Amount)
+            .HasColumnName("amount")
+            .UsePropertyAccessMode(PropertyAccessMode.PreferField)
+            .HasPrecision(18,2)
+            .IsRequired();
+
+        builder.Property(e => e.OrderId).HasColumnName("order_id")
+            .IsRequired();
+        builder.HasOne(e => e.Order)
+            .WithMany(e => e.OrderDetails)
+            .HasForeignKey(e => e.OrderId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Property(e => e.PieId).HasColumnName("pie_id")
+            .IsRequired();
+        builder.HasOne(e => e.Pie);
     }
 }

@@ -5,15 +5,15 @@ namespace BethanysPieShop.Admin.Domain.Models;
 public sealed class OrderDetail
 {
     private int _amount;
-    private decimal _price;
+    private Pie _pie = default!;
 
-    internal OrderDetail(int amount, decimal price, Order order, Pie pie)
+    internal OrderDetail(int amount, Order order, Pie pie)
         : this(
               Guid.NewGuid(),
               order?.Id ?? throw new ArgumentNullException(nameof(order)),
               pie?.Id ?? throw new ArgumentNullException(nameof(pie)),
               amount,
-              CurrencyValidator.Instance.ValidateOrThrow(price))
+              CalculatePrice(amount, pie))
     {
     }
 
@@ -23,14 +23,37 @@ public sealed class OrderDetail
         OrderId = orderId;
         PieId = pieId;
         _amount = amount;
-        _price = price;
+        Price = price;
     }
 
     public Guid Id { get; }
     public Guid OrderId { get; }
     public Guid PieId { get; }
-    public int Amount { get => _amount; set => _amount = AmountValidator.Instance.ValidateOrThrow(value); }
-    public decimal Price { get => _price; set => _price = CurrencyValidator.Instance.ValidateOrThrow(value); }
-    public Pie Pie { get; set; } = default!;
+    public int Amount
+    {
+        get => _amount;
+        set
+        {
+            _amount = AmountValidator.Instance.ValidateOrThrow(value);
+            Price = CalculatePrice(value, Pie);
+        }
+    }
+    public decimal Price { get; private set; } 
+    public Pie Pie
+    {
+        get => _pie;
+        set
+        {
+            ArgumentNullException.ThrowIfNull(value);
+            _pie = value;
+            Price = CalculatePrice(Amount, value);
+        }
+    } 
     public Order Order { get; set; } = default!;
+
+
+    private static decimal CalculatePrice(int amount, Pie pie)
+    {
+        return decimal.Multiply(pie.Price, Convert.ToDecimal(amount));
+    }
 }

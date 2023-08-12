@@ -11,6 +11,7 @@ internal sealed class EmailValidator : AbstractValidator<string>
     {
         RuleFor<string>(value => value)
             .EmailAddress()
+            .MaximumLength(150)
             .Must(v => !string.IsNullOrWhiteSpace(v))
             .WithMessage("Must be a valid e-mail addresss");
     }

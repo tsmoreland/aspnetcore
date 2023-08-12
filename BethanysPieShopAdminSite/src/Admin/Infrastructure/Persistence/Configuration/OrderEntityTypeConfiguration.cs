@@ -23,5 +23,72 @@ public sealed class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Orde
     public void Configure(EntityTypeBuilder<Order> builder)
     {
         builder.HasKey(e => e.Id);
+        builder.HasIndex(e => e.LastName);
+        builder.HasIndex(e => e.Email);
+        builder.HasIndex(e => e.PostCode);
+
+        builder.Property(e => e.FirstName)
+            .HasColumnName("first_name")
+            .HasField("_firstName")
+            .UsePropertyAccessMode(PropertyAccessMode.PreferField)
+            .HasMaxLength(200)
+            .IsRequired();
+        builder.Property(e => e.LastName)
+            .HasColumnName("last_name")
+            .HasField("_lastName")
+            .UsePropertyAccessMode(PropertyAccessMode.PreferField)
+            .HasMaxLength(200)
+            .IsRequired();
+        builder.Property(e => e.AddressLine1)
+            .HasColumnName("address_line_1")
+            .HasField("_addressLine1")
+            .UsePropertyAccessMode(PropertyAccessMode.PreferField)
+            .HasMaxLength(150)
+            .IsRequired();
+        builder.Property(e => e.AddressLine2)
+            .HasColumnName("address_line_2")
+            .HasField("_addressLine2")
+            .UsePropertyAccessMode(PropertyAccessMode.PreferField)
+            .HasMaxLength(150);
+        builder.Property(e => e.PostCode)
+            .HasColumnName("post_code")
+            .HasField("_postCode")
+            .UsePropertyAccessMode(PropertyAccessMode.PreferField)
+            .HasMaxLength(20)
+            .IsRequired();
+        builder.Property(e => e.City)
+            .HasColumnName("city")
+            .HasField("_city")
+            .UsePropertyAccessMode(PropertyAccessMode.PreferField)
+            .HasMaxLength(200)
+            .IsRequired();
+        builder.Property(e => e.PhoneNumber)
+            .HasColumnName("phone_number")
+            .HasField("_phoneNumber")
+            .UsePropertyAccessMode(PropertyAccessMode.PreferField)
+            .HasMaxLength(15)
+            .IsRequired();
+        builder.Property(e => e.Email)
+            .HasColumnName("email")
+            .HasField("_email")
+            .UsePropertyAccessMode(PropertyAccessMode.PreferField)
+            .HasMaxLength(150)
+            .IsRequired();
+        builder.Property(e => e.OrderTotal)
+            .HasColumnName("order_total")
+            .HasField("_orderTotal")
+            .UsePropertyAccessMode(PropertyAccessMode.PreferField)
+            .HasPrecision(18, 2)
+            .IsRequired();
+        builder.Property(e => e.OrderPlaced)
+            .HasColumnName("order_placed")
+            .HasField("_orderPlaced")
+            .UsePropertyAccessMode(PropertyAccessMode.PreferField)
+            .IsRequired();
+
+        builder.HasMany(e => e.OrderDetails)
+            .WithOne(e => e.Order)
+            .HasForeignKey(e => e.OrderId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

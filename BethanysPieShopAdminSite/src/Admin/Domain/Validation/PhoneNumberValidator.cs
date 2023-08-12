@@ -24,6 +24,7 @@ internal sealed class PhoneNumberValidator : AbstractValidator<string>
         // TODO: add regex to match phone number
         RuleFor<string>(value => value)
             .Must(s => !string.IsNullOrWhiteSpace(s))
+            .MaximumLength(15)
             .WithMessage("Invalid Phone Number");
     }
     public static PhoneNumberValidator Instance => s_instance.Value;
