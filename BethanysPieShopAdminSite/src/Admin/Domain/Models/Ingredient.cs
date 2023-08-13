@@ -30,4 +30,6 @@ public sealed class Ingredient
         get => _amount;
         set => _amount = IngredientAmountValidator.Instance.ValidateOrThrow(value); 
     }
+
+    public byte[] ConcurrencyToken { get; set; } = Array.Empty<byte>();
 }

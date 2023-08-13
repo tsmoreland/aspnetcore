@@ -73,6 +73,8 @@ public sealed class Order
 
     public DateTime OrderPlaced { get; }
 
+    public byte[] ConcurrencyToken { get; set; } = Array.Empty<byte>();
+
     public void AddOrderLine(int amount, Pie pie)
     {
         ArgumentNullException.ThrowIfNull(pie);

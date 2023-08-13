@@ -40,5 +40,9 @@ public sealed class OrderDetailEntityTypeConfiguration : IEntityTypeConfiguratio
         builder.Property(e => e.PieId).HasColumnName("pie_id")
             .IsRequired();
         builder.HasOne(e => e.Pie);
+
+        builder.Property(e => e.ConcurrencyToken)
+            .HasColumnName("concurrency_token")
+            .IsRowVersion();
     }
 }

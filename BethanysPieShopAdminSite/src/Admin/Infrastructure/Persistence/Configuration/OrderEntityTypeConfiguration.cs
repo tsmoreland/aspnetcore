@@ -90,5 +90,9 @@ public sealed class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Orde
             .WithOne(e => e.Order)
             .HasForeignKey(e => e.OrderId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Property(e => e.ConcurrencyToken)
+            .HasColumnName("concurrency_token")
+            .IsRowVersion();
     }
 }

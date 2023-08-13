@@ -50,6 +50,8 @@ public sealed class Category
 
     public ICollection<Pie> Pies => _pies.ToList();
 
+    public byte[] ConcurrencyToken { get; set; } = Array.Empty<byte>();
+
     public void AddPie(Pie pie)
     {
         ArgumentNullException.ThrowIfNull(pie);

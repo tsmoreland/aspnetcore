@@ -36,5 +36,8 @@ public sealed class IngredientEntityTypeConfiguration : IEntityTypeConfiguration
             .UsePropertyAccessMode(PropertyAccessMode.PreferField)
             .IsRequired()
             .HasMaxLength(100);
+        builder.Property(e => e.ConcurrencyToken)
+            .HasColumnName("concurrency_token")
+            .IsRowVersion();
     }
 }

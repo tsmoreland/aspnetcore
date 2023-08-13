@@ -63,6 +63,16 @@ public sealed class PieEntityTypeConfiguration : IEntityTypeConfiguration<Pie>
             .UsePropertyAccessMode(PropertyAccessMode.PreferField)
             .HasMaxLength(100);
 
+        builder.Property(e => e.IsPieOfTheWeek)
+            .HasColumnName("is_pie_of_the_week")
+            .IsRequired()
+            .HasDefaultValue(false);
+
+        builder.Property(e => e.InStock)
+            .HasColumnName("in_stock")
+            .IsRequired()
+            .HasDefaultValue(true);
+
         builder.Property(e => e.CategoryId).HasColumnName("category_id");
         builder.HasOne(e => e.Category)
             .WithMany(e => e.Pies)
@@ -71,5 +81,13 @@ public sealed class PieEntityTypeConfiguration : IEntityTypeConfiguration<Pie>
 
         builder
             .HasMany(e => e.Ingredients);
+
+        builder.Property(e => e.ConcurrencyToken)
+            .HasColumnName("concurrency_token")
+            .IsRowVersion();
+
+        builder.Property(e => e.ConcurrencyToken)
+            .HasColumnName("concurrency_token")
+            .IsRowVersion();
     }
 }

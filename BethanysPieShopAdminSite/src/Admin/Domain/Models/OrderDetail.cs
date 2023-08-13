@@ -51,6 +51,7 @@ public sealed class OrderDetail
     } 
     public Order Order { get; set; } = default!;
 
+    public byte[] ConcurrencyToken { get; set; } = Array.Empty<byte>();
 
     private static decimal CalculatePrice(int amount, Pie pie)
     {

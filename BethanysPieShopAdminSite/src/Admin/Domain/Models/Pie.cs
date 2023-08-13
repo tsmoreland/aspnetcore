@@ -127,6 +127,8 @@ public sealed class Pie
 
     public ICollection<Ingredient> Ingredients => _ingredients.ToList();
 
+    public byte[] ConcurrencyToken { get; set; } = Array.Empty<byte>();
+
     public void AddIngredient(Ingredient ingredient)
     {
         ArgumentNullException.ThrowIfNull(ingredient);

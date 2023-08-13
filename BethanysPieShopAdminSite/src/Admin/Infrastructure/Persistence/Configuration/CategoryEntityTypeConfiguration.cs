@@ -39,5 +39,9 @@ public sealed class CategoryEntityTypeConfiguration : IEntityTypeConfiguration<C
             .WithOne(e => e.Category)
             .HasForeignKey(e => e.CategoryId)
             .OnDelete(DeleteBehavior.SetNull);
+
+        builder.Property(e => e.ConcurrencyToken)
+            .HasColumnName("concurrency_token")
+            .IsRowVersion();
     }
 }
