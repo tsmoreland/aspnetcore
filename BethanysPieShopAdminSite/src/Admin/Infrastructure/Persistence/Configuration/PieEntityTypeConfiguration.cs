@@ -71,7 +71,7 @@ public sealed class PieEntityTypeConfiguration : IEntityTypeConfiguration<Pie>
         builder.Property(e => e.InStock)
             .HasColumnName("in_stock")
             .IsRequired()
-            .HasDefaultValue(true);
+            .HasDefaultValue(false);
 
         builder.Property(e => e.CategoryId).HasColumnName("category_id");
         builder.HasOne(e => e.Category)

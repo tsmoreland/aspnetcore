@@ -29,6 +29,10 @@ public sealed class OrderDetailEntityTypeConfiguration : IEntityTypeConfiguratio
             .UsePropertyAccessMode(PropertyAccessMode.PreferField)
             .HasPrecision(18,2)
             .IsRequired();
+        builder.Property(e => e.Price)
+            .HasColumnName("price")
+            .HasPrecision(18, 2)
+            .IsRequired();
 
         builder.Property(e => e.OrderId).HasColumnName("order_id")
             .IsRequired();

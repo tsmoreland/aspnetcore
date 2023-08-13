@@ -1,4 +1,5 @@
 ﻿using BethanysPieShop.Admin.Domain.Validation;
+using BethanysPieShop.Admin.Domain.ValueObjects;
 
 namespace BethanysPieShop.Admin.Domain.Models;
 
@@ -71,7 +72,7 @@ public sealed class Order
     
     public decimal OrderTotal { get; private set; }
 
-    public DateTime OrderPlaced { get; }
+    public DateTime OrderPlaced { get; private set; }
 
     public byte[] ConcurrencyToken { get; set; } = Array.Empty<byte>();
 

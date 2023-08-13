@@ -13,7 +13,7 @@ public sealed class AdminDbContext : DbContext
 
     public DbSet<Pie> Pies => Set<Pie>();
     public DbSet<Category> Categories => Set<Category>();
-    public DbSet<Order> Order => Set<Order>();
+    public DbSet<Order> Orders => Set<Order>();
 
 
     internal ISqlConfiguration SqlConfiguration { get; init; } = new SqlServerConfiguration();

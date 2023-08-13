@@ -76,14 +76,10 @@ public sealed class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Orde
             .IsRequired();
         builder.Property(e => e.OrderTotal)
             .HasColumnName("order_total")
-            .HasField("_orderTotal")
-            .UsePropertyAccessMode(PropertyAccessMode.PreferField)
             .HasPrecision(18, 2)
             .IsRequired();
         builder.Property(e => e.OrderPlaced)
             .HasColumnName("order_placed")
-            .HasField("_orderPlaced")
-            .UsePropertyAccessMode(PropertyAccessMode.PreferField)
             .IsRequired();
 
         builder.HasMany(e => e.OrderDetails)
