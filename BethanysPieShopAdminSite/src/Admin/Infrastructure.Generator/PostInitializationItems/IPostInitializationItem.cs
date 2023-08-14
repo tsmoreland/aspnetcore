@@ -11,23 +11,15 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using BethanysPieShop.Admin.Domain.Contracts;
-using BethanysPieShop.Admin.Domain.Models;
-using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace BethanysPieShop.Admin.Infrastructure.Persistence.Repositories;
+namespace BethanysPieShop.Admin.Infrastructure.Generator.PostInitializationItems;
 
-public sealed partial class PieRepository : IPieRepository
+internal interface IPostInitializationItem
 {
-    private readonly AdminDbContext _dbContext;
-    private DbSet<Pie> Entities => _dbContext.Pies;
-
-    public PieRepository(AdminDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
-
-    /// <inheritdoc />
-    public partial IAsyncEnumerable<Pie> GetAll();
-
+    string FileName { get; }
+    string AttributeName { get; }
+    string Source { get; }
 }

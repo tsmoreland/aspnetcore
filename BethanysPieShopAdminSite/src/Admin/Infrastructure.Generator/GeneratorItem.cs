@@ -11,23 +11,31 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using BethanysPieShop.Admin.Domain.Contracts;
-using BethanysPieShop.Admin.Domain.Models;
-using Microsoft.EntityFrameworkCore;
+using System.Text;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Text;
 
-namespace BethanysPieShop.Admin.Infrastructure.Persistence.Repositories;
+namespace BethanysPieShop.Admin.Infrastructure.Generator;
 
-public sealed partial class PieRepository : IPieRepository
+internal abstract record class GeneratorItem(string Namespace, string ClassName)
 {
-    private readonly AdminDbContext _dbContext;
-    private DbSet<Pie> Entities => _dbContext.Pies;
-
-    public PieRepository(AdminDbContext dbContext)
+    /// <summary>
+    /// Adds the source generated using <see cref="GenerateSource"/> to <paramref name="context"/>
+    /// </summary>
+    public void AddSource(SourceProductionContext context)
     {
-        _dbContext = dbContext;
+        string source = GenerateSource();
+        context.AddSource(Filename, SourceText.From(source, Encoding.UTF8));
     }
 
-    /// <inheritdoc />
-    public partial IAsyncEnumerable<Pie> GetAll();
+    /// <summary>
+    /// source filename
+    /// </summary>
+    protected virtual string Filename => $"{Namespace}.{ClassName}";
 
+    /// <summary>
+    /// Generate source code for the current test item
+    /// </summary>
+    /// <returns></returns>
+    protected abstract string GenerateSource();
 }
