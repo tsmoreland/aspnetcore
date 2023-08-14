@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace BethanysPieShop.Admin.Infrastructure.Generator;
 
+[Generator]
 public sealed class InfrastructureSourceGenerator : IIncrementalGenerator
 {
     private delegate GeneratorItem? GeneratorFactory(string @namespace, string className, AttributeData attributeData);

@@ -17,6 +17,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BethanysPieShop.Admin.Infrastructure.Persistence.Repositories;
 
+[ReadOnlyRepository("BethanysPieShop.Admin.Domain.Models.Pie")]
 public sealed partial class PieRepository : IPieRepository
 {
     private readonly AdminDbContext _dbContext;

@@ -17,6 +17,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BethanysPieShop.Admin.Infrastructure.Persistence.Repositories;
 
+[ReadOnlyRepository("BethanysPieShop.Admin.Domain.Models.Category")]
 public sealed partial class CategoryRepository : ICategoryRepository
 {
     private readonly AdminDbContext _dbContext;

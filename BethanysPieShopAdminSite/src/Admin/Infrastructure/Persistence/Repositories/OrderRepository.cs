@@ -17,6 +17,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BethanysPieShop.Admin.Infrastructure.Persistence.Repositories;
 
+[ReadOnlyRepository("BethanysPieShop.Admin.Domain.Models.Order")]
 public sealed partial class OrderRepository : IOrderRepository
 {
     private readonly AdminDbContext _dbContext;

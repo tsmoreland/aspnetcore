@@ -13,7 +13,7 @@
 
 namespace BethanysPieShop.Admin.Domain.Contracts;
 
-public interface IReadOnlyRepository<out TEntity> where T : class
+public interface IReadOnlyRepository<out TEntity> where TEntity : class
 {
     public IAsyncEnumerable<TEntity> GetAll();
 }
