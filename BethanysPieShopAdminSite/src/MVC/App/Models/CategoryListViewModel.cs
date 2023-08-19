@@ -11,33 +11,8 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using BethanysPieShop.Admin.Domain.Contracts;
-using BethanysPieShop.Admin.Domain.Models;
 using BethanysPieShop.Admin.Domain.Projections;
-using Microsoft.EntityFrameworkCore;
 
-namespace BethanysPieShop.Admin.Infrastructure.Persistence.Repositories;
+namespace BethanysPieShop.MVC.App.Models;
 
-[ReadOnlyRepository("BethanysPieShop.Admin.Domain.Models.Category")]
-public sealed partial class CategoryRepository : ICategoryRepository
-{
-    private readonly AdminDbContext _dbContext;
-    private DbSet<Category> Entities => _dbContext.Categories;
-
-    public CategoryRepository(AdminDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
-
-    /// <inheritdoc />
-    public partial IAsyncEnumerable<Category> GetAll();
-
-    /// <inheritdoc />
-    public IAsyncEnumerable<CategorySummary> GetSummaries(CancellationToken cancellationToken)
-    {
-        return Entities
-            .AsNoTracking()
-            .Select(e => new CategorySummary(e.Id, e.Name, e.DateAdded))
-            .AsAsyncEnumerable();
-    }
-}
+public sealed record class CategoryListViewModel(List<CategorySummary>? Categories);

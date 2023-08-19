@@ -1,0 +1,35 @@
+﻿@model CategoryListViewModel
+
+<h2>Categories</h2>
+<hr/>
+
+@if (Model.Categories?.Any() == false)
+{
+    <p>No results</p>
+}
+else
+{
+    <table class="table table-condensed table-bordered">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Date Added</th>
+            <th>Actions</th>
+        </tr>
+        @foreach (var category in Model.Categories!)
+        {
+            <tr>
+                <td>@category.Id</td>
+                <td>@category.Name</td>
+                @if (@category.DateAdded.HasValue)
+                {
+                    <td>@category.DateAdded.Value.ToShortDateString()</td>
+                }
+                else
+                {
+                    <td>Unknown</td>
+                }
+            </tr>
+        }
+    </table>
+}

@@ -12,9 +12,12 @@
 //
 
 using BethanysPieShop.Admin.Domain.Models;
+using BethanysPieShop.Admin.Domain.Projections;
 
 namespace BethanysPieShop.Admin.Domain.Contracts;
 
 public interface ICategoryRepository : IReadOnlyRepository<Category>
 {
+    // TODO: once we have summary projections for each entity move this to IReadOnlyRepository and generate the code for it
+    IAsyncEnumerable<CategorySummary> GetSummaries(CancellationToken cancellationToken = default);
 }

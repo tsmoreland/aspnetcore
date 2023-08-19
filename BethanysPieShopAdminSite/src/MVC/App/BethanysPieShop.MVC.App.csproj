@@ -10,6 +10,12 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.175" />
     <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
+    <PackageReference Include="System.Linq.Async" Version="6.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Admin\Application\BethanysPieShop.Admin.Application.csproj" />
+    <ProjectReference Include="..\..\Admin\Infrastructure\BethanysPieShop.Admin.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

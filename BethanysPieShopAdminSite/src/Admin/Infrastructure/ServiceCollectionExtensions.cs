@@ -11,8 +11,11 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using BethanysPieShop.Admin.Domain.Contracts;
 using BethanysPieShop.Admin.Infrastructure.Persistence;
 using BethanysPieShop.Admin.Infrastructure.Persistence.Configuration;
+using BethanysPieShop.Admin.Infrastructure.Persistence.Repositories;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -25,7 +28,13 @@ public static class ServiceCollectionExtensions
     {
         services
             .AddDbContext<AdminDbContext>(optionsLifetime: ServiceLifetime.Singleton)
-            .AddPooledDbContextFactory<AdminDbContext>(options => SqlServerConfiguration.ConfigureOptionsForPool(options, configuration, environment));
+            .AddPooledDbContextFactory<AdminDbContext>(options => SqlServerConfiguration.ConfigureOptionsForPool(options, configuration, environment))
+            .AddScoped(provider => provider.GetRequiredService<PooledDbContextFactory<AdminDbContext>>().CreateDbContext());
+
+        services
+            .AddScoped<ICategoryRepository, CategoryRepository>()
+            .AddScoped<IOrderRepository, OrderRepository>()
+            .AddScoped<IPieRepository, PieRepository>();
 
         return services;
     }

@@ -11,6 +11,8 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using BethanysPieShop.Admin.Infrastructure;
+
 namespace BethanysPieShop.MVC.App;
 
 internal static class WebApplicationBuilderExtensions
@@ -27,8 +29,8 @@ internal static class WebApplicationBuilderExtensions
 
         services.AddControllersWithViews();
 
-        _ = configuration;
-        _ = environment;
+        services
+            .AddInfrastructure(configuration, environment);
 
         return builder;
     }
