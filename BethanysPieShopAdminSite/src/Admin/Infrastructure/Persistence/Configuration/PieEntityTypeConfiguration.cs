@@ -74,6 +74,8 @@ public sealed class PieEntityTypeConfiguration : IEntityTypeConfiguration<Pie>
             .HasDefaultValue(false);
 
         builder.Property(e => e.CategoryId).HasColumnName("category_id");
+        builder.Property(e => e.CategoryName).HasColumnName("category_name")
+            .HasMaxLength(200);
         builder.HasOne(e => e.Category)
             .WithMany(e => e.Pies)
             .IsRequired(false)

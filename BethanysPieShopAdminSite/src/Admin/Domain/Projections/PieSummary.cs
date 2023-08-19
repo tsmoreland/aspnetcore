@@ -11,11 +11,6 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using BethanysPieShop.Admin.Domain.Models;
-using BethanysPieShop.Admin.Domain.Projections;
+namespace BethanysPieShop.Admin.Domain.Projections;
 
-namespace BethanysPieShop.Admin.Domain.Contracts;
-
-public interface IPieRepository : IReadOnlyRepository<Pie, PieSummary>
-{
-}
+public sealed record class PieSummary(Guid Id, string Name, string? ShortDescription, string? ImageThumbnailFilename, Guid? CategoryId, string? CategoryName);

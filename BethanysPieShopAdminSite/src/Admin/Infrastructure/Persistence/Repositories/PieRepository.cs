@@ -13,11 +13,12 @@
 
 using BethanysPieShop.Admin.Domain.Contracts;
 using BethanysPieShop.Admin.Domain.Models;
+using BethanysPieShop.Admin.Domain.Projections;
 using Microsoft.EntityFrameworkCore;
 
 namespace BethanysPieShop.Admin.Infrastructure.Persistence.Repositories;
 
-[ReadOnlyRepository("BethanysPieShop.Admin.Domain.Models.Pie")]
+[ReadOnlyRepository("BethanysPieShop.Admin.Domain.Models.Pie", "BethanysPieShop.Admin.Domain.Projections.PieSummary")]
 public sealed partial class PieRepository : IPieRepository
 {
     private readonly AdminDbContext _dbContext;
@@ -31,4 +32,13 @@ public sealed partial class PieRepository : IPieRepository
     /// <inheritdoc />
     public partial IAsyncEnumerable<Pie> GetAll();
 
+    /// <inheritdoc />
+    public partial IAsyncEnumerable<PieSummary> GetSummaries();
+
+
+    private static IQueryable<PieSummary> GetSummaries(IQueryable<Pie> pies)
+    {
+        return pies
+            .Select(e => new PieSummary(e.Id, e.Name, e.ShortDescription, e.ImageThumbnailFilename, e.CategoryId, e.CategoryName));
+    }
 }

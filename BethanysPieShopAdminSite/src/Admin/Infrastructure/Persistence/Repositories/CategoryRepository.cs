@@ -18,7 +18,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BethanysPieShop.Admin.Infrastructure.Persistence.Repositories;
 
-[ReadOnlyRepository("BethanysPieShop.Admin.Domain.Models.Category")]
+[ReadOnlyRepository("BethanysPieShop.Admin.Domain.Models.Category", "BethanysPieShop.Admin.Domain.Projections.CategorySummary")]
 public sealed partial class CategoryRepository : ICategoryRepository
 {
     private readonly AdminDbContext _dbContext;
@@ -33,11 +33,11 @@ public sealed partial class CategoryRepository : ICategoryRepository
     public partial IAsyncEnumerable<Category> GetAll();
 
     /// <inheritdoc />
-    public IAsyncEnumerable<CategorySummary> GetSummaries(CancellationToken cancellationToken)
+    public partial IAsyncEnumerable<CategorySummary> GetSummaries();
+
+    private static IQueryable<CategorySummary> GetSummaries(IQueryable<Category> categories)
     {
-        return Entities
-            .AsNoTracking()
-            .Select(e => new CategorySummary(e.Id, e.Name, e.DateAdded))
-            .AsAsyncEnumerable();
+        return categories
+            .Select(e => new CategorySummary(e.Id, e.Name, e.DateAdded));
     }
 }

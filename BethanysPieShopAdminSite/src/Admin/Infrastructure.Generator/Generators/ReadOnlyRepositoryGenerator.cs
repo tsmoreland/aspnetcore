@@ -15,7 +15,7 @@ using Microsoft.CodeAnalysis;
 
 namespace BethanysPieShop.Admin.Infrastructure.Generator.Generators;
 
-internal sealed record class ReadOnlyRepositoryGenerator(string Namespace, string ClassName, string EntityType)
+internal sealed record class ReadOnlyRepositoryGenerator(string Namespace, string ClassName, string EntityType, string SummaryProjectionType)
     : GeneratorItem(Namespace, ClassName)
 {
 
@@ -25,15 +25,16 @@ internal sealed record class ReadOnlyRepositoryGenerator(string Namespace, strin
     /// </summary>
     public static GeneratorItem? Build(string @namespace, string className, AttributeData attributeData)
     {
-        const int expectedArgumentCount = 1;
+        const int expectedArgumentCount = 2;
         if (attributeData is not { ConstructorArguments.Length: expectedArgumentCount })
         {
             return null;
         }
 
         string entityType = (string)attributeData.ConstructorArguments[0].Value!;
+        string summaryProjectionType = (string)attributeData.ConstructorArguments[1].Value!;
 
-        return new ReadOnlyRepositoryGenerator(@namespace, className, entityType);
+        return new ReadOnlyRepositoryGenerator(@namespace, className, entityType, summaryProjectionType);
     }
 
 
@@ -57,6 +58,11 @@ internal sealed record class ReadOnlyRepositoryGenerator(string Namespace, strin
                 {
                     return Entities.AsNoTracking()
                         .AsAsyncEnumerable();
+                }
+
+                public partial IAsyncEnumerable<{{SummaryProjectionType}}> GetSummaries()
+                {
+                    return GetSummaries(Entities.AsNoTracking()).AsAsyncEnumerable();
                 }
             }
 

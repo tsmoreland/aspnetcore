@@ -12,9 +12,10 @@
 //
 
 using BethanysPieShop.Admin.Domain.Models;
+using BethanysPieShop.Admin.Domain.Projections;
 
 namespace BethanysPieShop.Admin.Domain.Contracts;
 
-public interface IOrderRepository : IReadOnlyRepository<Order>
+public interface IOrderRepository : IReadOnlyRepository<Order, OrderSummary>
 {
 }

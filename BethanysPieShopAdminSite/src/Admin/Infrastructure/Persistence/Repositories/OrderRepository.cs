@@ -13,11 +13,12 @@
 
 using BethanysPieShop.Admin.Domain.Contracts;
 using BethanysPieShop.Admin.Domain.Models;
+using BethanysPieShop.Admin.Domain.Projections;
 using Microsoft.EntityFrameworkCore;
 
 namespace BethanysPieShop.Admin.Infrastructure.Persistence.Repositories;
 
-[ReadOnlyRepository("BethanysPieShop.Admin.Domain.Models.Order")]
+[ReadOnlyRepository("BethanysPieShop.Admin.Domain.Models.Order", "BethanysPieShop.Admin.Domain.Projections.OrderSummary")]
 public sealed partial class OrderRepository : IOrderRepository
 {
     private readonly AdminDbContext _dbContext;
@@ -30,4 +31,13 @@ public sealed partial class OrderRepository : IOrderRepository
 
     /// <inheritdoc />
     public partial IAsyncEnumerable<Order> GetAll();
+
+    /// <inheritdoc />
+    public partial IAsyncEnumerable<OrderSummary> GetSummaries();
+
+    private static IQueryable<OrderSummary> GetSummaries(IQueryable<Order> orders)
+    {
+        return orders
+            .Select(e => new OrderSummary(e.Id, e.OrderTotal, e.OrderPlaced));
+    }
 }

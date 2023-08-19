@@ -14,7 +14,7 @@ public sealed class Pie
     private Category? _category;
     private readonly HashSet<Ingredient> _ingredients;
 
-    public Pie(string name, decimal price, string? shortDescription = null, string? longDescription = null, string? allergyInformation = null, string? imageFilename = null, string? imageThumbnailFilename = null, Guid? categoryId = null)
+    public Pie(string name, decimal price, string? shortDescription = null, string? longDescription = null, string? allergyInformation = null, string? imageFilename = null, string? imageThumbnailFilename = null, Category? category = null)
         : this(
               Guid.NewGuid(),
               NameValidator.Instance.ValidateOrThrow(name),
@@ -24,11 +24,12 @@ public sealed class Pie
               CurrencyValidator.Instance.ValidateOrThrow(price),
               NullableFilenameValidatior.Instance.ValidateOrThrow(imageFilename),
               NullableFilenameValidatior.Instance.ValidateOrThrow(imageThumbnailFilename),
-              categoryId)
+              category?.Id,
+              category?.Name)
     {
     }
 
-    private Pie(Guid id, string name, string? shortDescription, string? longDescription, string? allergyInformation, decimal price, string? imageFilename, string? imageThumbnailFilename, Guid? categoryId)
+    private Pie(Guid id, string name, string? shortDescription, string? longDescription, string? allergyInformation, decimal price, string? imageFilename, string? imageThumbnailFilename, Guid? categoryId, string? categoryName)
     {
         Id = id;
         _name = name;
@@ -39,6 +40,7 @@ public sealed class Pie
         _imageFilename = imageFilename;
         _imageThumbnailFilename = imageThumbnailFilename;
         CategoryId = categoryId;
+        CategoryName = categoryName; 
         _ingredients = new HashSet<Ingredient>();
     }
 
@@ -107,6 +109,7 @@ public sealed class Pie
     public bool InStock { get; set; }
 
     public Guid? CategoryId { get; private set; }
+    public string? CategoryName { get; private set; }
     public Category? Category
     {
         get => _category;
@@ -115,11 +118,13 @@ public sealed class Pie
             if (value is not null)
             {
                 CategoryId = value.Id;
+                CategoryName = value.Name;
                 _category = value;
             }
             else
             {
                 CategoryId = null;
+                CategoryName = null;
                 _category = null;
             }
         }

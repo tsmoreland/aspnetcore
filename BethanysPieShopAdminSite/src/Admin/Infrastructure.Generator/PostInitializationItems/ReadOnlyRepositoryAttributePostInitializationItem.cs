@@ -31,12 +31,14 @@ internal sealed class ReadOnlyRepositoryAttributePostInitializationItem : IPostI
         {
             internal sealed class ReadOnlyRepositoryAttribute : System.Attribute
             {
-                public ReadOnlyRepositoryAttribute(string entityType)
+                public ReadOnlyRepositoryAttribute(string entityType, string summaryProjectionType)
                 {
                     EntityType = entityType;
+                    SummaryProjectionType = summaryProjectionType;
                 }
 
                 public string EntityType { get; }
+                public string SummaryProjectionType { get; }
             }
         }
         """;

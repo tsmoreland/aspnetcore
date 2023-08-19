@@ -11,12 +11,6 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-namespace BethanysPieShop.Admin.Domain.Contracts;
+namespace BethanysPieShop.Admin.Domain.Projections;
 
-public interface IReadOnlyRepository<out TEntity, out TSummaryProjection>
-    where TEntity : class
-    where TSummaryProjection : class
-{
-    public IAsyncEnumerable<TEntity> GetAll();
-    public IAsyncEnumerable<TSummaryProjection> GetSummaries();
-}
+public sealed record class OrderSummary(Guid Id, decimal Total, DateTime Placed);
