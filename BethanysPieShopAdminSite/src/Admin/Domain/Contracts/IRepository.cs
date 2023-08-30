@@ -11,33 +11,15 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Collections.Generic;
-using System.Text;
+namespace BethanysPieShop.Admin.Domain.Contracts;
 
-namespace BethanysPieShop.Admin.Infrastructure.Generator.PostInitializationItems;
-
-internal sealed class WritableRepositoryAttributePostInitializationItem : IPostInitializationItem
+public interface IRepository<TEntity, out TSummaryProjection> : IReadOnlyRepository<TEntity, TSummaryProjection>
+    where TEntity : class
+    where TSummaryProjection : class
 {
-    /// <inheritdoc />
-    public string FileName => "BethanysPieShop.Admin.Infrastructure.Persistence.Repositories.WritableRepositoryAttribute.g.cs";
-
-    /// <inheritdoc />
-    public string AttributeName => "BethanysPieShop.Admin.Infrastructure.Persistence.Repositories.WritableRepositoryAttribute";
-
-    /// <inheritdoc />
-    public string Source => """
-        namespace BethanysPieShop.Admin.Infrastructure.Persistence.Repositories
-        {
-            internal sealed class WritableRepositoryAttribute : System.Attribute
-            {
-                public WritableRepositoryAttribute(string entityType)
-                {
-                    EntityType = entityType;
-                }
-
-                public string EntityType { get; }
-            }
-        }
-        """;
+    void Add(TEntity entity);
+    void Update(TEntity entity);
+    void Delete(TEntity entity);
+    ValueTask Delete(Guid id, CancellationToken cancellationToken);
+    ValueTask SaveChanges(CancellationToken cancellationToken);
 }

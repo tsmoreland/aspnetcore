@@ -19,6 +19,7 @@ using Microsoft.EntityFrameworkCore;
 namespace BethanysPieShop.Admin.Infrastructure.Persistence.Repositories;
 
 [ReadOnlyRepository("BethanysPieShop.Admin.Domain.Models.Pie", "BethanysPieShop.Admin.Domain.Projections.PieSummary")]
+[WritableRepository("BethanysPieShop.Admin.Domain.Models.Pie")]
 public sealed partial class PieRepository : IPieRepository
 {
     private readonly AdminDbContext _dbContext;
@@ -35,10 +36,17 @@ public sealed partial class PieRepository : IPieRepository
     /// <inheritdoc />
     public partial IAsyncEnumerable<PieSummary> GetSummaries();
 
+    /// <inheritdoc />
+    public partial Task<Pie?> FindById(Guid id, CancellationToken cancellationToken);
 
     private static IQueryable<PieSummary> GetSummaries(IQueryable<Pie> pies)
     {
         return pies
             .Select(e => new PieSummary(e.Id, e.Name, e.ShortDescription, e.ImageThumbnailFilename, e.CategoryId, e.CategoryName));
+    }
+
+    private static IQueryable<Pie> GetIncludesForFind(IQueryable<Pie> queryable)
+    {
+        return queryable.Include(e => e.Ingredients);
     }
 }

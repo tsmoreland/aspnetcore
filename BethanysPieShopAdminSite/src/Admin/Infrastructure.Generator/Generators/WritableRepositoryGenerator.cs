@@ -15,33 +15,29 @@ using Microsoft.CodeAnalysis;
 
 namespace BethanysPieShop.Admin.Infrastructure.Generator.Generators;
 
-internal sealed record class ReadOnlyRepositoryGenerator(string Namespace, string ClassName, string EntityType, string SummaryProjectionType)
-    : GeneratorItem(Namespace, ClassName)
+internal sealed record class WritableRepositoryGenerator(string Namespace, string ClassName, string EntityType) : GeneratorItem(Namespace, ClassName)
 {
-
     /// <summary>
     /// Constructs an instance of <see cref="ReadOnlyRepositoryGenerator"/> if <paramref name="attributeData"/> provides enough arguments;
     /// otherwise <see langword="null"/> is returned.
     /// </summary>
     public static GeneratorItem? Build(string @namespace, string className, AttributeData attributeData)
     {
-        const int expectedArgumentCount = 2;
+        const int expectedArgumentCount = 1;
         if (attributeData is not { ConstructorArguments.Length: expectedArgumentCount })
         {
             return null;
         }
 
         string entityType = (string)attributeData.ConstructorArguments[0].Value!;
-        string summaryProjectionType = (string)attributeData.ConstructorArguments[1].Value!;
 
-        return new ReadOnlyRepositoryGenerator(@namespace, className, entityType, summaryProjectionType);
+        return new WritableRepositoryGenerator(@namespace, className, entityType);
     }
-
 
     /// <summary>
     /// Used to identify the class that needs generation
     /// </summary>
-    public static string AttributeName => "BethanysPieShop.Admin.Infrastructure.Persistence.Repositories.ReadOnlyRepositoryAttribute";
+    public static string AttributeName => "BethanysPieShop.Admin.Infrastructure.Persistence.Repositories.WritableRepositoryAttribute";
 
     /// <inheritdoc />
     protected override string GenerateSource() 
@@ -54,20 +50,22 @@ internal sealed record class ReadOnlyRepositoryGenerator(string Namespace, strin
 
             partial class {{ClassName}}
             {
-                public partial IAsyncEnumerable<{{EntityType}}> GetAll()
+
+                public partial void Add({{EntityType}} entity)
                 {
-                    return Entities.AsNoTracking()
-                        .AsAsyncEnumerable();
+                    ArgumentNullException.ThrowIfNull(entity);
+                    Entities.Add(entity);
                 }
 
-                public partial IAsyncEnumerable<{{SummaryProjectionType}}> GetSummaries()
+                public partial void Update({{EntityType}} entity)
                 {
-                    return GetSummaries(Entities.AsNoTracking()).AsAsyncEnumerable();
+                    ArgumentNullException.ThrowIfNull(entity);
+                    Entities.Update(entity);
                 }
 
-                public partial Task<{{EntityType}}?> FindById(Guid id, CancellationToken cancellationToken)
+                public partial async ValueTask SaveChanges(CancellationToken cancellationToken)
                 {
-                    return GetIncludesForFind(Entities.AsNoTracking()).FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
+                    await _dbContext.SaveChangesAsync(cancellationToken);
                 }
             }
 

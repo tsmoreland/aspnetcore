@@ -19,6 +19,7 @@ using Microsoft.EntityFrameworkCore;
 namespace BethanysPieShop.Admin.Infrastructure.Persistence.Repositories;
 
 [ReadOnlyRepository("BethanysPieShop.Admin.Domain.Models.Order", "BethanysPieShop.Admin.Domain.Projections.OrderSummary")]
+[WritableRepository("BethanysPieShop.Admin.Domain.Models.Order")]
 public sealed partial class OrderRepository : IOrderRepository
 {
     private readonly AdminDbContext _dbContext;
@@ -35,9 +36,17 @@ public sealed partial class OrderRepository : IOrderRepository
     /// <inheritdoc />
     public partial IAsyncEnumerable<OrderSummary> GetSummaries();
 
+    /// <inheritdoc />
+    public partial Task<Order?> FindById(Guid id, CancellationToken cancellationToken);
+
     private static IQueryable<OrderSummary> GetSummaries(IQueryable<Order> orders)
     {
         return orders
             .Select(e => new OrderSummary(e.Id, e.OrderTotal, e.OrderPlaced));
+    }
+
+    private static IQueryable<Order> GetIncludesForFind(IQueryable<Order> queryable)
+    {
+        return queryable.Include(e => e.OrderDetails);
     }
 }

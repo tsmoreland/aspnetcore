@@ -16,6 +16,6 @@ using BethanysPieShop.Admin.Domain.Projections;
 
 namespace BethanysPieShop.Admin.Domain.Contracts;
 
-public interface ICategoryRepository : IReadOnlyRepository<Category, CategorySummary>
+public interface ICategoryRepository : IRepository<Category, CategorySummary>
 {
 }

@@ -11,13 +11,11 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using BethanysPieShop.Admin.Domain.Models;
+using BethanysPieShop.Admin.Domain.Projections;
+
 namespace BethanysPieShop.Admin.Domain.Contracts;
 
-public interface IReadOnlyRepository<TEntity, out TSummaryProjection>
-    where TEntity : class
-    where TSummaryProjection : class
+public interface ICategoryReadOnlyRepository : IReadOnlyRepository<Category, CategorySummary>
 {
-    public IAsyncEnumerable<TEntity> GetAll();
-    public IAsyncEnumerable<TSummaryProjection> GetSummaries();
-    public Task<TEntity?> FindById(Guid id, CancellationToken cancellationToken);
 }

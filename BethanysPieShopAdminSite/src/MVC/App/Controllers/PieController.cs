@@ -11,8 +11,11 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using System.ComponentModel.DataAnnotations;
 using BethanysPieShop.Admin.Domain.Contracts;
+using BethanysPieShop.Admin.Domain.Models;
 using BethanysPieShop.MVC.App.Models.Pies;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BethanysPieShop.MVC.App.Controllers;
@@ -37,11 +40,44 @@ public sealed class PieController : Controller
         return View(model);
     }
 
+    public async Task<IActionResult> Details(Guid id)
+    {
+        Pie? model = await _pieRepository.FindById(id, default);
+        return View(model);
+    }
+
     [HttpGet]
     [HttpHead]
     public async Task<IActionResult> Add()
     {
         AddViewModel viewModel = new(await _categoryRepository.GetSummaries().ToListAsync());
         return View(viewModel);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Add(AddViewModel model)
+    {
+        Category? category = await _categoryRepository.FindById(model.CategoryId, default);
+        if (category is null)
+        {
+            ModelState.AddModelError("CategoryId", "Not Found");
+            return View();
+        }
+
+        try
+        {
+            Pie pie = new(model.Name, model.Price, model.ShortDescription, model.LongDescription, model.AllergyInformation, model.ImageUrl, model.ImageThumbnailUrl, category);
+            _ = pie;
+
+            return RedirectToAction(nameof(Index));
+        }
+        catch (FluentValidation.ValidationException ex)
+        {
+            foreach (ValidationFailure? error in ex.Errors)
+            {
+                ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+            }
+            return View();
+        }
     }
 }

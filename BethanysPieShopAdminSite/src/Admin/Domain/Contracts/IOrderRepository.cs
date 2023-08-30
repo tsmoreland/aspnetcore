@@ -16,6 +16,6 @@ using BethanysPieShop.Admin.Domain.Projections;
 
 namespace BethanysPieShop.Admin.Domain.Contracts;
 
-public interface IOrderRepository : IReadOnlyRepository<Order, OrderSummary>
+public interface IOrderRepository : IRepository<Order, OrderSummary>
 {
 }

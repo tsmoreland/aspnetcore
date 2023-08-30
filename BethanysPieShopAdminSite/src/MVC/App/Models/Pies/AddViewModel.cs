@@ -16,7 +16,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BethanysPieShop.MVC.App.Models.Pies;
 
-// TODO: add support for ingrediants
 public sealed class AddViewModel
 {
     public AddViewModel()
@@ -34,6 +33,11 @@ public sealed class AddViewModel
     public string? LongDescription { get; set; }
     public string? AllergyInformation { get; set; }
     public decimal Price { get; set; } = decimal.Zero;
+    public string? ImageThumbnailUrl { get; set; }
+    public string? ImageUrl { get; set; }
+    public bool IsPieOfTheWeek { get; set; }
+    public bool InStock { get; set; }
+    public Guid CategoryId { get; set; } 
 
     public IEnumerable<SelectListItem>? Categories { get; init; }
 }

@@ -81,6 +81,7 @@ public sealed class InfrastructureSourceGenerator : IIncrementalGenerator
         return new Dictionary<string, GeneratorFactory>
         {
             [ReadOnlyRepositoryGenerator.AttributeName] = ReadOnlyRepositoryGenerator.Build,
+            [WritableRepositoryGenerator.AttributeName] = WritableRepositoryGenerator.Build,
         };
     }
 
