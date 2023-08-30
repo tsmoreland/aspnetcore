@@ -38,7 +38,7 @@ public sealed class OrderDetail
             Price = CalculatePrice(value, Pie);
         }
     }
-    public decimal Price { get; private set; } 
+    public decimal Price { get; private set; }
     public Pie Pie
     {
         get => _pie;
@@ -48,7 +48,7 @@ public sealed class OrderDetail
             _pie = value;
             Price = CalculatePrice(Amount, value);
         }
-    } 
+    }
     public Order Order { get; set; } = default!;
 
     public byte[] ConcurrencyToken { get; set; } = Array.Empty<byte>();

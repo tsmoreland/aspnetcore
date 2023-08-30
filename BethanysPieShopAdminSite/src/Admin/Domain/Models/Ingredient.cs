@@ -8,7 +8,7 @@ public sealed class Ingredient
     private string _amount;
 
     public Ingredient(string name, string amount)
-        : this(Guid.NewGuid(), name, amount)
+        : this(Guid.NewGuid(), NameValidator.Instance.ValidateOrThrow(name), IngredientAmountValidator.Instance.ValidateOrThrow(amount))
     {
     }
     private Ingredient(Guid id, string name, string amount)
@@ -28,7 +28,7 @@ public sealed class Ingredient
     public string Amount
     {
         get => _amount;
-        set => _amount = IngredientAmountValidator.Instance.ValidateOrThrow(value); 
+        set => _amount = IngredientAmountValidator.Instance.ValidateOrThrow(value);
     }
 
     public byte[] ConcurrencyToken { get; set; } = Array.Empty<byte>();

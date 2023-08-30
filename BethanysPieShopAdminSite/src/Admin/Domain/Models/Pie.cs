@@ -40,7 +40,7 @@ public sealed class Pie
         _imageFilename = imageFilename;
         _imageThumbnailFilename = imageThumbnailFilename;
         CategoryId = categoryId;
-        CategoryName = categoryName; 
+        CategoryName = categoryName;
         _ingredients = new HashSet<Ingredient>();
     }
 
@@ -130,7 +130,7 @@ public sealed class Pie
         }
     }
 
-    public ICollection<Ingredient> Ingredients => _ingredients.ToList();
+    public IEnumerable<Ingredient> Ingredients => _ingredients.ToList();
 
     public byte[] ConcurrencyToken { get; set; } = Array.Empty<byte>();
 

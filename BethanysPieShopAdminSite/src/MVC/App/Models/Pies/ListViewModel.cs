@@ -11,26 +11,8 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-namespace BethanysPieShop.Admin.Domain.Validation;
+using BethanysPieShop.Admin.Domain.Projections;
 
-internal sealed class IngredientAmountValidator : StringValidator
-{
-    private static readonly Lazy<IngredientAmountValidator> s_instance = new(() => new IngredientAmountValidator());
+namespace BethanysPieShop.MVC.App.Models.Pies;
 
-    /// <inheritdoc />
-    public IngredientAmountValidator()
-    {
-        Initialize();
-    }
-
-    /// <inheritdoc />
-    protected override int MinimumLength => 5;
-
-    /// <inheritdoc />
-    protected override int MaximumLength => 100;
-
-    /// <inheritdoc />
-    protected override bool AllowNull => false;
-
-    public static IngredientAmountValidator Instance => s_instance.Value;
-}
+public sealed record class ListViewModel(List<PieSummary>? Pies);

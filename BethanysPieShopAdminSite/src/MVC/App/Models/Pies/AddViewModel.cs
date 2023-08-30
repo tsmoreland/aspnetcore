@@ -11,26 +11,29 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-namespace BethanysPieShop.Admin.Domain.Validation;
+using BethanysPieShop.Admin.Domain.Projections;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
-internal sealed class IngredientAmountValidator : StringValidator
+namespace BethanysPieShop.MVC.App.Models.Pies;
+
+// TODO: add support for ingrediants
+public sealed class AddViewModel
 {
-    private static readonly Lazy<IngredientAmountValidator> s_instance = new(() => new IngredientAmountValidator());
-
-    /// <inheritdoc />
-    public IngredientAmountValidator()
+    public AddViewModel()
     {
-        Initialize();
+    }
+    public AddViewModel(IEnumerable<CategorySummary>? categories)
+    {
+        Categories = categories is null
+            ? null
+            : new SelectList(categories, "Id", "Name", null);
     }
 
-    /// <inheritdoc />
-    protected override int MinimumLength => 5;
+    public string Name { get; set; } = string.Empty;
+    public string? ShortDescription { get; set; }
+    public string? LongDescription { get; set; }
+    public string? AllergyInformation { get; set; }
+    public decimal Price { get; set; } = decimal.Zero;
 
-    /// <inheritdoc />
-    protected override int MaximumLength => 100;
-
-    /// <inheritdoc />
-    protected override bool AllowNull => false;
-
-    public static IngredientAmountValidator Instance => s_instance.Value;
+    public IEnumerable<SelectListItem>? Categories { get; init; }
 }

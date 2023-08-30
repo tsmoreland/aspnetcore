@@ -8,7 +8,6 @@ public sealed class Category
     private string? _description;
     private readonly HashSet<Pie> _pies;
 
-
     public Category(string name, string? description)
         : this(Guid.NewGuid(), NameValidator.Instance.ValidateOrThrow(name), DescriptionValidator.Instance.ValidateOrThrow(description), DateTime.UtcNow)
     {
@@ -48,7 +47,7 @@ public sealed class Category
 
     public DateTime? DateAdded { get; init; }
 
-    public ICollection<Pie> Pies => _pies.ToList();
+    public IEnumerable<Pie> Pies => _pies.ToList();
 
     public byte[] ConcurrencyToken { get; set; } = Array.Empty<byte>();
 

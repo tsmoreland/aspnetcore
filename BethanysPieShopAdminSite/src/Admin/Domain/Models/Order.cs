@@ -15,7 +15,6 @@ public sealed class Order
     private string _email;
     private string _phoneNumber;
 
-
     public Order(OrderStatus orderStatus, string firstName, string lastName, string addressLine1, string? addressLine2, string postCode, string city, string phoneNumber, string email, IEnumerable<OrderDetail> orderDetails)
         : this(Guid.NewGuid(), orderStatus,
               NameValidator.Instance.ValidateOrThrow(firstName),
@@ -30,7 +29,7 @@ public sealed class Order
               DateTime.UtcNow)
     {
         ArgumentNullException.ThrowIfNull(orderDetails);
-        List<OrderDetail> items = orderDetails.ToList(); ;
+        List<OrderDetail> items = orderDetails.ToList();
         OrderTotal = CalculateOrderTotal(items);
 
         foreach (OrderDetail item in items)
@@ -51,15 +50,14 @@ public sealed class Order
         _city = city;
         _email = email;
         _phoneNumber = phoneNumber;
-        OrderTotal = orderTotal; 
+        OrderTotal = orderTotal;
         OrderPlaced = orderPlaced;
-
     }
 
     public Guid Id { get; }
-    public ICollection<OrderDetail> OrderDetails => _orderDetails.ToList();
+    public IEnumerable<OrderDetail> OrderDetails => _orderDetails.ToList();
     public OrderStatus OrderStatus { get; set; }
-    public string FirstName { get => _firstName; set => _firstName = NameValidator.Instance.ValidateOrThrow(value); } 
+    public string FirstName { get => _firstName; set => _firstName = NameValidator.Instance.ValidateOrThrow(value); }
     public string LastName { get => _lastName; set => _lastName = NameValidator.Instance.ValidateOrThrow(value); }
     public string AddressLine1 { get => _addressLine1; set => _addressLine1 = AddressLineValidator.Instance.ValidateOrThrow(value); }
     public string? AddressLine2 { get => _addressLine2; set => _addressLine2 = NullableAddressLineValidator.Instance.ValidateOrThrow(value); }
@@ -69,7 +67,7 @@ public sealed class Order
     public string PhoneNumber { get => _phoneNumber; set => _phoneNumber = PhoneNumberValidator.Instance.ValidateOrThrow(value); }
 
     public string Email { get => _email; set => _email = EmailValidator.Instance.ValidateOrThrow(value); }
-    
+
     public decimal OrderTotal { get; private set; }
 
     public DateTime OrderPlaced { get; private set; }

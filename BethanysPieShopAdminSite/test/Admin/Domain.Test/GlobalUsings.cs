@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright © 2023 Terry Moreland
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
@@ -11,8 +11,6 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using BethanysPieShop.Admin.Domain.Projections;
-
-namespace BethanysPieShop.MVC.App.Models;
-
-public sealed record class CategoryListViewModel(List<CategorySummary>? Categories);
+global using FluentAssertions;
+global using NSubstitute;
+global using Xunit;

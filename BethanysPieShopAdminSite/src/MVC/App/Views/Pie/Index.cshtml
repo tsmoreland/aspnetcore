@@ -1,0 +1,31 @@
+﻿@using BethanysPieShop.MVC.App.Models.Pies;
+@model ListViewModel
+
+<h2>Pies</h2>
+<hr/>
+
+@if (Model.Pies?.Any() == false)
+{
+    <p>No results</p>
+}
+else
+{
+    <table class="table table-condensed table-bordered">
+        <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Category</th>
+        </tr>
+        @foreach (var pie in Model.Pies!)
+        {
+            <tr>
+                @if (@pie.ImageThumbnailFilename is not null)
+                {
+                    <td><img src="@pie.ImageThumbnailFilename" alt="Pie"/></td>
+                }
+                <td>@pie.Name</td>
+                <td>@pie.CategoryName</td>
+            </tr>
+        }
+    </table>
+}

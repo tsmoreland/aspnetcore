@@ -11,26 +11,37 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-namespace BethanysPieShop.Admin.Domain.Validation;
+using BethanysPieShop.Admin.Domain.Contracts;
+using BethanysPieShop.MVC.App.Models.Pies;
+using Microsoft.AspNetCore.Mvc;
 
-internal sealed class IngredientAmountValidator : StringValidator
+namespace BethanysPieShop.MVC.App.Controllers;
+
+public sealed class PieController : Controller
 {
-    private static readonly Lazy<IngredientAmountValidator> s_instance = new(() => new IngredientAmountValidator());
+    private readonly IPieRepository _pieRepository;
+    private readonly ICategoryRepository _categoryRepository;
 
     /// <inheritdoc />
-    public IngredientAmountValidator()
+    public PieController(IPieRepository pieRepository, ICategoryRepository categoryRepository)
     {
-        Initialize();
+        _pieRepository = pieRepository;
+        _categoryRepository = categoryRepository;
     }
 
-    /// <inheritdoc />
-    protected override int MinimumLength => 5;
+    [HttpGet]
+    [HttpHead]
+    public async Task<IActionResult> Index()
+    {
+        ListViewModel model = new(await _pieRepository.GetSummaries().ToListAsync());
+        return View(model);
+    }
 
-    /// <inheritdoc />
-    protected override int MaximumLength => 100;
-
-    /// <inheritdoc />
-    protected override bool AllowNull => false;
-
-    public static IngredientAmountValidator Instance => s_instance.Value;
+    [HttpGet]
+    [HttpHead]
+    public async Task<IActionResult> Add()
+    {
+        AddViewModel viewModel = new(await _categoryRepository.GetSummaries().ToListAsync());
+        return View(viewModel);
+    }
 }
