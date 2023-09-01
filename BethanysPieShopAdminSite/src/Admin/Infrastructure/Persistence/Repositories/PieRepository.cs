@@ -51,14 +51,23 @@ public sealed partial class PieRepository : IPieRepository
     }
 
     /// <inheritdoc/>
-    public partial void Add(Pie entity);
+    public partial ValueTask Add(Pie entity, CancellationToken cancellationToken);
 
     /// <inheritdoc/>
-    public partial void Update(Pie entity);
+    public partial ValueTask Update(Pie entity, CancellationToken cancellationToken);
 
     /// <inheritdoc/>
     public partial void Delete(Pie entity);
 
     /// <inheritdoc/>
     public partial ValueTask SaveChanges(CancellationToken cancellationToken);
+
+    private ValueTask ValidateAddOrThrow(Pie entity, CancellationToken cancellationToken)
+    {
+        return ValueTask.CompletedTask;
+    }
+    private ValueTask ValidateUpdateOrThrow(Pie entity, CancellationToken cancellationToken)
+    {
+        return ValueTask.CompletedTask;
+    }
 }

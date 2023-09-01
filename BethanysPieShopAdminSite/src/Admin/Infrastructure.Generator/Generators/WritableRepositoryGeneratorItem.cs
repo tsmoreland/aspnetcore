@@ -60,15 +60,17 @@ internal sealed record class WritableRepositoryGeneratorItem(string Namespace, s
     internal override string GenerateClassContent()
     {
         return $$"""
-                public partial void Add({{EntityType}} entity)
+                public async partial ValueTask Add({{EntityType}} entity, CancellationToken cancellationToken)
                 {
                     ArgumentNullException.ThrowIfNull(entity);
+                    await ValidateAddOrThrow(entity, cancellationToken);
                     Entities.Add(entity);
                 }
 
-                public partial void Update({{EntityType}} entity)
+                public async partial ValueTask Update({{EntityType}} entity, CancellationToken cancellationToken)
                 {
                     ArgumentNullException.ThrowIfNull(entity);
+                    await ValidateUpdateOrThrow(entity, cancellationToken);
                     Entities.Update(entity);
                 }
 

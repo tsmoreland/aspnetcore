@@ -1,4 +1,5 @@
 ﻿using BethanysPieShop.Admin.Domain.Contracts;
+using BethanysPieShop.Admin.Domain.Models;
 using BethanysPieShop.MVC.App.Models.Categories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,5 +21,19 @@ public sealed class CategoryController : Controller
     {
         ListViewModel model = new(await _repository.GetSummaries().ToListAsync());
         return View(model);
+    }
+
+    public IActionResult Add()
+    {
+        AddViewModel model = new();
+        return View(model);
+    }
+
+    public async Task<IActionResult> Add([Bind("Name", "Description", "DateAdded")] AddViewModel model)
+    {
+        Category category = new(model.Name, model.Descripton) { DateAdded = model.DateAdded };
+        await _repository.Add(category, default);
+        await _repository.SaveChanges(default);
+        return RedirectToAction(nameof(Index));
     }
 }

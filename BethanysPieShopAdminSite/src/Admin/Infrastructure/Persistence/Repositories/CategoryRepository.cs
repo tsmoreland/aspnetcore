@@ -14,6 +14,8 @@
 using BethanysPieShop.Admin.Domain.Contracts;
 using BethanysPieShop.Admin.Domain.Models;
 using BethanysPieShop.Admin.Domain.Projections;
+using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 
 namespace BethanysPieShop.Admin.Infrastructure.Persistence.Repositories;
@@ -51,14 +53,27 @@ public sealed partial class CategoryRepository : ICategoryRepository
     }
 
     /// <inheritdoc/>
-    public partial void Add(Category entity);
+    public partial ValueTask Add(Category entity, CancellationToken cancellationToken);
 
     /// <inheritdoc/>
-    public partial void Update(Category entity);
+    public partial ValueTask Update(Category entity, CancellationToken cancellationToken);
 
     /// <inheritdoc/>
     public partial void Delete(Category entity);
 
     /// <inheritdoc/>
     public partial ValueTask SaveChanges(CancellationToken cancellationToken);
+
+    private async ValueTask ValidateAddOrThrow(Category entity, CancellationToken cancellationToken)
+    {
+        if (await Entities.AsNoTracking().AnyAsync(e => e.Name == entity.Name, cancellationToken))
+        {
+            throw new ValidationException("Category with same name already exists",
+                new[] { new ValidationFailure("Name", "Category with same name already exists") });
+        }
+    }
+    private ValueTask ValidateUpdateOrThrow(Category entity, CancellationToken cancellationToken)
+    {
+        return ValueTask.CompletedTask;
+    }
 }

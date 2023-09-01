@@ -51,14 +51,23 @@ public sealed partial class OrderRepository : IOrderRepository
     }
 
     /// <inheritdoc/>
-    public partial void Add(Order entity);
+    public partial ValueTask Add(Order entity, CancellationToken cancellationToken);
 
     /// <inheritdoc/>
-    public partial void Update(Order entity);
+    public partial ValueTask Update(Order entity, CancellationToken cancellationToken);
 
     /// <inheritdoc/>
     public partial void Delete(Order entity);
 
     /// <inheritdoc/>
     public partial ValueTask SaveChanges(CancellationToken cancellationToken);
+
+    private ValueTask ValidateAddOrThrow(Order entity, CancellationToken cancellationToken)
+    {
+        return ValueTask.CompletedTask;
+    }
+    private ValueTask ValidateUpdateOrThrow(Order entity, CancellationToken cancellationToken)
+    {
+        return ValueTask.CompletedTask;
+    }
 }

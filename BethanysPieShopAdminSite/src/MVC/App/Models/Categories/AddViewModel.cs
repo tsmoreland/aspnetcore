@@ -11,14 +11,9 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-namespace BethanysPieShop.Admin.Domain.Contracts;
+namespace BethanysPieShop.MVC.App.Models.Categories;
 
-public interface IRepository<TEntity, out TSummaryProjection> : IReadOnlyRepository<TEntity, TSummaryProjection>
-    where TEntity : class
-    where TSummaryProjection : class
-{
-    ValueTask Add(TEntity entity, CancellationToken cancellationToken);
-    ValueTask Update(TEntity entity, CancellationToken cancellationToken);
-    void Delete(TEntity entity);
-    ValueTask SaveChanges(CancellationToken cancellationToken);
-}
+public sealed record class AddViewModel(
+    string Name,
+    string? Descripton,
+    DateTime? DateAdded);
