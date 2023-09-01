@@ -11,14 +11,38 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-namespace BethanysPieShop.Admin.Domain.Contracts;
+using System.Text;
 
-public interface IRepository<TEntity, out TSummaryProjection> : IReadOnlyRepository<TEntity, TSummaryProjection>
-    where TEntity : class
-    where TSummaryProjection : class
+namespace BethanysPieShop.Admin.Infrastructure.Generator.Generators;
+
+internal sealed record class AggregateGeneratorItem(string Namespace, string ClassName, IEnumerable<GeneratorItem> Generators)
+    : GeneratorItem(Namespace, ClassName)
 {
-    void Add(TEntity entity);
-    void Update(TEntity entity);
-    void Delete(TEntity entity);
-    ValueTask SaveChanges(CancellationToken cancellationToken);
+    /// <inheritdoc />
+    protected override string GenerateSource()
+    {
+        return $$"""
+            using BethanysPieShop.Admin.Domain.Models;
+            using Microsoft.EntityFrameworkCore;
+
+            namespace {{Namespace}};
+
+            partial class {{ClassName}}
+            {
+            {{GenerateClassContent()}}
+            }
+
+            """;
+    }
+
+    /// <inheritdoc />
+    internal override string GenerateClassContent()
+    {
+        StringBuilder builder = new();
+        foreach (GeneratorItem generator in Generators)
+        {
+            builder.AppendLine(generator.GenerateClassContent());
+        }
+        return builder.ToString();
+    }
 }

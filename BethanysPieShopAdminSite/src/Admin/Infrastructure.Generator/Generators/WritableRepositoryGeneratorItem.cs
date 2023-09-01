@@ -15,33 +15,29 @@ using Microsoft.CodeAnalysis;
 
 namespace BethanysPieShop.Admin.Infrastructure.Generator.Generators;
 
-internal sealed record class ReadOnlyRepositoryGenerator(string Namespace, string ClassName, string EntityType, string SummaryProjectionType)
-    : GeneratorItem(Namespace, ClassName)
+internal sealed record class WritableRepositoryGeneratorItem(string Namespace, string ClassName, string EntityType) : GeneratorItem(Namespace, ClassName)
 {
-
     /// <summary>
-    /// Constructs an instance of <see cref="ReadOnlyRepositoryGenerator"/> if <paramref name="attributeData"/> provides enough arguments;
+    /// Constructs an instance of <see cref="ReadOnlyRepositoryGeneratorItem"/> if <paramref name="attributeData"/> provides enough arguments;
     /// otherwise <see langword="null"/> is returned.
     /// </summary>
     public static GeneratorItem? Build(string @namespace, string className, AttributeData attributeData)
     {
-        const int expectedArgumentCount = 2;
+        const int expectedArgumentCount = 1;
         if (attributeData is not { ConstructorArguments.Length: expectedArgumentCount })
         {
             return null;
         }
 
         string entityType = (string)attributeData.ConstructorArguments[0].Value!;
-        string summaryProjectionType = (string)attributeData.ConstructorArguments[1].Value!;
 
-        return new ReadOnlyRepositoryGenerator(@namespace, className, entityType, summaryProjectionType);
+        return new WritableRepositoryGeneratorItem(@namespace, className, entityType);
     }
-
 
     /// <summary>
     /// Used to identify the class that needs generation
     /// </summary>
-    public static string AttributeName => "BethanysPieShop.Admin.Infrastructure.Persistence.Repositories.ReadOnlyRepositoryAttribute";
+    public static string AttributeName => "BethanysPieShop.Admin.Infrastructure.Persistence.Repositories.WritableRepositoryAttribute";
 
     /// <inheritdoc />
     protected override string GenerateSource() 
@@ -54,22 +50,40 @@ internal sealed record class ReadOnlyRepositoryGenerator(string Namespace, strin
 
             partial class {{ClassName}}
             {
-                public partial IAsyncEnumerable<{{EntityType}}> GetAll()
-                {
-                    return Entities.AsNoTracking()
-                        .AsAsyncEnumerable();
-                }
-
-                public partial IAsyncEnumerable<{{SummaryProjectionType}}> GetSummaries()
-                {
-                    return GetSummaries(Entities.AsNoTracking()).AsAsyncEnumerable();
-                }
-
-                public partial Task<{{EntityType}}?> FindById(Guid id, CancellationToken cancellationToken)
-                {
-                    return GetIncludesForFind(Entities.AsNoTracking()).FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
-                }
+            {{GenerateClassContent()}}
             }
+
+            """;
+    }
+
+    /// <inheritdoc />
+    internal override string GenerateClassContent()
+    {
+        return $$"""
+                public partial void Add({{EntityType}} entity)
+                {
+                    ArgumentNullException.ThrowIfNull(entity);
+                    Entities.Add(entity);
+                }
+
+                public partial void Update({{EntityType}} entity)
+                {
+                    ArgumentNullException.ThrowIfNull(entity);
+                    Entities.Update(entity);
+                }
+
+                public partial void Delete({{EntityType}} entity)
+                {
+                    if (Entities.Contains(entity))
+                    {
+                        Entities.Remove(entity);
+                    }
+                }
+
+                public async partial ValueTask SaveChanges(CancellationToken cancellationToken)
+                {
+                    await _dbContext.SaveChangesAsync(cancellationToken);
+                }
 
             """;
     }

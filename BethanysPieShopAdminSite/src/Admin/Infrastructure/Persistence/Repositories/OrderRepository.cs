@@ -49,4 +49,16 @@ public sealed partial class OrderRepository : IOrderRepository
     {
         return queryable.Include(e => e.OrderDetails);
     }
+
+    /// <inheritdoc/>
+    public partial void Add(Order entity);
+
+    /// <inheritdoc/>
+    public partial void Update(Order entity);
+
+    /// <inheritdoc/>
+    public partial void Delete(Order entity);
+
+    /// <inheritdoc/>
+    public partial ValueTask SaveChanges(CancellationToken cancellationToken);
 }

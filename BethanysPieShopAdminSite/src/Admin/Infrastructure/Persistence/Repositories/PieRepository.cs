@@ -49,4 +49,16 @@ public sealed partial class PieRepository : IPieRepository
     {
         return queryable.Include(e => e.Ingredients);
     }
+
+    /// <inheritdoc/>
+    public partial void Add(Pie entity);
+
+    /// <inheritdoc/>
+    public partial void Update(Pie entity);
+
+    /// <inheritdoc/>
+    public partial void Delete(Pie entity);
+
+    /// <inheritdoc/>
+    public partial ValueTask SaveChanges(CancellationToken cancellationToken);
 }

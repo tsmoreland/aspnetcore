@@ -51,16 +51,26 @@ public sealed class InfrastructureSourceGenerator : IIncrementalGenerator
             .AsReadOnly();
 
         ImmutableArray<AttributeData> attributes = classSymbol.GetAttributes();
-        return attributes
+
+        List<GeneratorItem> items = attributes
             .Where(attribute => supportedAttributes.Contains(attribute.AttributeClass, SymbolEqualityComparer.Default))
             .Select(attributeData =>
-            { 
+            {
                 string attributeName = attributeData.AttributeClass?.ToDisplayString() ?? string.Empty;
                 return factoryByAttributeNames.TryGetValue(attributeName, out GeneratorFactory factory)
                     ? factory.Invoke(@namespace, @class, attributeData)
                     : null;
             })
-            .FirstOrDefault();
+            .Where(g => g is not null)
+            .Cast<GeneratorItem>()
+            .ToList();
+
+        return items.Count switch
+        {
+            > 1 => new AggregateGeneratorItem(@namespace, @class, items),
+            1 => items.First(),
+            _ => null,
+        };
     }
 
     private static void Execute(SourceProductionContext context, GeneratorItem? testItem)
@@ -80,8 +90,8 @@ public sealed class InfrastructureSourceGenerator : IIncrementalGenerator
     {
         return new Dictionary<string, GeneratorFactory>
         {
-            [ReadOnlyRepositoryGenerator.AttributeName] = ReadOnlyRepositoryGenerator.Build,
-            [WritableRepositoryGenerator.AttributeName] = WritableRepositoryGenerator.Build,
+            [ReadOnlyRepositoryGeneratorItem.AttributeName] = ReadOnlyRepositoryGeneratorItem.Build,
+            [WritableRepositoryGeneratorItem.AttributeName] = WritableRepositoryGeneratorItem.Build,
         };
     }
 

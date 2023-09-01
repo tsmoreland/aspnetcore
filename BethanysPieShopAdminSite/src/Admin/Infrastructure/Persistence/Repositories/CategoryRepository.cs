@@ -49,4 +49,16 @@ public sealed partial class CategoryRepository : ICategoryRepository
     {
         return queryable.Include(e => e.Pies);
     }
+
+    /// <inheritdoc/>
+    public partial void Add(Category entity);
+
+    /// <inheritdoc/>
+    public partial void Update(Category entity);
+
+    /// <inheritdoc/>
+    public partial void Delete(Category entity);
+
+    /// <inheritdoc/>
+    public partial ValueTask SaveChanges(CancellationToken cancellationToken);
 }

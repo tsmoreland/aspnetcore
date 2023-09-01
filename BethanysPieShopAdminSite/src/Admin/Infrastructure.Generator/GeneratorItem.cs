@@ -12,6 +12,7 @@
 //
 
 using System.Text;
+using BethanysPieShop.Admin.Infrastructure.Generator.Generators;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 
@@ -38,4 +39,14 @@ internal abstract record class GeneratorItem(string Namespace, string ClassName)
     /// </summary>
     /// <returns></returns>
     protected abstract string GenerateSource();
+
+    /// <summary>
+    /// Optionally generates source code for class body, should be overridden
+    /// for any generator which may be used as part of <see cref="AggregateGeneratorItem"/>
+    /// </summary>
+    /// <returns></returns>
+    internal virtual string GenerateClassContent()
+    {
+        return string.Empty;
+    }
 }
