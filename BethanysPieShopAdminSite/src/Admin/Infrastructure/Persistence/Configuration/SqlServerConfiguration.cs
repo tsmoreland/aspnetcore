@@ -41,7 +41,7 @@ internal sealed class SqlServerConfiguration : ISqlConfiguration
     {
         options
             .UseSqlServer(
-                configuration.GetConnectionString("SqlServer"),
+                configuration.GetConnectionString("Default"),
                 static options => options.MigrationsAssembly(typeof(SqlServerConfiguration).Assembly.FullName));
         if (environment.IsDevelopment())
         {

@@ -20,7 +20,7 @@ namespace BethanysPieShop.Admin.Infrastructure.Persistence.Repositories;
 
 [ReadOnlyRepository("BethanysPieShop.Admin.Domain.Models.Pie", "BethanysPieShop.Admin.Domain.Projections.PieSummary")]
 [WritableRepository("BethanysPieShop.Admin.Domain.Models.Pie")]
-public sealed partial class PieRepository : IPieRepository
+public sealed partial class PieRepository : IPieRepository, IPieReadOnlyRepository
 {
     private readonly AdminDbContext _dbContext;
     private DbSet<Pie> Entities => _dbContext.Pies;

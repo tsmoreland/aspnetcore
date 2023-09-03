@@ -15,6 +15,7 @@ using BethanysPieShop.Admin.Domain.Contracts;
 using BethanysPieShop.Admin.Infrastructure.Persistence;
 using BethanysPieShop.Admin.Infrastructure.Persistence.Configuration;
 using BethanysPieShop.Admin.Infrastructure.Persistence.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,11 +28,14 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
     {
         services
-            .AddDbContext<AdminDbContext>(optionsLifetime: ServiceLifetime.Singleton)
+            //.AddDbContext<AdminDbContext>(optionsLifetime: ServiceLifetime.Singleton)
             .AddPooledDbContextFactory<AdminDbContext>(options => SqlServerConfiguration.ConfigureOptionsForPool(options, configuration, environment))
-            .AddScoped(provider => provider.GetRequiredService<PooledDbContextFactory<AdminDbContext>>().CreateDbContext());
+            .AddScoped<AdminDbContext>(provider => provider.GetRequiredService<IDbContextFactory<AdminDbContext>>().CreateDbContext());
 
         services
+            .AddScoped<ICategoryReadOnlyRepository, CategoryRepository>()
+            .AddScoped<IOrderReadOnlyRepository, OrderRepository>()
+            .AddScoped<IPieReadOnlyRepository, PieRepository>()
             .AddScoped<ICategoryRepository, CategoryRepository>()
             .AddScoped<IOrderRepository, OrderRepository>()
             .AddScoped<IPieRepository, PieRepository>();

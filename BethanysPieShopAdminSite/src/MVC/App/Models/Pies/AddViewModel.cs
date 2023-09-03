@@ -11,6 +11,7 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using System.ComponentModel.DataAnnotations;
 using BethanysPieShop.Admin.Domain.Projections;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -28,16 +29,41 @@ public sealed class AddViewModel
             : new SelectList(categories, "Id", "Name", null);
     }
 
+    [Required]
+    [Display(Name = "Name")]
+    [MaxLength(200)]
     public string Name { get; set; } = string.Empty;
+
+    [Display(Name = "Short Description")]
+    [MaxLength(100)]
     public string? ShortDescription { get; set; }
+
+    [Display(Name = "Description")]
+    [MaxLength(500)]
     public string? LongDescription { get; set; }
+
+    [Display(Name = "Allergy Information")]
+    [MaxLength(1000)]
     public string? AllergyInformation { get; set; }
+
+    [Required]
+    [Display(Name = "Price")]
+    [Range(0.0, double.MaxValue)]
     public decimal Price { get; set; } = decimal.Zero;
+
+    [Display(Name = "Image Thumbndail")]
     public string? ImageThumbnailUrl { get; set; }
+
+    [Display(Name = "Image")]
     public string? ImageUrl { get; set; }
+
+    [Display(Name = "Is Pie of the Week")]
     public bool IsPieOfTheWeek { get; set; }
+
+    [Display(Name = "In Stock")]
     public bool InStock { get; set; }
-    public Guid CategoryId { get; set; } 
+
+    public Guid CategoryId { get; set; }
 
     public IEnumerable<SelectListItem>? Categories { get; init; }
 }

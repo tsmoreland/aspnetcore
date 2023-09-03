@@ -20,7 +20,7 @@ namespace BethanysPieShop.Admin.Infrastructure.Persistence.Repositories;
 
 [ReadOnlyRepository("BethanysPieShop.Admin.Domain.Models.Order", "BethanysPieShop.Admin.Domain.Projections.OrderSummary")]
 [WritableRepository("BethanysPieShop.Admin.Domain.Models.Order")]
-public sealed partial class OrderRepository : IOrderRepository
+public sealed partial class OrderRepository : IOrderRepository, IOrderReadOnlyRepository
 {
     private readonly AdminDbContext _dbContext;
     private DbSet<Order> Entities => _dbContext.Orders;

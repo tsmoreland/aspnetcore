@@ -11,9 +11,21 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using System.ComponentModel.DataAnnotations;
+
 namespace BethanysPieShop.MVC.App.Models.Categories;
 
-public sealed record class AddViewModel(
-    string Name,
-    string? Descripton,
-    DateTime? DateAdded);
+public sealed class AddViewModel
+{
+    [Display(Name = "Name")]
+    [Required]
+    [MaxLength(200)]
+    public string Name { get; set; } = string.Empty;
+
+    [Display(Name = "Description")]
+    [MaxLength(500)]
+    public string? Descripton { get; set; }
+
+    [Display(Name = "Date Added")]
+    public DateTime? DateAdded { get; set; }
+}

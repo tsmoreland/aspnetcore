@@ -22,7 +22,7 @@ namespace BethanysPieShop.Admin.Infrastructure.Persistence.Repositories;
 
 [ReadOnlyRepository("BethanysPieShop.Admin.Domain.Models.Category", "BethanysPieShop.Admin.Domain.Projections.CategorySummary")]
 [WritableRepository("BethanysPieShop.Admin.Domain.Models.Category")]
-public sealed partial class CategoryRepository : ICategoryRepository
+public sealed partial class CategoryRepository : ICategoryRepository, ICategoryReadOnlyRepository
 {
     private readonly AdminDbContext _dbContext;
     private DbSet<Category> Entities => _dbContext.Categories;

@@ -26,4 +26,8 @@
     <ProjectReference Include="..\..\Admin\Infrastructure\BethanysPieShop.Admin.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+
 </Project>
