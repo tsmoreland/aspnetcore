@@ -5,14 +5,16 @@
 <hr />
 
 <form method="post" asp-asp-controller="Category" asp-action="Add">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
     <div class="mb-3">
         <label asp-for="Name" class="form-label"></label>
         <input asp-for="Name" class="form-control"/>
     </div>
 
     <div class="mb-3">
-        <label asp-for="Descripton" class="form-label"></label>
-        <textarea asp-for="Descripton" rows="5" cols="50" style="resize: none;"></textarea>
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" rows="5" cols="50" style="resize: none;"></textarea>
     </div>
 
     <div class="mb-3">

@@ -18,13 +18,13 @@ namespace BethanysPieShop.MVC.App.Models.Categories;
 public sealed class AddViewModel
 {
     [Display(Name = "Name")]
-    [Required]
-    [MaxLength(200)]
+    [Required(ErrorMessage = "Please enter a name")]
+    [MaxLength(200, ErrorMessage = "The name shouild be no longer than 200")]
     public string Name { get; set; } = string.Empty;
 
     [Display(Name = "Description")]
-    [MaxLength(500)]
-    public string? Descripton { get; set; }
+    [MaxLength(500, ErrorMessage = "The description should be no longer than 500")]
+    public string? Description { get; set; }
 
     [Display(Name = "Date Added")]
     public DateTime? DateAdded { get; set; }

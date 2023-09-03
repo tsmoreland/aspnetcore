@@ -29,16 +29,16 @@ public sealed class AddViewModel
             : new SelectList(categories, "Id", "Name", null);
     }
 
-    [Required]
+    [Required(ErrorMessage = "Please enter a name")]
     [Display(Name = "Name")]
-    [MaxLength(200)]
+    [MaxLength(200, ErrorMessage = "The name shouild be no longer than 200")]
     public string Name { get; set; } = string.Empty;
 
-    [Display(Name = "Short Description")]
+    [Display(Name = "Short Description", ErrorMessage = "The short description should be no longer than 500")]
     [MaxLength(100)]
     public string? ShortDescription { get; set; }
 
-    [Display(Name = "Description")]
+    [Display(Name = "Description", ErrorMessage = "The long description should be no longer than 500")]
     [MaxLength(500)]
     public string? LongDescription { get; set; }
 
@@ -46,7 +46,7 @@ public sealed class AddViewModel
     [MaxLength(1000)]
     public string? AllergyInformation { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "Please enter a valid amount")]
     [Display(Name = "Price")]
     [Range(0.0, double.MaxValue)]
     public decimal Price { get; set; } = decimal.Zero;

@@ -2,6 +2,8 @@
 @model AddViewModel
 
 <form method="post" asp-controller="Pie" asp-action="Add">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
     <div class="mb-3">
         <label asp-for="Name" class="form-label"></label>
         <input asp-for="Name" class="form-control" />

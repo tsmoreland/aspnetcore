@@ -11,12 +11,12 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System.ComponentModel.DataAnnotations;
 using BethanysPieShop.Admin.Domain.Contracts;
 using BethanysPieShop.Admin.Domain.Models;
 using BethanysPieShop.MVC.App.Models.Pies;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.TagHelpers;
 
 namespace BethanysPieShop.MVC.App.Controllers;
 
@@ -57,17 +57,23 @@ public sealed class PieController : Controller
     [HttpPost]
     public async Task<IActionResult> Add(AddViewModel model)
     {
-        Category? category = await _categoryRepository.FindById(model.CategoryId, default);
-        if (category is null)
+        if (!ModelState.IsValid)
         {
-            ModelState.AddModelError("CategoryId", "Not Found");
-            return View();
+            return View(new AddViewModel(await _categoryRepository.GetSummaries().ToListAsync()));
         }
 
         try
         {
+            Category? category = await _categoryRepository.FindById(model.CategoryId, default);
+            if (category is null)
+            {
+                ModelState.AddModelError("CategoryId", "Not Found");
+                return View(new AddViewModel(await _categoryRepository.GetSummaries().ToListAsync()));
+            }
+
             Pie pie = new(model.Name, model.Price, model.ShortDescription, model.LongDescription, model.AllergyInformation, model.ImageUrl, model.ImageThumbnailUrl, category);
-            _ = pie;
+            await _pieRepository.Add(pie, default);
+            await _pieRepository.SaveChanges(default);
 
             return RedirectToAction(nameof(Index));
         }
@@ -77,7 +83,12 @@ public sealed class PieController : Controller
             {
                 ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
             }
-            return View();
         }
+        catch (Exception ex)
+        {
+            ModelState.AddModelError("", "Error occurred adding the pie");
+        }
+
+        return View(new AddViewModel(await _categoryRepository.GetSummaries().ToListAsync()));
     }
 }
