@@ -59,6 +59,20 @@ public sealed partial class CategoryRepository : ICategoryRepository, ICategoryR
     public partial ValueTask Update(Category entity, CancellationToken cancellationToken);
 
     /// <inheritdoc/>
+    public async ValueTask Update(Guid id, string name, string? description, CancellationToken cancellationToken = default)
+    {
+        Category category = await FindById(id, default) ?? throw new ArgumentException("category not found", nameof(id));
+        category.Name = name;
+        category.Description = description;
+        await ValidateUpdateOrThrow(category, cancellationToken).ConfigureAwait(false);
+
+        foreach (Pie pie in category.Pies)
+        {
+            pie.Category = category; // trigger update to category name
+        }
+    }
+
+    /// <inheritdoc/>
     public partial void Delete(Category entity);
 
     /// <inheritdoc/>
@@ -72,8 +86,12 @@ public sealed partial class CategoryRepository : ICategoryRepository, ICategoryR
                 new[] { new ValidationFailure("Name", "Category with same name already exists") });
         }
     }
-    private ValueTask ValidateUpdateOrThrow(Category entity, CancellationToken cancellationToken)
+    private async ValueTask ValidateUpdateOrThrow(Category entity, CancellationToken cancellationToken)
     {
-        return ValueTask.CompletedTask;
+        if (await Entities.AsNoTracking().AnyAsync(e => e.Name == entity.Name && e.Id != entity.Id, cancellationToken))
+        {
+            throw new ValidationException("Category with same name already exists",
+                new[] { new ValidationFailure("Name", "Category with same name already exists") });
+        }
     }
 }

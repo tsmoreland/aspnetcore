@@ -12,22 +12,47 @@
 //
 
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
+using BethanysPieShop.Admin.Domain.Contracts;
+using BethanysPieShop.Admin.Domain.Models;
 using BethanysPieShop.Admin.Domain.Projections;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BethanysPieShop.MVC.App.Models.Pies;
 
-public sealed class AddViewModel
+public sealed class EditViewModel
 {
-    public AddViewModel()
+    public EditViewModel()
     {
     }
-    public AddViewModel(IEnumerable<CategorySummary>? categories)
+
+    [SetsRequiredMembers]
+    public EditViewModel(Pie pie, IEnumerable<CategorySummary>? categories)
+        : this(categories)
+    {
+        ArgumentNullException.ThrowIfNull(pie);
+        Id = pie.Id;
+        Name = pie.Name;
+        ShortDescription = pie.ShortDescription;
+        LongDescription = pie.LongDescription;
+        AllergyInformation = pie.AllergyInformation;
+        Price = pie.Price;
+        ImageThumbnailUrl = pie.ImageThumbnailFilename;
+        ImageUrl = pie.ImageFilename;
+        IsPieOfTheWeek = pie.IsPieOfTheWeek;
+        InStock = pie.InStock;
+        CategoryId = pie.CategoryId;
+    }
+
+    public EditViewModel(IEnumerable<CategorySummary>? categories)
     {
         Categories = categories is null
             ? null
             : new SelectList(categories, "Id", "Name", null);
     }
+
+    [Required]
+    public required Guid Id { get; set; }
 
     [Required(ErrorMessage = "Please enter a name")]
     [Display(Name = "Name")]
@@ -63,7 +88,27 @@ public sealed class AddViewModel
     [Display(Name = "In Stock")]
     public bool InStock { get; set; }
 
-    public Guid CategoryId { get; set; }
+    public Guid? CategoryId { get; set; }
 
     public IEnumerable<SelectListItem>? Categories { get; init; }
+
+    // TODO: Move this logic to application layer, at least the use of the repositories, then this can be void
+    public async ValueTask UpdateModel(IPieRepository pieRepository, ICategoryRepository categoryRepository, CancellationToken cancellationToken)
+    {
+        Pie pie = await pieRepository.FindById(Id, cancellationToken).ConfigureAwait(false) ?? throw new KeyNotFoundException("Pie not found");
+        Category? category = CategoryId is not null
+            ? await categoryRepository.FindById(CategoryId.Value, cancellationToken).ConfigureAwait(false) ?? throw new KeyNotFoundException("category not found")
+            : null;
+
+        pie.Name = Name;
+        pie.Price = Price;
+        pie.ShortDescription = ShortDescription;
+        pie.LongDescription = LongDescription;
+        pie.AllergyInformation = AllergyInformation;
+        pie.Category = category;
+        pie.ImageThumbnailFilename = ImageThumbnailUrl;
+        pie.ImageFilename = ImageUrl;
+        pie.IsPieOfTheWeek = IsPieOfTheWeek;
+        pie.InStock = InStock;
+    }
 }

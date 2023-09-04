@@ -15,6 +15,7 @@ else
             <th>Image</th>
             <th>Name</th>
             <th>Category</th>
+            <th>Actions</th>
         </tr>
         @foreach (var pie in Model.Pies!)
         {
@@ -25,6 +26,10 @@ else
                 }
                 <td>@pie.Name</td>
                 <td>@pie.CategoryName</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@pie.Id">Details</a>
+                    <a asp-action="Edit" asp-route-id="@pie.Id">Edit</a>
+                </td>
             </tr>
         }
     </table>

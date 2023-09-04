@@ -11,12 +11,21 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using BethanysPieShop.Admin.Domain.Models;
-using BethanysPieShop.Admin.Domain.Projections;
+using System.ComponentModel.DataAnnotations;
 
-namespace BethanysPieShop.Admin.Domain.Contracts;
+namespace BethanysPieShop.MVC.App.Models.Categories;
 
-public interface ICategoryRepository : IRepository<Category, CategorySummary>
+public sealed class EditViewModel
 {
-    ValueTask Update(Guid id, string name, string? description, CancellationToken cancellationToken = default);
+    [Required]
+    public required Guid Id { get; set; }
+
+    [Display(Name = "Name")]
+    [Required(ErrorMessage = "Please enter a name")]
+    [MaxLength(200, ErrorMessage = "The name shouild be no longer than 200")]
+    public required string Name { get; set; } = string.Empty;
+
+    [Display(Name = "Description")]
+    [MaxLength(500, ErrorMessage = "The description should be no longer than 500")]
+    public string? Description { get; set; }
 }

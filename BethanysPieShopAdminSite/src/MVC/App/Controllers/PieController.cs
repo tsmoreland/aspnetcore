@@ -11,7 +11,6 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System.Reflection.Metadata.Ecma335;
 using BethanysPieShop.Admin.Domain.Contracts;
 using BethanysPieShop.Admin.Domain.Models;
 using BethanysPieShop.MVC.App.Models.Pies;
@@ -35,13 +34,13 @@ public sealed class PieController : Controller
     }
 
     [HttpGet]
-    [HttpHead]
     public async Task<IActionResult> Index()
     {
         ListViewModel model = new(await _pieRepository.GetSummaries().ToListAsync());
         return View(model);
     }
 
+    [HttpGet]
     public async Task<IActionResult> Details(Guid id)
     {
         Pie? model = await _pieRepository.FindById(id, default);
@@ -49,7 +48,6 @@ public sealed class PieController : Controller
     }
 
     [HttpGet]
-    [HttpHead]
     public async Task<IActionResult> Add()
     {
         try
@@ -102,5 +100,48 @@ public sealed class PieController : Controller
         }
 
         return View(new AddViewModel(await _categoryRepository.GetSummaries().ToListAsync()));
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Edit(Guid id)
+    {
+        Pie? pie = await _pieRepository.FindById(id, default).ConfigureAwait(false);
+        if (pie is null)
+        {
+            return NotFound();
+        }
+
+        EditViewModel viewModel = new(pie, await _categoryRepository.GetSummaries().ToListAsync());
+
+        return View(viewModel);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Edit(EditViewModel model)
+    {
+        try
+        {
+            if (ModelState.IsValid)
+            {
+                await model.UpdateModel(_pieRepository, _categoryRepository, default);
+                await _pieRepository.SaveChanges(default);
+                return RedirectToAction(nameof(Index));
+            }
+            return BadRequest();
+        }
+        catch (FluentValidation.ValidationException ex)
+        {
+            foreach (ValidationFailure? error in ex.Errors)
+            {
+                ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An error occurred adding a pie");
+            ModelState.AddModelError("", "Error occurred adding the pie");
+        }
+
+        return View(new EditViewModel(await _categoryRepository.GetSummaries().ToListAsync()) { Id = model.Id });
     }
 }

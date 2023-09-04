@@ -30,6 +30,10 @@ else
                 {
                     <td>Unknown</td>
                 }
+                <td>
+                    <a asp-action="Details" asp-route-id="@category.Id">Details</a>
+                    <a asp-action="Edit" asp-route-id="@category.Id">Edit</a>
+                </td>
             </tr>
         }
     </table>

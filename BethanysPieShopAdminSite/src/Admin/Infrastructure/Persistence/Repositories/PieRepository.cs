@@ -62,11 +62,11 @@ public sealed partial class PieRepository : IPieRepository, IPieReadOnlyReposito
     /// <inheritdoc/>
     public partial ValueTask SaveChanges(CancellationToken cancellationToken);
 
-    private ValueTask ValidateAddOrThrow(Pie entity, CancellationToken cancellationToken)
+    private static ValueTask ValidateAddOrThrow(Pie entity, CancellationToken cancellationToken)
     {
         return ValueTask.CompletedTask;
     }
-    private ValueTask ValidateUpdateOrThrow(Pie entity, CancellationToken cancellationToken)
+    private static ValueTask ValidateUpdateOrThrow(Pie entity, CancellationToken cancellationToken)
     {
         return ValueTask.CompletedTask;
     }
