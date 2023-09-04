@@ -1,6 +1,11 @@
 ﻿@using BethanysPieShop.MVC.App.Models.Pies;
 @model AddViewModel
 
+if (@ViewData["ErrorMessage"] is not null)
+{
+    <p class="text-danger">@ViewData["ErrorMessage"]</p>
+}
+
 <form method="post" asp-controller="Pie" asp-action="Add">
     <div asp-validation-summary="All" class="text-danger"></div>
 

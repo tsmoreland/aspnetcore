@@ -11,6 +11,7 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using System.Reflection.Metadata.Ecma335;
 using BethanysPieShop.Admin.Domain.Contracts;
 using BethanysPieShop.Admin.Domain.Models;
 using BethanysPieShop.MVC.App.Models.Pies;
@@ -23,12 +24,14 @@ public sealed class PieController : Controller
 {
     private readonly IPieRepository _pieRepository;
     private readonly ICategoryRepository _categoryRepository;
+    private readonly ILogger<PieController> _logger;
 
     /// <inheritdoc />
-    public PieController(IPieRepository pieRepository, ICategoryRepository categoryRepository)
+    public PieController(IPieRepository pieRepository, ICategoryRepository categoryRepository, ILogger<PieController> logger)
     {
         _pieRepository = pieRepository;
         _categoryRepository = categoryRepository;
+        _logger = logger;
     }
 
     [HttpGet]
@@ -49,8 +52,17 @@ public sealed class PieController : Controller
     [HttpHead]
     public async Task<IActionResult> Add()
     {
-        AddViewModel viewModel = new(await _categoryRepository.GetSummaries().ToListAsync());
-        return View(viewModel);
+        try
+        {
+            AddViewModel viewModel = new(await _categoryRepository.GetSummaries().ToListAsync());
+            return View(viewModel);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An error occurred loading category summaries");
+            ViewData["ErrorMessage"] = ex.Message;
+            return View(new AddViewModel());
+        }
     }
 
     [HttpPost]
@@ -85,6 +97,7 @@ public sealed class PieController : Controller
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "An error occurred adding a pie");
             ModelState.AddModelError("", "Error occurred adding the pie");
         }
 

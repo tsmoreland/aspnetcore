@@ -9,11 +9,13 @@ namespace BethanysPieShop.MVC.App.Controllers;
 public sealed class CategoryController : Controller
 {
     private readonly ICategoryRepository _repository;
+    private readonly ILogger<CategoryController> _logger;
 
     /// <inheritdoc />
-    public CategoryController(ICategoryRepository repository)
+    public CategoryController(ICategoryRepository repository, ILogger<CategoryController> logger)
     {
         _repository = repository;
+        _logger = logger;
     }
 
     [HttpGet]
@@ -53,6 +55,7 @@ public sealed class CategoryController : Controller
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "An error occurred adding category");
             ModelState.AddModelError("", "Error occurred adding the category");
         }
 

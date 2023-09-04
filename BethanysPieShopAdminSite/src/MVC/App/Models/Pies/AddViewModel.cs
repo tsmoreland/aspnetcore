@@ -34,12 +34,12 @@ public sealed class AddViewModel
     [MaxLength(200, ErrorMessage = "The name shouild be no longer than 200")]
     public string Name { get; set; } = string.Empty;
 
-    [Display(Name = "Short Description", ErrorMessage = "The short description should be no longer than 500")]
-    [MaxLength(100)]
+    [Display(Name = "Short Description")]
+    [MaxLength(100, ErrorMessage = "The short description should be no longer than 100")]
     public string? ShortDescription { get; set; }
 
-    [Display(Name = "Description", ErrorMessage = "The long description should be no longer than 500")]
-    [MaxLength(500)]
+    [Display(Name = "Description")]
+    [MaxLength(500, ErrorMessage = "The long description should be no longer than 500")]
     public string? LongDescription { get; set; }
 
     [Display(Name = "Allergy Information")]
