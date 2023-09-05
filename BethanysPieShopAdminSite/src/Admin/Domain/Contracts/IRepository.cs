@@ -20,5 +20,6 @@ public interface IRepository<TEntity, out TSummaryProjection> : IReadOnlyReposit
     ValueTask Add(TEntity entity, CancellationToken cancellationToken);
     ValueTask Update(TEntity entity, CancellationToken cancellationToken);
     void Delete(TEntity entity);
+    ValueTask Delete(Guid id, CancellationToken cancellationToken = default);
     ValueTask SaveChanges(CancellationToken cancellationToken);
 }

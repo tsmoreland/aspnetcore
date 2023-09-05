@@ -51,6 +51,10 @@ public sealed partial class CategoryRepository : ICategoryRepository, ICategoryR
     {
         return queryable.Include(e => e.Pies);
     }
+    private async ValueTask GetIncludesForFindTracked(Category entity, CancellationToken cancellationToken)
+    {
+        await _dbContext.Entry(entity).Collection(e => e.Pies).LoadAsync(cancellationToken);
+    }
 
     /// <inheritdoc/>
     public partial ValueTask Add(Category entity, CancellationToken cancellationToken);
@@ -76,6 +80,9 @@ public sealed partial class CategoryRepository : ICategoryRepository, ICategoryR
     public partial void Delete(Category entity);
 
     /// <inheritdoc/>
+    public partial ValueTask Delete(Guid id, CancellationToken cancellationToken);
+
+    /// <inheritdoc/>
     public partial ValueTask SaveChanges(CancellationToken cancellationToken);
 
     private async ValueTask ValidateAddOrThrow(Category entity, CancellationToken cancellationToken)
@@ -93,5 +100,12 @@ public sealed partial class CategoryRepository : ICategoryRepository, ICategoryR
             throw new ValidationException("Category with same name already exists",
                 new[] { new ValidationFailure("Name", "Category with same name already exists") });
         }
+    }
+
+    private async ValueTask<(bool allowed, string reason)> AllowsDelete(Guid id, CancellationToken cancellationToken)
+    {
+        bool allowed = !await _dbContext.Pies.AsNoTracking().Where(e => e.CategoryId == id).AnyAsync(cancellationToken);
+
+        return (allowed, !allowed ? "Pies exist in this category.  Delete all the pies in this category before deleting the category" : string.Empty);
     }
 }

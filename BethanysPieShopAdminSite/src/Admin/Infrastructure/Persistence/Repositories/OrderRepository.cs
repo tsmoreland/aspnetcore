@@ -49,6 +49,10 @@ public sealed partial class OrderRepository : IOrderRepository, IOrderReadOnlyRe
     {
         return queryable.Include(e => e.OrderDetails);
     }
+    private async ValueTask GetIncludesForFindTracked(Order entity, CancellationToken cancellationToken)
+    {
+        await _dbContext.Entry(entity).Collection(e => e.OrderDetails).LoadAsync(cancellationToken);
+    }
 
     /// <inheritdoc/>
     public partial ValueTask Add(Order entity, CancellationToken cancellationToken);
@@ -60,6 +64,9 @@ public sealed partial class OrderRepository : IOrderRepository, IOrderReadOnlyRe
     public partial void Delete(Order entity);
 
     /// <inheritdoc/>
+    public partial ValueTask Delete(Guid id, CancellationToken cancellationToken = default);
+
+    /// <inheritdoc/>
     public partial ValueTask SaveChanges(CancellationToken cancellationToken);
 
     private ValueTask ValidateAddOrThrow(Order entity, CancellationToken cancellationToken)
@@ -69,5 +76,10 @@ public sealed partial class OrderRepository : IOrderRepository, IOrderReadOnlyRe
     private ValueTask ValidateUpdateOrThrow(Order entity, CancellationToken cancellationToken)
     {
         return ValueTask.CompletedTask;
+    }
+
+    private ValueTask<(bool allowed, string reason)> AllowsDelete(Guid id, CancellationToken cancellationToken)
+    {
+        return ValueTask.FromResult((true, string.Empty));
     }
 }

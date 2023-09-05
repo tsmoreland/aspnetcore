@@ -14,6 +14,7 @@
 using BethanysPieShop.Admin.Domain.Contracts;
 using BethanysPieShop.Admin.Domain.Models;
 using BethanysPieShop.Admin.Domain.Projections;
+using Microsoft.AspNetCore.Server.IIS.Core;
 using Microsoft.EntityFrameworkCore;
 
 namespace BethanysPieShop.Admin.Infrastructure.Persistence.Repositories;
@@ -49,6 +50,10 @@ public sealed partial class PieRepository : IPieRepository, IPieReadOnlyReposito
     {
         return queryable.Include(e => e.Ingredients);
     }
+    private async ValueTask GetIncludesForFindTracked(Pie entity, CancellationToken cancellationToken)
+    {
+        await _dbContext.Entry(entity).Collection(e => e.Ingredients).LoadAsync(cancellationToken);
+    }
 
     /// <inheritdoc/>
     public partial ValueTask Add(Pie entity, CancellationToken cancellationToken);
@@ -60,6 +65,9 @@ public sealed partial class PieRepository : IPieRepository, IPieReadOnlyReposito
     public partial void Delete(Pie entity);
 
     /// <inheritdoc/>
+    public partial ValueTask Delete(Guid id, CancellationToken cancellationToken);
+
+    /// <inheritdoc/>
     public partial ValueTask SaveChanges(CancellationToken cancellationToken);
 
     private static ValueTask ValidateAddOrThrow(Pie entity, CancellationToken cancellationToken)
@@ -69,5 +77,9 @@ public sealed partial class PieRepository : IPieRepository, IPieReadOnlyReposito
     private static ValueTask ValidateUpdateOrThrow(Pie entity, CancellationToken cancellationToken)
     {
         return ValueTask.CompletedTask;
+    }
+    private ValueTask<(bool allowed, string reason)> AllowsDelete(Guid id, CancellationToken cancellationToken)
+    {
+        return ValueTask.FromResult((true, string.Empty));
     }
 }

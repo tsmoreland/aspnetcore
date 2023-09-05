@@ -4,6 +4,11 @@
 <h2>Categories</h2>
 <hr/>
 
+@if (TempData["CategoryDelete"] is not null)
+{
+    <p class="ttext-success">@TempData["CategoryDelete"]</p>
+}
+
 @if (Model.Categories?.Any() == false)
 {
     <p>No results</p>
@@ -33,6 +38,7 @@ else
                 <td>
                     <a asp-action="Details" asp-route-id="@category.Id">Details</a>
                     <a asp-action="Edit" asp-route-id="@category.Id">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@category.Id">Delete</a>
                 </td>
             </tr>
         }

@@ -82,6 +82,20 @@ internal sealed record class WritableRepositoryGeneratorItem(string Namespace, s
                     }
                 }
 
+                public async partial ValueTask Delete(Guid id, CancellationToken cancellationToken)
+                {
+                    (bool allowed, string reason) = await AllowsDelete(id, cancellationToken);
+                    if (!allowed)
+                    {
+                        throw new ArgumentException(reason, nameof(id));
+                    }
+
+                    {{EntityType}} entity = await Entities.FindAsync(new object[] { id }, cancellationToken) ??
+                        throw new ArgumentException($"Entity matching {id} not found", nameof(id));
+                    await GetIncludesForFindTracked(entity, cancellationToken);
+                    Delete(entity);
+                }
+
                 public async partial ValueTask SaveChanges(CancellationToken cancellationToken)
                 {
                     await _dbContext.SaveChangesAsync(cancellationToken);

@@ -1,0 +1,45 @@
+﻿@using BethanysPieShop.Admin.Domain.Models;
+@model Category
+
+<h2>Delete category @Model?.Name</h2>
+<hr/>
+
+@if (ViewData["ErrorMessage"] is not null)
+{
+    <p class="text-danger">@ViewData["ErrorMessage"]</p>
+}
+
+<div>
+    <dl class="row">
+        <dt class="col-sm-2">
+            <label asp-for="Id"></label>
+        </dt>
+        <dd class="col-sm-10">
+            @Model?.Id
+        </dd>
+        <dt class="col-sm-2">
+            <label asp-for="Name"></label>
+        </dt>
+        <dd class="col-sm-10">
+            @Model?.Description
+        </dd>
+        <dd class="col-sm-10">
+            @Model?.Description
+        </dd>
+        <dd class="col-sm-10">
+            @Model?.DateAdded
+        </dd>
+        <dd class="col-sm-10">
+            @Model?.DateAdded?.ToShortDateString()
+        </dd>
+    </dl>
+</div>
+
+<form method="post" asp-action="Delete">
+    <input type="hidden" asp-for="Id"/>
+    <input type="submit" value="Delete category" class="btn btn-danger"/>
+</form>
+
+<div>
+    <a asp-controller="Category" asp-action="Index">Back to overview</a>
+</div>
