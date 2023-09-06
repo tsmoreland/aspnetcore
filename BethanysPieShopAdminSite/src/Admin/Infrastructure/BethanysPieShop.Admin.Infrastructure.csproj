@@ -26,7 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Domain\BethanysPieShop.Admin.Domain.csproj" />
-    <ProjectReference Include="..\Infrastructure.Generator\BethanysPieShop.Admin.Infrastructure.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
+    <ProjectReference Include="..\Infrastructure.Generator\BethanysPieShop.Admin.Infrastructure.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
 
 </Project>

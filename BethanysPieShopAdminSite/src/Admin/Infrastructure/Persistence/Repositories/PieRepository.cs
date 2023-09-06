@@ -14,12 +14,12 @@
 using BethanysPieShop.Admin.Domain.Contracts;
 using BethanysPieShop.Admin.Domain.Models;
 using BethanysPieShop.Admin.Domain.Projections;
-using Microsoft.AspNetCore.Server.IIS.Core;
+using BethanysPieShop.Admin.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace BethanysPieShop.Admin.Infrastructure.Persistence.Repositories;
 
-[ReadOnlyRepository("BethanysPieShop.Admin.Domain.Models.Pie", "BethanysPieShop.Admin.Domain.Projections.PieSummary")]
+[ReadOnlyRepository("BethanysPieShop.Admin.Domain.Models.Pie", "BethanysPieShop.Admin.Domain.Projections.PieSummary", "BethanysPieShop.Admin.Domain.ValueObjects.PiesOrder")]
 [WritableRepository("BethanysPieShop.Admin.Domain.Models.Pie")]
 public sealed partial class PieRepository : IPieRepository, IPieReadOnlyRepository
 {
@@ -32,10 +32,10 @@ public sealed partial class PieRepository : IPieRepository, IPieReadOnlyReposito
     }
 
     /// <inheritdoc />
-    public partial IAsyncEnumerable<Pie> GetAll();
+    public partial IAsyncEnumerable<Pie> GetAll(PiesOrder orderBy, bool descending);
 
     /// <inheritdoc />
-    public partial IAsyncEnumerable<PieSummary> GetSummaries();
+    public partial IAsyncEnumerable<PieSummary> GetSummaries(PiesOrder orderBy, bool descending);
 
     /// <inheritdoc />
     public partial Task<Pie?> FindById(Guid id, CancellationToken cancellationToken);

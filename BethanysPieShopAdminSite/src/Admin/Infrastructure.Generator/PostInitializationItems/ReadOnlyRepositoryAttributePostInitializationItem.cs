@@ -11,10 +11,6 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace BethanysPieShop.Admin.Infrastructure.Generator.PostInitializationItems;
 
 internal sealed class ReadOnlyRepositoryAttributePostInitializationItem : IPostInitializationItem
@@ -31,14 +27,16 @@ internal sealed class ReadOnlyRepositoryAttributePostInitializationItem : IPostI
         {
             internal sealed class ReadOnlyRepositoryAttribute : System.Attribute
             {
-                public ReadOnlyRepositoryAttribute(string entityType, string summaryProjectionType)
+                public ReadOnlyRepositoryAttribute(string entityType, string summaryProjectionType, string orderByType)
                 {
                     EntityType = entityType;
                     SummaryProjectionType = summaryProjectionType;
+                    OrderByType = orderByType;
                 }
 
                 public string EntityType { get; }
                 public string SummaryProjectionType { get; }
+                public string OrderByType { get; }
             }
         }
         """;

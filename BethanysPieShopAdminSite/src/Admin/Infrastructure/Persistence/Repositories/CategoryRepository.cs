@@ -14,13 +14,14 @@
 using BethanysPieShop.Admin.Domain.Contracts;
 using BethanysPieShop.Admin.Domain.Models;
 using BethanysPieShop.Admin.Domain.Projections;
+using BethanysPieShop.Admin.Domain.ValueObjects;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 
 namespace BethanysPieShop.Admin.Infrastructure.Persistence.Repositories;
 
-[ReadOnlyRepository("BethanysPieShop.Admin.Domain.Models.Category", "BethanysPieShop.Admin.Domain.Projections.CategorySummary")]
+[ReadOnlyRepository("BethanysPieShop.Admin.Domain.Models.Category", "BethanysPieShop.Admin.Domain.Projections.CategorySummary", "BethanysPieShop.Admin.Domain.ValueObjects.CategoriesOrder")]
 [WritableRepository("BethanysPieShop.Admin.Domain.Models.Category")]
 public sealed partial class CategoryRepository : ICategoryRepository, ICategoryReadOnlyRepository
 {
@@ -33,10 +34,10 @@ public sealed partial class CategoryRepository : ICategoryRepository, ICategoryR
     }
 
     /// <inheritdoc />
-    public partial IAsyncEnumerable<Category> GetAll();
+    public partial IAsyncEnumerable<Category> GetAll(CategoriesOrder orderBy, bool descending);
 
     /// <inheritdoc />
-    public partial IAsyncEnumerable<CategorySummary> GetSummaries();
+    public partial IAsyncEnumerable<CategorySummary> GetSummaries(CategoriesOrder orderBy, bool descending);
 
     /// <inheritdoc />
     public partial Task<Category?> FindById(Guid id, CancellationToken cancellationToken);

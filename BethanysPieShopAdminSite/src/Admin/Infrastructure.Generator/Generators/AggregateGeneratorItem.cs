@@ -23,6 +23,8 @@ internal sealed record class AggregateGeneratorItem(string Namespace, string Cla
     {
         return $$"""
             using BethanysPieShop.Admin.Domain.Models;
+            using BethanysPieShop.Admin.Domain.ValueObjects;
+            using BethanysPieShop.Admin.Infrastructure.Persistence.Extensions;
             using Microsoft.EntityFrameworkCore;
 
             namespace {{Namespace}};

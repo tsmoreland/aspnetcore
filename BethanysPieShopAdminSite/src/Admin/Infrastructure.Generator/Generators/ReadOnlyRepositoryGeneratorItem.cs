@@ -15,7 +15,7 @@ using Microsoft.CodeAnalysis;
 
 namespace BethanysPieShop.Admin.Infrastructure.Generator.Generators;
 
-internal sealed record class ReadOnlyRepositoryGeneratorItem(string Namespace, string ClassName, string EntityType, string SummaryProjectionType)
+internal sealed record class ReadOnlyRepositoryGeneratorItem(string Namespace, string ClassName, string EntityType, string SummaryProjectionType, string OrderEnumType)
     : GeneratorItem(Namespace, ClassName)
 {
 
@@ -25,7 +25,7 @@ internal sealed record class ReadOnlyRepositoryGeneratorItem(string Namespace, s
     /// </summary>
     public static GeneratorItem? Build(string @namespace, string className, AttributeData attributeData)
     {
-        const int expectedArgumentCount = 2;
+        const int expectedArgumentCount = 3;
         if (attributeData is not { ConstructorArguments.Length: expectedArgumentCount })
         {
             return null;
@@ -33,8 +33,9 @@ internal sealed record class ReadOnlyRepositoryGeneratorItem(string Namespace, s
 
         string entityType = (string)attributeData.ConstructorArguments[0].Value!;
         string summaryProjectionType = (string)attributeData.ConstructorArguments[1].Value!;
+        string orderEnumType = (string)attributeData.ConstructorArguments[2].Value!;
 
-        return new ReadOnlyRepositoryGeneratorItem(@namespace, className, entityType, summaryProjectionType);
+        return new ReadOnlyRepositoryGeneratorItem(@namespace, className, entityType, summaryProjectionType, orderEnumType);
     }
 
 
@@ -48,6 +49,8 @@ internal sealed record class ReadOnlyRepositoryGeneratorItem(string Namespace, s
     {
         return $$"""
             using BethanysPieShop.Admin.Domain.Models;
+            using BethanysPieShop.Admin.Domain.ValueObjects;
+            using BethanysPieShop.Admin.Infrastructure.Persistence.Extensions;
             using Microsoft.EntityFrameworkCore;
 
             namespace {{Namespace}};
@@ -64,15 +67,16 @@ internal sealed record class ReadOnlyRepositoryGeneratorItem(string Namespace, s
     internal override string GenerateClassContent()
     {
         return $$"""
-                public partial IAsyncEnumerable<{{EntityType}}> GetAll()
+                public partial IAsyncEnumerable<{{EntityType}}> GetAll({{OrderEnumType}} orderBy, bool descending)
                 {
                     return Entities.AsNoTracking()
+                        .OrderBy(orderBy, descending)
                         .AsAsyncEnumerable();
                 }
 
-                public partial IAsyncEnumerable<{{SummaryProjectionType}}> GetSummaries()
+                public partial IAsyncEnumerable<{{SummaryProjectionType}}> GetSummaries({{OrderEnumType}} orderBy, bool descending)
                 {
-                    return GetSummaries(Entities.AsNoTracking()).AsAsyncEnumerable();
+                    return GetSummaries(Entities.AsNoTracking().OrderBy(orderBy, descending)).AsAsyncEnumerable();
                 }
 
                 public partial Task<{{EntityType}}?> FindById(Guid id, CancellationToken cancellationToken)

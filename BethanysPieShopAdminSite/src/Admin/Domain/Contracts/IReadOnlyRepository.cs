@@ -13,11 +13,12 @@
 
 namespace BethanysPieShop.Admin.Domain.Contracts;
 
-public interface IReadOnlyRepository<TEntity, out TSummaryProjection>
+public interface IReadOnlyRepository<TEntity, out TSummaryProjection, in TOrderEnum>
     where TEntity : class
     where TSummaryProjection : class
+    where TOrderEnum : struct, Enum
 {
-    public IAsyncEnumerable<TEntity> GetAll();
-    public IAsyncEnumerable<TSummaryProjection> GetSummaries();
+    public IAsyncEnumerable<TEntity> GetAll(TOrderEnum orderBy, bool descending);
+    public IAsyncEnumerable<TSummaryProjection> GetSummaries(TOrderEnum orderBy, bool descending);
     public Task<TEntity?> FindById(Guid id, CancellationToken cancellationToken);
 }

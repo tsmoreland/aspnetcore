@@ -14,11 +14,12 @@
 using BethanysPieShop.Admin.Domain.Contracts;
 using BethanysPieShop.Admin.Domain.Models;
 using BethanysPieShop.Admin.Domain.Projections;
+using BethanysPieShop.Admin.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace BethanysPieShop.Admin.Infrastructure.Persistence.Repositories;
 
-[ReadOnlyRepository("BethanysPieShop.Admin.Domain.Models.Order", "BethanysPieShop.Admin.Domain.Projections.OrderSummary")]
+[ReadOnlyRepository("BethanysPieShop.Admin.Domain.Models.Order", "BethanysPieShop.Admin.Domain.Projections.OrderSummary", "BethanysPieShop.Admin.Domain.ValueObjects.OrdersOrder")]
 [WritableRepository("BethanysPieShop.Admin.Domain.Models.Order")]
 public sealed partial class OrderRepository : IOrderRepository, IOrderReadOnlyRepository
 {
@@ -31,10 +32,10 @@ public sealed partial class OrderRepository : IOrderRepository, IOrderReadOnlyRe
     }
 
     /// <inheritdoc />
-    public partial IAsyncEnumerable<Order> GetAll();
+    public partial IAsyncEnumerable<Order> GetAll(OrdersOrder orderBy, bool descending);
 
     /// <inheritdoc />
-    public partial IAsyncEnumerable<OrderSummary> GetSummaries();
+    public partial IAsyncEnumerable<OrderSummary> GetSummaries(OrdersOrder orderBy, bool descending);
 
     /// <inheritdoc />
     public partial Task<Order?> FindById(Guid id, CancellationToken cancellationToken);

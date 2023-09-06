@@ -13,10 +13,11 @@
 
 using BethanysPieShop.Admin.Domain.Models;
 using BethanysPieShop.Admin.Domain.Projections;
+using BethanysPieShop.Admin.Domain.ValueObjects;
 
 namespace BethanysPieShop.Admin.Domain.Contracts;
 
-public interface ICategoryRepository : IRepository<Category, CategorySummary>
+public interface ICategoryRepository : IRepository<Category, CategorySummary, CategoriesOrder>
 {
     ValueTask Update(Guid id, string name, string? description, CancellationToken cancellationToken = default);
 }

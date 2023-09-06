@@ -13,9 +13,10 @@
 
 namespace BethanysPieShop.Admin.Domain.Contracts;
 
-public interface IRepository<TEntity, out TSummaryProjection> : IReadOnlyRepository<TEntity, TSummaryProjection>
+public interface IRepository<TEntity, out TSummaryProjection, in TOrderEnum> : IReadOnlyRepository<TEntity, TSummaryProjection, TOrderEnum>
     where TEntity : class
     where TSummaryProjection : class
+    where TOrderEnum : struct, Enum
 {
     ValueTask Add(TEntity entity, CancellationToken cancellationToken);
     ValueTask Update(TEntity entity, CancellationToken cancellationToken);

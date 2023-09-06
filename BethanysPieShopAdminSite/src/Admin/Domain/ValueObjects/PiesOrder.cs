@@ -11,12 +11,14 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using BethanysPieShop.Admin.Domain.Models;
-using BethanysPieShop.Admin.Domain.Projections;
-using BethanysPieShop.Admin.Domain.ValueObjects;
+namespace BethanysPieShop.Admin.Domain.ValueObjects;
 
-namespace BethanysPieShop.Admin.Domain.Contracts;
-
-public interface IPieRepository : IRepository<Pie, PieSummary, PiesOrder>
+public enum PiesOrder
 {
+    Id,
+    Name,
+    ShortDescription,
+    LongDescription,
+    Price,
+    CategoryName,
 }

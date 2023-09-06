@@ -44,6 +44,8 @@ internal sealed record class WritableRepositoryGeneratorItem(string Namespace, s
     {
         return $$"""
             using BethanysPieShop.Admin.Domain.Models;
+            using BethanysPieShop.Admin.Domain.ValueObjects;
+            using BethanysPieShop.Admin.Infrastructure.Persistence.Extensions;
             using Microsoft.EntityFrameworkCore;
 
             namespace {{Namespace}};
