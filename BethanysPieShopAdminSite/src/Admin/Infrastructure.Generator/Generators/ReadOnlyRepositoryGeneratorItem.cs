@@ -83,6 +83,16 @@ internal sealed record class ReadOnlyRepositoryGeneratorItem(string Namespace, s
                 {
                     return GetIncludesForFind(Entities.AsNoTracking()).FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
                 }
+
+                public async partial ValueTask<Page<{{SummaryProjectionType}}>> GetSummaryPage(PageRequest<{{OrderEnumType}}> request, CancellationToken cancellationToken)
+                {
+                    int total = await Entities.AsNoTracking().CountAsync(cancellationToken);
+                    IQueryable<{{EntityType}}> queryable = Entities.AsNoTracking()
+                        .Skip(request.GetSkipCount())
+                        .Take(request.PageSize);
+                    IReadOnlyList<{{SummaryProjectionType}}> items = await GetSummaries(queryable).ToListAsync(cancellationToken);
+                    return new Page<{{SummaryProjectionType}}>(items, total, request.PageNumber, request.PageSize);
+                }
             """;
     }
 }

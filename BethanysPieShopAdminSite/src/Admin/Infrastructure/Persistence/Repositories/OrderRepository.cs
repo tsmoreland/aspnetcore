@@ -38,6 +38,9 @@ public sealed partial class OrderRepository : IOrderRepository, IOrderReadOnlyRe
     public partial IAsyncEnumerable<OrderSummary> GetSummaries(OrdersOrder orderBy, bool descending);
 
     /// <inheritdoc />
+    public partial ValueTask<Page<OrderSummary>> GetSummaryPage(PageRequest<OrdersOrder> request, CancellationToken cancellationToken);
+
+    /// <inheritdoc />
     public partial Task<Order?> FindById(Guid id, CancellationToken cancellationToken);
 
     private static IQueryable<OrderSummary> GetSummaries(IQueryable<Order> orders)

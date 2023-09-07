@@ -11,14 +11,17 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using BethanysPieShop.Admin.Domain.ValueObjects;
+
 namespace BethanysPieShop.Admin.Domain.Contracts;
 
-public interface IReadOnlyRepository<TEntity, out TSummaryProjection, in TOrderEnum>
+public interface IReadOnlyRepository<TEntity, TSummaryProjection, TOrderEnum>
     where TEntity : class
     where TSummaryProjection : class
     where TOrderEnum : struct, Enum
 {
     public IAsyncEnumerable<TEntity> GetAll(TOrderEnum orderBy, bool descending);
     public IAsyncEnumerable<TSummaryProjection> GetSummaries(TOrderEnum orderBy, bool descending);
+    public ValueTask<Page<TSummaryProjection>> GetSummaryPage(PageRequest<TOrderEnum> request, CancellationToken cancellationToken);
     public Task<TEntity?> FindById(Guid id, CancellationToken cancellationToken);
 }

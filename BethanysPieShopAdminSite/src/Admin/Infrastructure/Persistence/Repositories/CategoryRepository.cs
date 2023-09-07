@@ -40,6 +40,9 @@ public sealed partial class CategoryRepository : ICategoryRepository, ICategoryR
     public partial IAsyncEnumerable<CategorySummary> GetSummaries(CategoriesOrder orderBy, bool descending);
 
     /// <inheritdoc />
+    public partial ValueTask<Page<CategorySummary>> GetSummaryPage(PageRequest<CategoriesOrder> request, CancellationToken cancellationToken);
+
+    /// <inheritdoc />
     public partial Task<Category?> FindById(Guid id, CancellationToken cancellationToken);
 
     private static IQueryable<CategorySummary> GetSummaries(IQueryable<Category> categories)

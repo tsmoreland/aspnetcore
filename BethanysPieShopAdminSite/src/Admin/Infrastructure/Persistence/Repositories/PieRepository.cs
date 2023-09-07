@@ -11,6 +11,7 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using System.Data;
 using BethanysPieShop.Admin.Domain.Contracts;
 using BethanysPieShop.Admin.Domain.Models;
 using BethanysPieShop.Admin.Domain.Projections;
@@ -36,6 +37,9 @@ public sealed partial class PieRepository : IPieRepository, IPieReadOnlyReposito
 
     /// <inheritdoc />
     public partial IAsyncEnumerable<PieSummary> GetSummaries(PiesOrder orderBy, bool descending);
+
+    /// <inheritdoc />
+    public partial ValueTask<Page<PieSummary>> GetSummaryPage(PageRequest<PiesOrder> request, CancellationToken cancellationToken);
 
     /// <inheritdoc />
     public partial Task<Pie?> FindById(Guid id, CancellationToken cancellationToken);
@@ -82,4 +86,4 @@ public sealed partial class PieRepository : IPieRepository, IPieReadOnlyReposito
     {
         return ValueTask.FromResult((true, string.Empty));
     }
-}
+} 

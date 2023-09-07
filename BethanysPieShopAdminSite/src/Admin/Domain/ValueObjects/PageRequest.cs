@@ -11,16 +11,10 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-namespace BethanysPieShop.Admin.Domain.Contracts;
+namespace BethanysPieShop.Admin.Domain.ValueObjects;
 
-public interface IRepository<TEntity, TSummaryProjection, TOrderEnum> : IReadOnlyRepository<TEntity, TSummaryProjection, TOrderEnum>
-    where TEntity : class
-    where TSummaryProjection : class
-    where TOrderEnum : struct, Enum
+public sealed record class PageRequest<TOrderBy>(int PageNumber, int PageSize, TOrderBy OrderBy, bool Descending) where TOrderBy
+    : struct, Enum
 {
-    ValueTask Add(TEntity entity, CancellationToken cancellationToken);
-    ValueTask Update(TEntity entity, CancellationToken cancellationToken);
-    void Delete(TEntity entity);
-    ValueTask Delete(Guid id, CancellationToken cancellationToken = default);
-    ValueTask SaveChanges(CancellationToken cancellationToken);
+    public int GetSkipCount() => (PageNumber - 1) * PageSize;
 }
