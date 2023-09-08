@@ -13,6 +13,7 @@
 
 using BethanysPieShop.Admin.Domain.Contracts;
 using BethanysPieShop.Admin.Domain.Models;
+using BethanysPieShop.Admin.Domain.ValueObjects;
 using BethanysPieShop.MVC.App.Models.Pies;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
@@ -36,7 +37,7 @@ public sealed class PieController : Controller
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        ListViewModel model = new(await _pieRepository.GetSummaries().ToListAsync());
+        ListViewModel model = new(await _pieRepository.GetSummaries(PiesOrder.Name, false).ToListAsync());
         return View(model);
     }
 
@@ -52,7 +53,7 @@ public sealed class PieController : Controller
     {
         try
         {
-            AddViewModel viewModel = new(await _categoryRepository.GetSummaries().ToListAsync());
+            AddViewModel viewModel = new(await _categoryRepository.GetSummaries(CategoriesOrder.Name, false).ToListAsync());
             return View(viewModel);
         }
         catch (Exception ex)
@@ -68,7 +69,7 @@ public sealed class PieController : Controller
     {
         if (!ModelState.IsValid)
         {
-            return View(new AddViewModel(await _categoryRepository.GetSummaries().ToListAsync()));
+            return View(new AddViewModel(await _categoryRepository.GetSummaries(CategoriesOrder.Name, false).ToListAsync()));
         }
 
         try
@@ -77,7 +78,7 @@ public sealed class PieController : Controller
             if (category is null)
             {
                 ModelState.AddModelError("CategoryId", "Not Found");
-                return View(new AddViewModel(await _categoryRepository.GetSummaries().ToListAsync()));
+                return View(new AddViewModel(await _categoryRepository.GetSummaries(CategoriesOrder.Name, false).ToListAsync()));
             }
 
             Pie pie = new(model.Name, model.Price, model.ShortDescription, model.LongDescription, model.AllergyInformation, model.ImageUrl, model.ImageThumbnailUrl, category);
@@ -99,7 +100,7 @@ public sealed class PieController : Controller
             ModelState.AddModelError("", "Error occurred adding the pie");
         }
 
-        return View(new AddViewModel(await _categoryRepository.GetSummaries().ToListAsync()));
+        return View(new AddViewModel(await _categoryRepository.GetSummaries(CategoriesOrder.Name, false).ToListAsync()));
     }
 
     [HttpGet]
@@ -111,7 +112,7 @@ public sealed class PieController : Controller
             return NotFound();
         }
 
-        EditViewModel viewModel = new(pie, await _categoryRepository.GetSummaries().ToListAsync());
+        EditViewModel viewModel = new(pie, await _categoryRepository.GetSummaries(CategoriesOrder.Name, false).ToListAsync());
 
         return View(viewModel);
     }
@@ -142,6 +143,6 @@ public sealed class PieController : Controller
             ModelState.AddModelError("", "Error occurred adding the pie");
         }
 
-        return View(new EditViewModel(await _categoryRepository.GetSummaries().ToListAsync()) { Id = model.Id });
+        return View(new EditViewModel(await _categoryRepository.GetSummaries(CategoriesOrder.Name, false).ToListAsync()) { Id = model.Id });
     }
 }

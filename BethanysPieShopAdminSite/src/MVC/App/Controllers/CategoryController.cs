@@ -1,10 +1,9 @@
 ﻿using BethanysPieShop.Admin.Domain.Contracts;
 using BethanysPieShop.Admin.Domain.Models;
-using BethanysPieShop.Admin.Domain.Projections;
+using BethanysPieShop.Admin.Domain.ValueObjects;
 using BethanysPieShop.MVC.App.Models.Categories;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Abstractions;
 
 namespace BethanysPieShop.MVC.App.Controllers;
 
@@ -23,7 +22,7 @@ public sealed class CategoryController : Controller
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        ListViewModel model = new(await _repository.GetSummaries().ToListAsync());
+        ListViewModel model = new(await _repository.GetSummaries(CategoriesOrder.Name, false).ToListAsync());
         return View(model);
     }
 
