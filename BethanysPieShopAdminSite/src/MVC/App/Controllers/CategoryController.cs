@@ -1,5 +1,6 @@
 ﻿using BethanysPieShop.Admin.Domain.Contracts;
 using BethanysPieShop.Admin.Domain.Models;
+using BethanysPieShop.Admin.Domain.Projections;
 using BethanysPieShop.Admin.Domain.ValueObjects;
 using BethanysPieShop.MVC.App.Models.Categories;
 using FluentValidation.Results;
@@ -24,6 +25,16 @@ public sealed class CategoryController : Controller
     {
         ListViewModel model = new(await _repository.GetSummaries(CategoriesOrder.Name, false).ToListAsync());
         return View(model);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Paged(int? pageNumber)
+    {
+        const int pageSize = 10;
+        pageNumber ??= 1;
+
+        Page<CategorySummary> page = await _repository.GetSummaryPage(new PageRequest<CategoriesOrder>(pageNumber.Value, pageSize, CategoriesOrder.Name, false), default);
+        return View(page);
     }
 
     [HttpGet]

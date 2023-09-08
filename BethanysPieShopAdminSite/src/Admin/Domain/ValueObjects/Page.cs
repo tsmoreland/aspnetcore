@@ -14,4 +14,13 @@
 namespace BethanysPieShop.Admin.Domain.ValueObjects;
 
 public sealed record class Page<TItem>(IReadOnlyCollection<TItem> Items, int TotalCount, int PageNumber, int PageSize)
-    where TItem : class;
+    where TItem : class
+{
+    private readonly Lazy<int> _totalPages = new(() => (int)Math.Ceiling(TotalCount / (double)PageSize));
+
+    public int TotalPages => _totalPages.Value;
+
+    public bool HasPreviousPage => PageNumber > 1;
+    public bool HasNextPage => PageNumber < TotalPages;
+
+}

@@ -13,6 +13,7 @@
 
 using BethanysPieShop.Admin.Domain.Contracts;
 using BethanysPieShop.Admin.Domain.Models;
+using BethanysPieShop.Admin.Domain.Projections;
 using BethanysPieShop.Admin.Domain.ValueObjects;
 using BethanysPieShop.MVC.App.Models.Pies;
 using FluentValidation.Results;
@@ -39,6 +40,16 @@ public sealed class PieController : Controller
     {
         ListViewModel model = new(await _pieRepository.GetSummaries(PiesOrder.Name, false).ToListAsync());
         return View(model);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Paged(int? pageNumber)
+    {
+        const int pageSize = 10;
+        pageNumber ??= 1;
+
+        Page<PieSummary> page = await _pieRepository.GetSummaryPage(new PageRequest<PiesOrder>(pageNumber.Value, pageSize, PiesOrder.Name, false), default);
+        return View(page);
     }
 
     [HttpGet]
