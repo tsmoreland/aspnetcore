@@ -52,8 +52,12 @@ else
     string nextButtonDisabled = !Model.HasNextPage ? "disabled" : "";
 }
 
-<a asp-action="Paged" asp-route-pageNumber="@(Model.PageNumber - 1)" class="btn btn-default @previousButtonDisabled">Previous</a>
-<a asp-action="Paged" asp-route-pageNumber="@(Model.PageNumber + 1)" class="btn btn-default @nextButtonDisabled">Next</a>
+<a asp-action="PagedAndSorted" asp-route-pageNumber="@(Model.PageNumber - 1)" asp-route-sortBy="@ViewData["CustomSort"]" asp-route-descending="@ViewData["SortDirection"]" class="btn btn-default @previousButtonDisabled">
+    Previous
+</a>
+<a asp-action="PagedAndSorted" asp-route-pageNumber="@(Model.PageNumber + 1)" asp-route-sortBy="@ViewData["CustomSort"]" asp-route-descending="@ViewData["SortDirection"]" class="btn btn-default @nextButtonDisabled">
+    Next
+</a>
 
 <P>
     <a class="btn btn-primary" asp-action="Add">Add new category</a>
