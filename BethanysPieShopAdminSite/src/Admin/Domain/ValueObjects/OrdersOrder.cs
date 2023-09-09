@@ -20,3 +20,18 @@ public enum OrdersOrder
     AddresssLine1,
     City,
 }
+
+public static class OrdersOrderFactory
+{
+    public static OrdersOrder FromString(string value)
+    {
+        return (value?.ToUpperInvariant() ?? string.Empty) switch
+        {
+            "FIRSTNAME" => OrdersOrder.FirstName,
+            "LASTNAME" => OrdersOrder.LastName,
+            "ADDRESS" => OrdersOrder.AddresssLine1,
+            "CITY" => OrdersOrder.City,
+            _ => OrdersOrder.LastName,
+        };
+    }
+}

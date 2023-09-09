@@ -20,3 +20,17 @@ public enum CategoriesOrder
     Description,
     DateAdded
 }
+
+public static class CategoriesOrderFactory
+{
+    public static CategoriesOrder FromString(string value)
+    {
+        return (value?.ToUpperInvariant() ?? string.Empty) switch
+        {
+            "NAME" => CategoriesOrder.Name,
+            "DESCRIPTION" => CategoriesOrder.Description,
+            "DATEADDED" => CategoriesOrder.DateAdded,
+            _ => CategoriesOrder.Id,
+        };
+    }
+}

@@ -52,6 +52,20 @@ public sealed class PieController : Controller
         return View(page);
     }
 
+    public async Task<IActionResult> PagedAndSorted(int? pageNumber, string sortBy, bool descending)
+    {
+        const int pageSize = 10;
+        pageNumber ??= 1;
+
+        ViewData["CustomSort"] = sortBy;
+        // TODO: track sort direction by property in ViewData, when we change column is should revert to ascending
+        ViewData["SortDirection"] = !descending;
+
+        PiesOrder orderBy = PiesOrderFactory.FromString(sortBy);
+        Page<PieSummary> page = await _pieRepository.GetSummaryPage(new PageRequest<PiesOrder>(pageNumber.Value, pageSize, orderBy, descending), default);
+        return View(page);
+    }
+
     [HttpGet]
     public async Task<IActionResult> Details(Guid id)
     {

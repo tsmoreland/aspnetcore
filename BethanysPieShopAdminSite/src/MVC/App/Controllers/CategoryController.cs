@@ -37,6 +37,20 @@ public sealed class CategoryController : Controller
         return View(page);
     }
 
+    public async Task<IActionResult> PagedAndSorted(int? pageNumber, string sortBy, bool descending)
+    {
+        const int pageSize = 10;
+        pageNumber ??= 1;
+
+        ViewData["CustomSort"] = sortBy;
+        ViewData["SortDirection"] = !descending;
+
+        CategoriesOrder orderBy = CategoriesOrderFactory.FromString(sortBy);
+        Page<CategorySummary> page = await _repository.GetSummaryPage(new PageRequest<CategoriesOrder>(pageNumber.Value, pageSize, orderBy, descending), default);
+        return View(page);
+    }
+
+
     [HttpGet]
     public async Task<IActionResult> Details(Guid id)
     {

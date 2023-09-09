@@ -22,3 +22,19 @@ public enum PiesOrder
     Price,
     CategoryName,
 }
+
+public static class PiesOrderFactory
+{
+    public static PiesOrder FromString(string value)
+    {
+        return (value?.ToUpperInvariant() ?? string.Empty) switch
+        {
+            "NAME" => PiesOrder.Name,
+            "LONGDESCRIPTION" => PiesOrder.LongDescription,
+            "SHORTDESCRIPTION" => PiesOrder.ShortDescription,
+            "CATEGORY" => PiesOrder.CategoryName,
+            "CATEGORYNAME" => PiesOrder.CategoryName,
+            _ => PiesOrder.Id,
+        };
+    }
+}
