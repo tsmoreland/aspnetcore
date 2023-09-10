@@ -11,7 +11,6 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System.Data;
 using BethanysPieShop.Admin.Domain.Contracts;
 using BethanysPieShop.Admin.Domain.Models;
 using BethanysPieShop.Admin.Domain.Projections;
@@ -43,6 +42,24 @@ public sealed partial class PieRepository : IPieRepository, IPieReadOnlyReposito
 
     /// <inheritdoc />
     public partial Task<Pie?> FindById(Guid id, CancellationToken cancellationToken);
+
+    /// <inheritdoc />
+    public IAsyncEnumerable<PieSummary> Search(string query, Guid? categoryId)
+    {
+        IQueryable<Pie> queryable = Entities.AsNoTracking();
+
+        if (query is { Length: > 0 })
+        {
+            queryable = queryable.Where(e => e.Name.Contains(query) || e.ShortDescription!.Contains(query) || e.LongDescription!.Contains(query));
+        }
+
+        if (categoryId is not null)
+        {
+            queryable = queryable.Where(e => e.Id == categoryId);
+        }
+
+        return GetSummaries(queryable).AsAsyncEnumerable();
+    }
 
     private static IQueryable<PieSummary> GetSummaries(IQueryable<Pie> pies)
     {

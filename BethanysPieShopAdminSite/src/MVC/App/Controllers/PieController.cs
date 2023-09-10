@@ -11,6 +11,7 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using System.Runtime.InteropServices;
 using BethanysPieShop.Admin.Domain.Contracts;
 using BethanysPieShop.Admin.Domain.Models;
 using BethanysPieShop.Admin.Domain.Projections;
@@ -18,6 +19,7 @@ using BethanysPieShop.Admin.Domain.ValueObjects;
 using BethanysPieShop.MVC.App.Models.Pies;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BethanysPieShop.MVC.App.Controllers;
 
@@ -52,6 +54,7 @@ public sealed class PieController : Controller
         return View(page);
     }
 
+    [HttpGet]
     public async Task<IActionResult> PagedAndSorted(int? pageNumber, string sortBy, bool descending)
     {
         const int pageSize = 10;
@@ -64,6 +67,20 @@ public sealed class PieController : Controller
         PiesOrder orderBy = PiesOrderFactory.FromString(sortBy);
         Page<PieSummary> page = await _pieRepository.GetSummaryPage(new PageRequest<PiesOrder>(pageNumber.Value, pageSize, orderBy, descending), default);
         return View(page);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Search(string? query, Guid? categoryId)
+    {
+        IEnumerable<SelectListItem> selectItems = new SelectList(
+            await _categoryRepository.GetSummaries(CategoriesOrder.Name, false).ToListAsync(), "Id", "Name", null);
+        if (query is not null)
+        {
+            List<PieSummary> pies = await _pieRepository.Search(query, categoryId).ToListAsync();
+            return View(new SearchViewModel { Items = pies, Categories = selectItems, Query = query, CategoryId = categoryId });
+        }
+
+        return View(new SearchViewModel { Items = new List<PieSummary>(), Categories = selectItems, Query = string.Empty, CategoryId = null });
     }
 
     [HttpGet]

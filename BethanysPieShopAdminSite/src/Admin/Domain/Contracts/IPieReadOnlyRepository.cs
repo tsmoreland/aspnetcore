@@ -19,4 +19,5 @@ namespace BethanysPieShop.Admin.Domain.Contracts;
 
 public interface IPieReadOnlyRepository : IReadOnlyRepository<Pie, PieSummary, PiesOrder>
 {
+    IAsyncEnumerable<PieSummary> Search(string query, Guid? categoryId);
 }

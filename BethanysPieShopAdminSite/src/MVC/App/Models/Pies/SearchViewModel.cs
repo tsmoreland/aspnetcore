@@ -11,12 +11,15 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using BethanysPieShop.Admin.Domain.Models;
 using BethanysPieShop.Admin.Domain.Projections;
-using BethanysPieShop.Admin.Domain.ValueObjects;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace BethanysPieShop.Admin.Domain.Contracts;
+namespace BethanysPieShop.MVC.App.Models.Pies;
 
-public interface IPieRepository : IRepository<Pie, PieSummary, PiesOrder>, IPieReadOnlyRepository
+public sealed class SearchViewModel
 {
+    public IEnumerable<PieSummary> Items { get; set; } = Array.Empty<PieSummary>();
+    public IEnumerable<SelectListItem>? Categories { get; set; }
+    public string? Query { get; set; }
+    public Guid? CategoryId { get; set; }
 }

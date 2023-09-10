@@ -37,6 +37,7 @@ public sealed class CategoryController : Controller
         return View(page);
     }
 
+    [HttpGet]
     public async Task<IActionResult> PagedAndSorted(int? pageNumber, string sortBy, bool descending)
     {
         const int pageSize = 10;
