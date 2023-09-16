@@ -17,7 +17,7 @@ using BethanysPieShop.Admin.Domain.ValueObjects;
 
 namespace BethanysPieShop.Admin.Domain.Contracts;
 
-public interface ICategoryRepository : IRepository<Category, CategorySummary, CategoriesOrder>
+public interface ICategoryRepository : IRepository<Category, CategorySummary, CategoriesOrder>, ICategoryReadOnlyRepository
 {
     ValueTask Update(Guid id, string name, string? description, CancellationToken cancellationToken = default);
 }

@@ -17,6 +17,6 @@ using BethanysPieShop.Admin.Domain.ValueObjects;
 
 namespace BethanysPieShop.Admin.Domain.Contracts;
 
-public interface IOrderRepository : IRepository<Order, OrderSummary, OrdersOrder>
+public interface IOrderRepository : IRepository<Order, OrderSummary, OrdersOrder>, IOrderReadOnlyRepository
 {
 }
