@@ -1,0 +1,70 @@
+﻿@using BethanysPieShop.MVC.App.Models.Pies;
+@model AddViewModel
+
+if (@ViewData["ErrorMessage"] is not null)
+{
+    <p class="text-danger">@ViewData["ErrorMessage"]</p>
+}
+
+<form method="post" asp-controller="Pie" asp-action="Add">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ShortDescription" class="form-label"></label>
+        <textarea asp-for="ShortDescription" class="form-control" rows="5" cols="50" style="resize: none;"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="LongDescription" class="form-label"></label>
+        <textarea asp-for="LongDescription" class="form-control" rows="5" cols="50" style="resize: none;"></textarea>
+
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="AllergyInformation" class="form-label"></label>
+        <textarea asp-for="AllergyInformation" class="form-control" rows="5" cols="50" style="resize: none;"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Price" class="form-label"></label>
+        <input asp-for="Price" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <!-- TODO: change this to an image upload -->
+        <label asp-for="ImageThumbnailUrl" class="form-label"></label>
+        <input asp-for="ImageThumbnailUrl" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <!-- TODO: change this to an image upload -->
+        <label asp-for="ImageUrl" class="form-label"></label>
+        <input asp-for="ImageUrl" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="IsPieOfTheWeek" class="form-label"></label>
+        <input asp-for="IsPieOfTheWeek" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="InStock" class="form-label"></label>
+        <input asp-for="InStock" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Categories" class="form-label"></label>
+        <select asp-for="CategoryId" asp-items="Model.Categories"></select>
+    </div>
+
+    <input type="submit" value="Add pie" class="btn btn-primary" />
+</form>
+
+<div>
+    <a asp-controller="Pie" asp-action="Index">Back to overview</a>
+</div>

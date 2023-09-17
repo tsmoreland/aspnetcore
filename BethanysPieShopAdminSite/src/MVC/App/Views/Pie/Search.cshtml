@@ -1,0 +1,51 @@
+﻿@using BethanysPieShop.MVC.App.Models.Pies;
+@model SearchViewModel
+
+
+<h2>Search Pies</h2>
+<hr/>
+
+<form asp-controller="Pie" asp-action="Search" method="get">
+    <div class="mb-3">
+        <label class="form-label">Category</label>
+        <select asp-for="Categories" asp-items="Model.Categories" class="form-control">
+            <option value="All"/>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Search value</label>
+        <input type="text" asp-for="Query" class="form-control"/>
+    </div>
+    <input type="submit" value="Filter" class="btn btn-primary"/>
+</form>
+
+@if (Model.Items?.Any() == false)
+{
+    <p>No results</p>
+}
+else
+{
+    <table class="table table-condensed table-bordered">
+        <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Actions</th>
+        </tr>
+        @foreach (var pie in Model.Items!)
+        {
+            <tr>
+                @if (@pie.ImageThumbnailFilename is not null)
+                {
+                    <td><img src="@pie.ImageThumbnailFilename" alt="Pie"/></td>
+                }
+                <td>@pie.Name</td>
+                <td>@pie.CategoryName</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@pie.Id">Details</a>
+                    <a asp-action="Edit" asp-route-id="@pie.Id">Edit</a>
+                </td>
+            </tr>
+        }
+    </table>
+}
