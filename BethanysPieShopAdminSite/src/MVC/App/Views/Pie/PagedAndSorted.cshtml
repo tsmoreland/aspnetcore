@@ -1,0 +1,63 @@
+﻿@using BethanysPieShop.Admin.Domain.ValueObjects;
+@using BethanysPieShop.Admin.Domain.Projections;
+@model Page<PieSummary>;
+
+<h2>Categories</h2>
+<hr/>
+
+@if (!Model.Items.Any())
+{
+    <tr><td colspan="3" class="text-center">No categories found.</td></tr>
+}
+else
+{
+    <table class="table table-condensed table-bordered">
+        <tr>
+            <th>Image</th>
+            <th>
+                <a asp-action="PagedAndSorted" asp-route-sortBy="Name" asp-route-descending="@ViewData["SortDirection"]">
+                    Name
+                </a>
+            </th>
+            <th>
+                <a asp-action="PagedAndSorted" asp-route-sortBy="Category" asp-route-descending="@ViewData["SortDirection"]">
+                    Category
+                </a>
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+        @foreach (var item in Model.Items)
+        {
+            <tr>
+                @if (@item.ImageThumbnailFilename is not null)
+                {
+                    <td><img src="@item.ImageThumbnailFilename" alt="item"/></td>
+                }
+                <td>@item.Name</td>
+                <td>@item.CategoryName</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                </td>
+            </tr>
+        }
+    </table>
+}
+
+@{
+    string previousButtonDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    string nextButtonDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="PagedAndSorted" asp-route-pageNumber="@(Model.PageNumber - 1)" asp-route-sortBy="@ViewData["CustomSort"]" asp-route-descending="@ViewData["SortDirection"]" class="btn btn-default @previousButtonDisabled">
+    Previous
+</a>
+<a asp-action="PagedAndSorted" asp-route-pageNumber="@(Model.PageNumber + 1)" asp-route-sortBy="@ViewData["CustomSort"]" asp-route-descending="@ViewData["SortDirection"]" class="btn btn-default @nextButtonDisabled">
+    Next
+</a>
+
+<P>
+    <a class="btn btn-primary" asp-action="Add">Add new category</a>
+</P>

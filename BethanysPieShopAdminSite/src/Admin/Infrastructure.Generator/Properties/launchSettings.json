@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Infrastructure": {
+      "commandName": "DebugRoslynComponent",
+      "targetProject": "..\\Infrastructure\\BethanysPieShop.Admin.Infrastructure.csproj"
+    }
+  }
+}

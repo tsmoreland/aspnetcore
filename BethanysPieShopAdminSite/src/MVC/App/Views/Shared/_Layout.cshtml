@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Bethany&#039s Pie Shop</title>
+    <link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet" type="text/css">
+    <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="~/css/site.css" rel="stylesheet" />
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/lib/jquery-validate/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <base href="/" />
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-primary"
+                 aria-label="Bethany's Pie Shop navigation header">
+                <div class="container-fluid">
+                    <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+                        <img src="~/images/bethanys-pie-shop-logo_horiz-white.png" width="151" height="47" class="d-inline-block align-top mb-2 mt-1"
+                             alt="Bethany&#039s Pie Shop Logo">
+                    </a>
+
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+                            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapsne navbar-collapse" id="navbarCollapse">
+                        <ul class="nav navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" data-bs-toggle="dropdown" id="nav-dropdown" aria-expanded="false">Pies</a>
+                                <ul class="dropdown-menu" aria-labelledby="nav-dropdown">
+                                    <li>
+                                        <a asp-controller="Pie" asp-action="Index" class="dropdown-item">View all</a>
+                                    </li>
+                                    <li>
+                                        <a asp-controller="Pie" asp-action="IndexPaging" class="dropdown-item">View all paged</a>
+                                    </li>
+                                    <li>
+                                        <a asp-controller="Pie" asp-action="IndexPagingSorting" class="dropdown-item">View all paged and sorted</a>
+                                    </li>
+                                    <li>
+                                        <a asp-controller="Pie" asp-action="Search" class="dropdown-item">Search pies</a>
+                                    </li>
+                                    <li>
+                                        <a asp-controller="Pie" asp-action="Add" class="dropdown-item">Add new pie</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" data-bs-toggle="dropdown" id="nav-dropdown-2" aria-expanded="false">Categories</a>
+                                <ul class="dropdown-menu" aria-labelledby="nav-dropdown-2">
+                                    <li>
+                                        <a asp-controller="Category" asp-action="Index" class="dropdown-item">View all</a>
+                                    </li>
+                                    <li>
+                                        <a asp-controller="Category" asp-action="BulkEdit" class="dropdown-item">Bulk edit</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item">
+                                <a asp-controller="Order" asp-action="Index" class="nav-link">
+                                    Orders
+                                </a>
+                            </li>
+                        </ul>
+                        
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        @RenderBody()
+        @await RenderSectionAsync("Scripts", required: false)
+        <script>
+
+            $.validator.methods.range = function (value, element, param) {
+                var globalizedValue = value.replace(",", ".");
+                return this.optional(element) || (globalizedValue >= param[0] && globalizedValue <= param[1]);
+            }
+
+            $.validator.methods.number = function (value, element) {
+                return this.optional(element) || /^-?(?:\d+|\d{1,3}(?:[\s\.,]\d{3})+)(?:[\.,]\d+)?$/.test(value);
+            }
+        </script>
+    </div>
+</body>
+</html>
