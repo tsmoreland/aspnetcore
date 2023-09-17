@@ -61,6 +61,14 @@ public sealed partial class PieRepository : IPieRepository, IPieReadOnlyReposito
         return GetSummaries(queryable).AsAsyncEnumerable();
     }
 
+    /// <inheritdoc />
+    public void SetOriginalConcurrencyToken(Pie entity, byte[] concurrencyToken)
+    {
+        ArgumentNullException.ThrowIfNull(entity);
+        ArgumentNullException.ThrowIfNull(concurrencyToken);
+        _dbContext.Entry(entity).Property(nameof(Pie.ConcurrencyToken)).OriginalValue = concurrencyToken;
+    }
+
     private static IQueryable<PieSummary> GetSummaries(IQueryable<Pie> pies)
     {
         return pies

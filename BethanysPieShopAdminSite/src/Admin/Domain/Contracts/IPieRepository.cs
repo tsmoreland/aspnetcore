@@ -19,4 +19,12 @@ namespace BethanysPieShop.Admin.Domain.Contracts;
 
 public interface IPieRepository : IRepository<Pie, PieSummary, PiesOrder>, IPieReadOnlyRepository
 {
+    /// <summary>
+    /// Sets concurrency token value to a previous value without marking it as a change.  Then intent
+    /// is for offline or web based updates that were working on the entity a specific point in time
+    /// </summary>
+    /// <param name="entity">The entity to apply the change to</param>
+    /// <param name="concurrencyToken">concurrent token to set</param>
+    /// <exception cref="ArgumentNullException">if either <paramref name="entity"/> or <paramref name="concurrencyToken"/> are <see langword="null"/></exception>
+    void SetOriginalConcurrencyToken(Pie entity, byte[] concurrencyToken);
 }

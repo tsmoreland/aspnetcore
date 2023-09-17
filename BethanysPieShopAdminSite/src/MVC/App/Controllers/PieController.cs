@@ -20,6 +20,9 @@ using BethanysPieShop.MVC.App.Models.Pies;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 
 namespace BethanysPieShop.MVC.App.Controllers;
 
@@ -164,13 +167,41 @@ public sealed class PieController : Controller
     {
         try
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                await model.UpdateModel(_pieRepository, _categoryRepository, default);
-                await _pieRepository.SaveChanges(default);
-                return RedirectToAction(nameof(Index));
+                return BadRequest();
             }
-            return BadRequest();
+
+            await model.UpdateModel(_pieRepository, _categoryRepository, default);
+            await _pieRepository.SaveChanges(default);
+            return RedirectToAction(nameof(Index));
+        }
+        catch (DbUpdateConcurrencyException ex)
+        {
+            EntityEntry failedEntity = ex.Entries.Single();
+            Pie entityValue = (Pie)failedEntity.Entity;
+            PropertyValues? databasePie = await failedEntity.GetDatabaseValuesAsync();
+            if (databasePie is null)
+            {
+                ModelState.AddModelError(string.Empty, "The pie was already deleted by another user.");
+            }
+            else
+            {
+                Pie databaseValue = (Pie)databasePie.ToObject();
+                if (databaseValue.Name != entityValue.Name)
+                {
+                    ModelState.AddModelError(nameof(Pie.Name), $"Current value: {databaseValue.Name}");
+                }
+                //... for the remaining properties
+
+                // Then high level error message
+                ModelState.AddModelError(string.Empty, "The pie was modified already by another user.");
+                ModelState.Remove(nameof(EditViewModel.ConcurrencyToken));
+                return View(new EditViewModel(model, await _categoryRepository.GetSummaries(CategoriesOrder.Name, false).ToListAsync())
+                {
+                    ConcurrencyToken = Convert.ToBase64String(databaseValue.ConcurrencyToken)
+                });
+            }
         }
         catch (FluentValidation.ValidationException ex)
         {
@@ -185,6 +216,6 @@ public sealed class PieController : Controller
             ModelState.AddModelError("", "Error occurred adding the pie");
         }
 
-        return View(new EditViewModel(await _categoryRepository.GetSummaries(CategoriesOrder.Name, false).ToListAsync()) { Id = model.Id });
+        return View(new EditViewModel(model,  await _categoryRepository.GetSummaries(CategoriesOrder.Name, false).ToListAsync()));
     }
 }

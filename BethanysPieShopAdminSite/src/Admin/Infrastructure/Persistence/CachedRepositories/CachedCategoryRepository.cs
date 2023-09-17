@@ -18,7 +18,6 @@ using BethanysPieShop.Admin.Domain.Models;
 using BethanysPieShop.Admin.Domain.Projections;
 using BethanysPieShop.Admin.Domain.ValueObjects;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 namespace BethanysPieShop.Admin.Infrastructure.Persistence.CachedRepositories;
 
@@ -26,7 +25,10 @@ public sealed class CachedCategoryRepository : ICategoryRepository
 {
     private readonly ICategoryRepository _repository;
     private readonly IMemoryCache _cache;
+    // this won't work because the repository is scoped, may need a cookie to store these values then we can use that along with a cache id
+    // failing that see if we can clear cache entries on partial name match - no good on that, maybe a limited range of cache ids? there are only so many sort / descending options
     private SortOrder? _lastOrderForAll;
+
 
     public CachedCategoryRepository(ICategoryRepository repository, IMemoryCache cache)
     {

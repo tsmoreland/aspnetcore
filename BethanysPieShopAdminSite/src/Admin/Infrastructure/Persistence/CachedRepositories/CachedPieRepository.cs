@@ -58,6 +58,10 @@ public sealed class CachedPieRepository : IPieRepository
     }
 
     /// <inheritdoc />
+    public void SetOriginalConcurrencyToken(Pie entity, byte[] concurrencyToken) => 
+        _repository.SetOriginalConcurrencyToken(entity, concurrencyToken);
+
+    /// <inheritdoc />
     public ValueTask Add(Pie entity, CancellationToken cancellationToken)
     {
         return _repository.Add(entity, cancellationToken);

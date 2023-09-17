@@ -42,6 +42,26 @@ public sealed class EditViewModel
         IsPieOfTheWeek = pie.IsPieOfTheWeek;
         InStock = pie.InStock;
         CategoryId = pie.CategoryId;
+        ConcurrencyToken = Convert.ToBase64String(pie.ConcurrencyToken);
+    }
+
+    [SetsRequiredMembers]
+    public EditViewModel(EditViewModel model,  IEnumerable<CategorySummary>? categories)
+        : this(categories)
+    {
+        ArgumentNullException.ThrowIfNull(model);
+        Id = model.Id;
+        Name = model.Name;
+        ShortDescription = model.ShortDescription;
+        LongDescription = model.LongDescription;
+        AllergyInformation = model.AllergyInformation;
+        Price = model.Price;
+        ImageThumbnailUrl = model.ImageThumbnailUrl;
+        ImageUrl = model.ImageUrl;
+        IsPieOfTheWeek = model.IsPieOfTheWeek;
+        InStock = model.InStock;
+        CategoryId = model.CategoryId;
+        ConcurrencyToken = model.ConcurrencyToken;
     }
 
     public EditViewModel(IEnumerable<CategorySummary>? categories)
@@ -56,7 +76,7 @@ public sealed class EditViewModel
 
     [Required(ErrorMessage = "Please enter a name")]
     [Display(Name = "Name")]
-    [MaxLength(200, ErrorMessage = "The name shouild be no longer than 200")]
+    [MaxLength(200, ErrorMessage = "The name should be no longer than 200")]
     public string Name { get; set; } = string.Empty;
 
     [Display(Name = "Short Description")]
@@ -90,6 +110,9 @@ public sealed class EditViewModel
 
     public Guid? CategoryId { get; set; }
 
+    [Required]
+    public string ConcurrencyToken { get; set; } = string.Empty;
+
     public IEnumerable<SelectListItem>? Categories { get; init; }
 
     // TODO: Move this logic to application layer, at least the use of the repositories, then this can be void
@@ -110,5 +133,6 @@ public sealed class EditViewModel
         pie.ImageFilename = ImageUrl;
         pie.IsPieOfTheWeek = IsPieOfTheWeek;
         pie.InStock = InStock;
+        pieRepository.SetOriginalConcurrencyToken(pie, Convert.FromBase64String(ConcurrencyToken));
     }
 }
