@@ -12,7 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlualsightShopping.Shared.DataTransferObjects", "src\Shared\DataTransferObjects\PlualsightShopping.Shared.DataTransferObjects.csproj", "{FADBE84D-87A2-4A0D-86E6-9C9BB15BBF3C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProgressiveWebApp", "src\Wasm\ProgressiveWebApp\ProgressiveWebApp.csproj", "{0F72ECA2-4E08-41AF-8043-10C7FFFA3EBA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PluralsightShopping.Wasm.ProgressiveWebApp", "src\Wasm\ProgressiveWebApp\PluralsightShopping.Wasm.ProgressiveWebApp.csproj", "{58122307-6AC9-4ADD-BB06-3B16206F5C4B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,10 +28,10 @@ Global
 		{FADBE84D-87A2-4A0D-86E6-9C9BB15BBF3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FADBE84D-87A2-4A0D-86E6-9C9BB15BBF3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FADBE84D-87A2-4A0D-86E6-9C9BB15BBF3C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0F72ECA2-4E08-41AF-8043-10C7FFFA3EBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0F72ECA2-4E08-41AF-8043-10C7FFFA3EBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0F72ECA2-4E08-41AF-8043-10C7FFFA3EBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0F72ECA2-4E08-41AF-8043-10C7FFFA3EBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58122307-6AC9-4ADD-BB06-3B16206F5C4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58122307-6AC9-4ADD-BB06-3B16206F5C4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58122307-6AC9-4ADD-BB06-3B16206F5C4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58122307-6AC9-4ADD-BB06-3B16206F5C4B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

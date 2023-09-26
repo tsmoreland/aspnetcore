@@ -1,6 +1,6 @@
 {
-  "name": "ProgressiveWebApp",
-  "short_name": "ProgressiveWebApp",
+  "name": "PluralsightShopping.Wasm.ProgressiveWebApp",
+  "short_name": "PluralsightShopping.Wasm.ProgressiveWebApp",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#ffffff",
