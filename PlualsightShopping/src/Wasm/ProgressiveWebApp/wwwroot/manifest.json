@@ -1,10 +1,10 @@
 {
-  "name": "PluralsightShopping.Wasm.ProgressiveWebApp",
-  "short_name": "PluralsightShopping.Wasm.ProgressiveWebApp",
+  "name": "Pluralsight Shopping",
+  "short_name": "PS Shopping",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#03173d",
+  "background_color": "#FFC942",
+  "theme_color": "#FF1675",
   "prefer_related_applications": false,
   "icons": [
     {

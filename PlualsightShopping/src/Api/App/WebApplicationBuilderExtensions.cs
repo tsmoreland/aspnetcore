@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using PluralsightShopping.Api.App.Configuration;
+using PluralsightShopping.Api.Application;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using AspNetCoreHttp = Microsoft.AspNetCore.Http;
 using AspNetCoreMvc = Microsoft.AspNetCore.Mvc;
@@ -77,31 +78,17 @@ internal static class WebApplicationBuilderExtensions
             .ConfigureJsonOptions()
             .AddControllers();
 
+        services
+            .AddApplicationServices();
+
         return builder;
-    }
-
-    [Conditional("DEBUG")]
-    private static void ConfigureContentSecurityPolicyForDevelopment(SecurityHeadersOptions options, IHostEnvironment environment)
-    {
-        if (!environment.IsDevelopment())
-        {
-            return;
-        }
-
-        // the following CSP policy is to allow swagger UI to work but they're not safe (see the multiple unsafe-inline use)
-        // as this is only intended for dev environment it should be ok for now.  If by some strange chance we want
-        // it in production then we'd need to investigate using a nonce for the scripts and replacing the images with
-        // jpeg files
-        // additional note: aspnetcore-browser-refresh.js:192 may show as an error due to CSP, it's a hot reload
-        // feature so we don't really need it.  To fix we'd need the SHA hash of the script file added to this policy
-        options.ContentSecurityPolicy = "default-src 'self';img-src data: https:;object-src 'none'; script-src https://stackpath.bootstrapcdn.com/ 'self' 'unsafe-inline';style-src https://stackpath.bootstrapcdn.com/ 'self' 'unsafe-inline'; upgrade-insecure-requests; connect-src 'self'";
     }
 
     private static IServiceCollection AddApiRateLimiting(this IServiceCollection services, IConfiguration configuration)
     {
         return services
             .Configure<ApiRateLimitOptions>(configuration.GetSection(ApiRateLimitOptions.SectionName))
-            .AddRateLimiter(RateLimitConfiguration.Configure);
+            .AddRateLimiter(ApiRateLimitOptions.Configure);
     }
 
     private static IServiceCollection AddResponseCompressionWithBrotliAndGzip(this IServiceCollection services)
@@ -137,23 +124,25 @@ internal static class WebApplicationBuilderExtensions
     {
         services
             .AddEndpointsApiExplorer()
-            .AddTransient<IConfigureOptions<SwaggerGenOptions>>(provider => new SwaggerConfiguration(provider.GetRequiredService<IApiVersionDescriptionProvider>(), provider))
+            //.AddTransient<IConfigureOptions<SwaggerGenOptions>>(provider => new SwaggerConfiguration(provider.GetRequiredService<IApiVersionDescriptionProvider>(), provider))
             .AddSwaggerGen();
         return services;
     }
 
     private static IServiceCollection AddIdentity(this IServiceCollection services)
     {
-        // would be added by AddIdentity but that adds more than we want, AddIdentityCore however misses this
-        services.TryAddScoped<SignInManager<ApiUser>>();
-        services.TryAddScoped<RoleManager<ApiRole>>();
+        /*
+        services.TryAddScoped<SignInManager<User>>();
+        services.TryAddScoped<RoleManager<Role>>();
 
         services
             .Configure<DataProtectionTokenProviderOptions>(static options => options.TokenLifespan = TimeSpan.FromHours(1))
-            .AddScoped<IUserClaimsPrincipalFactory<ApiUser>, AdditionalUserClaimsPrincipalFactory>();
+            .AddScoped<IUserClaimsPrincipalFactory<User>, AdditionalUserClaimsPrincipalFactory>();
+        */
 
+        /*
         services
-            .AddIdentityCore<ApiUser>(static identityOptions =>
+            .AddIdentityCore<User>(static identityOptions =>
             {
                 // Password settings.
                 identityOptions.Password.RequireDigit = false;
@@ -175,6 +164,7 @@ internal static class WebApplicationBuilderExtensions
                 identityOptions.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
                 identityOptions.User.RequireUniqueEmail = true;
             });
+        */
 
         // Create a new builder so we can specify ApiRole is in use as well
         /* -- if/when we have a database

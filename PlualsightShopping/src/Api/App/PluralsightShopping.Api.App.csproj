@@ -28,6 +28,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Shared\DataTransferObjects\PlualsightShopping.Shared.DataTransferObjects.csproj" />
+    <ProjectReference Include="..\Application\PluralsightShopping.Api.Application.csproj" />
   </ItemGroup>
 
 </Project>

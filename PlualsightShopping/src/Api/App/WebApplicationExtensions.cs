@@ -13,8 +13,11 @@
 
 using Asp.Versioning.ApiExplorer;
 using Asp.Versioning.Builder;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 using PlualsightShopping.Shared.DataTransferObjects;
+using PluralsightShopping.Api.Application.Features.Products.Queries.GetAllProducts;
 using Serilog;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerUI;
@@ -55,7 +58,7 @@ internal static class WebApplicationExtensions
             .WithTags("Products")
             .HasApiVersion(1);
         productGroup
-            .MapGet("/", () => products.Select(p => new Product(p)))
+            .MapGet("/", ([FromServices] IMediator mediator) => mediator.CreateStream(new GetAllProductsQuery()))
             .WithName("GetAllProducts");
 
         return app;

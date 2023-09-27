@@ -14,6 +14,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlualsightShopping.Shared.D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PluralsightShopping.Wasm.ProgressiveWebApp", "src\Wasm\ProgressiveWebApp\PluralsightShopping.Wasm.ProgressiveWebApp.csproj", "{58122307-6AC9-4ADD-BB06-3B16206F5C4B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{490093BE-2987-43E4-A769-9F9DE1B3B3F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PluralsightShopping.Api.Application", "src\Api\Application\PluralsightShopping.Api.Application.csproj", "{0B4ECAFB-2A0C-4A53-A562-CA5839BFFF54}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Wasm", "Wasm", "{CFEBDE10-AA53-4C14-84E3-A5E8AD80CA4E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,9 +38,18 @@ Global
 		{58122307-6AC9-4ADD-BB06-3B16206F5C4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58122307-6AC9-4ADD-BB06-3B16206F5C4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{58122307-6AC9-4ADD-BB06-3B16206F5C4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B4ECAFB-2A0C-4A53-A562-CA5839BFFF54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B4ECAFB-2A0C-4A53-A562-CA5839BFFF54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B4ECAFB-2A0C-4A53-A562-CA5839BFFF54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B4ECAFB-2A0C-4A53-A562-CA5839BFFF54}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5776344D-C01E-4776-B34F-CD1E03E727B2} = {490093BE-2987-43E4-A769-9F9DE1B3B3F5}
+		{58122307-6AC9-4ADD-BB06-3B16206F5C4B} = {CFEBDE10-AA53-4C14-84E3-A5E8AD80CA4E}
+		{0B4ECAFB-2A0C-4A53-A562-CA5839BFFF54} = {490093BE-2987-43E4-A769-9F9DE1B3B3F5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A15ADA1B-1C0B-4BA4-AFEC-7A06C340E5A8}

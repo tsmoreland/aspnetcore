@@ -1,0 +1,12 @@
+﻿@page "/products"
+
+<PageTitle>ProductDto Catalog</PageTitle>
+
+<h3>Our Products</h3>
+
+<ul>
+    @foreach (var product in Products)
+    {
+        <li>@product.ProductName</li>
+    }
+</ul>
