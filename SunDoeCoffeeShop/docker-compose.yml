@@ -1,0 +1,18 @@
+version: '3.4'
+
+services:
+  sundoecoffeeshop-admin-frontend:
+    image: tsmoreland/sundoecoffeeshopadminfrontendapp:latest
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=https://+:4433;http://+:8080
+      - CONNECTIONSTRINGS__AUTHCONNECTION=Server=sqlserver;Database=SunDoeCoffeeApp;User Id=sa;Password=P@55W0rd!;MultipleActiveResultSets=True;TrustServerCertificate=true;
+    ports:
+      - "8088:80"
+      - "4433:443"
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      - ACCEPT_EULA=TRUE
+      - MSSQL_SA_PASSWORD=P@55w0Rd!       
