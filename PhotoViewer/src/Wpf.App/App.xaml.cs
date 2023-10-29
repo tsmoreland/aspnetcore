@@ -12,12 +12,23 @@
 //
 
 using System.Windows;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace PhotoViewer.Wpf.App;
 
-/// <summary>
-/// Interaction logic for App.xaml
-/// </summary>
 public partial class App : Application
 {
+    private void Application_Startup(object sender, StartupEventArgs e)
+    {
+        IServiceCollection services = new ServiceCollection();
+        services.AddWpfBlazorWebView();
+
+#if DEBUG
+        services.AddBlazorWebViewDeveloperTools();
+#endif
+
+        IServiceProvider serviceProvider = services.BuildServiceProvider();
+
+        Resources.Add("ServiceProvider", serviceProvider);
+    }
 }
