@@ -7,7 +7,7 @@
         xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation/blazor"
         xmlns:components="clr-namespace:PhotoViewer.RazorComponents;assembly=PhotoViewer.RazorComponents"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="900" Width="1600">
     <Grid>
         <wpf:BlazorWebView HostPage="wwwroot/index.html" Services="{DynamicResource ServiceProvider}">
             <wpf:BlazorWebView.RootComponents>
