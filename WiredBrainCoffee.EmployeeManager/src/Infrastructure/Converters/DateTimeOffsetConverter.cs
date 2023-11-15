@@ -23,12 +23,12 @@ public sealed class DateTimeOffsetValueConverter : ValueConverter<DateTimeOffset
 
     }
 
-    private static long ToTicks(DateTimeOffset value)
+    internal static long ToTicks(DateTimeOffset value)
     {
         return value.ToUniversalTime().Ticks;
     }
 
-    private static DateTimeOffset FromTicks(long value)
+    internal static DateTimeOffset FromTicks(long value)
     {
         return new DateTimeOffset(new DateTime(value, DateTimeKind.Utc), TimeSpan.FromSeconds(0));
     }
