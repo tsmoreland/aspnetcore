@@ -11,7 +11,13 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using System.Net.Mime;
+using Asp.Versioning.ApiExplorer;
+using Asp.Versioning.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Swagger;
+using Swashbuckle.AspNetCore.SwaggerUI;
 using WiredBrainCoffee.EmployeeManager.Infrastructure;
 
 namespace WiredBrainCoffee.EmployeeManager.Api.App;
@@ -33,8 +39,8 @@ public static class WebApplicationExtensions
         if (app.Environment.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
-            // app.UseSwagger();
-            //app.UseSwaggerUI();
+            app.UseSwagger(ConfigureSwagger);
+            app.UseSwaggerUI(options => ConfigureSwaggerUI(options, app.DescribeApiVersions()));
         }
         else
         {
@@ -44,12 +50,11 @@ public static class WebApplicationExtensions
 
         app.UseHttpsRedirection();
 
-        string[] summaries =
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
+        string[] summaries = new[] { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
 
-        app
+        IVersionedEndpointRouteBuilder employeeApi = app.NewVersionedApi();
+
+        employeeApi
             .MapGet("/weatherforecast", () =>
             {
                 WeatherForecast[] forecast = Enumerable.Range(1, 5).Select(index =>
@@ -62,12 +67,40 @@ public static class WebApplicationExtensions
                     .ToArray();
                 return forecast;
             })
-            .WithName("GetWeatherForecast");
+            .WithName("GetWeatherForecast")
+            .WithOpenApi(static op => new OpenApiOperation(op)
+            {
+                Summary = "Get Random Weather forecast",
+                OperationId = "GetWeatherForecast",
+            })
+            .Produces<WeatherForecast[]>(StatusCodes.Status200OK, MediaTypeNames.Application.Json)
+            .ProducesProblem(StatusCodes.Status500InternalServerError)
+            .HasApiVersion(1)
+            .WithTags("Weather");
         return app;
 
     }
     internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
     {
         public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    }
+
+    private static void ConfigureSwagger(SwaggerOptions options)
+    {
+        options.PreSerializeFilters.Add(static (swaggerDoc, httpReq) =>
+        {
+            swaggerDoc.Servers = new List<OpenApiServer>
+            {
+                new () { Url = $"{httpReq.Scheme}://{httpReq.Host.Value}" }
+            };
+        });
+    }
+
+    private static void ConfigureSwaggerUI(SwaggerUIOptions options, IEnumerable<ApiVersionDescription> apiVersions)
+    {
+        foreach (ApiVersionDescription description in apiVersions)
+        {
+            options.SwaggerEndpoint($"/swagger/v1/swagger.json", description.GroupName);
+        }
     }
 }
