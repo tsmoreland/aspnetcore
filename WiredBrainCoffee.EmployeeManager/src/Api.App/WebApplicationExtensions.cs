@@ -39,8 +39,8 @@ public static class WebApplicationExtensions
         if (app.Environment.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
-            app.UseSwagger(ConfigureSwagger);
-            app.UseSwaggerUI(options => ConfigureSwaggerUI(options, app.DescribeApiVersions()));
+            app.UseSwagger();
+            app.UseSwaggerUI();
         }
         else
         {
@@ -50,7 +50,7 @@ public static class WebApplicationExtensions
 
         app.UseHttpsRedirection();
 
-        string[] summaries = new[] { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
+        string[] summaries = [ "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" ];
 
         IVersionedEndpointRouteBuilder employeeApi = app.NewVersionedApi();
 
@@ -68,15 +68,9 @@ public static class WebApplicationExtensions
                 return forecast;
             })
             .WithName("GetWeatherForecast")
-            .WithOpenApi(static op => new OpenApiOperation(op)
-            {
-                Summary = "Get Random Weather forecast",
-                OperationId = "GetWeatherForecast",
-            })
+            .WithOpenApi()
             .Produces<WeatherForecast[]>(StatusCodes.Status200OK, MediaTypeNames.Application.Json)
-            .ProducesProblem(StatusCodes.Status500InternalServerError)
-            .HasApiVersion(1)
-            .WithTags("Weather");
+            .ProducesProblem(StatusCodes.Status500InternalServerError);
         return app;
 
     }
@@ -85,22 +79,4 @@ public static class WebApplicationExtensions
         public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
     }
 
-    private static void ConfigureSwagger(SwaggerOptions options)
-    {
-        options.PreSerializeFilters.Add(static (swaggerDoc, httpReq) =>
-        {
-            swaggerDoc.Servers = new List<OpenApiServer>
-            {
-                new () { Url = $"{httpReq.Scheme}://{httpReq.Host.Value}" }
-            };
-        });
-    }
-
-    private static void ConfigureSwaggerUI(SwaggerUIOptions options, IEnumerable<ApiVersionDescription> apiVersions)
-    {
-        foreach (ApiVersionDescription description in apiVersions)
-        {
-            options.SwaggerEndpoint($"/swagger/v1/swagger.json", description.GroupName);
-        }
-    }
 }

@@ -26,7 +26,7 @@ public static class WebApplicationBuilderExtensions
         IServiceCollection services = builder.Services;
 
         services
-            .AddApiVersioning(options => options.ApiVersionReader = new UrlSegmentApiVersionReader())
+            .AddApiVersioning()
             .AddApiExplorer();
 
         services
