@@ -11,8 +11,6 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using Asp.Versioning;
-using Microsoft.OpenApi.Models;
 using WiredBrainCoffee.EmployeeManager.Infrastructure;
 using WiredBrainCoffee.EmployeeManager.Shared.Contracts;
 
@@ -25,15 +23,14 @@ public static class WebApplicationBuilderExtensions
     {
         IServiceCollection services = builder.Services;
 
+        services.AddApiVersioning();
         services
-            .AddApiVersioning()
-            .AddApiExplorer();
-
-        services
+            .AddEndpointsApiExplorer()
             .AddSwaggerGen();
 
-        services.AddInfrastructure();
-        services.AddSingleton<IHostEnvironmentFacade, HostEnvironmentFacade>();
+        services
+            .AddInfrastructure()
+            .AddSingleton<IHostEnvironmentFacade, HostEnvironmentFacade>();
 
         return builder;
     }

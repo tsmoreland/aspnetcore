@@ -67,13 +67,22 @@ public static class WebApplicationExtensions
                     .ToArray();
                 return forecast;
             })
-            .WithName("GetWeatherForecast")
             .WithOpenApi()
+            .WithName("GetWeatherForecast")
             .Produces<WeatherForecast[]>(StatusCodes.Status200OK, MediaTypeNames.Application.Json)
-            .ProducesProblem(StatusCodes.Status500InternalServerError);
+            .ProducesProblem(StatusCodes.Status500InternalServerError)
+            .WithTags("Weather");
+
         return app;
 
     }
+
+    /// <summary>
+    /// Weather Forecast Details
+    /// </summary>
+    /// <param name="Date">Date the weather applies to</param>
+    /// <param name="TemperatureC">temperature in degrees Celcius</param>
+    /// <param name="Summary">Optional Summary</param>
     internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
     {
         public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
