@@ -6,21 +6,14 @@ using TennisByTheSea.Shared.WeatherApi;
 
 namespace TennisByTheSea.Application.Services.Weather;
 
-public sealed class CachedWeatherForecaster : IWeatherForecaster
-{
-    private readonly IWeatherForecaster _weatherForecaster;
-    private readonly IDistributedCache<WeatherResult> _cache;
-    private readonly IOptionsMonitor<WeatherApiOptions> _optionsMonitor;
-
-    public CachedWeatherForecaster(
+public sealed class CachedWeatherForecaster(
         IWeatherForecaster weatherForecaster,
         IDistributedCache<WeatherResult> cache,
-        IOptionsMonitor<WeatherApiOptions> optionsMonitor)
-    {
-        _weatherForecaster = weatherForecaster;
-        _cache = cache;
-        _optionsMonitor = optionsMonitor;
-    }
+        IOptionsMonitor<WeatherApiOptions> optionsMonitor) : IWeatherForecaster
+{
+    private readonly IWeatherForecaster _weatherForecaster = weatherForecaster;
+    private readonly IDistributedCache<WeatherResult> _cache = cache;
+    private readonly IOptionsMonitor<WeatherApiOptions> _optionsMonitor = optionsMonitor;
 
     /// <inheritdoc />
     public bool ForecastEnabled => _weatherForecaster.ForecastEnabled;
