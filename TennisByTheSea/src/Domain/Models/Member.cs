@@ -11,17 +11,15 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System.ComponentModel;
 using TennisByTheSea.Domain.Extensions;
 
 namespace TennisByTheSea.Domain.Models;
 
 public sealed class Member
 {
-    private readonly HashSet<CourtBooking> _courtBookings;
+    private readonly HashSet<CourtBooking> _courtBookings = [];
     private string _forename;
     private string _surname;
-    private readonly DateTime _joinDate;
     private const int NewMemberId = 0;
 
     public static Member CreateNewMember(string forename, string surname, string userId)
@@ -35,9 +33,8 @@ public sealed class Member
         Id = id;
         _forename = forename;
         _surname = surname;
-        _joinDate = joinDate;
+        JoinDate = joinDate;
         UserId = userId;
-        _courtBookings = new HashSet<CourtBooking>();
     }
 
     public int Id { get; }
@@ -68,7 +65,7 @@ public sealed class Member
         }
     }
 
-    public DateOnly JoinDate => _joinDate.ToDateOnly();
+    public DateTime JoinDate { get; }
 
     public string UserId { get; init; }
 

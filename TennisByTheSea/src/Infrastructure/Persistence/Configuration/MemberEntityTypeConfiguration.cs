@@ -23,10 +23,10 @@ public sealed class MemberEntityTypeConfiguration : IEntityTypeConfiguration<Mem
     public void Configure(EntityTypeBuilder<Member> builder)
     {
         builder.HasKey(e => e.Id);
-        builder.Property<string>("_forename").IsRequired().HasMaxLength(100);
-        builder.Property<string>("_surname").IsRequired().HasMaxLength(100);
-        builder.Property<DateTime>("_joinDate").IsRequired();
-        builder.Ignore(e => e.JoinDate);
+
+        builder.Property(e => e.Forename).HasField("_forename").UsePropertyAccessMode(PropertyAccessMode.Field).IsRequired().HasMaxLength(100);
+        builder.Property(e => e.Surname).HasField("_surname").UsePropertyAccessMode(PropertyAccessMode.Field).IsRequired().HasMaxLength(100);
+        builder.Property(e => e.JoinDate).IsRequired();
         builder.Property(e => e.UserId).IsRequired();
         builder.HasMany(e => e.CourtBookings);
     }
