@@ -28,7 +28,7 @@ public static class WebApplicationBuilderExtensions
         builder.WebHost.ConfigureKestrel(options => options.AddServerHeader = false);
 
         IServiceCollection services = builder.Services;
-        IConfiguration configuration = builder.Configuration;
+        ConfigurationManager configuration = builder.Configuration;
 
         services
             .AddControllersWithViews();

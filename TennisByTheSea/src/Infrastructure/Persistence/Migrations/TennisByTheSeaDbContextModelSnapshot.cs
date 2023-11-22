@@ -15,7 +15,7 @@ namespace TennisByTheSea.Infrastructure.Persistence.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "7.0.7");
+            modelBuilder.HasAnnotation("ProductVersion", "8.0.0");
 
             modelBuilder.Entity("TennisByTheSea.Domain.Models.ConfigurationEntity", b =>
                 {
@@ -119,27 +119,19 @@ namespace TennisByTheSea.Infrastructure.Persistence.Migrations
 
                     b.Property<string>("Forename")
                         .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("JoinDate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Surname")
                         .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("_forename")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("_joinDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("_surname")
-                        .IsRequired()
-                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

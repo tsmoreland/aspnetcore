@@ -9,8 +9,15 @@
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
 
+using System.Net.Mime;
+using Asp.Versioning.ApiExplorer;
+using Asp.Versioning.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Swagger;
+using Swashbuckle.AspNetCore.SwaggerUI;
 using WiredBrainCoffee.EmployeeManager.Infrastructure;
 
 namespace WiredBrainCoffee.EmployeeManager.Api.App;
@@ -43,12 +50,11 @@ public static class WebApplicationExtensions
 
         app.UseHttpsRedirection();
 
-        string[] summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
+        string[] summaries = [ "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" ];
 
-        app
+        IVersionedEndpointRouteBuilder employeeApi = app.NewVersionedApi();
+
+        employeeApi
             .MapGet("/weatherforecast", () =>
             {
                 WeatherForecast[] forecast = Enumerable.Range(1, 5).Select(index =>
@@ -61,12 +67,25 @@ public static class WebApplicationExtensions
                     .ToArray();
                 return forecast;
             })
-            .WithName("GetWeatherForecast");
+            .WithOpenApi()
+            .WithName("GetWeatherForecast")
+            .Produces<WeatherForecast[]>(StatusCodes.Status200OK, MediaTypeNames.Application.Json)
+            .ProducesProblem(StatusCodes.Status500InternalServerError)
+            .WithTags("Weather");
+
         return app;
 
     }
+
+    /// <summary>
+    /// Weather Forecast Details
+    /// </summary>
+    /// <param name="Date">Date the weather applies to</param>
+    /// <param name="TemperatureC">temperature in degrees Celcius</param>
+    /// <param name="Summary">Optional Summary</param>
     internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
     {
         public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
     }
+
 }

@@ -3,18 +3,23 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Sqlite.Storage.Internal;
+using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.EntityFrameworkCore.Storage.Json;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WiredBrainCoffee.EmployeeManager.Infrastructure.Converters;
 using WiredBrainCoffee.EmployeeManager.Infrastructure.Entities;
 
 #pragma warning disable 219, 612, 618
-#nullable enable
+#nullable disable
 
 namespace WiredBrainCoffee.EmployeeManager.Infrastructure.CompiledModels
 {
     internal partial class EmployeeEntityEntityType
     {
-        public static RuntimeEntityType Create(RuntimeModel model, RuntimeEntityType? baseEntityType = null)
+        public static RuntimeEntityType Create(RuntimeModel model, RuntimeEntityType baseEntityType = null)
         {
             var runtimeEntityType = model.AddEntityType(
                 "WiredBrainCoffee.EmployeeManager.Infrastructure.Entities.EmployeeEntity",
@@ -27,13 +32,45 @@ namespace WiredBrainCoffee.EmployeeManager.Infrastructure.CompiledModels
                 propertyInfo: typeof(Entity<int>).GetProperty("Id", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
                 fieldInfo: typeof(Entity<int>).GetField("<Id>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly),
                 valueGenerated: ValueGenerated.OnAdd,
-                afterSaveBehavior: PropertySaveBehavior.Throw);
+                afterSaveBehavior: PropertySaveBehavior.Throw,
+                sentinel: 0);
+            id.TypeMapping = IntTypeMapping.Default.Clone(
+                comparer: new ValueComparer<int>(
+                    (int v1, int v2) => v1 == v2,
+                    (int v) => v,
+                    (int v) => v),
+                keyComparer: new ValueComparer<int>(
+                    (int v1, int v2) => v1 == v2,
+                    (int v) => v,
+                    (int v) => v),
+                providerValueComparer: new ValueComparer<int>(
+                    (int v1, int v2) => v1 == v2,
+                    (int v) => v,
+                    (int v) => v),
+                mappingInfo: new RelationalTypeMappingInfo(
+                    storeTypeName: "INTEGER"));
 
             var departmentId = runtimeEntityType.AddProperty(
                 "DepartmentId",
                 typeof(int),
                 propertyInfo: typeof(EmployeeEntity).GetProperty("DepartmentId", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
-                fieldInfo: typeof(EmployeeEntity).GetField("<DepartmentId>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly));
+                fieldInfo: typeof(EmployeeEntity).GetField("<DepartmentId>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly),
+                sentinel: 0);
+            departmentId.TypeMapping = IntTypeMapping.Default.Clone(
+                comparer: new ValueComparer<int>(
+                    (int v1, int v2) => v1 == v2,
+                    (int v) => v,
+                    (int v) => v),
+                keyComparer: new ValueComparer<int>(
+                    (int v1, int v2) => v1 == v2,
+                    (int v) => v,
+                    (int v) => v),
+                providerValueComparer: new ValueComparer<int>(
+                    (int v1, int v2) => v1 == v2,
+                    (int v) => v,
+                    (int v) => v),
+                mappingInfo: new RelationalTypeMappingInfo(
+                    storeTypeName: "INTEGER"));
 
             var firstName = runtimeEntityType.AddProperty(
                 "FirstName",
@@ -41,13 +78,30 @@ namespace WiredBrainCoffee.EmployeeManager.Infrastructure.CompiledModels
                 propertyInfo: typeof(EmployeeEntity).GetProperty("FirstName", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
                 fieldInfo: typeof(EmployeeEntity).GetField("<FirstName>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly),
                 maxLength: 100);
+            firstName.TypeMapping = SqliteStringTypeMapping.Default;
 
             var isDeveloper = runtimeEntityType.AddProperty(
                 "IsDeveloper",
                 typeof(bool),
                 propertyInfo: typeof(EmployeeEntity).GetProperty("IsDeveloper", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
                 fieldInfo: typeof(EmployeeEntity).GetField("<IsDeveloper>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly),
-                valueGenerated: ValueGenerated.OnAdd);
+                valueGenerated: ValueGenerated.OnAdd,
+                sentinel: false);
+            isDeveloper.TypeMapping = BoolTypeMapping.Default.Clone(
+                comparer: new ValueComparer<bool>(
+                    (bool v1, bool v2) => v1 == v2,
+                    (bool v) => v.GetHashCode(),
+                    (bool v) => v),
+                keyComparer: new ValueComparer<bool>(
+                    (bool v1, bool v2) => v1 == v2,
+                    (bool v) => v.GetHashCode(),
+                    (bool v) => v),
+                providerValueComparer: new ValueComparer<bool>(
+                    (bool v1, bool v2) => v1 == v2,
+                    (bool v) => v.GetHashCode(),
+                    (bool v) => v),
+                mappingInfo: new RelationalTypeMappingInfo(
+                    storeTypeName: "INTEGER"));
             isDeveloper.AddAnnotation("Relational:DefaultValue", false);
 
             var lastModifiedTime = runtimeEntityType.AddProperty(
@@ -56,6 +110,30 @@ namespace WiredBrainCoffee.EmployeeManager.Infrastructure.CompiledModels
                 propertyInfo: typeof(Entity).GetProperty("LastModifiedTime", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
                 fieldInfo: typeof(Entity).GetField("<LastModifiedTime>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly),
                 valueConverter: new DateTimeOffsetValueConverter());
+            lastModifiedTime.TypeMapping = LongTypeMapping.Default.Clone(
+                comparer: new ValueComparer<DateTimeOffset>(
+                    (DateTimeOffset v1, DateTimeOffset v2) => v1.EqualsExact(v2),
+                    (DateTimeOffset v) => v.GetHashCode(),
+                    (DateTimeOffset v) => v),
+                keyComparer: new ValueComparer<DateTimeOffset>(
+                    (DateTimeOffset v1, DateTimeOffset v2) => v1.EqualsExact(v2),
+                    (DateTimeOffset v) => v.GetHashCode(),
+                    (DateTimeOffset v) => v),
+                providerValueComparer: new ValueComparer<long>(
+                    (long v1, long v2) => v1 == v2,
+                    (long v) => v.GetHashCode(),
+                    (long v) => v),
+                mappingInfo: new RelationalTypeMappingInfo(
+                    storeTypeName: "INTEGER"),
+                converter: new ValueConverter<DateTimeOffset, long>(
+                    (DateTimeOffset v) => DateTimeOffsetValueConverter.ToTicks(v),
+                    (long v) => DateTimeOffsetValueConverter.FromTicks(v)),
+                jsonValueReaderWriter: new JsonConvertedValueReaderWriter<DateTimeOffset, long>(
+                    JsonInt64ReaderWriter.Instance,
+                    new ValueConverter<DateTimeOffset, long>(
+                        (DateTimeOffset v) => DateTimeOffsetValueConverter.ToTicks(v),
+                        (long v) => DateTimeOffsetValueConverter.FromTicks(v))));
+            lastModifiedTime.SetSentinelFromProviderValue(0L);
 
             var lastName = runtimeEntityType.AddProperty(
                 "LastName",
@@ -63,6 +141,7 @@ namespace WiredBrainCoffee.EmployeeManager.Infrastructure.CompiledModels
                 propertyInfo: typeof(EmployeeEntity).GetProperty("LastName", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
                 fieldInfo: typeof(EmployeeEntity).GetField("<LastName>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly),
                 maxLength: 100);
+            lastName.TypeMapping = SqliteStringTypeMapping.Default;
 
             var version = runtimeEntityType.AddProperty(
                 "Version",
@@ -72,7 +151,9 @@ namespace WiredBrainCoffee.EmployeeManager.Infrastructure.CompiledModels
                 concurrencyToken: true,
                 valueGenerated: ValueGenerated.OnAddOrUpdate,
                 beforeSaveBehavior: PropertySaveBehavior.Ignore,
-                afterSaveBehavior: PropertySaveBehavior.Ignore);
+                afterSaveBehavior: PropertySaveBehavior.Ignore,
+                sentinel: 0ul);
+            version.TypeMapping = SqliteULongTypeMapping.Default;
 
             var key = runtimeEntityType.AddKey(
                 new[] { id });
@@ -86,8 +167,8 @@ namespace WiredBrainCoffee.EmployeeManager.Infrastructure.CompiledModels
 
         public static RuntimeForeignKey CreateForeignKey1(RuntimeEntityType declaringEntityType, RuntimeEntityType principalEntityType)
         {
-            var runtimeForeignKey = declaringEntityType.AddForeignKey(new[] { declaringEntityType.FindProperty("DepartmentId")! },
-                principalEntityType.FindKey(new[] { principalEntityType.FindProperty("Id")! })!,
+            var runtimeForeignKey = declaringEntityType.AddForeignKey(new[] { declaringEntityType.FindProperty("DepartmentId") },
+                principalEntityType.FindKey(new[] { principalEntityType.FindProperty("Id") }),
                 principalEntityType,
                 deleteBehavior: DeleteBehavior.Cascade,
                 required: true);

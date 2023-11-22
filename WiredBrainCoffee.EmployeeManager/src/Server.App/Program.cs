@@ -11,15 +11,33 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using Serilog;
 using WiredBrainCoffee.EmployeeManager.Server.App;
 
-WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .CreateBootstrapLogger();
 
-// Add services to the container.
-builder.Services.ConfigureServices();
+try
+{
+    WebApplicationBuilder builder = WebApplication
+        .CreateBuilder(args)
+        .Configure();
 
-WebApplication app = builder.Build();
+    WebApplication app = await builder.Build()
+        .EnsureDatabaseIsMigrated()
+        .ConfigurePipeline();
 
-await app.EnsureDatabaseIsMigrated();
+    await app.RunAsync();
+}
+catch (Exception ex) when (ex.GetType().Name is not "StopTheHostException")
+{
+    // https://github.com/dotnet/runtime/issues/60600 for StopTheHostException
+    Log.Fatal(ex, "Unhandled exception");
+}
+finally
+{
+    Log.Information("Shutdown complete.");
+    Log.CloseAndFlush();
+}
 
-await app.BuildPipeline();
