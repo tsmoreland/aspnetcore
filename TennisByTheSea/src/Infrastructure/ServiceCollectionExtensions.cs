@@ -30,10 +30,10 @@ public static class ServiceCollectionExtensions
     {
         ArgumentNullException.ThrowIfNull(services);
 
-        string weatherUrl = configuration["ExternalServices::WeatherApi::Url"] ?? string.Empty;
+        string weatherUrl = configuration["ExternalServices:WeatherApi:Url"] ?? string.Empty;
         InvalidConfigurationException.ThrowIf(!Uri.TryCreate(weatherUrl, UriKind.Absolute, out Uri? baseWeatherUrl), "Invalid URL for weather API");
 
-        string productsUrl = configuration["ExternalServices::ProductsApi::Url"] ?? string.Empty;
+        string productsUrl = configuration["ExternalServices:ProductsApi:Url"] ?? string.Empty;
         InvalidConfigurationException.ThrowIf(!Uri.TryCreate(productsUrl, UriKind.Absolute, out Uri? baseProductsUrl), "Invalid URL for Products API");
 
         services
