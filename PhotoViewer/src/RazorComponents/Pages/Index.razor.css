@@ -1,15 +1,10 @@
 ﻿.img-container {
-  width: 150px;
-  height: 150px;
-  border: 2px solid red;
-  justify-content: center;
-  display: flex;
-  flex-direction: row;
-  overflow: hidden;
-  
-}
-.img-container .img-to-fit {
-  flex: 1;
+  margin: 0;
   height: 100%;
-  min-height: fit-content !important;
+}
+img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
 }
