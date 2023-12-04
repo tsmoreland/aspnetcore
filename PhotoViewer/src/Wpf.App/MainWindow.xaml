@@ -9,7 +9,13 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="900" Width="1600">
     <Grid>
-        <wpf:BlazorWebView HostPage="wwwroot/index.html" Services="{DynamicResource ServiceProvider}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <wpf:BlazorWebView HostPage="wwwroot/index.html" Services="{DynamicResource ServiceProvider}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
             <wpf:BlazorWebView.RootComponents>
                 <wpf:RootComponent Selector="#app" ComponentType="{x:Type components:Main}" />
             </wpf:BlazorWebView.RootComponents>

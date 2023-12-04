@@ -33,7 +33,7 @@ public partial class Index
 
         await using FileStream stream = new(@"c:\tmp\image.jpg", FileMode.Open, FileAccess.Read);
         DotNetStreamReference streamRef = new(stream);
-        await JsRuntime.InvokeVoidAsync("setImageUsingStreaming", "currentImg", streamRef); 
+        await JsRuntime.InvokeVoidAsync("setImageUsingStreaming", "wallpaper", streamRef); 
     }
 
 }
