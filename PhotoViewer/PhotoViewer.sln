@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhotoViewer.Wpf.App", "src\Wpf.App\PhotoViewer.Wpf.App.csproj", "{F68F394F-A24B-499D-AF58-AEAFBB3E81A6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoViewer.RazorComponents", "src\RazorComponents\PhotoViewer.RazorComponents.csproj", "{0E0C7566-DD18-4289-9876-EEC09F39BF01}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F68F394F-A24B-499D-AF58-AEAFBB3E81A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F68F394F-A24B-499D-AF58-AEAFBB3E81A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F68F394F-A24B-499D-AF58-AEAFBB3E81A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F68F394F-A24B-499D-AF58-AEAFBB3E81A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E0C7566-DD18-4289-9876-EEC09F39BF01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E0C7566-DD18-4289-9876-EEC09F39BF01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E0C7566-DD18-4289-9876-EEC09F39BF01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E0C7566-DD18-4289-9876-EEC09F39BF01}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {96B623ED-5E57-4B96-B37E-585650089DAB}
+	EndGlobalSection
+EndGlobal
