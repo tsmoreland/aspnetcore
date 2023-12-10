@@ -11,19 +11,13 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System.Diagnostics;
 using System.IO.Compression;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization.Metadata;
-using Asp.Versioning.ApiExplorer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Options;
 using PluralsightShopping.Api.App.Configuration;
 using PluralsightShopping.Api.Application;
-using Swashbuckle.AspNetCore.SwaggerGen;
 using AspNetCoreHttp = Microsoft.AspNetCore.Http;
 using AspNetCoreMvc = Microsoft.AspNetCore.Mvc;
 

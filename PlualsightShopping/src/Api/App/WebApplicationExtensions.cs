@@ -16,7 +16,6 @@ using Asp.Versioning.Builder;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
-using PlualsightShopping.Shared.DataTransferObjects;
 using PluralsightShopping.Api.Application.Features.Products.Queries.GetAllProducts;
 using Serilog;
 using Swashbuckle.AspNetCore.Swagger;
@@ -38,7 +37,7 @@ internal static class WebApplicationExtensions
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger(ConfigureSwagger);
-            app.UseSwaggerUI(options => ConfigureSwaggerUI(options, app.DescribeApiVersions()));
+            app.UseSwaggerUI(options => ConfigureSwaggerUi(options, app.DescribeApiVersions()));
         }
 
         app.UseHttpsRedirection();
@@ -52,7 +51,7 @@ internal static class WebApplicationExtensions
         IVersionedEndpointRouteBuilder version1 = app.NewVersionedApi();
 
         // hard coded data for now
-        string[] products = new[] { "Hiking Boots", "Tent", "Jacket", "Hiking Poles" };
+        string[] products = ["Hiking Boots", "Tent", "Jacket", "Hiking Poles"];
 
         RouteGroupBuilder productGroup = version1.MapGroup("/api/v{version:apiVersion}/products")
             .WithTags("Products")
@@ -67,15 +66,17 @@ internal static class WebApplicationExtensions
     private static void ConfigureSwagger(SwaggerOptions options)
     {
         options.PreSerializeFilters.Add(ConfigureSwaggerServers);
+        options.RouteTemplate = "swagger/{documentName}/swagger.json";
 
         return;
 
         static void ConfigureSwaggerServers(OpenApiDocument document, HttpRequest request) =>
-            document.Servers = new List<OpenApiServer> { new () { Url = $"{request.Scheme}://{request.Host.Value}" } };
+            document.Servers = [ new OpenApiServer { Url = $"{request.Scheme}://{request.Host.Value}" } ];
     }
 
-    private static void ConfigureSwaggerUI(SwaggerUIOptions options, IEnumerable<ApiVersionDescription> apiVersions)
+    private static void ConfigureSwaggerUi(SwaggerUIOptions options, IEnumerable<ApiVersionDescription> apiVersions)
     {
+        //options.RoutePrefix = string.Empty;
         foreach (ApiVersionDescription description in apiVersions)
         {
             options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName);
