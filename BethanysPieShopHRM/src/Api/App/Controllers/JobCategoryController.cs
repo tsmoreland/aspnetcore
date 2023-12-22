@@ -5,25 +5,17 @@ namespace BethanysPieShopHRM.Api.App.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class JobCategoryController : Controller
+public class JobCategoryController(IJobCategoryRepository jobCategoryRepository) : Controller
 {
-    private readonly IJobCategoryRepository _jobCategoryRepository;
-
-    public JobCategoryController(IJobCategoryRepository jobCategoryRepository)
-    {
-        _jobCategoryRepository = jobCategoryRepository;
-    }
-
-
     [HttpGet]
     public IActionResult GetJobCategories()
     {
-        return Ok(_jobCategoryRepository.GetAllJobCategories());
+        return Ok(jobCategoryRepository.GetAllJobCategories());
     }
 
     [HttpGet("{id}")]
     public IActionResult GetJobCategoryById(int id)
     {
-        return Ok(_jobCategoryRepository.GetJobCategoryById(id));
+        return Ok(jobCategoryRepository.GetJobCategoryById(id));
     }
 }

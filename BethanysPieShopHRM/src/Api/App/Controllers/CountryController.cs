@@ -5,24 +5,17 @@ namespace BethanysPieShopHRM.Api.App.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class CountryController : Controller
+public class CountryController(ICountryRepository countryRepository) : Controller
 {
-    private readonly ICountryRepository _countryRepository;
-
-    public CountryController(ICountryRepository countryRepository)
-    {
-        _countryRepository = countryRepository;
-    }
-
     [HttpGet]
     public IActionResult GetCountries()
     {
-        return Ok(_countryRepository.GetAllCountries());
+        return Ok(countryRepository.GetAllCountries());
     }
 
     [HttpGet("{id}")]
     public IActionResult GetCountryById(int id)
     {
-        return Ok(_countryRepository.GetCountryById(id));
+        return Ok(countryRepository.GetCountryById(id));
     }
 }

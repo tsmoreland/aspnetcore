@@ -23,7 +23,7 @@ builder.Services
         builder.Configuration.Bind("Auth0", options.ProviderOptions);
         options.ProviderOptions.ResponseType = "code";
         options.ProviderOptions.AdditionalProviderParameters
-            .Add("audience", builder.Configuration["Auth0:Audience"]);
+            .Add("audience", builder.Configuration["Auth0:Audience"] ?? string.Empty);
 
     });
 

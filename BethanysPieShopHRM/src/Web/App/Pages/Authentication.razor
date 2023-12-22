@@ -7,8 +7,8 @@
 <RemoteAuthenticatorView Action="@Action">
     <LogOut>
         @{
-            var authority = (string)Configuration["Auth0:Authority"];
-            var clientId = (string)Configuration["Auth0:ClientId"];
+            var authority = Configuration["Auth0:Authority"] ?? string.Empty;
+            var clientId = Configuration["Auth0:ClientId"] ?? string.Empty;
             Navigation.NavigateTo($"{authority}/v2/logout?client_id={clientId}");
         }
     </LogOut>

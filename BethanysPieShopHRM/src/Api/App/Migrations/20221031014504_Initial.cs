@@ -7,6 +7,8 @@ namespace BethanysPieShopHRM.Api.Migrations
 {
     public partial class Initial : Migration
     {
+        private static readonly string[] columns = ["JobCategoryId", "JobCategoryName"];
+
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -79,98 +81,98 @@ namespace BethanysPieShopHRM.Api.Migrations
 
             migrationBuilder.InsertData(
                 table: "Countries",
-                columns: new[] { "CountryId", "Name" },
-                values: new object[] { 1, "Belgium" });
+                columns: [ "CountryId", "Name" ],
+                values: [ 1, "Belgium" ]);
 
             migrationBuilder.InsertData(
                 table: "Countries",
-                columns: new[] { "CountryId", "Name" },
-                values: new object[] { 2, "Germany" });
+                columns: [ "CountryId", "Name" ],
+                values: [ 2, "Germany" ]);
 
             migrationBuilder.InsertData(
                 table: "Countries",
-                columns: new[] { "CountryId", "Name" },
-                values: new object[] { 3, "Netherlands" });
+                columns: [ "CountryId", "Name" ],
+                values: [ 3, "Netherlands" ]);
 
             migrationBuilder.InsertData(
                 table: "Countries",
-                columns: new[] { "CountryId", "Name" },
-                values: new object[] { 4, "USA" });
+                columns: [ "CountryId", "Name" ],
+                values: [ 4, "USA" ]);
 
             migrationBuilder.InsertData(
                 table: "Countries",
-                columns: new[] { "CountryId", "Name" },
-                values: new object[] { 5, "Japan" });
+                columns: [ "CountryId", "Name" ],
+                values: [ 5, "Japan" ]);
 
             migrationBuilder.InsertData(
                 table: "Countries",
-                columns: new[] { "CountryId", "Name" },
-                values: new object[] { 6, "China" });
+                columns: [ "CountryId", "Name" ],
+                values: [ 6, "China" ]);
 
             migrationBuilder.InsertData(
                 table: "Countries",
-                columns: new[] { "CountryId", "Name" },
-                values: new object[] { 7, "UK" });
+                columns: [ "CountryId", "Name" ],
+                values: [ 7, "UK" ]);
 
             migrationBuilder.InsertData(
                 table: "Countries",
-                columns: new[] { "CountryId", "Name" },
-                values: new object[] { 8, "France" });
+                columns: [ "CountryId", "Name" ],
+                values: [ 8, "France" ]);
 
             migrationBuilder.InsertData(
                 table: "Countries",
-                columns: new[] { "CountryId", "Name" },
-                values: new object[] { 9, "Brazil" });
+                columns: ["CountryId", "Name"],
+                values: [9, "Brazil"]);
 
             migrationBuilder.InsertData(
                 table: "JobCategories",
-                columns: new[] { "JobCategoryId", "JobCategoryName" },
-                values: new object[] { 1, "Pie research" });
+                columns: ["JobCategoryId", "JobCategoryName"],
+                values: [1, "Pie research"]);
 
             migrationBuilder.InsertData(
                 table: "JobCategories",
-                columns: new[] { "JobCategoryId", "JobCategoryName" },
-                values: new object[] { 2, "Sales" });
+                columns: ["JobCategoryId", "JobCategoryName"],
+                values: [2, "Sales"]);
 
             migrationBuilder.InsertData(
                 table: "JobCategories",
-                columns: new[] { "JobCategoryId", "JobCategoryName" },
-                values: new object[] { 3, "Management" });
+                columns: ["JobCategoryId", "JobCategoryName"],
+                values: [3, "Management"]);
 
             migrationBuilder.InsertData(
                 table: "JobCategories",
-                columns: new[] { "JobCategoryId", "JobCategoryName" },
-                values: new object[] { 4, "Store staff" });
+                columns: ["JobCategoryId", "JobCategoryName"],
+                values: [4, "Store staff"]);
 
             migrationBuilder.InsertData(
                 table: "JobCategories",
-                columns: new[] { "JobCategoryId", "JobCategoryName" },
-                values: new object[] { 5, "Finance" });
+                columns: ["JobCategoryId", "JobCategoryName"],
+                values: [5, "Finance"]);
 
             migrationBuilder.InsertData(
                 table: "JobCategories",
-                columns: new[] { "JobCategoryId", "JobCategoryName" },
-                values: new object[] { 6, "QA" });
+                columns: ["JobCategoryId", "JobCategoryName"],
+                values: [6, "QA"]);
 
             migrationBuilder.InsertData(
                 table: "JobCategories",
-                columns: new[] { "JobCategoryId", "JobCategoryName" },
-                values: new object[] { 7, "IT" });
+                columns: ["JobCategoryId", "JobCategoryName"],
+                values: [7, "IT"]);
 
             migrationBuilder.InsertData(
                 table: "JobCategories",
-                columns: new[] { "JobCategoryId", "JobCategoryName" },
-                values: new object[] { 8, "Cleaning" });
+                columns: ["JobCategoryId", "JobCategoryName"],
+                values: [8, "Cleaning"]);
 
             migrationBuilder.InsertData(
                 table: "JobCategories",
-                columns: new[] { "JobCategoryId", "JobCategoryName" },
-                values: new object[] { 9, "Bakery" });
+                columns: columns,
+                values: [9, "Bakery"]);
 
             migrationBuilder.InsertData(
                 table: "Employees",
-                columns: new[] { "EmployeeId", "BirthDate", "City", "Comment", "CountryId", "Email", "ExitDate", "FirstName", "Gender", "JobCategoryId", "JoinedDate", "LastName", "Latitude", "Longitude", "MaritalStatus", "PhoneNumber", "Smoker", "Street", "Zip" },
-                values: new object[] { 1, new DateTime(1979, 1, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), "Brussels", "Lorem Ipsum", 1, "bethany@bethanyspieshop.com", null, "Bethany", 1, 1, new DateTime(2015, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Smith", 50.850299999999997, 4.3517000000000001, 1, "324777888773", false, "Grote Markt 1", "1000" });
+                columns: ["EmployeeId", "BirthDate", "City", "Comment", "CountryId", "Email", "ExitDate", "FirstName", "Gender", "JobCategoryId", "JoinedDate", "LastName", "Latitude", "Longitude", "MaritalStatus", "PhoneNumber", "Smoker", "Street", "Zip"],
+                values: [1, new DateTime(1979, 1, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), "Brussels", "Lorem Ipsum", 1, "bethany@bethanyspieshop.com", null, "Bethany", 1, 1, new DateTime(2015, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Smith", 50.850299999999997, 4.3517000000000001, 1, "324777888773", false, "Grote Markt 1", "1000"]);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employees_CountryId",

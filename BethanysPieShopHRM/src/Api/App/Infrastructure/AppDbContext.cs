@@ -3,14 +3,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BethanysPieShopHRM.Api.App.Infrastructure;
 
-public class AppDbContext : DbContext
+public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options)
-        : base(options)
-    {
-
-    }
-
     public DbSet<Employee> Employees { get; set; } = default!;
     public DbSet<Country> Countries { get; set; } = default!;
     public DbSet<JobCategory> JobCategories { get; set; } = default!;

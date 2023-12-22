@@ -26,8 +26,8 @@ public partial class EmployeeEdit
 
     public Employee Employee { get; set; } = new();
 
-    public List<Country> Countries { get; set; } = new();
-    public List<JobCategory> JobCategories { get; set; } = new();
+    public List<Country> Countries { get; set; } = [];
+    public List<JobCategory> JobCategories { get; set; } = [];
 
     protected string Message { get; set; } = string.Empty;
     protected string StatusClass { get; set; } = string.Empty;
@@ -109,7 +109,7 @@ public partial class EmployeeEdit
     private void OnInvalidSubmit()
     {
         StatusClass = "alert-danger";
-        Message = "Thear are some validation errors.  Please try again.";
+        Message = "There are some validation errors.  Please try again.";
     }
 
     private async Task OnDeleteClicked()
