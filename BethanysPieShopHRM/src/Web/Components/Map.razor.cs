@@ -12,7 +12,7 @@ public partial class Map
     public double Zoom { get; set; }
 
     [Parameter]
-    public List<Marker>? Markers { get; set; } = new();
+    public List<Marker>? Markers { get; set; } = [];
 
     [Inject]
     public IJSRuntime JsRuntime { get; set; } = null!;
@@ -21,7 +21,7 @@ public partial class Map
     /// <inheritdoc />
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        List<Marker> markers = Markers ?? new List<Marker>();
+        List<Marker> markers = Markers ?? [];
 
         await JsRuntime.InvokeVoidAsync("deliveryMap.showOrUpdate", ElementId, markers);
     }

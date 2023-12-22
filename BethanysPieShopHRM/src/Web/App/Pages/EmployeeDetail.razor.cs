@@ -21,12 +21,12 @@ public partial class EmployeeDetail
     protected override async Task OnInitializedAsync()
     {
         Employee = await EmployeeDataService.GetEmployeeDetails(int.Parse(EmployeeId));
-        if (Employee is { Longitude: { }, Latitude: { } })
+        if (Employee is { Longitude: not null, Latitude: not null })
         {
-            MapMarkers = new List<Marker>
-            {
+            MapMarkers =
+            [
                 new(Employee.FullName, Employee.Longitude.Value, Employee.Latitude.Value, false),
-            };
+            ];
         }
     }
 }

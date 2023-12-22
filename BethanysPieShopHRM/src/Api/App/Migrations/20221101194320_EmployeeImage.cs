@@ -16,8 +16,8 @@ namespace BethanysPieShopHRM.Api.Migrations
 
             migrationBuilder.InsertData(
                 table: "Countries",
-                columns: new[] { "CountryId", "Name" },
-                values: new object[] { 10, "Canada" });
+                columns: ["CountryId", "Name"],
+                values: [10, "Canada"]);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

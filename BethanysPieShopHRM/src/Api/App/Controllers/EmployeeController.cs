@@ -8,29 +8,22 @@ namespace BethanysPieShopHRM.Api.App.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 [Authorize]
-public class EmployeeController : Controller
+public class EmployeeController(
+    IEmployeeRepository employeeRepository,
+    IWebHostEnvironment webHostEnvironment,
+    IHttpContextAccessor httpContextAccessor)
+    : Controller
 {
-    private readonly IEmployeeRepository _employeeRepository;
-    private readonly IWebHostEnvironment _webHostEnvironment;
-    private readonly IHttpContextAccessor _httpContextAccessor;
-
-    public EmployeeController(IEmployeeRepository employeeRepository, IWebHostEnvironment webHostEnvironment, IHttpContextAccessor httpContextAccessor)
-    {
-        _employeeRepository = employeeRepository;
-        _webHostEnvironment = webHostEnvironment;
-        _httpContextAccessor = httpContextAccessor;
-    }
-
     [HttpGet]
     public IActionResult GetAllEmployees()
     {
-        return Ok(_employeeRepository.GetAllEmployees());
+        return Ok(employeeRepository.GetAllEmployees());
     }
 
     [HttpGet("{id}")]
     public IActionResult GetEmployeeById(int id)
     {
-        return Ok(_employeeRepository.GetEmployeeById(id));
+        return Ok(employeeRepository.GetEmployeeById(id));
     }
 
     [HttpPost]
@@ -54,7 +47,7 @@ public class EmployeeController : Controller
         // handle image upload
         if (employee.ImageContent is not null)
         {
-            HttpContext? context = _httpContextAccessor.HttpContext;
+            HttpContext? context = httpContextAccessor.HttpContext;
             if (context is null)
             {
                 return new ObjectResult("Internal service error - context not found") { StatusCode = StatusCodes.Status500InternalServerError };
@@ -64,8 +57,8 @@ public class EmployeeController : Controller
             string imageName = employee.ImageName?.Replace("..", string.Empty).Trim() ?? string.Empty;
             if (imageName is { Length: > 0 })
             {
-                string path = Path.GetFullPath($"{_webHostEnvironment.WebRootPath}\\uploads\\{employee.ImageName}");
-                if (!path.StartsWith(_webHostEnvironment.WebRootPath))
+                string path = Path.GetFullPath($"{webHostEnvironment.WebRootPath}\\uploads\\{employee.ImageName}");
+                if (!path.StartsWith(webHostEnvironment.WebRootPath))
                 {
                     return BadRequest();
                 }
@@ -85,7 +78,7 @@ public class EmployeeController : Controller
         }
 
 
-        Employee createdEmployee = _employeeRepository.AddEmployee(employee);
+        Employee createdEmployee = employeeRepository.AddEmployee(employee);
 
         return Created("employee", createdEmployee);
     }
@@ -108,14 +101,14 @@ public class EmployeeController : Controller
             return BadRequest(ModelState);
         }
 
-        Employee? employeeToUpdate = _employeeRepository.GetEmployeeById(employee.EmployeeId);
+        Employee? employeeToUpdate = employeeRepository.GetEmployeeById(employee.EmployeeId);
 
         if (employeeToUpdate == null)
         {
             return NotFound();
         }
 
-        _employeeRepository.UpdateEmployee(employee);
+        employeeRepository.UpdateEmployee(employee);
 
         return NoContent(); //success
     }
@@ -128,13 +121,13 @@ public class EmployeeController : Controller
             return BadRequest();
         }
 
-        Employee? employeeToDelete = _employeeRepository.GetEmployeeById(id);
+        Employee? employeeToDelete = employeeRepository.GetEmployeeById(id);
         if (employeeToDelete == null)
         {
             return NotFound();
         }
 
-        _employeeRepository.DeleteEmployee(id);
+        employeeRepository.DeleteEmployee(id);
 
         return NoContent();
     }
