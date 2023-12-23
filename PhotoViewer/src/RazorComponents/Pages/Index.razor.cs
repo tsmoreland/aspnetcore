@@ -13,14 +13,22 @@
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using PhotoViewer.Shared;
 
 namespace PhotoViewer.RazorComponents.Pages;
 
 public partial class Index
 {
+
     [Inject]
     private IJSRuntime JsRuntime { get; init; } = null!;
 
+    [Inject]
+    private IMessageChannel Notifier { get; init; } = null!;
+
+    private readonly List<string> _filenames = [];
+    private readonly Random _random = new();
+    private int _index = 0;
 
     /// <inheritdoc />
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -31,9 +39,65 @@ public partial class Index
             return;
         }
 
-        await using FileStream stream = new(@"c:\tmp\image.jpg", FileMode.Open, FileAccess.Read);
-        DotNetStreamReference streamRef = new(stream);
-        await JsRuntime.InvokeVoidAsync("setImageUsingStreaming", "wallpaper", streamRef); 
+        Notifier.DirectoryChanged += Notifier_DirectoryChanged;
+        Notifier.MoveForward += Notifier_MoveForward;
+        Notifier.MoveBackward += Notifier_MoveBackward;
     }
 
+    private async void Notifier_DirectoryChanged(object? sender, string directory)
+    {
+        List<string> files = [.. Directory.GetFiles(directory)];
+
+        _filenames.Clear();
+        while (files.Count > 0)
+        {
+            int index = _random.Next(0, files.Count);
+            _filenames.Add(files[index]);
+            files.RemoveAt(index);
+        }
+
+        await LoadImage();
+    }
+    private async void Notifier_MoveForward(object? sender, EventArgs e) 
+    {
+        _index++;
+        await LoadImage();
+    }
+    private async void Notifier_MoveBackward(object? sender, EventArgs e)
+    {
+        _index--;
+        await LoadImage();
+    }
+
+
+    private async Task LoadImage(CancellationToken cancellationToken = default)
+    {
+        if (!IsIndexValid())
+        {
+            return;
+        }
+        string filename = _filenames[_index];
+        await using FileStream stream = new(filename, FileMode.Open, FileAccess.Read);
+        DotNetStreamReference streamRef = new(stream);
+        await JsRuntime.InvokeVoidAsync("setImageUsingStreaming", cancellationToken, "wallpaper", streamRef); 
+
+    }
+
+    private bool IsIndexValid()
+    {
+        if (_filenames.Count == 0)
+        {
+            return false;
+        }
+        
+        if (_index >= _filenames.Count)
+        {
+            _index = 0;
+        }
+        else if (_index < 0)
+        {
+            _index = _filenames.Count - 1;
+        }
+        return true;
+    }
 }
