@@ -11,16 +11,8 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using PhotoViewer.Shared;
 
 namespace PhotoViewer.Wpf.App;
 
@@ -29,8 +21,49 @@ namespace PhotoViewer.Wpf.App;
 /// </summary>
 public partial class MainWindow : Window
 {
-    public MainWindow()
+    private readonly IMessageChannel _messageChannel;
+
+    public MainWindow(IMessageChannel messageChannel)
     {
         InitializeComponent();
+        _messageChannel = messageChannel;
+
+        PreviewKeyDown += MainWindow_PreviewKeyDown;
+        PreviewMouseDown += MainWindow_PreviewMouseDown;
+    }
+
+
+    private void MainWindow_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+    {
+        switch (e.Key)
+        {
+            case System.Windows.Input.Key.Left:
+                _messageChannel.NotifyNavigationBackward();
+                break;
+            case System.Windows.Input.Key.Escape:
+                Toolbar.Visibility = Visibility.Visible;
+                break;
+            case System.Windows.Input.Key.Right:
+            default:
+                _messageChannel.NotifyNavigationForward();
+                break;
+        }
+    }
+    private void MainWindow_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    {
+        _messageChannel.NotifyNavigationForward();
+    }
+
+    private void OpenFolder_Click(object sender, RoutedEventArgs e)
+    {
+        using var dialog = new FolderBrowserDialog();
+        DialogResult result = dialog.ShowDialog();
+        if (result != System.Windows.Forms.DialogResult.OK)
+        {
+            return;
+        }
+
+        Toolbar.Visibility = Visibility.Collapsed;
+        _ = _messageChannel.NotifyDirectoryChange(dialog.SelectedPath);
     }
 }

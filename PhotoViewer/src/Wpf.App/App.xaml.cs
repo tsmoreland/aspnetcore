@@ -13,22 +13,55 @@
 
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using PhotoViewer.Infrastructure;
+using PhotoViewer.Shared;
 
 namespace PhotoViewer.Wpf.App;
 
-public partial class App : Application
+public partial class App 
 {
-    private void Application_Startup(object sender, StartupEventArgs e)
+    public static IHost? Host { get; private set; }
+
+    /// <inheritdoc />
+    public App()
     {
-        IServiceCollection services = new ServiceCollection();
+        Host = Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder()
+            .ConfigureServices((_, services) =>
+            {
+                ConfigureServices(services);
+            })
+            .Build();
+        Resources.Add("ServiceProvider", Host.Services);
+    }
+
+    private static void ConfigureServices(IServiceCollection services)
+    {
         services.AddWpfBlazorWebView();
 
 #if DEBUG
         services.AddBlazorWebViewDeveloperTools();
 #endif
+        services
+            .AddSingleton<IMessageChannel, MessageChannel>()
+            .AddSingleton<MainWindow>();
+    }
 
-        IServiceProvider serviceProvider = services.BuildServiceProvider();
+    /// <inheritdoc />
+    protected override async void OnStartup(StartupEventArgs e)
+    {
+        await Host!.StartAsync();
 
-        Resources.Add("ServiceProvider", serviceProvider);
+        MainWindow mainWindow = Host.Services.GetRequiredService<MainWindow>();
+        mainWindow.Show();
+
+        base.OnStartup(e);
+    }
+
+    /// <inheritdoc />
+    protected override async void OnExit(ExitEventArgs e)
+    {
+        await Host!.StopAsync();
+        base.OnExit(e);
     }
 }

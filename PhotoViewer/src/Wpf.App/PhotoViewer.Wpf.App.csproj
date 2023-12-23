@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,10 +16,13 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" Version="8.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Infrastructure\PhotoViewer.Infrastructure.csproj" />
     <ProjectReference Include="..\RazorComponents\PhotoViewer.RazorComponents.csproj" />
+    <ProjectReference Include="..\Shared\PhotoViewer.Shared.csproj" />
   </ItemGroup>
 
 </Project>

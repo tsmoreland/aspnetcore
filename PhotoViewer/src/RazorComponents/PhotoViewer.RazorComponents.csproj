@@ -19,4 +19,8 @@
     <Folder Include="Shared\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Shared\PhotoViewer.Shared.csproj" />
+  </ItemGroup>
+
 </Project>
