@@ -18,4 +18,5 @@ public enum MessageType
     DirectoryChange,
     NavigationForward,
     NavigationBackward,
+    FileChange,
 }

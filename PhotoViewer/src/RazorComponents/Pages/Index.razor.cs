@@ -79,8 +79,8 @@ public partial class Index
         string filename = _filenames[_index];
         await using FileStream stream = new(filename, FileMode.Open, FileAccess.Read);
         DotNetStreamReference streamRef = new(stream);
-        await JsRuntime.InvokeVoidAsync("setImageUsingStreaming", cancellationToken, "wallpaper", streamRef); 
-
+        await JsRuntime.InvokeVoidAsync("setImageUsingStreaming", cancellationToken, "wallpaper", streamRef);
+        Notifier.NotifyFileChanged(filename);
     }
 
     private bool IsIndexValid()

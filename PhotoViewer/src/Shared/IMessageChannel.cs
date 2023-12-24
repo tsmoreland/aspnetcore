@@ -18,8 +18,10 @@ public interface IMessageChannel
     bool NotifyDirectoryChange(string directory);
     bool NotifyNavigationForward();
     bool NotifyNavigationBackward();
+    bool NotifyFileChanged(string filename);
 
     event EventHandler<string> DirectoryChanged;
     event EventHandler MoveForward;
     event EventHandler MoveBackward;
+    event EventHandler<string> FileChanged;
 }

@@ -11,7 +11,6 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System.Security.Cryptography;
 using System.Threading.Channels;
 using PhotoViewer.Shared;
 
@@ -47,6 +46,10 @@ public class MessageChannel : IMessageChannel, IDisposable, IAsyncDisposable
         return _channel.Writer.TryWrite(new Message(MessageType.NavigationBackward, string.Empty));
     }
 
+    /// <inheritdoc />
+    public bool NotifyFileChanged(string filename) =>
+        _channel.Writer.TryWrite(new Message(MessageType.FileChange, filename));
+
 
     /// <inheritdoc />
     public event EventHandler<string>? DirectoryChanged;
@@ -56,6 +59,9 @@ public class MessageChannel : IMessageChannel, IDisposable, IAsyncDisposable
 
     /// <inheritdoc />
     public event EventHandler? MoveBackward;
+
+    /// <inheritdoc />
+    public event EventHandler<string>? FileChanged;
 
     private async Task ReadNotifications(object? state)
     {
@@ -76,6 +82,9 @@ public class MessageChannel : IMessageChannel, IDisposable, IAsyncDisposable
                     break;
                 case MessageType.NavigationBackward:
                     MoveBackward?.Invoke(this, EventArgs.Empty);
+                    break;
+                case MessageType.FileChange:
+                    FileChanged?.Invoke(this, message.Data);
                     break;
                 default:
                     throw new InvalidOperationException("Unrecognized message type");

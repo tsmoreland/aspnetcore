@@ -11,6 +11,7 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using System.IO;
 using System.Windows;
 using PhotoViewer.Shared;
 
@@ -30,6 +31,7 @@ public partial class MainWindow : Window
 
         PreviewKeyDown += MainWindow_PreviewKeyDown;
         PreviewMouseDown += MainWindow_PreviewMouseDown;
+        _messageChannel.FileChanged += MessageChannel_FileChanged;
     }
 
 
@@ -65,5 +67,9 @@ public partial class MainWindow : Window
 
         Toolbar.Visibility = Visibility.Collapsed;
         _ = _messageChannel.NotifyDirectoryChange(dialog.SelectedPath);
+    }
+    private async void MessageChannel_FileChanged(object? sender, string filename)
+    {
+        await Dispatcher.InvokeAsync(() => Title = Path.GetFileNameWithoutExtension(filename));
     }
 }
