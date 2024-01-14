@@ -7,16 +7,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CarvedRock.Infrastructure;
 
-public sealed class CarvedRockDbContext : DbContext
+/// <inheritdoc />
+public sealed class CarvedRockDbContext(DbContextOptions options, IModelConfiguration<ModelBuilder, DbContextOptionsBuilder, ModelConfigurationBuilder> configuration) : DbContext(options)
 {
-    private readonly IModelConfiguration<ModelBuilder, DbContextOptionsBuilder, ModelConfigurationBuilder> _configuration;
-
-    /// <inheritdoc />
-    public CarvedRockDbContext(DbContextOptions options, IModelConfiguration<ModelBuilder, DbContextOptionsBuilder, ModelConfigurationBuilder> configuration)
-        : base(options)
-    {
-        _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-    }
+    private readonly IModelConfiguration<ModelBuilder, DbContextOptionsBuilder, ModelConfigurationBuilder> _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
     public DbSet<Order> Orders { get; init; } = default!;
 
@@ -92,17 +86,20 @@ public sealed class CarvedRockDbContext : DbContext
 
     /// <inheritdoc />
     protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {_configuration.ConfigureModel(modelBuilder);
+    {
+        _configuration.ConfigureModel(modelBuilder);
     }
 
     /// <inheritdoc />
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {_configuration.ConfigureContext(optionsBuilder);
+    {
+        _configuration.ConfigureContext(optionsBuilder);
     }
 
     /// <inheritdoc />
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
-    {_configuration.ConfigureConventions(configurationBuilder);
+    {
+        _configuration.ConfigureConventions(configurationBuilder);
         base.ConfigureConventions(configurationBuilder);
     }
 }
