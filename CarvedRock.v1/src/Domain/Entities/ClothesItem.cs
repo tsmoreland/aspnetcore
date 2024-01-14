@@ -19,11 +19,10 @@ public sealed class ClothesItem : Item
     }
 
     /// <inheritdoc />
+#pragma warning disable IDE0051 // Remove unused private members -- used by EF Core
     private ClothesItem(int id, string description, decimal price, float weight, ICollection<ItemOrder> itemOrders, ClothesFabric fabric)
-        : base(id, description, price, weight, itemOrders)
-    {
-        Fabric = fabric;
-    }
+        : base(id, description, price, weight, itemOrders) => Fabric = fabric;
+#pragma warning restore IDE0051 // Remove unused private members
 
     public required ClothesFabric Fabric { get; init; }
 }
