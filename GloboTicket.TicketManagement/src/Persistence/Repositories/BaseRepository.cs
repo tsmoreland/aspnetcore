@@ -18,20 +18,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GloboTicket.TicketManagement.Persistence.Repositories;
 
-public class BaseRepository<T> : IAsyncRepository<T> where T : class
+public class BaseRepository<T>(GloboTicketDbContext dbContext, IQueryableToEnumerableConverter queryableToEnumerableConverter) : IAsyncRepository<T> where T : class
 {
-    protected IQueryableToEnumerableConverter QueryableToEnumerableConverter { get; }
-    private readonly GloboTicketDbContext _dbContext;
+    protected IQueryableToEnumerableConverter QueryableToEnumerableConverter { get; } = queryableToEnumerableConverter ?? throw new ArgumentNullException(nameof(queryableToEnumerableConverter));
+    private readonly GloboTicketDbContext _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
 
     protected DbSet<T> DataSet
     {
         get { return _dbContext.Set<T>(); }
-    }
-
-    public BaseRepository(GloboTicketDbContext dbContext, IQueryableToEnumerableConverter queryableToEnumerableConverter)
-    {
-        QueryableToEnumerableConverter = queryableToEnumerableConverter ?? throw new ArgumentNullException(nameof(queryableToEnumerableConverter));
-        _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
     }
 
     /// <inheritdoc />

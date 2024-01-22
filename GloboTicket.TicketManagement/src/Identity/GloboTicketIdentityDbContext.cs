@@ -4,12 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GloboTicket.TicketManagement.Identity;
 
-public class GloboTicketIdentityDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
+/// <inheritdoc />
+public class GloboTicketIdentityDbContext(DbContextOptions options) : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>(options)
 {
-    /// <inheritdoc />
-    public GloboTicketIdentityDbContext(DbContextOptions options)
-        : base(options)
-    {
-    }
-
 }

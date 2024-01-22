@@ -6,20 +6,15 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace GloboTicket.TicketManagement.Api.Controllers;
 
+/// <inheritdoc />
 [Route("api/account")]
 [ApiController]
 [Consumes(MediaTypeNames.Application.Json)]
 [Produces(MediaTypeNames.Application.Json)]
 [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails), ContentTypes = new [] { "application/problem+json" })]
-public class AccountController : ControllerBase
+public class AccountController(IAuthenticationService authenticationService) : ControllerBase
 {
-    private readonly IAuthenticationService _authenticationService;
-
-    /// <inheritdoc />
-    public AccountController(IAuthenticationService authenticationService)
-    {
-        _authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
-    }
+    private readonly IAuthenticationService _authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
 
     [HttpPost("authenticate")]
     [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AuthenticationResponse), ContentTypes = new [] { MediaTypeNames.Application.Json })]
