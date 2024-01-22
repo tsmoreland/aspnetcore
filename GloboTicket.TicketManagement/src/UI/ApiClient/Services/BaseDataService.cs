@@ -16,18 +16,11 @@ using GloboTicket.TicketManagement.UI.ApiClient.Contracts;
 
 namespace GloboTicket.TicketManagement.UI.ApiClient.Services;
 
-public class BaseDataService
+public class BaseDataService(IClient client, IMapper mapper, ITokenRepository tokenRepository)
 {
-    protected IClient Client { get; }
-    public IMapper Mapper { get; }
-    protected ITokenRepository TokenRepository { get; }
-
-    public BaseDataService(IClient client, IMapper mapper,  ITokenRepository tokenRepository)
-    {
-        Client = client ?? throw new ArgumentNullException(nameof(client));
-        Mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-        TokenRepository = tokenRepository ?? throw new ArgumentNullException(nameof(tokenRepository));
-    }
+    protected IClient Client { get; } = client ?? throw new ArgumentNullException(nameof(client));
+    public IMapper Mapper { get; } = mapper ?? throw new ArgumentNullException(nameof(mapper));
+    protected ITokenRepository TokenRepository { get; } = tokenRepository ?? throw new ArgumentNullException(nameof(tokenRepository));
 
     protected static ApiResponse<T> ConvertApiException<T>(ApiException ex)
     {

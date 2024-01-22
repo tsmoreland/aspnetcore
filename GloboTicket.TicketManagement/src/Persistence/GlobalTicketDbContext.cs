@@ -8,20 +8,13 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace GloboTicket.TicketManagement.Persistence;
 
-public sealed class GloboTicketDbContext : DbContext
+/// <inheritdoc />
+public sealed class GloboTicketDbContext(DbContextOptions<GloboTicketDbContext> options,
+    IModelConfiguration<ModelBuilder, DbContextOptionsBuilder> modelConfiguration,
+    ILoggedInUserService loggedInUserService) : DbContext(options)
 {
-    private readonly IModelConfiguration<ModelBuilder, DbContextOptionsBuilder> _modelConfiguration;
-    private readonly ILoggedInUserService _loggedInUserService;
-
-    /// <inheritdoc />
-    public GloboTicketDbContext(DbContextOptions<GloboTicketDbContext> options,
-        IModelConfiguration<ModelBuilder, DbContextOptionsBuilder> modelConfiguration,
-        ILoggedInUserService loggedInUserService)
-        : base(options)
-    {
-        _modelConfiguration = modelConfiguration ?? throw new ArgumentNullException(nameof(modelConfiguration));
-        _loggedInUserService = loggedInUserService ?? throw new ArgumentNullException(nameof(loggedInUserService));
-    }
+    private readonly IModelConfiguration<ModelBuilder, DbContextOptionsBuilder> _modelConfiguration = modelConfiguration ?? throw new ArgumentNullException(nameof(modelConfiguration));
+    private readonly ILoggedInUserService _loggedInUserService = loggedInUserService ?? throw new ArgumentNullException(nameof(loggedInUserService));
 
     public DbSet<Event> Events => Set<Event>();
     public DbSet<Category> Categories => Set<Category>();

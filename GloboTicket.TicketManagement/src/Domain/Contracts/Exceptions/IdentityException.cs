@@ -15,10 +15,11 @@ using GloboTicket.TicketManagement.Domain.Models.Authentication;
 
 namespace GloboTicket.TicketManagement.Domain.Contracts.Exceptions;
 
-public sealed class IdentityException : Exception
+/// <inheritdoc />
+public sealed class IdentityException(IdentityError error, string? message, Exception? innerException) : Exception(message, innerException)
 {
-    public IdentityError Error { get; }
-    public IReadOnlyDictionary<string, string> ValidationErrors { get; }
+    public IdentityError Error { get; } = error;
+    public IReadOnlyDictionary<string, string> ValidationErrors { get; } = new Dictionary<string, string>();
 
     /// <inheritdoc />
     public IdentityException(IdentityError error)
@@ -37,14 +38,6 @@ public sealed class IdentityException : Exception
     public IdentityException(IdentityError error, string? message)
         : this(error, message, null)
     {
-        ValidationErrors = new Dictionary<string, string>();
-    }
-
-    /// <inheritdoc />
-    public IdentityException(IdentityError error, string? message, Exception? innerException)
-        : base(message, innerException)
-    {
-        Error = error;
         ValidationErrors = new Dictionary<string, string>();
     }
 

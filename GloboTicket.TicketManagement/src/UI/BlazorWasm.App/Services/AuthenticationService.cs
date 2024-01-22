@@ -7,18 +7,11 @@ using Microsoft.AspNetCore.Components.Authorization;
 
 namespace GloboTicket.TicketManagement.UI.BlazorWasm.App.Services;
 
-public sealed class AuthenticationService : IAuthenticationService
+public sealed class AuthenticationService(IClient client, ITokenRepository tokenRepository, AuthenticationStateProvider authenticationStateProvider) : IAuthenticationService
 {
-    private readonly IClient _client;
-    private readonly ITokenRepository _tokenRepository;
-    private readonly AuthenticationStateProvider _authenticationStateProvider;
-
-    public AuthenticationService(IClient client, ITokenRepository tokenRepository, AuthenticationStateProvider authenticationStateProvider)
-    {
-        _client = client ?? throw new ArgumentNullException(nameof(client));
-        _tokenRepository = tokenRepository ?? throw new ArgumentNullException(nameof(tokenRepository));
-        _authenticationStateProvider = authenticationStateProvider ?? throw new ArgumentNullException(nameof(authenticationStateProvider));
-    }
+    private readonly IClient _client = client ?? throw new ArgumentNullException(nameof(client));
+    private readonly ITokenRepository _tokenRepository = tokenRepository ?? throw new ArgumentNullException(nameof(tokenRepository));
+    private readonly AuthenticationStateProvider _authenticationStateProvider = authenticationStateProvider ?? throw new ArgumentNullException(nameof(authenticationStateProvider));
 
     /// <inheritdoc />
     public async ValueTask<bool> Authenticate(string email, string password)

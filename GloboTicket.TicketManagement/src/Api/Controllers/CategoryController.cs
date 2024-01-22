@@ -10,26 +10,21 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace GloboTicket.TicketManagement.Api.Controllers;
 
+/// <inheritdoc />
 [Route("api/categories")]
 [ApiController]
 [Consumes(MediaTypeNames.Application.Json)]
 [Produces(MediaTypeNames.Application.Json)]
 [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails), ContentTypes = new[] { "applicaiton/problem+json" })]
-public class CategoryController : ControllerBase
+public class CategoryController(IMediator mediator) : ControllerBase
 {
-    private readonly IMediator _mediator;
+    private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
     private static class RouteNames
     {
         public const string GetPage = "GetCategories";
         public const string Create = "AddCategory";
 
-    }
-
-    /// <inheritdoc />
-    public CategoryController(IMediator mediator)
-    {
-        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
     }
 
     [HttpGet(Name = RouteNames.GetPage)]

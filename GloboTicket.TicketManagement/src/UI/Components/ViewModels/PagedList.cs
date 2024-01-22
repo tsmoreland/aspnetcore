@@ -2,7 +2,7 @@
 
 public sealed class PagedList<T>
 {
-    private readonly List<T> _items = new();
+    private readonly List<T> _items = [];
     public int PageIndex { get; set; }
     public int TotalPages { get; set; }
 
