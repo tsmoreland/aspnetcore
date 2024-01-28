@@ -19,21 +19,17 @@ namespace SunDoeCoffeeShop.FrontEnd.App.Pages
 {
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     [IgnoreAntiforgeryToken]
-    public class ErrorModel : PageModel
+    public class ErrorModel(ILogger<ErrorModel> logger) : PageModel
     {
         public string? RequestId { get; set; }
 
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
 
-        private readonly ILogger<ErrorModel> _logger;
-
-        public ErrorModel(ILogger<ErrorModel> logger)
-        {
-            _logger = logger;
-        }
+        private readonly ILogger<ErrorModel> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
         public void OnGet()
         {
+            _ = _logger;
             RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
         }
     }

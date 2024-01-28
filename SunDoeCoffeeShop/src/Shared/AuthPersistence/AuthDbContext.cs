@@ -16,10 +16,4 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SunDoeCoffeeShop.Shared.AuthPersistence;
 
-public class AuthDbContext : IdentityDbContext
-{
-    public AuthDbContext(DbContextOptions<AuthDbContext> options)
-        : base(options)
-    {
-    }
-}
+public class AuthDbContext(DbContextOptions<AuthDbContext> options) : IdentityDbContext(options);

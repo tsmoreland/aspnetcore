@@ -17,19 +17,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SunDoeCoffeeShop.Shared.AuthPersistence;
 
-public sealed class UserRepository : IUserRepository
+/// <summary>
+/// Instantiates a new instance of the <see cref="UserRepository"/> class.
+/// </summary>
+/// <param name="dbContext"><see cref="AuthDbContext"/> used to interact with the database</param>
+/// <exception cref="ArgumentNullException">if <paramref name="dbContext"/> is <see langword="null"/></exception>
+public sealed class UserRepository(AuthDbContext dbContext) : IUserRepository
 {
-    private readonly AuthDbContext _dbContext;
-
-    /// <summary>
-    /// Instantiates a new instance of the <see cref="UserRepository"/> class.
-    /// </summary>
-    /// <param name="dbContext"><see cref="AuthDbContext"/> used to interact with the database</param>
-    /// <exception cref="ArgumentNullException">if <paramref name="dbContext"/> is <see langword="null"/></exception>
-    public UserRepository(AuthDbContext dbContext)
-    {
-        _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
-    }
+    private readonly AuthDbContext _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
 
     /// <inheritdoc />
     public async IAsyncEnumerable<IdentityUser> GetAll([EnumeratorCancellation] CancellationToken cancellationToken)
