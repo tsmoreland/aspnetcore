@@ -13,6 +13,7 @@
 
 using SunDoeCoffeeShop.Admin.FrontEnd.App;
 using Serilog;
+using Serilog.Extensions.Logging;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -30,7 +31,9 @@ try
         .Build()
         .Configure();
 
-    await app.MigrateIfProduction(Log.Logger);
+    Microsoft.Extensions.Logging.ILogger msLogger = new SerilogLoggerFactory(Log.Logger).CreateLogger<Program>();
+
+    await app.MigrateIfProduction(msLogger);
 
     Log.Information("Starting Application...");
     await app.RunAsync();
