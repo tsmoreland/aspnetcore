@@ -22,9 +22,6 @@ public sealed class CarValidator : AbstractValidator<Car>
         RuleFor(x => x.FuelCapacityInLitres)
             .Must(value => value > decimal.Zero)
             .WithMessage("Must be greater than zero");
-        RuleFor(x => x)
-            .Must(x => x.CurrentFuel <= x.FuelCapacityInLitres && x.CurrentFuel >= 0)
-            .WithMessage("Current fuel must be under the capacity and cannot be negative");
         RuleFor(x => x.NumberOfDoors)
             .Must(value => value > 0)
             .WithMessage("Must be greater than zero");
@@ -37,14 +34,6 @@ public sealed class CarValidator : AbstractValidator<Car>
     public static string ThrowIfModelIsInvalid(string model) => ThrowIfStringIsInvalid(model, nameof(model));
     public static int ThrowIfHorsePowerIsInvalid(int horsePower) => ThrowIfIntIsInvalid(horsePower, nameof(horsePower));
     public static decimal ThrowIfFuelCapacityInLitresIsInvalid(decimal fuelCapacityInLitres) => ThrowIfDecimalIsInvalid(fuelCapacityInLitres, nameof(fuelCapacityInLitres));
-    public static decimal ThrowIfCurrentFuelIsInvalid(decimal currentFuel, decimal fuelCapacityInLitres)
-    {
-        if (currentFuel < decimal.Zero || currentFuel > fuelCapacityInLitres)
-        {
-            throw new ValidationException("Current fuel must be under the capacity and cannot be negative");
-        }
-        return currentFuel;
-    }
     public static int ThrowIfNumberOfDoorsIsInvalid(int numberOfDoors) => ThrowIfIntIsInvalid(numberOfDoors, nameof(numberOfDoors));
     public static decimal ThrowIfMpGIsInvalid(decimal mpg) => ThrowIfDecimalIsInvalid(mpg, nameof(mpg));
 

@@ -19,9 +19,7 @@ public sealed class CarEntityTypeConfiguration : IEntityTypeConfiguration<Car>
         builder.Property(e => e.HorsePower).HasColumnName("horse_power").IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field).HasField("_horsePower");
         builder.Property(e => e.Engine).HasColumnName("engine_type").IsRequired();
         builder.Property(e => e.FuelCapacityInLitres).HasColumnName("fuel_capacity").IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field).HasField("_fuelCapacityInLitres");
-        builder.Property(e => e.CurrentFuel).HasColumnName("current_fuel").HasDefaultValue(decimal.Zero).IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field).HasField("_currentFuel");
         builder.Property(e => e.NumberOfDoors).HasColumnName("number_of_doors").IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field).HasField("_numberOfDoors");
         builder.Property(e => e.MpG).HasColumnName("mpg").IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field).HasField("_mpg");
-
     }
 }

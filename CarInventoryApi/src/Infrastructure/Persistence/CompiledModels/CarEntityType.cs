@@ -36,41 +36,6 @@ namespace CarInventory.Infrastructure.Persistence.CompiledModels
             id.TypeMapping = SqliteGuidTypeMapping.Default;
             id.AddAnnotation("Relational:ColumnName", "id");
 
-            var currentFuel = runtimeEntityType.AddProperty(
-                "CurrentFuel",
-                typeof(decimal),
-                propertyInfo: typeof(Car).GetProperty("CurrentFuel", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
-                fieldInfo: typeof(Car).GetField("_currentFuel", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly),
-                propertyAccessMode: PropertyAccessMode.Field,
-                valueGenerated: ValueGenerated.OnAdd,
-                valueConverter: new DecimalToDoubleValueConverter());
-            currentFuel.TypeMapping = DoubleTypeMapping.Default.Clone(
-                comparer: new ValueComparer<decimal>(
-                    (decimal v1, decimal v2) => v1 == v2,
-                    (decimal v) => v.GetHashCode(),
-                    (decimal v) => v),
-                keyComparer: new ValueComparer<decimal>(
-                    (decimal v1, decimal v2) => v1 == v2,
-                    (decimal v) => v.GetHashCode(),
-                    (decimal v) => v),
-                providerValueComparer: new ValueComparer<double>(
-                    (double v1, double v2) => v1.Equals(v2),
-                    (double v) => v.GetHashCode(),
-                    (double v) => v),
-                mappingInfo: new RelationalTypeMappingInfo(
-                    storeTypeName: "REAL"),
-                converter: new ValueConverter<decimal, double>(
-                    (decimal dec) => Convert.ToDouble(dec),
-                    (double doub) => new decimal (doub)),
-                jsonValueReaderWriter: new JsonConvertedValueReaderWriter<decimal, double>(
-                    JsonDoubleReaderWriter.Instance,
-                    new ValueConverter<decimal, double>(
-                        (decimal dec) => Convert.ToDouble(dec),
-                        (double doub) => new decimal (doub))));
-            currentFuel.SetSentinelFromProviderValue(0.0);
-            currentFuel.AddAnnotation("Relational:ColumnName", "current_fuel");
-            currentFuel.AddAnnotation("Relational:DefaultValue", 0m);
-
             var engine = runtimeEntityType.AddProperty(
                 "Engine",
                 typeof(EngineType),

@@ -32,8 +32,6 @@ namespace CarInventory.Infrastructure.Persistence.CompiledModels
             var defaultTableMappings = new List<TableMappingBase<ColumnMappingBase>>();
             car.SetRuntimeAnnotation("Relational:DefaultMappings", defaultTableMappings);
             var carInventoryDomainModelsCarTableBase = new TableBase("CarInventory.Domain.Models.Car", null, relationalModel);
-            var current_fuelColumnBase = new ColumnBase<ColumnMappingBase>("current_fuel", "REAL", carInventoryDomainModelsCarTableBase);
-            carInventoryDomainModelsCarTableBase.Columns.Add("current_fuel", current_fuelColumnBase);
             var engine_typeColumnBase = new ColumnBase<ColumnMappingBase>("engine_type", "INTEGER", carInventoryDomainModelsCarTableBase);
             carInventoryDomainModelsCarTableBase.Columns.Add("engine_type", engine_typeColumnBase);
             var fuel_capacityColumnBase = new ColumnBase<ColumnMappingBase>("fuel_capacity", "REAL", carInventoryDomainModelsCarTableBase);
@@ -55,7 +53,6 @@ namespace CarInventory.Infrastructure.Persistence.CompiledModels
             carInventoryDomainModelsCarTableBase.AddTypeMapping(carInventoryDomainModelsCarMappingBase, false);
             defaultTableMappings.Add(carInventoryDomainModelsCarMappingBase);
             RelationalModel.CreateColumnMapping((ColumnBase<ColumnMappingBase>)idColumnBase, car.FindProperty("Id")!, carInventoryDomainModelsCarMappingBase);
-            RelationalModel.CreateColumnMapping((ColumnBase<ColumnMappingBase>)current_fuelColumnBase, car.FindProperty("CurrentFuel")!, carInventoryDomainModelsCarMappingBase);
             RelationalModel.CreateColumnMapping((ColumnBase<ColumnMappingBase>)engine_typeColumnBase, car.FindProperty("Engine")!, carInventoryDomainModelsCarMappingBase);
             RelationalModel.CreateColumnMapping((ColumnBase<ColumnMappingBase>)fuel_capacityColumnBase, car.FindProperty("FuelCapacityInLitres")!, carInventoryDomainModelsCarMappingBase);
             RelationalModel.CreateColumnMapping((ColumnBase<ColumnMappingBase>)horse_powerColumnBase, car.FindProperty("HorsePower")!, carInventoryDomainModelsCarMappingBase);
@@ -69,8 +66,6 @@ namespace CarInventory.Infrastructure.Persistence.CompiledModels
             var carsTable = new Table("cars", null, relationalModel);
             var idColumn = new Column("id", "TEXT", carsTable);
             carsTable.Columns.Add("id", idColumn);
-            var current_fuelColumn = new Column("current_fuel", "REAL", carsTable);
-            carsTable.Columns.Add("current_fuel", current_fuelColumn);
             var engine_typeColumn = new Column("engine_type", "INTEGER", carsTable);
             carsTable.Columns.Add("engine_type", engine_typeColumn);
             var fuel_capacityColumn = new Column("fuel_capacity", "REAL", carsTable);
@@ -106,7 +101,6 @@ namespace CarInventory.Infrastructure.Persistence.CompiledModels
             carsTable.AddTypeMapping(carsTableMapping, false);
             tableMappings.Add(carsTableMapping);
             RelationalModel.CreateColumnMapping(idColumn, car.FindProperty("Id")!, carsTableMapping);
-            RelationalModel.CreateColumnMapping(current_fuelColumn, car.FindProperty("CurrentFuel")!, carsTableMapping);
             RelationalModel.CreateColumnMapping(engine_typeColumn, car.FindProperty("Engine")!, carsTableMapping);
             RelationalModel.CreateColumnMapping(fuel_capacityColumn, car.FindProperty("FuelCapacityInLitres")!, carsTableMapping);
             RelationalModel.CreateColumnMapping(horse_powerColumn, car.FindProperty("HorsePower")!, carsTableMapping);

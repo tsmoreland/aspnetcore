@@ -11,7 +11,7 @@ public sealed class CarRepository(CarsDbContext dbContext) : ICarRepository
     /// <inheritdoc />
     public Car Add(string make, string model, int horsePower, EngineType engineType, decimal fuelCapacityInLitres, int numberOfDoors, decimal mpg)
     {
-        Car car = new(make, model, horsePower, engineType, fuelCapacityInLitres, decimal.Zero, numberOfDoors, mpg);
+        Car car = new(make, model, horsePower, engineType, fuelCapacityInLitres, numberOfDoors, mpg);
         _dbContext.Cars.Add(car);
         return car;
     }
