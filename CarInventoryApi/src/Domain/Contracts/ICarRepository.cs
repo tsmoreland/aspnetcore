@@ -8,7 +8,7 @@ public interface ICarRepository
     Task<Car?> GetCarById(Guid id, CancellationToken cancellationToken);
     Task<Car?> GetCarByMakeAndModel(string make, string model, CancellationToken cancellationToken);
 
-    IAsyncEnumerable<Car?> GetAllCars();
+    IAsyncEnumerable<Car> GetAllCars();
 
     Task<bool> DeleteCarById(Guid id, CancellationToken cancellationToken);
 

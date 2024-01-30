@@ -29,7 +29,7 @@ public sealed class CarRepository(CarsDbContext dbContext) : ICarRepository
     }
 
     /// <inheritdoc />
-    public IAsyncEnumerable<Car?> GetAllCars()
+    public IAsyncEnumerable<Car> GetAllCars()
     {
         return _dbContext.Cars.AsAsyncEnumerable();
     }

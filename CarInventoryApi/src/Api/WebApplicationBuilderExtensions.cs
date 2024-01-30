@@ -10,6 +10,7 @@ using CarInventory.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Options;
+using Microsoft.Identity.Web;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using AspNetCoreHttp = Microsoft.AspNetCore.Http;
 using AspNetCoreMvc = Microsoft.AspNetCore.Mvc;
@@ -42,12 +43,15 @@ public static class WebApplicationBuilderExtensions
         IHealthChecksBuilder healthChecksBuilder = services.AddHealthChecks();
 
         services
-            .AddAuthorization()
-            .AddAuthentication(static options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            });
+            .AddAuthorizationBuilder()
+            .AddPolicy("application_client", policy => policy
+                .RequireRole("read.cars"))
+            .AddPolicy("application_admin", policy => policy
+                .RequireRole("read.cars", "write.cars"));
+
+        services
+            .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddMicrosoftIdentityWebApi(configuration);
 
         services
             .ConfigureJsonOptions()

@@ -1,4 +1,6 @@
 ﻿using CarInventory.Application.Features.Cars.Commands.Add;
+using CarInventory.Application.Features.Cars.Commands.Remove;
+using CarInventory.Application.Features.Cars.Queries.GetAll;
 using CarInventory.Application.Features.Cars.Queries.GetById;
 using CarInventory.Application.Features.Cars.Shared;
 using MediatR;
@@ -12,6 +14,7 @@ public static class CarsGroup
     {
         group
             .MapPost("/", async (AddCommand car, [FromServices] IMediator mediator) => await mediator.Send(car))
+            .RequireAuthorization("application_admin")
             .WithName("AddCar")
             .WithOpenApi();
         group
@@ -22,7 +25,22 @@ public static class CarsGroup
                     ? Results.Ok(car)
                     : Results.NotFound();
             })
+            .RequireAuthorization("application_client")
             .WithName("GetCarById")
+            .WithOpenApi();
+        group
+            .MapGet("/", ([FromServices] IMediator mediator) => Results.Ok(mediator.CreateStream(new GetAllQuery())))
+            .RequireAuthorization("application_client")
+            .WithName("GetAllCars")
+            .WithOpenApi();
+        group
+            .MapDelete("/{id}", async (Guid id, [FromServices] IMediator mediator) =>
+            {
+                await mediator.Send(new RemoveCommand(id));
+                return Results.NoContent();
+            })
+            .RequireAuthorization("application_admin")
+            .WithName("RemoveCarById")
             .WithOpenApi();
 
         return group;
