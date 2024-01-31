@@ -46,13 +46,13 @@ public sealed class CarValidator : AbstractValidator<Car>
     private static int ThrowIfIntIsInvalid(int value, string propertyName)
     {
         return value > 0
-            ? value
+           ? value
            : throw new ValidationException($"{propertyName} must be greater than zero.");
     }
     private static decimal ThrowIfDecimalIsInvalid(decimal value, string propertyName)
     {
-        return value > Decimal.Zero
-            ? value
+        return value > decimal.Zero
+           ? value
            : throw new ValidationException($"{propertyName} must be greater than zero.");
     }
 
