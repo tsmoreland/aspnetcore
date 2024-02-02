@@ -1,9 +1,12 @@
-﻿using System.IO.Compression;
+﻿using System.ComponentModel.DataAnnotations;
+using System.IO.Compression;
+using System.Security.Authentication;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
 using Asp.Versioning.ApiExplorer;
 using CarInventory.Api.Configuration;
+using CarInventory.Api.ErrorHandlers;
 using CarInventory.Application.Features.Cars.Commands.Add;
 using CarInventory.Infrastructure;
 using CarInventory.Infrastructure.Persistence;
@@ -24,6 +27,17 @@ public static class WebApplicationBuilderExtensions
         IConfiguration configuration = builder.Configuration;
         IServiceCollection services = builder.Services;
         IHostEnvironment environment = builder.Environment;
+
+        builder.WebHost
+            .UseKestrel(static (ctx, options) =>
+            {
+                options
+                    .Configure(ctx.Configuration.GetSection("Kestrel"))
+                    .Endpoint("HTTPS", listenOptions => listenOptions.HttpsOptions.SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls13);
+                options.AddServerHeader = false;
+            });
+
+        services.AddExceptionHandler<ValidationExceptionHandler>();
 
         services.AddMediatR(options => options.RegisterServicesFromAssemblies(typeof(CarsDbContext).Assembly, typeof(AddCommandHandler).Assembly, typeof(Program).Assembly));
 
