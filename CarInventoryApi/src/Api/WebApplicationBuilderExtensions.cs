@@ -37,7 +37,9 @@ public static class WebApplicationBuilderExtensions
                 options.AddServerHeader = false;
             });
 
-        services.AddExceptionHandler<ValidationExceptionHandler>();
+        services
+            .AddExceptionHandler<ValidationExceptionHandler>()
+            .AddExceptionHandler<BadHttpRequestExceptionHandler>();
 
         services.AddMediatR(options => options.RegisterServicesFromAssemblies(typeof(CarsDbContext).Assembly, typeof(AddCommandHandler).Assembly, typeof(Program).Assembly));
 
