@@ -55,6 +55,4 @@ public sealed class CarValidator : AbstractValidator<Car>
            ? value
            : throw new ValidationException($"{propertyName} must be greater than zero.");
     }
-
-
 }
