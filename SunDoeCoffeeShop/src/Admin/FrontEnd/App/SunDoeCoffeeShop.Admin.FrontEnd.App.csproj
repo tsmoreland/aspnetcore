@@ -25,6 +25,8 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.0" />
     <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.175" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Certificate" Version="8.0.1" />
+    <PackageReference Include="NuGet.Common" Version="6.8.0" />
+    <PackageReference Include="NuGet.Protocol" Version="6.8.0" />
     <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="8.0.0" />
 
