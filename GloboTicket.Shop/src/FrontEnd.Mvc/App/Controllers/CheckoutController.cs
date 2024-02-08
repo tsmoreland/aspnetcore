@@ -9,29 +9,18 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GloboTicket.FrontEnd.Mvc.App.Controllers;
 
-public class CheckoutController : Controller
+public class CheckoutController(
+    IShoppingBasketService shoppingBasketService,
+    IOrderSubmissionService orderSubmissionService,
+    TelemetryClient telemetryClient,
+    Settings settings,
+    ILogger<CheckoutController> logger)
+    : Controller
 {
-    private readonly IShoppingBasketService _shoppingBasketService;
-    private readonly IOrderSubmissionService _orderSubmissionService;
-    private readonly Settings _settings;
-    private readonly ILogger<CheckoutController> _logger;
-    private readonly TelemetryClient _telemetryClient;
-
-    public CheckoutController(IShoppingBasketService shoppingBasketService,
-        IOrderSubmissionService orderSubmissionService,TelemetryClient telemetry,
-        Settings settings, ILogger<CheckoutController> logger)
-    {
-        _shoppingBasketService = shoppingBasketService;
-        _orderSubmissionService = orderSubmissionService;
-        _settings = settings;
-        _logger = logger;
-        _telemetryClient = telemetry;
-    }
-
     [HttpGet]
     public IActionResult Index()
     {
-        Guid currentBasketId = Request.Cookies.GetCurrentBasketId(_settings);
+        Guid currentBasketId = Request.Cookies.GetCurrentBasketId(settings);
 
         return View(new CheckoutViewModel() { BasketId = currentBasketId });
     }
@@ -43,18 +32,20 @@ public class CheckoutController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Purchase(CheckoutViewModel checkout, CancellationToken cancellationToken)
     {
         if (ModelState.IsValid)
         {
-            Guid currentBasketId = Request.Cookies.GetCurrentBasketId(_settings);
+            Guid currentBasketId = Request.Cookies.GetCurrentBasketId(settings);
             checkout.BasketId = currentBasketId;
 
-            _logger.LogInformation("Received an order from {CheckoutName}", checkout.Name);
+            logger.LogInformation("Received an order from {CheckoutId}", currentBasketId);
             SendAppInsightsTelemetryOrderPlaced();
 
-            Guid orderId = await _orderSubmissionService.SubmitOrder(checkout, cancellationToken);
-            await _shoppingBasketService.ClearBasket(currentBasketId, cancellationToken);
+            Guid orderId = await orderSubmissionService.SubmitOrder(checkout, cancellationToken);
+            await shoppingBasketService.ClearBasket(currentBasketId, cancellationToken);
+            _ = orderId;
 
             return RedirectToAction("Thanks");
         }
@@ -68,7 +59,7 @@ public class CheckoutController : Controller
     private void SendAppInsightsTelemetryOrderPlaced()
     {
         MetricTelemetry telemetry = new() { Name = "Order Placed", Sum = Random.Shared.Next(600) };
-        _telemetryClient.TrackMetric(telemetry);
+        telemetryClient.TrackMetric(telemetry);
     }
 
 }
