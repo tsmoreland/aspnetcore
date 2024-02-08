@@ -19,19 +19,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GloboTicket.Shop.Ordering.Api.Controllers;
 
+/// <inheritdoc />
 [Route("api/orders")]
 [ApiController]
 [Produces(MediaTypeNames.Application.Json)]
 [Consumes(MediaTypeNames.Application.Json)]
-public class OrderController : ControllerBase
+public class OrderController(IMediator mediator) : ControllerBase
 {
-    private readonly IMediator _mediator;
-
-    /// <inheritdoc />
-    public OrderController(IMediator mediator)
-    {
-        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
-    }
+    private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
     /// <summary>
     /// Submit a new order
