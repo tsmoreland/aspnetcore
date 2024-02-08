@@ -20,7 +20,7 @@ public class ShoppingBasketController(
     public async Task<IActionResult> Index(CancellationToken cancellationToken)
     {
         _ = logger;
-        
+      
         IAsyncEnumerable<BasketLine> basketLines = basketService
             .GetLinesForBasket(Request.Cookies.GetCurrentBasketId(settings), cancellationToken);
 
