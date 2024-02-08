@@ -53,13 +53,10 @@ public class CheckoutController(
         {
             return View("Index");
         }
-
-
     }
     private void SendAppInsightsTelemetryOrderPlaced()
     {
         MetricTelemetry telemetry = new() { Name = "Order Placed", Sum = Random.Shared.Next(600) };
         telemetryClient.TrackMetric(telemetry);
     }
-
 }
