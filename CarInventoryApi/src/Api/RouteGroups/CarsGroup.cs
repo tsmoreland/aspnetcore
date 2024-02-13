@@ -4,7 +4,9 @@ using CarInventory.Application.Features.Cars.Queries.GetAll;
 using CarInventory.Application.Features.Cars.Queries.GetById;
 using CarInventory.Application.Features.Cars.Shared;
 using MediatR;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Models;
 
 namespace CarInventory.Api.RouteGroups;
 
@@ -18,16 +20,23 @@ public static class CarsGroup
             .WithName("AddCar")
             .WithOpenApi();
         group
-            .MapGet("/{id}", async (Guid id, [FromServices] IMediator mediator) =>
+            .MapGet("/{id}", async Task<Results<Ok<CarDetails>, NotFound>> (Guid id, [FromServices] IMediator mediator) =>
             {
                 CarDetails? car = await mediator.Send(new GetByIdQuery(id));
                 return car is not null
-                    ? Results.Ok(car)
-                    : Results.NotFound();
+                    ? TypedResults.Ok(car)
+                    : TypedResults.NotFound();
             })
             .RequireAuthorization("application_client")
             .WithName("GetCarById")
-            .WithOpenApi();
+            .WithOpenApi(operation =>
+            {
+                OpenApiParameter idParameter = operation.Parameters[0];
+                idParameter.Description = "unique id of a car model";
+                idParameter.Required = true;
+                idParameter.In = ParameterLocation.Path;
+                return operation;
+            });
         group
             .MapGet("/", ([FromServices] IMediator mediator) => Results.Ok(mediator.CreateStream(new GetAllQuery())))
             .RequireAuthorization("application_client")
