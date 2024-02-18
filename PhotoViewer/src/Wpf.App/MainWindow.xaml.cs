@@ -18,11 +18,13 @@ using PhotoViewer.Shared;
 namespace PhotoViewer.Wpf.App;
 
 /// <summary>
-/// Interaction logic for MainWindow.xaml
+/// Interaction logic for MainWindow
 /// </summary>
 public partial class MainWindow : Window
 {
     private readonly IMessageChannel _messageChannel;
+    private readonly System.Threading.Timer _timer;
+    private bool _timerDisposed;
 
     public MainWindow(IMessageChannel messageChannel)
     {
@@ -31,26 +33,34 @@ public partial class MainWindow : Window
 
         PreviewKeyDown += MainWindow_PreviewKeyDown;
         PreviewMouseDown += MainWindow_PreviewMouseDown;
+        Closing += MainWindow_Closing;
         _messageChannel.FileChanged += MessageChannel_FileChanged;
-    }
 
+        _timer = new System.Threading.Timer(Timer_Callback, null, Timeout.Infinite, Timeout.Infinite);
+    }
 
     private void MainWindow_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
     {
+        // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
         switch (e.Key)
         {
             case System.Windows.Input.Key.Left:
+                UpdateTimer(TimeSpan.FromSeconds(3));
                 _messageChannel.NotifyNavigationBackward();
                 break;
             case System.Windows.Input.Key.Escape:
-                Toolbar.Visibility = Visibility.Visible;
+                Toolbar.Visibility = Toolbar.Visibility != Visibility.Visible
+                    ? Visibility.Visible
+                    : Visibility.Collapsed;
                 break;
             case System.Windows.Input.Key.Right:
             default:
+                UpdateTimer(TimeSpan.FromSeconds(3));
                 _messageChannel.NotifyNavigationForward();
                 break;
         }
     }
+    private void Timer_Callback(object? state) => _messageChannel.NotifyNavigationForward();
     private void MainWindow_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
     {
         _messageChannel.NotifyNavigationForward();
@@ -71,5 +81,39 @@ public partial class MainWindow : Window
     private async void MessageChannel_FileChanged(object? sender, string filename)
     {
         await Dispatcher.InvokeAsync(() => Title = Path.GetFileNameWithoutExtension(filename));
+    }
+    private void MainWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
+    {
+        _timerDisposed = true;
+        _timer.Dispose();
+    }
+
+    private void PeriodicChange_Checked(object sender, RoutedEventArgs e)
+    {
+        if (PeriodicChange.IsChecked == true)
+        {
+            UpdateTimer(TimeSpan.FromSeconds(3));
+        }
+        else
+        {
+            UpdateTimer(Timeout.Infinite);
+        }
+    }
+    private void UpdateTimer(TimeSpan duePeriod)
+    {
+        if (_timerDisposed)
+        {
+            return;
+        }
+        _timer.Change(duePeriod, duePeriod);
+    }
+
+    private void UpdateTimer(int duePeriod)
+    {
+        if (_timerDisposed)
+        {
+            return;
+        }
+        _timer.Change(duePeriod, duePeriod);
     }
 }
