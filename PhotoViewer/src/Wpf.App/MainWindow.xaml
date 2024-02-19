@@ -19,7 +19,7 @@
         <ToolBarTray x:Name="Toolbar" Grid.Row="0" Grid.Column="0" Background="Transparent">
             <ToolBar Band="1" BandIndex="1">
                 <Button Width="16" Height="16" Name="OpenFolder" Click="OpenFolder_Click"/>
-                <ToggleButton Width="16" Height="16" Name="PeriodicChange" IsThreeState="False" IsChecked="False" Checked="PeriodicChange_Checked"/>
+                <ToggleButton Width="16" Height="16" Name="PeriodicChange" IsThreeState="False" IsChecked="False" Checked="PeriodicChange_Checked" Unchecked="PeriodicChange_Unchecked"/>
             </ToolBar>
         </ToolBarTray>
         <wpf:BlazorWebView HostPage="wwwroot/index.html" Services="{DynamicResource ServiceProvider}"

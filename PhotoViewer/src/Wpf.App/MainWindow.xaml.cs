@@ -88,17 +88,8 @@ public partial class MainWindow : Window
         _timer.Dispose();
     }
 
-    private void PeriodicChange_Checked(object sender, RoutedEventArgs e)
-    {
-        if (PeriodicChange.IsChecked == true)
-        {
-            UpdateTimer(TimeSpan.FromSeconds(3));
-        }
-        else
-        {
-            UpdateTimer(Timeout.Infinite);
-        }
-    }
+    private void PeriodicChange_Checked(object sender, RoutedEventArgs e) => UpdateTimer(TimeSpan.FromSeconds(3));
+    private void PeriodicChange_Unchecked(object sender, RoutedEventArgs e) => UpdateTimer(Timeout.Infinite);
     private void UpdateTimer(TimeSpan duePeriod)
     {
         if (_timerDisposed)
