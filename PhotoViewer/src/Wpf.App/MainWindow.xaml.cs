@@ -93,7 +93,6 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     {
         _messageChannel.NotifyNavigationForward();
     }
-
     private void OpenFolder_Click(object sender, RoutedEventArgs e)
     {
         using var dialog = new FolderBrowserDialog();
