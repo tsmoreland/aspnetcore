@@ -13,17 +13,4 @@
 
 namespace PhotoViewer.Shared;
 
-public interface IMessageChannel
-{
-    bool NotifyDirectoryChange(string directory);
-    bool NotifyNavigationForward();
-    bool NotifyNavigationBackward();
-    bool NotifyFileChanged(string filename);
-    bool NotifyKeyPressed(PressedKeyModel pressedKey);
-
-    event EventHandler<string> DirectoryChanged;
-    event EventHandler MoveForward;
-    event EventHandler MoveBackward;
-    event EventHandler<string> FileChanged;
-    event EventHandler<PressedKeyModel> KeyPressed;
-}
+public sealed record class PressedKeyModel(string Code, bool CtrlKey, bool ShiftKey, bool AltKey);

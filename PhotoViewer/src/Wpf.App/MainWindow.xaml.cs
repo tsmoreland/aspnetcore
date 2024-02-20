@@ -39,6 +39,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         PreviewMouseDown += MainWindow_PreviewMouseDown;
         Closing += MainWindow_Closing;
         _messageChannel.FileChanged += MessageChannel_FileChanged;
+        _messageChannel.KeyPressed += MessageChannel_KeyPressed;
 
         _timer = new System.Threading.Timer(Timer_Callback, null, Timeout.Infinite, Timeout.Infinite);
     }
@@ -78,9 +79,6 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                     ? Visibility.Visible
                     : Visibility.Collapsed;
                 break;
-            case System.Windows.Input.Key.Space:
-                PeriodicChangeIsChecked = !PeriodicChangeIsChecked;
-                break;
             case System.Windows.Input.Key.Right:
             default:
                 UpdateTimer(TimeSpan.FromSeconds(PeriodValueInSeconds));
@@ -93,6 +91,14 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     {
         _messageChannel.NotifyNavigationForward();
     }
+    private void MessageChannel_KeyPressed(object? sender, PressedKeyModel e)
+    {
+        if (e.Code.Equals("SPACE", StringComparison.InvariantCultureIgnoreCase))
+        {
+            PeriodicChangeIsChecked = !PeriodicChangeIsChecked;
+        }
+    }
+
     private void OpenFolder_Click(object sender, RoutedEventArgs e)
     {
         using var dialog = new FolderBrowserDialog();

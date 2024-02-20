@@ -11,6 +11,7 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using System.Text.Json;
 using System.Threading.Channels;
 using PhotoViewer.Shared;
 
@@ -50,6 +51,10 @@ public class MessageChannel : IMessageChannel, IDisposable, IAsyncDisposable
     public bool NotifyFileChanged(string filename) =>
         _channel.Writer.TryWrite(new Message(MessageType.FileChange, filename));
 
+    /// <inheritdoc />
+    public bool NotifyKeyPressed(PressedKeyModel pressedKey) =>
+        _channel.Writer.TryWrite(new Message(MessageType.KeyPressed, JsonSerializer.Serialize(pressedKey)));
+
 
     /// <inheritdoc />
     public event EventHandler<string>? DirectoryChanged;
@@ -62,6 +67,9 @@ public class MessageChannel : IMessageChannel, IDisposable, IAsyncDisposable
 
     /// <inheritdoc />
     public event EventHandler<string>? FileChanged;
+
+    /// <inheritdoc />
+    public event EventHandler<PressedKeyModel>? KeyPressed;
 
     private async Task ReadNotifications(object? state)
     {
@@ -85,6 +93,13 @@ public class MessageChannel : IMessageChannel, IDisposable, IAsyncDisposable
                     break;
                 case MessageType.FileChange:
                     FileChanged?.Invoke(this, message.Data);
+                    break;
+                case MessageType.KeyPressed:
+                    PressedKeyModel? pressedKey = JsonSerializer.Deserialize<PressedKeyModel>(message.Data);
+                    if (pressedKey is not null)
+                    {
+                        KeyPressed?.Invoke(this, pressedKey);
+                    }
                     break;
                 default:
                     throw new InvalidOperationException("Unrecognized message type");
