@@ -1,4 +1,5 @@
-﻿using System.Net.Mime;
+﻿using System.Collections.ObjectModel;
+using System.Net.Mime;
 using CarInventory.Application.Features.Cars.Commands.Add;
 using CarInventory.Application.Features.Cars.Commands.Remove;
 using CarInventory.Application.Features.Cars.Commands.Update;
@@ -8,12 +9,54 @@ using CarInventory.Application.Features.Cars.Shared;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
 namespace CarInventory.Api.RouteGroups;
 
 public static class CarsGroup
 {
+    internal enum RouteName
+    {
+        AddCar,
+        GetCarById,
+        GetAllCars,
+        UpdateCar,
+        DeleteCarById,
+    }
+
+    private static readonly Lazy<Dictionary<RouteName, OpenApiLink>> s_linksByName = new(BuildLinksByName);
+    private static Dictionary<RouteName, OpenApiLink> LinksByName => s_linksByName.Value;
+
+    private static Dictionary<RouteName, OpenApiLink> BuildLinksByName()
+    {
+        OpenApiLink add = new() { OperationId = nameof(RouteName.AddCar) };
+        OpenApiLink get = new() { OperationId = nameof(RouteName.GetCarById) };
+        OpenApiLink getAll = new() { OperationId = nameof(RouteName.GetAllCars) };
+        OpenApiLink update = new() { OperationId = nameof(RouteName.UpdateCar) };
+        OpenApiLink delete = new() { OperationId = nameof(RouteName.DeleteCarById) };
+
+        get.Parameters.Add("id", new RuntimeExpressionAnyWrapper { Any = new OpenApiString("$response.body#/id") });
+        get.Description = "The `id` value returned in the response can be used as the `id` parameter in `GET /api/v1/cars/{id}`";
+
+        update.Parameters.Add("id", new RuntimeExpressionAnyWrapper { Any = new OpenApiString("$response.body#/id") });
+        //update.RequestBody = new RuntimeExpressionAnyWrapper { Any = new OpenApiSchema( ??? reference request body for PUT as a schema
+        update.Description = "The `id` value returned in the response can be used as the `id` parameter in `PUT /api/v1/cars/{id}`";
+
+        delete.Parameters.Add("id", new RuntimeExpressionAnyWrapper { Any = new OpenApiString("$response.body#/id") });
+        delete.Description = "The `id` value returned in the response can be used as the `id` parameter in `DELETE /api/v1/cars/{id}`";
+
+
+        return new Dictionary<RouteName, OpenApiLink>
+        {
+            { RouteName.AddCar, add },
+            { RouteName.GetCarById, get },
+            { RouteName.GetAllCars, getAll },
+            { RouteName.UpdateCar, update },
+            { RouteName.DeleteCarById, delete },
+        };
+    }
+
     public static RouteGroupBuilder MapCars(this RouteGroupBuilder group)
     {
         const string problemDetailsContentType = "application/problem+json";
@@ -31,6 +74,24 @@ public static class CarsGroup
             .WithOpenApi(operation =>
             {
                 operation.OperationId = "AddCar";
+                OpenApiResponse? response = operation.Responses
+                    .FirstOrDefault(kvp => kvp.Key == StatusCodes.Status201Created.ToString()).Value;
+                if (response is null)
+                {
+                    return operation;
+                }
+
+                OpenApiLink get = LinksByName[RouteName.GetCarById];
+                OpenApiLink update = LinksByName[RouteName.UpdateCar];
+                OpenApiLink delete = LinksByName[RouteName.DeleteCarById];
+
+                response.Links = new ReadOnlyDictionary<string, OpenApiLink>(new Dictionary<string, OpenApiLink>
+                {
+                    { get.OperationId, get },
+                    { update.OperationId, update },
+                    { delete.OperationId, delete },
+                });
+
                 return operation;
             });
         group
