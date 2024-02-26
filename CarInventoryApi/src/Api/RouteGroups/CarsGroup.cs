@@ -1,6 +1,7 @@
 ﻿using System.Net.Mime;
 using CarInventory.Application.Features.Cars.Commands.Add;
 using CarInventory.Application.Features.Cars.Commands.Remove;
+using CarInventory.Application.Features.Cars.Commands.Update;
 using CarInventory.Application.Features.Cars.Queries.GetAll;
 using CarInventory.Application.Features.Cars.Queries.GetById;
 using CarInventory.Application.Features.Cars.Shared;
@@ -29,7 +30,7 @@ public static class CarsGroup
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest, problemDetailsContentType)
             .WithOpenApi(operation =>
             {
-                _ = operation; // TODO... set up links
+                operation.OperationId = "AddCar";
                 return operation;
             });
         group
@@ -61,7 +62,28 @@ public static class CarsGroup
             .Produces<IAsyncEnumerable<CarDetails>>(contentType: MediaTypeNames.Application.Json)
             .WithOpenApi(operation =>
             {
-                _ = operation;
+                operation.OperationId = "GetAllCars";
+                return operation;
+            });
+        group
+            .MapPut("/{id}", async Task<Results<Ok<CarDetails>, NotFound>> ([FromServices] IMediator mediator, Guid id, [FromBody] UpdateCommand command) =>
+            {
+                CarDetails? car = await mediator.Send(command);
+                return car is not null
+                    ? TypedResults.Ok(car)
+                    : TypedResults.NotFound();
+            })
+            .WithName("UpdateCar")
+            .Produces<CarDetails>(contentType: MediaTypeNames.Application.Json)
+            .Produces<ProblemDetails>(StatusCodes.Status400BadRequest, problemDetailsContentType)
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound, problemDetailsContentType)
+            .WithOpenApi(operation =>
+            {
+                operation.OperationId = "UpdateCar";
+                OpenApiParameter idParameter = operation.Parameters[0];
+                idParameter.Description = "unique id of a car model";
+                idParameter.Required = true;
+                idParameter.In = ParameterLocation.Path;
                 return operation;
             });
         group
