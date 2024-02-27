@@ -5,6 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <TieredCompilation>true</TieredCompilation>
+    <Optimize>true</Optimize>
   </PropertyGroup>
 
   <ItemGroup>
