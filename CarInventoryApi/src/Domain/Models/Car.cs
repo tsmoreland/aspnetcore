@@ -36,10 +36,12 @@ public sealed class Car
     /// used only by EF Core, zero values will be replaced by property or field setters 
     /// </summary>
     // ReSharper disable once UnusedMember.Local
+#   pragma warning disable IDE0051 // used by EF Core
     private Car(Guid id, string make, string model, int horsePower, EngineType engine, int numberOfDoors) 
         : this(id, make, model, horsePower, engine, decimal.Zero, numberOfDoors, decimal.Zero)
     {
     }
+#   pragma warning restore IDE0051
 
     public Guid Id { get; private set; }  
 

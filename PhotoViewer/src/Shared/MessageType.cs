@@ -19,4 +19,5 @@ public enum MessageType
     NavigationForward,
     NavigationBackward,
     FileChange,
+    KeyPressed
 }

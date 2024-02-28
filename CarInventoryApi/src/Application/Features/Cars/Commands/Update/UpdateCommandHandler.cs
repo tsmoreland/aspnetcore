@@ -11,19 +11,31 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-namespace PhotoViewer.Shared;
+using CarInventory.Application.Features.Cars.Shared;
+using CarInventory.Domain.Contracts;
+using CarInventory.Domain.Models;
+using MediatR;
 
-public interface IMessageChannel
+namespace CarInventory.Application.Features.Cars.Commands.Update;
+
+public sealed class UpdateCommandHandler(ICarRepository repository) : IRequestHandler<UpdateCommand, CarDetails?>
 {
-    bool NotifyDirectoryChange(string directory);
-    bool NotifyNavigationForward();
-    bool NotifyNavigationBackward();
-    bool NotifyFileChanged(string filename);
-    bool NotifyKeyPressed(PressedKeyModel pressedKey);
+    /// <inheritdoc />
+    public async Task<CarDetails?> Handle(UpdateCommand request, CancellationToken cancellationToken)
+    {
+        Car? car = await repository.GetCarById(request.Id, cancellationToken);
+        if (car is null)
+        {
+            return null;
+        }
 
-    event EventHandler<string> DirectoryChanged;
-    event EventHandler MoveForward;
-    event EventHandler MoveBackward;
-    event EventHandler<string> FileChanged;
-    event EventHandler<PressedKeyModel> KeyPressed;
+        (_, int horsePower, decimal fuelCapacityInLitres, int numberOfDoors, decimal mpg) = request;
+
+        car.HorsePower = horsePower;
+        car.FuelCapacityInLitres = fuelCapacityInLitres;
+        car.NumberOfDoors = numberOfDoors;
+        car.MpG = mpg;
+
+        return new CarDetails(car);
+    }
 }

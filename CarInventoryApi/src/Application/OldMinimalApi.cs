@@ -7,24 +7,18 @@ using CarInventory.Application.Features.Cars.Queries.GetAll;
 using CarInventory.Application.Features.Cars.Queries.GetById;
 using CarInventory.Application.Features.Cars.Shared;
 using MediatR;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
-namespace CarInventory.Api.RouteGroups;
+namespace CarInventory.Application;
 
-public static class CarsGroup
+public static class OldMinimalApi
 {
-    internal enum RouteName
-    {
-        AddCar,
-        GetCarById,
-        GetAllCars,
-        UpdateCar,
-        DeleteCarById,
-    }
-
     private static readonly Lazy<Dictionary<RouteName, OpenApiLink>> s_linksByName = new(BuildLinksByName);
     private static Dictionary<RouteName, OpenApiLink> LinksByName => s_linksByName.Value;
 

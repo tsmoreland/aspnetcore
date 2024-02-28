@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -6,6 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <UserSecretsId>ae3e6e43-07ac-48fb-8cd6-e61a88bc0905</UserSecretsId>
+    <TieredCompilation>true</TieredCompilation>
+    <Optimize>true</Optimize>
   </PropertyGroup>
 
   <ItemGroup>

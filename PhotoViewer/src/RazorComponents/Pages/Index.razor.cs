@@ -12,6 +12,7 @@
 //
 
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using PhotoViewer.Shared;
 
@@ -100,4 +101,7 @@ public partial class Index
         }
         return true;
     }
+
+    private void OnKeyDown(KeyboardEventArgs e) =>
+        Notifier.NotifyKeyPressed(new PressedKeyModel(e.Code, e.CtrlKey, e.ShiftKey, e.AltKey));
 }

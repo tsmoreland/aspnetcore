@@ -1,5 +1,5 @@
 ﻿//
-// Copyright © 2023 Terry Moreland
+// Copyright © 2024 Terry Moreland
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
 // and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
@@ -11,7 +11,9 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using System.ComponentModel;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using PhotoViewer.Shared;
 
@@ -20,11 +22,13 @@ namespace PhotoViewer.Wpf.App;
 /// <summary>
 /// Interaction logic for MainWindow
 /// </summary>
-public partial class MainWindow : Window
+public partial class MainWindow : Window, INotifyPropertyChanged
 {
+    private const double PeriodValueInSeconds = 3;
     private readonly IMessageChannel _messageChannel;
     private readonly System.Threading.Timer _timer;
     private bool _timerDisposed;
+    private bool _periodicChangeIsChecked;
 
     public MainWindow(IMessageChannel messageChannel)
     {
@@ -35,8 +39,30 @@ public partial class MainWindow : Window
         PreviewMouseDown += MainWindow_PreviewMouseDown;
         Closing += MainWindow_Closing;
         _messageChannel.FileChanged += MessageChannel_FileChanged;
+        _messageChannel.KeyPressed += MessageChannel_KeyPressed;
 
         _timer = new System.Threading.Timer(Timer_Callback, null, Timeout.Infinite, Timeout.Infinite);
+    }
+
+    public bool PeriodicChangeIsChecked
+    {
+        get => _periodicChangeIsChecked;
+        set
+        {
+            if (!SetField(ref _periodicChangeIsChecked, value))
+            {
+                return;
+            }
+
+            if (value)
+            {
+                UpdateTimer(TimeSpan.FromSeconds(PeriodValueInSeconds));
+            }
+            else
+            {
+                UpdateTimer(Timeout.Infinite);
+            }
+        }
     }
 
     private void MainWindow_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
@@ -45,7 +71,7 @@ public partial class MainWindow : Window
         switch (e.Key)
         {
             case System.Windows.Input.Key.Left:
-                UpdateTimer(TimeSpan.FromSeconds(3));
+                UpdateTimer(TimeSpan.FromSeconds(PeriodValueInSeconds));
                 _messageChannel.NotifyNavigationBackward();
                 break;
             case System.Windows.Input.Key.Escape:
@@ -55,7 +81,7 @@ public partial class MainWindow : Window
                 break;
             case System.Windows.Input.Key.Right:
             default:
-                UpdateTimer(TimeSpan.FromSeconds(3));
+                UpdateTimer(TimeSpan.FromSeconds(PeriodValueInSeconds));
                 _messageChannel.NotifyNavigationForward();
                 break;
         }
@@ -64,6 +90,13 @@ public partial class MainWindow : Window
     private void MainWindow_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
     {
         _messageChannel.NotifyNavigationForward();
+    }
+    private void MessageChannel_KeyPressed(object? sender, PressedKeyModel e)
+    {
+        if (e.Code.Equals("SPACE", StringComparison.InvariantCultureIgnoreCase))
+        {
+            PeriodicChangeIsChecked = !PeriodicChangeIsChecked;
+        }
     }
 
     private void OpenFolder_Click(object sender, RoutedEventArgs e)
@@ -88,8 +121,6 @@ public partial class MainWindow : Window
         _timer.Dispose();
     }
 
-    private void PeriodicChange_Checked(object sender, RoutedEventArgs e) => UpdateTimer(TimeSpan.FromSeconds(3));
-    private void PeriodicChange_Unchecked(object sender, RoutedEventArgs e) => UpdateTimer(Timeout.Infinite);
     private void UpdateTimer(TimeSpan duePeriod)
     {
         if (_timerDisposed)
@@ -106,5 +137,20 @@ public partial class MainWindow : Window
             return;
         }
         _timer.Change(duePeriod, duePeriod);
+    }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
+    {
+        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+        field = value;
+        OnPropertyChanged(propertyName);
+        return true;
     }
 }
