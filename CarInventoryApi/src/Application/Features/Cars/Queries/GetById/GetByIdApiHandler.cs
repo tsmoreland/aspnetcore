@@ -12,14 +12,14 @@ using Microsoft.OpenApi.Models;
 
 namespace CarInventory.Application.Features.Cars.Queries.GetById;
 
-internal static class RouteMap
+internal static class GetByIdApiHandler
 {
-    public static RouteGroupBuilder MapGetCarById(this RouteGroupBuilder group, ref readonly CarsApiLinks links)
+    public static RouteGroupBuilder MapGetCarById(this RouteGroupBuilder group, ref readonly CarsApiLinks links, params string[] authorizationPolicies)
     {
         _ = ref links;
         group
             .MapGet("/{id}", GetById)
-            .RequireAuthorization("application_client")
+            .RequireAuthorization(authorizationPolicies)
             .WithName("GetCarById")
             .Produces<CarDetails>(contentType: MediaTypeNames.Application.Json)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest, ExtendedMediaTypeNames.Application.JsonProblem)
