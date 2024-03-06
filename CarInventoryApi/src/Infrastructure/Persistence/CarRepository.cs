@@ -1,5 +1,6 @@
 ﻿using CarInventory.Domain.Contracts;
 using CarInventory.Domain.Models;
+using CarInventory.Domain.Models.Projections;
 using Microsoft.EntityFrameworkCore;
 
 namespace CarInventory.Infrastructure.Persistence;
@@ -31,7 +32,15 @@ public sealed class CarRepository(CarsDbContext dbContext) : ICarRepository
     /// <inheritdoc />
     public IAsyncEnumerable<Car> GetAllCars()
     {
-        return _dbContext.Cars.AsAsyncEnumerable();
+        return _dbContext.Cars.AsNoTracking().AsAsyncEnumerable();
+    }
+
+    /// <inheritdoc />
+    public IAsyncEnumerable<CarSummary> GetCarSummaries()
+    {
+        return _dbContext.Cars.AsNoTracking(
+            .Select(c => new CarSummary(c.Id, c.Make, c.Model, c.Engine, c.HorsePower, c.NumberOfDoors))
+            .AsAsyncEnumerable();
     }
 
     /// <inheritdoc />

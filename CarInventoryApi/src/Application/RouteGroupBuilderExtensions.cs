@@ -11,7 +11,7 @@ public static class RouteGroupBuilderExtensions
         CarsApiLinks links = new(routePrefix);
 
         group
-            .MapGetAllCars(in links, authorizationPolicies)
+            .MapGetSummaries(in links, authorizationPolicies)
             .MapGetCarById(in links, authorizationPolicies);
 
         return group;

@@ -11,13 +11,13 @@ namespace CarInventory.Application.Features.Cars.Queries.GetAll;
 
 internal static class GetAllApiHandler
 {
-    public static RouteGroupBuilder MapGetAllCars(this RouteGroupBuilder group, ref readonly CarsApiLinks links, params string[] authorizationPolicies)
+    public static RouteGroupBuilder MapGetSummaries(this RouteGroupBuilder group, ref readonly CarsApiLinks links, params string[] authorizationPolicies)
     {
         OpenApiLink route = links[RouteName.GetAllCars];
         // TODO: change return type, this should return a summary response not the full details
 
         group
-            .MapGet("/", GetAllCars)
+            .MapGet("/", static ([FromServices] ICarRepository repository) => Results.Ok(repository.GetCarSummaries()))
             .RequireAuthorization(authorizationPolicies)
             .WithName(nameof(RouteName.GetAllCars))
             .Produces<IAsyncEnumerable<CarDetails>>(contentType: MediaTypeNames.Application.Json)
@@ -29,10 +29,5 @@ internal static class GetAllApiHandler
             });
 
         return group;
-    }
-
-    private static IResult GetAllCars([FromServices] ICarRepository repository)
-    {
-        return Results.Ok(repository.GetAllCars().Select(c => new CarDetails(c)));
     }
 }
