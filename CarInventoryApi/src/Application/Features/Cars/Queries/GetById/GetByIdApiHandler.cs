@@ -16,20 +16,22 @@ internal static class GetByIdApiHandler
 {
     public static RouteGroupBuilder MapGetCarById(this RouteGroupBuilder group, ref readonly CarsApiLinks links, params string[] authorizationPolicies)
     {
-        _ = ref links;
+        OpenApiLink route = links[RouteName.GetCarById];
+
         group
             .MapGet("/{id}", GetById)
             .RequireAuthorization(authorizationPolicies)
-            .WithName("GetCarById")
+            .WithName(nameof(RouteName.GetCarById))
             .Produces<CarDetails>(contentType: MediaTypeNames.Application.Json)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest, ExtendedMediaTypeNames.Application.JsonProblem)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound, ExtendedMediaTypeNames.Application.JsonProblem)
             .WithOpenApi(Configure);
         return group;
 
-        static OpenApiOperation Configure(OpenApiOperation operation)
+        OpenApiOperation Configure(OpenApiOperation operation)
         {
-            operation.OperationId = "GetCarById";
+            operation.OperationId = route.OperationId;
+            operation.Description = route.Description;
             OpenApiParameter idParameter = operation.Parameters[0];
             idParameter.Description = "unique id of a car model";
             idParameter.Required = true;
