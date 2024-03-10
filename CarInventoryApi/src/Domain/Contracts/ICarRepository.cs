@@ -1,4 +1,5 @@
 ﻿using CarInventory.Domain.Models;
+using CarInventory.Domain.Models.Projections;
 
 namespace CarInventory.Domain.Contracts;
 
@@ -9,6 +10,7 @@ public interface ICarRepository
     Task<Car?> GetCarByMakeAndModel(string make, string model, CancellationToken cancellationToken);
 
     IAsyncEnumerable<Car> GetAllCars();
+    IAsyncEnumerable<CarSummary> GetCarSummaries(); // TODO: add page request / sort request, probably to shared
 
     Task<bool> DeleteCarById(Guid id, CancellationToken cancellationToken);
 

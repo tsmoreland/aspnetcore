@@ -28,14 +28,14 @@ internal readonly struct CarsApiLinks
         OpenApiLink delete = new() { OperationId = nameof(RouteName.DeleteCarById) };
 
         get.Parameters.Add("id", new RuntimeExpressionAnyWrapper { Any = new OpenApiString("$response.body#/id") });
-        get.Description = $"The `id` value returned in the response can be used as the `id` parameter in `GET {_routePrefix}/cars/{id}`";
+        get.Description = $"The `id` value returned in the response can be used as the `id` parameter in `GET {_routePrefix}/cars/{{id}}`";
 
         update.Parameters.Add("id", new RuntimeExpressionAnyWrapper { Any = new OpenApiString("$response.body#/id") });
         //update.RequestBody = new RuntimeExpressionAnyWrapper { Any = new OpenApiSchema( ??? reference request body for PUT as a schema
-        update.Description = $"The `id` value returned in the response can be used as the `id` parameter in `PUT {_routePrefix}/cars/{id}`";
+        update.Description = $"The `id` value returned in the response can be used as the `id` parameter in `PUT {_routePrefix}/cars/{{id}}`";
 
         delete.Parameters.Add("id", new RuntimeExpressionAnyWrapper { Any = new OpenApiString("$response.body#/id") });
-        delete.Description = $"The `id` value returned in the response can be used as the `id` parameter in `DELETE {_routePrefix}/cars/{id}`";
+        delete.Description = $"The `id` value returned in the response can be used as the `id` parameter in `DELETE {_routePrefix}/cars/{{id}}`";
 
 
         return new Dictionary<RouteName, OpenApiLink>
