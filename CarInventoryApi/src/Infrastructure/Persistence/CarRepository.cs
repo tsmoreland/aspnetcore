@@ -38,7 +38,7 @@ public sealed class CarRepository(CarsDbContext dbContext) : ICarRepository
     /// <inheritdoc />
     public IAsyncEnumerable<CarSummary> GetCarSummaries()
     {
-        return _dbContext.Cars.AsNoTracking(
+        return _dbContext.Cars.AsNoTracking()
             .Select(c => new CarSummary(c.Id, c.Make, c.Model, c.Engine, c.HorsePower, c.NumberOfDoors))
             .AsAsyncEnumerable();
     }
@@ -47,12 +47,13 @@ public sealed class CarRepository(CarsDbContext dbContext) : ICarRepository
     public async Task<bool> DeleteCarById(Guid id, CancellationToken cancellationToken)
     {
         Car? car = await _dbContext.Cars.FindAsync([id], cancellationToken);
-        if (car is not null)
+        if (car is null)
         {
-            _dbContext.Cars.Remove(car);
-            return true;
+            return false;
         }
-        return false;
+
+        _dbContext.Cars.Remove(car);
+        return true;
     }
 
     /// <inheritdoc />
