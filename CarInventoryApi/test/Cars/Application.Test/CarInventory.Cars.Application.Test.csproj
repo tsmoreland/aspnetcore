@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Application\CarInventory.Application.csproj" />
+    <ProjectReference Include="..\..\..\src\Cars\Application\CarInventory.Cars.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>
