@@ -1,6 +1,6 @@
-﻿using CarInventory.Domain.Validation;
+﻿using CarInventory.Cars.Domain.Validation;
 
-namespace CarInventory.Domain.Models;
+namespace CarInventory.Cars.Domain.Models;
 
 public sealed class Car
 {

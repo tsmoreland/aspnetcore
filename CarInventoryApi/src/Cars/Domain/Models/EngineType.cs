@@ -1,4 +1,4 @@
-﻿namespace CarInventory.Domain.Models;
+﻿namespace CarInventory.Cars.Domain.Models;
 
 public enum EngineType
 {

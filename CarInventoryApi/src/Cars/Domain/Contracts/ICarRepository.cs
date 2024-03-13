@@ -1,7 +1,7 @@
-﻿using CarInventory.Domain.Models;
-using CarInventory.Domain.Models.Projections;
+﻿using CarInventory.Cars.Domain.Models;
+using CarInventory.Cars.Domain.Models.Projections;
 
-namespace CarInventory.Domain.Contracts;
+namespace CarInventory.Cars.Domain.Contracts;
 
 public interface ICarRepository
 {

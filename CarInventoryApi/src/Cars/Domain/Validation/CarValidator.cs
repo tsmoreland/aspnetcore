@@ -1,7 +1,7 @@
-﻿using CarInventory.Domain.Models;
+﻿using CarInventory.Cars.Domain.Models;
 using FluentValidation;
 
-namespace CarInventory.Domain.Validation;
+namespace CarInventory.Cars.Domain.Validation;
 
 public sealed class CarValidator : AbstractValidator<Car>
 {
