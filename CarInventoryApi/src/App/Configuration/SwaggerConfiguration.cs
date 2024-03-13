@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace CarInventory.Api.Configuration;
+namespace CarInventory.App.Configuration;
 
 public sealed class SwaggerConfiguration : ConfigureNamedOptions<SwaggerGenOptions, IApiVersionDescriptionProvider>
 {

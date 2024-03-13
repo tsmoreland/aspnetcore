@@ -1,7 +1,7 @@
-﻿using CarInventory.Api.RateLimitPolicies;
+﻿using CarInventory.App.RateLimitPolicies;
 using Microsoft.AspNetCore.RateLimiting;
 
-namespace CarInventory.Api.Configuration;
+namespace CarInventory.App.Configuration;
 
 public static class RateLimitConfiguration 
 {

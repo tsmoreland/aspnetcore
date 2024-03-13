@@ -1,15 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.IO.Compression;
+﻿using System.IO.Compression;
 using System.Security.Authentication;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
 using Asp.Versioning.ApiExplorer;
-using CarInventory.Api.Configuration;
-using CarInventory.Api.ErrorHandlers;
-using CarInventory.Application.Features.Cars.Commands.Add;
-using CarInventory.Infrastructure;
-using CarInventory.Infrastructure.Persistence;
+using CarInventory.App.Configuration;
+using CarInventory.App.ErrorHandlers;
+using CarInventory.Cars.Application.Features.Commands.Add;
+using CarInventory.Cars.Infrastructure;
+using CarInventory.Cars.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Options;
@@ -17,8 +16,9 @@ using Microsoft.Identity.Web;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using AspNetCoreHttp = Microsoft.AspNetCore.Http;
 using AspNetCoreMvc = Microsoft.AspNetCore.Mvc;
+using SerializerContext = CarInventory.App.Configuration.SerializerContext;
 
-namespace CarInventory.Api;
+namespace CarInventory.App;
 
 public static class WebApplicationBuilderExtensions
 {

@@ -1,10 +1,10 @@
 ﻿using System.Text;
 using System.Text.Json;
-using CarInventory.Api.Extensions;
+using CarInventory.App.Extensions;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
-namespace CarInventory.Api.Configuration;
+namespace CarInventory.App.Configuration;
 
 public static class HealthChecksConfiguration
 {

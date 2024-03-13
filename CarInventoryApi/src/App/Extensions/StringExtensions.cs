@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace CarInventory.Api.Extensions;
+namespace CarInventory.App.Extensions;
 
 public static class StringExtensions
 {

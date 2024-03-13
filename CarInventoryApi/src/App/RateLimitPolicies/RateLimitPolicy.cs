@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.RateLimiting;
 
-namespace CarInventory.Api.RateLimitPolicies;
+namespace CarInventory.App.RateLimitPolicies;
 
 public sealed class RateLimitPolicy : IRateLimiterPolicy<string>
 {

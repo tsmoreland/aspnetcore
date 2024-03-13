@@ -1,18 +1,18 @@
 ﻿using System.Collections.ObjectModel;
 using System.Net.Mime;
-using CarInventory.Application.Features.Cars.Commands.Add;
-using CarInventory.Application.Features.Cars.Commands.Remove;
-using CarInventory.Application.Features.Cars.Commands.Update;
-using CarInventory.Application.Features.Cars.Queries.GetAll;
-using CarInventory.Application.Features.Cars.Queries.GetById;
-using CarInventory.Application.Features.Cars.Shared;
+using CarInventory.Cars.Application.Features.Commands.Remove;
+using CarInventory.Cars.Application.Features.Queries.GetAll;
+using CarInventory.Cars.Application.Features.Queries.GetById;
+using CarInventory.Cars.Application.Features.Commands.Add;
+using CarInventory.Cars.Application.Features.Commands.Update;
+using CarInventory.Cars.Application.Features.Shared;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
-namespace CarInventory.Api.RouteGroups;
+namespace CarInventory.App.RouteGroups;
 
 public static class CarsGroup
 {

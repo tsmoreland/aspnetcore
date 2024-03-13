@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
-using CarInventory.Application.Features.Cars.Shared;
+using CarInventory.Cars.Application.Features.Shared;
 
-namespace CarInventory.Api.Configuration;
+namespace CarInventory.App.Configuration;
 
 [JsonSourceGenerationOptions(GenerationMode = JsonSourceGenerationMode.Default)]
 [JsonSerializable(typeof(CarDetails))]

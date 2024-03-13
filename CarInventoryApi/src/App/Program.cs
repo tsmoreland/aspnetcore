@@ -1,5 +1,5 @@
-using CarInventory.Api;
-using CarInventory.Infrastructure.Persistence;
+using CarInventory.App;
+using CarInventory.Cars.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -44,23 +44,3 @@ finally
     Log.Information("Shutdown complete.");
     Log.CloseAndFlush();
 }
-
-
-/*
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
-
-*/
-

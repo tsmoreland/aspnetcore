@@ -24,9 +24,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Application\CarInventory.Application.csproj" />
-    <ProjectReference Include="..\Domain\CarInventory.Domain.csproj" />
-    <ProjectReference Include="..\Infrastructure\CarInventory.Infrastructure.csproj" />
+    <ProjectReference Include="..\Cars\Application\CarInventory.Cars.Application.csproj" />
+    <ProjectReference Include="..\Cars\Domain\CarInventory.Cars.Domain.csproj" />
+    <ProjectReference Include="..\Cars\Infrastructure\CarInventory.Cars.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

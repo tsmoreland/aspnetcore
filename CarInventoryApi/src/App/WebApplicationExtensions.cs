@@ -1,13 +1,13 @@
 ﻿using Asp.Versioning.ApiExplorer;
 using Asp.Versioning.Builder;
-using CarInventory.Api.Configuration;
-using CarInventory.Api.RouteGroups;
+using CarInventory.App.Configuration;
+using CarInventory.App.RouteGroups;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
-namespace CarInventory.Api;
+namespace CarInventory.App;
 
 public static class WebApplicationExtensions
 {
@@ -20,7 +20,7 @@ public static class WebApplicationExtensions
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger(ConfigureSwagger);
-            app.UseSwaggerUI(options => ConfigureSwaggerUI(options, app.DescribeApiVersions()));
+            app.UseSwaggerUI(options => ConfigureSwaggerUserInterface(options, app.DescribeApiVersions()));
         }
 
         app.UseHttpsRedirection();
@@ -42,14 +42,14 @@ public static class WebApplicationExtensions
     {
         options.PreSerializeFilters.Add(static (swaggerDoc, httpReq) =>
         {
-            swaggerDoc.Servers = new List<OpenApiServer>
-            {
-                new () { Url = $"{httpReq.Scheme}://{httpReq.Host.Value}" }
-            };
+            swaggerDoc.Servers = 
+            [
+                new OpenApiServer { Url = $"{httpReq.Scheme}://{httpReq.Host.Value}" }
+            ];
         });
     }
 
-    private static void ConfigureSwaggerUI(SwaggerUIOptions options, IEnumerable<ApiVersionDescription> apiVersions)
+    private static void ConfigureSwaggerUserInterface(SwaggerUIOptions options, IEnumerable<ApiVersionDescription> apiVersions)
     {
         foreach (ApiVersionDescription description in apiVersions)
         {

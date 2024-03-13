@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
-using CarInventory.Api.Extensions;
+using CarInventory.App.Extensions;
 
-namespace CarInventory.Api.Configuration;
+namespace CarInventory.App.Configuration;
 
 public sealed class SnakeCaseJsonNamingPolicy : JsonNamingPolicy
 {
