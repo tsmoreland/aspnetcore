@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace CarInventory.Infrastructure.Persistence.Converters;
+namespace CarInventory.Cars.Infrastructure.Persistence.Converters;
 
 public sealed class DecimalToDoubleValueConverter : ValueConverter<decimal, double>
 {

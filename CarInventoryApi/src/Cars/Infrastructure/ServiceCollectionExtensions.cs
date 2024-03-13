@@ -1,11 +1,11 @@
-﻿using CarInventory.Domain.Contracts;
-using CarInventory.Infrastructure.Persistence;
+﻿using CarInventory.Cars.Domain.Contracts;
+using CarInventory.Cars.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace CarInventory.Infrastructure;
+namespace CarInventory.Cars.Infrastructure;
 
 public static class ServiceCollectionExtensions
 {
@@ -23,7 +23,7 @@ public static class ServiceCollectionExtensions
                 options.UseSqlite(connectionString, o => o.MigrationsAssembly(typeof(CarsDbContext).Assembly.FullName)); 
                 if (!environment.IsDevelopment())
                 {
-                    options.UseModel(Persistence.CompiledModels.CarsDbContextModel.Instance);
+                    options.UseModel(CarInventory.Infrastructure.Persistence.CompiledModels.CarsDbContextModel.Instance);
                 }
             }, poolSize: 64)
             .AddScoped<CarsScopedDbContextFactory>()

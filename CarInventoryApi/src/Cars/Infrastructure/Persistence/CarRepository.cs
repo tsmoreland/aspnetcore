@@ -1,9 +1,9 @@
-﻿using CarInventory.Domain.Contracts;
-using CarInventory.Domain.Models;
-using CarInventory.Domain.Models.Projections;
+﻿using CarInventory.Cars.Domain.Contracts;
+using CarInventory.Cars.Domain.Models;
+using CarInventory.Cars.Domain.Models.Projections;
 using Microsoft.EntityFrameworkCore;
 
-namespace CarInventory.Infrastructure.Persistence;
+namespace CarInventory.Cars.Infrastructure.Persistence;
 
 public sealed class CarRepository(CarsDbContext dbContext) : ICarRepository
 {

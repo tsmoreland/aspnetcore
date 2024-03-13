@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
-namespace CarInventory.Infrastructure.Persistence;
+namespace CarInventory.Cars.Infrastructure.Persistence;
 
 public sealed class CarsDesignTimeDbContext : IDesignTimeDbContextFactory<CarsDbContext>
 {

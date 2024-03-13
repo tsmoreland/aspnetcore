@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
-namespace CarInventory.Infrastructure.Persistence;
+namespace CarInventory.Cars.Infrastructure.Persistence;
 
 public sealed class DatabaseHealthCheck(IDbContextFactory<CarsDbContext> dbContextFactory) : IHealthCheck
 {

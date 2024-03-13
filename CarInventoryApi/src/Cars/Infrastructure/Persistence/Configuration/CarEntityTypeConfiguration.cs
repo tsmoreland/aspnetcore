@@ -1,8 +1,8 @@
-﻿using CarInventory.Domain.Models;
+﻿using CarInventory.Cars.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CarInventory.Infrastructure.Persistence.Configuration;
+namespace CarInventory.Cars.Infrastructure.Persistence.Configuration;
 
 public sealed class CarEntityTypeConfiguration : IEntityTypeConfiguration<Car>
 {

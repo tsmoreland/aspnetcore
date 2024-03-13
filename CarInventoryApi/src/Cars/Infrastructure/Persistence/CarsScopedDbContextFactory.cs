@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace CarInventory.Infrastructure.Persistence;
+namespace CarInventory.Cars.Infrastructure.Persistence;
 
 public sealed class CarsScopedDbContextFactory(IDbContextFactory<CarsDbContext> pooledFactory) : IDbContextFactory<CarsDbContext>
 {

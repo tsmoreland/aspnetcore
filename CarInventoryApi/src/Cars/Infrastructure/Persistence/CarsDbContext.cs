@@ -1,10 +1,9 @@
-﻿using CarInventory.Domain.Models;
-using CarInventory.Infrastructure.Persistence.Configuration;
-using CarInventory.Infrastructure.Persistence.Converters;
+﻿using CarInventory.Cars.Domain.Models;
+using CarInventory.Cars.Infrastructure.Persistence.Converters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace CarInventory.Infrastructure.Persistence;
+namespace CarInventory.Cars.Infrastructure.Persistence;
 
 public sealed class CarsDbContext(DbContextOptions<CarsDbContext> options) : DbContext(options)
 {
