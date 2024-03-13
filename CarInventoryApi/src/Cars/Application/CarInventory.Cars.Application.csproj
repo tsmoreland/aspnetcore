@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -20,8 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Domain\CarInventory.Domain.csproj" />
-    <ProjectReference Include="..\Shared\CarInventory.Shared.csproj" />
+    <ProjectReference Include="..\Domain\CarInventory.Cars.Domain.csproj" />
+    <ProjectReference Include="..\..\Shared\CarInventory.Shared.csproj" />
   </ItemGroup>
 
 </Project>

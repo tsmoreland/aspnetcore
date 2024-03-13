@@ -11,25 +11,26 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using CarInventory.Application.Features.Cars.Shared;
-using CarInventory.Domain.Contracts;
-using CarInventory.Domain.Models;
+using CarInventory.Cars.Application.Features.Shared;
+using CarInventory.Cars.Domain.Contracts;
+using CarInventory.Cars.Domain.Models;
 using MediatR;
 
-namespace CarInventory.Application.Features.Cars.Commands.Update;
+namespace CarInventory.Cars.Application.Features.Commands.Update;
 
 public sealed class UpdateCommandHandler(ICarRepository repository) : IRequestHandler<UpdateCommand, CarDetails?>
 {
     /// <inheritdoc />
     public async Task<CarDetails?> Handle(UpdateCommand request, CancellationToken cancellationToken)
     {
-        Car? car = await repository.GetCarById(request.Id, cancellationToken);
+        // broken as it's destined to go away
+        Car? car = await repository.GetCarById(Guid.Empty, cancellationToken);
         if (car is null)
         {
             return null;
         }
 
-        (_, int horsePower, decimal fuelCapacityInLitres, int numberOfDoors, decimal mpg) = request;
+        (int horsePower, decimal fuelCapacityInLitres, int numberOfDoors, decimal mpg) = request;
 
         car.HorsePower = horsePower;
         car.FuelCapacityInLitres = fuelCapacityInLitres;

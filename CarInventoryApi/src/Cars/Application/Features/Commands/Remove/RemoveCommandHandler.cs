@@ -1,8 +1,8 @@
-﻿using CarInventory.Domain.Contracts;
+﻿using CarInventory.Cars.Domain.Contracts;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace CarInventory.Application.Features.Cars.Commands.Remove;
+namespace CarInventory.Cars.Application.Features.Commands.Remove;
 
 public sealed class RemoveCommandHandler(ICarRepository repository, ILogger<RemoveCommandHandler> logger) : IRequestHandler<RemoveCommand>
 {

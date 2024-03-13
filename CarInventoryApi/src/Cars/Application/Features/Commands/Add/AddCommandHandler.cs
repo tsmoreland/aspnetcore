@@ -1,10 +1,10 @@
-﻿using CarInventory.Application.Features.Cars.Shared;
-using CarInventory.Domain.Contracts;
-using CarInventory.Domain.Models;
+﻿using CarInventory.Cars.Application.Features.Shared;
+using CarInventory.Cars.Domain.Contracts;
+using CarInventory.Cars.Domain.Models;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace CarInventory.Application.Features.Cars.Commands.Add;
+namespace CarInventory.Cars.Application.Features.Commands.Add;
 
 public sealed class AddCommandHandler(ICarRepository repository, ILogger<AddCommandHandler> logger) : IRequestHandler<AddCommand, CarDetails>
 {

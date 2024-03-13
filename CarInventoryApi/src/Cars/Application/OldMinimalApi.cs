@@ -1,11 +1,11 @@
 ﻿using System.Collections.ObjectModel;
 using System.Net.Mime;
-using CarInventory.Application.Features.Cars.Commands.Add;
-using CarInventory.Application.Features.Cars.Commands.Remove;
-using CarInventory.Application.Features.Cars.Commands.Update;
-using CarInventory.Application.Features.Cars.Queries.GetAll;
-using CarInventory.Application.Features.Cars.Queries.GetById;
-using CarInventory.Application.Features.Cars.Shared;
+using CarInventory.Cars.Application.Features.Commands.Remove;
+using CarInventory.Cars.Application.Features.Queries.GetAll;
+using CarInventory.Cars.Application.Features.Queries.GetById;
+using CarInventory.Cars.Application.Features.Commands.Add;
+using CarInventory.Cars.Application.Features.Commands.Update;
+using CarInventory.Cars.Application.Features.Shared;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -15,10 +15,11 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
-namespace CarInventory.Application;
+namespace CarInventory.Cars.Application;
 
 public static class OldMinimalApi
 {
+    /*
     private static readonly Lazy<Dictionary<RouteName, OpenApiLink>> s_linksByName = new(BuildLinksByName);
     private static Dictionary<RouteName, OpenApiLink> LinksByName => s_linksByName.Value;
 
@@ -164,4 +165,5 @@ public static class OldMinimalApi
 
         return group;
     }
+    */
 }

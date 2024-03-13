@@ -1,10 +1,10 @@
 ﻿using System.Runtime.CompilerServices;
-using CarInventory.Application.Features.Cars.Shared;
-using CarInventory.Domain.Contracts;
-using CarInventory.Domain.Models;
+using CarInventory.Cars.Application.Features.Shared;
+using CarInventory.Cars.Domain.Contracts;
+using CarInventory.Cars.Domain.Models;
 using MediatR;
 
-namespace CarInventory.Application.Features.Cars.Queries.GetAll;
+namespace CarInventory.Cars.Application.Features.Queries.GetAll;
 
 public sealed class GetAllQueryHandler(ICarRepository repository) : IStreamRequestHandler<GetAllQuery, CarDetails>
 {
