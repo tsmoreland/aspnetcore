@@ -43,7 +43,7 @@ internal static class UpdateApiHandler
         }
     }
 
-    private static async Task<Results<Ok<CarDetails>, NotFound, BadRequest<ProblemDetails>>> Update(HttpContext httpContext, [FromRoute] Guid id, [FromBody] UpdateCommand command, [FromServices] ICarRepository repository, CancellationToken cancellationToken)
+    private static async Task<Results<Ok<CarDetails>, NotFound, BadRequest<ProblemDetails>>> Update([FromRoute] Guid id, [FromBody] UpdateCommand command, [FromServices] ICarRepository repository, CancellationToken cancellationToken)
     {
         Car? car = await repository.GetCarById(id, cancellationToken).ConfigureAwait(false);
         if (car is null)

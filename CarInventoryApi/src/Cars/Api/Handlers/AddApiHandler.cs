@@ -55,7 +55,7 @@ internal static class AddApiHandler
         }
     }
 
-    private static async Task<Results<CreatedAtRoute<CarDetails>, BadRequest<ProblemDetails>>> Add(HttpContext httpContext, [FromBody] AddCommand cmd, [FromServices] ICarRepository repository)
+    private static async Task<Results<CreatedAtRoute<CarDetails>, BadRequest<ProblemDetails>>> Add( [FromBody] AddCommand cmd, [FromServices] ICarRepository repository)
     {
         try
         {
