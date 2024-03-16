@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarInventory.Api", "src\Api\CarInventory.Api.csproj", "{E60753A1-988B-4DA6-89BB-48A613EB4125}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarInventory.App", "src\App\CarInventory.App.csproj", "{E60753A1-988B-4DA6-89BB-48A613EB4125}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarInventory.Domain", "src\Domain\CarInventory.Domain.csproj", "{94C300E3-3F8C-4D35-83AF-0EE713C23A6C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarInventory.Cars.Domain", "src\Cars\Domain\CarInventory.Cars.Domain.csproj", "{94C300E3-3F8C-4D35-83AF-0EE713C23A6C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarInventory.Infrastructure", "src\Infrastructure\CarInventory.Infrastructure.csproj", "{E24969C2-6E68-42FD-BF9C-89003806B68B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarInventory.Cars.Infrastructure", "src\Cars\Infrastructure\CarInventory.Cars.Infrastructure.csproj", "{E24969C2-6E68-42FD-BF9C-89003806B68B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarInventory.Application", "src\Application\CarInventory.Application.csproj", "{3B1073E1-1EE6-4F88-ADD9-33A4F4507079}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarInventory.Cars.Application", "src\Cars\Application\CarInventory.Cars.Application.csproj", "{3B1073E1-1EE6-4F88-ADD9-33A4F4507079}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{815EBCB9-963B-43E4-9DB6-F4D4417FA3B7}"
 	ProjectSection(SolutionItems) = preProject
@@ -18,11 +18,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarInventory.Client.App", "src\Client.App\CarInventory.Client.App.csproj", "{73471A5E-08D4-49F2-A9FE-E51ABCD6ADB0}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CarInventory", "CarInventory", "{2258A48D-7C2A-4C40-9B49-6EFF0E37D1B5}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cars", "Cars", "{2258A48D-7C2A-4C40-9B49-6EFF0E37D1B5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarInventory.Application.Test", "test\Application.Test\CarInventory.Application.Test.csproj", "{74176AC7-FFB9-4DCB-B30E-7ED849747E45}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarInventory.Cars.Application.Test", "test\Cars\Application.Test\CarInventory.Cars.Application.Test.csproj", "{74176AC7-FFB9-4DCB-B30E-7ED849747E45}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarInventory.Shared", "src\Shared\CarInventory.Shared.csproj", "{A2007A84-20C8-40FC-A128-0AF96197638A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarInventory.Cars.Api", "src\Cars\Api\CarInventory.Cars.Api.csproj", "{CD9F4340-3EA7-49FE-B7C4-97EC4FFC289F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -58,6 +60,10 @@ Global
 		{A2007A84-20C8-40FC-A128-0AF96197638A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2007A84-20C8-40FC-A128-0AF96197638A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2007A84-20C8-40FC-A128-0AF96197638A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD9F4340-3EA7-49FE-B7C4-97EC4FFC289F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD9F4340-3EA7-49FE-B7C4-97EC4FFC289F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD9F4340-3EA7-49FE-B7C4-97EC4FFC289F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD9F4340-3EA7-49FE-B7C4-97EC4FFC289F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -67,6 +73,7 @@ Global
 		{E24969C2-6E68-42FD-BF9C-89003806B68B} = {2258A48D-7C2A-4C40-9B49-6EFF0E37D1B5}
 		{3B1073E1-1EE6-4F88-ADD9-33A4F4507079} = {2258A48D-7C2A-4C40-9B49-6EFF0E37D1B5}
 		{74176AC7-FFB9-4DCB-B30E-7ED849747E45} = {2258A48D-7C2A-4C40-9B49-6EFF0E37D1B5}
+		{CD9F4340-3EA7-49FE-B7C4-97EC4FFC289F} = {2258A48D-7C2A-4C40-9B49-6EFF0E37D1B5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AE9468A1-4F22-43A1-83BE-9CD6816D4BDB}
