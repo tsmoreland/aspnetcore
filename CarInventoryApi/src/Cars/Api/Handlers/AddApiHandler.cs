@@ -66,8 +66,7 @@ internal static class AddApiHandler
         }
         catch (ValidationException ex)
         {
-            // TODO: translate Validation Exception to problem details, ideally via some other class (maybe extension method)
-            return TypedResults.BadRequest(ex.ToProblemDetails(httpContext));
+            return TypedResults.BadRequest(ex.ToProblemDetails(statusCode: StatusCodes.Status400BadRequest));
         }
     }
 }

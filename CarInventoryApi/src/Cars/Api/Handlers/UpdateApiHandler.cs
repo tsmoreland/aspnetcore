@@ -63,7 +63,7 @@ internal static class UpdateApiHandler
         catch (ValidationException ex)
         {
             // TODO: gather all exceptions
-            return TypedResults.BadRequest(ex.ToProblemDetails(httpContext));
+            return TypedResults.BadRequest(ex.ToProblemDetails(statusCode: StatusCodes.Status400BadRequest));
         }
 
         return TypedResults.Ok(new CarDetails(car));
