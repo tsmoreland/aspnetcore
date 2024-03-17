@@ -17,6 +17,7 @@ internal static class DeleteApiHandler
     public static RouteGroupBuilder MapDeleteCar(this RouteGroupBuilder group, ref readonly CarsApiLinks links, params string[] authorizationPolicies)
     {
         OpenApiLink route = links[RouteName.DeleteCarById];
+        string? description = links.GetDescriptionByNameOrDefault(RouteName.DeleteCarById);
 
         group
             .MapDelete("/{id}", Delete)
@@ -31,7 +32,7 @@ internal static class DeleteApiHandler
         OpenApiOperation Configure(OpenApiOperation operation)
         {
             operation.OperationId = route.OperationId;
-            operation.Description = route.Description;
+            operation.Description = description;
             OpenApiParameter idParameter = operation.Parameters[0];
             idParameter.Description = "unique id of a car model";
             idParameter.Required = true;
