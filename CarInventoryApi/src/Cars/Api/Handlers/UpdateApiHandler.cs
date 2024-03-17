@@ -20,6 +20,10 @@ internal static class UpdateApiHandler
     public static RouteGroupBuilder MapUpdateCar(this RouteGroupBuilder group, ref readonly CarsApiLinks links, params string[] authorizationPolicies)
     {
         OpenApiLink route = links[RouteName.UpdateCar];
+        string? description = links.GetDescriptionByNameOrDefault(RouteName.UpdateCar);
+
+        OpenApiLink get = links[RouteName.GetCarById];
+        OpenApiLink delete = links[RouteName.DeleteCarById];
 
         group
             .MapPut("/{id}", Update)
@@ -34,11 +38,23 @@ internal static class UpdateApiHandler
         OpenApiOperation Configure(OpenApiOperation operation)
         {
             operation.OperationId = route.OperationId;
-            operation.Description = route.Description;
+            operation.Description = description;
             OpenApiParameter idParameter = operation.Parameters[0];
             idParameter.Description = "unique id of a car model";
             idParameter.Required = true;
             idParameter.In = ParameterLocation.Path;
+
+            OpenApiResponse? response = operation.Responses
+                .FirstOrDefault(kvp => kvp.Key == StatusCodes.Status200OK.ToString()).Value;
+            if (response is null)
+            {
+                return operation;
+            }
+            response.Links = new Dictionary<string, OpenApiLink>
+            {
+                { get.OperationId, get },
+                { delete.OperationId, delete },
+            }.AsReadOnly();
             return operation;
         }
     }

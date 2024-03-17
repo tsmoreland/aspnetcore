@@ -17,6 +17,7 @@ internal static class GetByIdApiHandler
     public static RouteGroupBuilder MapGetCarById(this RouteGroupBuilder group, ref readonly CarsApiLinks links, params string[] authorizationPolicies)
     {
         OpenApiLink route = links[RouteName.GetCarById];
+        string? description = links.GetDescriptionByNameOrDefault(RouteName.GetCarById);
 
         group
             .MapGet("/{id}", GetById)
@@ -31,7 +32,7 @@ internal static class GetByIdApiHandler
         OpenApiOperation Configure(OpenApiOperation operation)
         {
             operation.OperationId = route.OperationId;
-            operation.Description = route.Description;
+            operation.Description = description;
             OpenApiParameter idParameter = operation.Parameters[0];
             idParameter.Description = "unique id of a car model";
             idParameter.Required = true;

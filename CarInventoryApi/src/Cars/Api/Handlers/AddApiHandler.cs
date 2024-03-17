@@ -20,6 +20,8 @@ internal static class AddApiHandler
     public static RouteGroupBuilder MapAddCar(this RouteGroupBuilder group, ref readonly CarsApiLinks links, params string[] authorizationPolicies)
     {
         OpenApiLink route = links[RouteName.AddCar];
+        string? description = links.GetDescriptionByNameOrDefault(RouteName.AddCar);
+
         OpenApiLink get = links[RouteName.GetCarById];
         OpenApiLink update = links[RouteName.UpdateCar];
         OpenApiLink delete = links[RouteName.DeleteCarById];
@@ -39,7 +41,7 @@ internal static class AddApiHandler
         OpenApiOperation Configure(OpenApiOperation operation)
         {
             operation.OperationId = route.OperationId;
-            operation.Description = route.Description;
+            operation.Description = description;
             OpenApiResponse? response = operation.Responses
                 .FirstOrDefault(kvp => kvp.Key == StatusCodes.Status201Created.ToString()).Value;
             if (response is null)
