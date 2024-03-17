@@ -24,6 +24,8 @@ internal static class AddApiHandler
         OpenApiLink update = links[RouteName.UpdateCar];
         OpenApiLink delete = links[RouteName.DeleteCarById];
 
+        group = group.WithDisplayName("Cars API");
+
         group
             .MapPost("/", Add)
             .RequireAuthorization(authorizationPolicies)

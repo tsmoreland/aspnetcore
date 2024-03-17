@@ -6,6 +6,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <InvariantGlobalization>true</InvariantGlobalization>
     <UserSecretsId>861bab4b-33ff-4aa0-ab62-421efefee4f5</UserSecretsId>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <TieredCompilation>true</TieredCompilation>
     <Optimize>true</Optimize>
   </PropertyGroup>
@@ -24,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Cars\Api\CarInventory.Cars.Api.csproj" />
     <ProjectReference Include="..\Cars\Application\CarInventory.Cars.Application.csproj" />
     <ProjectReference Include="..\Cars\Domain\CarInventory.Cars.Domain.csproj" />
     <ProjectReference Include="..\Cars\Infrastructure\CarInventory.Cars.Infrastructure.csproj" />

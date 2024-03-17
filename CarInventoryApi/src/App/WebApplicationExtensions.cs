@@ -2,6 +2,7 @@
 using Asp.Versioning.Builder;
 using CarInventory.App.Configuration;
 using CarInventory.App.RouteGroups;
+using CarInventory.Cars.Api;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using Swashbuckle.AspNetCore.Swagger;
@@ -34,7 +35,11 @@ public static class WebApplicationExtensions
 
         IVersionedEndpointRouteBuilder routeBuilder = app.NewVersionedApi();
         routeBuilder.MapGroup("/api/v{version:apiVersion}/cars")
-            .MapCars();
+            .MapCarsApi("/api/v1/cars",
+                addPolicies: ["application_admin"],
+                getPolicies: ["application_client"],
+                updatePolicies: ["application_admin"],
+                deletePolicies: ["application_admin"]);
 
         return app;
     }

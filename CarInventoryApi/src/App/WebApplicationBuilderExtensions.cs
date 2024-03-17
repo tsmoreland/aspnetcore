@@ -58,12 +58,13 @@ public static class WebApplicationBuilderExtensions
 
         IHealthChecksBuilder healthChecksBuilder = services.AddHealthChecks();
 
+
         services
             .AddAuthorizationBuilder()
             .AddPolicy("application_client", policy => policy
-                .RequireRole("read.cars"))
+                .RequireRole("role.read.cars"))
             .AddPolicy("application_admin", policy => policy
-                .RequireRole("read.cars", "write.cars"));
+                .RequireRole("role.read.cars", "role.crud.cars"));
 
         services
             .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
