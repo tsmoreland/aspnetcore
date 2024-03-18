@@ -1,4 +1,6 @@
 using MicroShop.Services.Coupons.CouponApiApp;
+using MicroShop.Services.Coupons.CouponApiApp.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()
@@ -22,18 +24,18 @@ try
         .Build()
         .ConfigurePipeline();
 
-    using (IServiceScope scope = app.Services.CreateScope())
-    {
-        //(?)DbContext dbContext = scope.ServiceProvider.GetRequiredService<(?)DbContext>();
-        //dbContext.Database.Migrate();
-    }
-
+    await ApplyMigrations(app.Services);
     app.Run();
 
 
 }
-catch (Exception ex) when (ex.GetType().Name is not "StopTheHostException")
+catch (Exception ex) when (ex.GetType().Name is not "StopTheHostException" )
 {
+    if (ex is HostAbortedException && args is ["--applicationName", _])
+    {
+        return; // exception during EF Migration
+    }
+
     // https://github.com/dotnet/runtime/issues/60600 for StopTheHostException
     Log.Fatal(ex, "Unhandled exception");
 }
@@ -41,4 +43,16 @@ finally
 {
     Log.Information("Shutdown complete.");
     Log.CloseAndFlush();
+}
+
+return;
+
+static async Task ApplyMigrations(IServiceProvider services)
+{
+    using IServiceScope scope = services.CreateScope();
+    AppDbContext dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    if ((await dbContext.Database.GetPendingMigrationsAsync()).Any())
+    {
+        await dbContext.Database.MigrateAsync();
+    }
 }

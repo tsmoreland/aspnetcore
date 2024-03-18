@@ -19,7 +19,6 @@ internal static class WebApplicationExtensions
         app.UseHttpsRedirection();
         app.UseAuthentication();
         app.UseRouting();
-        app.UseRateLimiter();
         app.UseAuthorization();
 
         return app;
