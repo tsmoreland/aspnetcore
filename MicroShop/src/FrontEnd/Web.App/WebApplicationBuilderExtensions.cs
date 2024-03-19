@@ -1,4 +1,7 @@
-﻿using System.Security.Authentication;
+﻿using System.Net.Mime;
+using System.Security.Authentication;
+using MicroShop.Web.App.Services;
+using MicroShop.Web.App.Services.Contracts;
 using Microsoft.AspNetCore.ResponseCompression;
 
 namespace MicroShop.Web.App;
@@ -29,7 +32,20 @@ internal static class WebApplicationBuilderExtensions
             })
             .Configure<BrotliCompressionProviderOptions>(static options => options.Level = System.IO.Compression.CompressionLevel.Optimal);
 
+
+        services
+            .AddScoped<IBaseService, BaseService>()
+            .AddScoped<ICouponService, CouponService>();
+
         services.AddControllersWithViews();
+        services.AddHttpContextAccessor();
+        services.AddHttpClient();
+        services.AddHttpClient("CouponApi", httpClient =>
+        {
+            string couponApiUrl = configuration["ServiceUrls:CouponApi"] ?? throw new KeyNotFoundException("Missing entry in appsettings");
+            httpClient.BaseAddress = new Uri(couponApiUrl);
+            httpClient.DefaultRequestHeaders.Add("Accept", MediaTypeNames.Application.Json);
+        });
 
         return builder;
     }
