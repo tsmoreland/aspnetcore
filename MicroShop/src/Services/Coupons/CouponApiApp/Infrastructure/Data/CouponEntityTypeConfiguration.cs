@@ -10,7 +10,17 @@ public sealed class CouponEntityTypeConfiguration : IEntityTypeConfiguration<Cou
     public void Configure(EntityTypeBuilder<Coupon> builder)
     {
         builder.HasKey(p => p.Id);
-        builder.Property(p => p.Code).IsRequired();
+        builder.HasIndex(p => p.NormalizedCode);
+
+        builder.Property(p => p.Code)
+            .HasField("_code")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .IsRequired()
+            .HasMaxLength(200);
+        builder.Property(p => p.NormalizedCode)
+            .IsRequired()
+            .HasMaxLength(200);
+
         builder.Property(p => p.DiscountAmount).IsRequired();
     }
 }
