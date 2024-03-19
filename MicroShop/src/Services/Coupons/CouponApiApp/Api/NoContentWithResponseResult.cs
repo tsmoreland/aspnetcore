@@ -12,7 +12,7 @@ public sealed class NoContentWithResponseResult(ResponseDto value) : IResult, IE
 {
     public static NoContentWithResponseResult Success()
     {
-        TValue? value = default;
+        object? value = default!;
         return new NoContentWithResponseResult(new ResponseDto(value)); 
     }
 

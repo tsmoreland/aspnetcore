@@ -35,7 +35,7 @@ internal static class CouponApiRouteGroupBuilderExtensions
                     CouponDto result = new(coupon);
                     return Results.Created((string?)null, new ResponseDto(result));
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     // cheap out and blame the client for now, more precise exception handling would handle this better
                     return Results.BadRequest(new ResponseDto<CouponDto>(null, false, "One or more properties of the provided data are invalid"));
@@ -113,7 +113,7 @@ internal static class CouponApiRouteGroupBuilderExtensions
                     return Results.Ok(new ResponseDto(result));
 
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     // cheap out and blame the client for now, more precise exception handling would handle this better
                     return Results.BadRequest(new ResponseDto<CouponDto>(null, false, "One or more properties of the provided data are invalid"));
@@ -135,7 +135,7 @@ internal static class CouponApiRouteGroupBuilderExtensions
                     _ = deleted; // may want to log this
                     return NoContentWithResponseResult.Success();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     // cheap out and blame the client for now, more precise exception handling would handle this better
                     return Results.BadRequest(new ResponseDto<CouponDto>(null, false, "One or more properties of the provided data are invalid"));
