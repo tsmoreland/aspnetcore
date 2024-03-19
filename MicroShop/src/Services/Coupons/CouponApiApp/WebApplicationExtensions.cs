@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using MicroShop.Services.Coupons.CouponApiApp.Api;
+using Serilog;
 
 namespace MicroShop.Services.Coupons.CouponApiApp;
 
@@ -20,6 +21,9 @@ internal static class WebApplicationExtensions
         app.UseAuthentication();
         app.UseRouting();
         app.UseAuthorization();
+
+
+        app.MapGroup("/api/cars").MapCouponsApi();
 
         return app;
     }
