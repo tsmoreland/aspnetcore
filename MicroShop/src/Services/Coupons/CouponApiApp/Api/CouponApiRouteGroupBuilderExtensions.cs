@@ -133,7 +133,7 @@ internal static class CouponApiRouteGroupBuilderExtensions
                 {
                     int deleted = await dbContext.Coupons.Where(c => c.Id == id).ExecuteDeleteAsync();
                     _ = deleted; // may want to log this
-                    return Results.NoContent();
+                    return NoContentWithResponseResult.Success();
                 }
                 catch (Exception ex)
                 {
