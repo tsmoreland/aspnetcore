@@ -10,6 +10,6 @@ public interface ICouponService
     public Task<ResponseDto<IEnumerable<CouponDto>>?> GetCoupons(int id);
     public Task<ResponseDto<CouponDto>?> AddCoupon(AddOrEditCouponDto data);
     public Task<ResponseDto<CouponDto>?> EditCoupon(int id, AddOrEditCouponDto data);
-    public Task<ResponseDto?> DeleteCoupon(int id);
+    public Task<ResponseDto<CouponDto>?> DeleteCoupon(int id);
 
 }
