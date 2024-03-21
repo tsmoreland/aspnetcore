@@ -22,7 +22,7 @@ public sealed class CouponService(IBaseService baseService) : ICouponService
     }
 
     /// <inheritdoc />
-    public async Task<ResponseDto<IEnumerable<CouponDto>>?> GetCoupons(int id)
+    public async Task<ResponseDto<IEnumerable<CouponDto>>?> GetCoupons()
     {
         return await SendAsync<IEnumerable<CouponDto>>(new RequestDto("/api/coupons", null, string.Empty));
     }
