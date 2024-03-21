@@ -40,7 +40,7 @@ internal static class WebApplicationBuilderExtensions
         services.AddControllersWithViews();
         services.AddHttpContextAccessor();
         services.AddHttpClient();
-        services.AddHttpClient("CouponApi", httpClient =>
+        services.AddHttpClient("CouponsApi", httpClient =>
         {
             string couponApiUrl = configuration["ServiceUrls:CouponApi"] ?? throw new KeyNotFoundException("Missing entry in appsettings");
             httpClient.BaseAddress = new Uri(couponApiUrl);

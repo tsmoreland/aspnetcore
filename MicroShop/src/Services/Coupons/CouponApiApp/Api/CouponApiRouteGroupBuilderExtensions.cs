@@ -49,10 +49,10 @@ internal static class CouponApiRouteGroupBuilderExtensions
     private static RouteGroupBuilder MapGetAllCoupons(this RouteGroupBuilder builder)
     {
         builder
-            .MapGet("/", ([FromServices] AppDbContext dbContext) =>
-                Results.Ok(dbContext.Coupons.AsNoTracking()
+            .MapGet("/", async ([FromServices] AppDbContext dbContext) =>
+                Results.Ok(new ResponseDto<IEnumerable<CouponDto>>(await dbContext.Coupons.AsNoTracking()
                     .Select(c => new CouponDto(c))
-                    .AsAsyncEnumerable()))
+                    .ToListAsync())))
             .WithName("GetAllCoupons")
             .WithOpenApi();
         return builder;
@@ -69,8 +69,10 @@ internal static class CouponApiRouteGroupBuilderExtensions
         async Task<Results<Ok<ResponseDto<CouponDto>>, NotFound<ResponseDto<CouponDto>>>> Handler([FromServices] AppDbContext dbContext, [FromRoute] int id)
         {
             CouponDto? dto = await dbContext.Coupons.AsNoTracking()
+                .Where(e => e.Id == id)
                 .Select(c => new CouponDto(c))
-                .FirstOrDefaultAsync(e => e.Id == id);
+                .AsAsyncEnumerable()
+                .FirstOrDefaultAsync();
             return dto is not null
                 ? TypedResults.Ok(new ResponseDto<CouponDto>(dto))
                 : TypedResults.NotFound(new ResponseDto<CouponDto>(null, false, "Coupon matching id not found"));

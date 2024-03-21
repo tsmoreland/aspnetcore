@@ -23,7 +23,7 @@ internal static class WebApplicationExtensions
         app.UseAuthorization();
 
 
-        app.MapGroup("/api/cars").MapCouponsApi();
+        app.MapGroup("/api/coupons").MapCouponsApi();
 
         return app;
     }
