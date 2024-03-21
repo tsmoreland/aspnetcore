@@ -1,4 +1,4 @@
-﻿@if (TempData["error"] is { Length: > 0 })
+﻿@if (TempData["error"] != null)
 {
     <script src="~/lib/jquery/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
@@ -7,7 +7,7 @@
     </script>
 }
 
-#if (@TempData["success"])
+#if (@TempData["success"] != null)
 {
     <script src="~/lib/jquery/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
