@@ -1,6 +1,8 @@
 ﻿using System.Security.Authentication;
 using MicroShop.Services.Auth.AuthApiApp.Infrrastructure.Data;
 using MicroShop.Services.Auth.AuthApiApp.Models;
+using MicroShop.Services.Auth.AuthApiApp.Services;
+using MicroShop.Services.Auth.AuthApiApp.Services.Contracts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
@@ -34,10 +36,19 @@ internal static class WebApplicationBuilderExtensions
                 .AddProblemDetails(static options => options.CustomizeProblemDetails = static ctx => ctx.ProblemDetails.Extensions.Clear());
         }
 
+        services.Configure<ApiJwtOptions>(configuration.GetSection("ApiJwtOptions"));
+
         services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("AppConnection")));
         services
-            .AddIdentity<AppUser, AppRole>()
+            .AddIdentity<AppUser, AppRole>(static options =>
+            {
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 12;
+            })
             .AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultTokenProviders();
 
@@ -51,6 +62,8 @@ internal static class WebApplicationBuilderExtensions
                 options.EnableForHttps = true;
             })
             .Configure<BrotliCompressionProviderOptions>(static options => options.Level = System.IO.Compression.CompressionLevel.Optimal);
+
+        services.AddScoped<IAuthService, AuthService>();
 
         return builder;
     }

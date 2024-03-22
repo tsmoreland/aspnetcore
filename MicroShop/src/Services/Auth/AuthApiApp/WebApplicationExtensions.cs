@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using MicroShop.Services.Auth.AuthApiApp.Api;
+using Serilog;
 
 namespace MicroShop.Services.Auth.AuthApiApp;
 
@@ -20,6 +21,10 @@ internal static class WebApplicationExtensions
         app.UseAuthentication();
         app.UseRouting();
         app.UseAuthorization();
+
+
+        app.MapGroup("/api/auth")
+            .MapAuthApi();
 
         return app;
     }
