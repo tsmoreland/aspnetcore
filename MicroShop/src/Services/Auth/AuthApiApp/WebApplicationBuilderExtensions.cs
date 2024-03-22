@@ -1,5 +1,6 @@
 ﻿using System.Security.Authentication;
 using MicroShop.Services.Auth.AuthApiApp.Infrrastructure.Data;
+using MicroShop.Services.Auth.AuthApiApp.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
@@ -36,7 +37,7 @@ internal static class WebApplicationBuilderExtensions
         services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("AppConnection")));
         services
-            .AddIdentity<IdentityUser, IdentityRole>()
+            .AddIdentity<AppUser, AppRole>()
             .AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultTokenProviders();
 
