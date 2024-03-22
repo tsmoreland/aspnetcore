@@ -63,7 +63,9 @@ internal static class WebApplicationBuilderExtensions
             })
             .Configure<BrotliCompressionProviderOptions>(static options => options.Level = System.IO.Compression.CompressionLevel.Optimal);
 
-        services.AddScoped<IAuthService, AuthService>();
+        services
+            .AddScoped<IJwtTokenGenerator, JwtTokenGenerator>()
+            .AddScoped<IAuthService, AuthService>();
 
         return builder;
     }

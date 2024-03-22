@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MicroShop.Services.Auth.AuthApiApp.Services;
 
-public sealed class AuthService(AppDbContext dbContext, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager) : IAuthService
+public sealed class AuthService(AppDbContext dbContext, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, IJwtTokenGenerator tokenGenerator) : IAuthService
 {
     private readonly RoleManager<AppRole> _roleManager = roleManager;
 
@@ -53,7 +53,7 @@ public sealed class AuthService(AppDbContext dbContext, UserManager<AppUser> use
             return ResponseDto.Error<LoginResponseDto>("user not found");
         }
 
-        string token = "generate me";
+        string token = tokenGenerator.GenerateToken(user);
         bool isValid = await userManager.CheckPasswordAsync(user, password);
         if (!isValid)
         {
