@@ -1,9 +1,9 @@
 ﻿using System.Net;
-using MicroShop.Web.App.Models;
-using MicroShop.Web.App.Models.Coupons;
-using MicroShop.Web.App.Services;
+using MicroShop.Web.MvcApp.Models;
+using MicroShop.Web.MvcApp.Models.Coupons;
+using MicroShop.Web.MvcApp.Services;
 
-namespace MicroShop.Web.App.Tests.Services;
+namespace MicroShop.Web.MvcApp.Tests.Services;
 
 public sealed class CouponServiceTest
 {
@@ -30,5 +30,4 @@ public sealed class CouponServiceTest
 
         actual.Should().Be(expected);
     }
-
 }

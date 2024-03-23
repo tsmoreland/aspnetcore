@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\FrontEnd\Web.App\MicroShop.Web.App.csproj" />
+    <ProjectReference Include="..\..\..\src\FrontEnd\Web.MvcApp\MicroShop.Web.MvcApp.csproj" />
   </ItemGroup>
 
   <ItemGroup>

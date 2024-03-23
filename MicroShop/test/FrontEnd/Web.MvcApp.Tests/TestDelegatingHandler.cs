@@ -1,11 +1,9 @@
 ﻿using System.Net;
-using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
-using MicroShop.Web.App.Models;
-using MicroShop.Web.App.Models.Coupons;
+using MicroShop.Web.MvcApp.Models;
 
-namespace MicroShop.Web.App.Tests;
+namespace MicroShop.Web.MvcApp.Tests;
 
 public sealed record class TestResponse(HttpStatusCode StatusCode, object? Content, string ContentType = "application/json");
 
