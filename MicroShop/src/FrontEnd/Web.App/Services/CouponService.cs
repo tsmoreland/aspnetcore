@@ -45,6 +45,8 @@ public sealed class CouponService(IBaseService baseService) : ICouponService
         return await SendAsync<CouponDto>(new RequestDto(ApiType.Delete, $"/api/coupons/{id}", null, string.Empty));
     }
 
-    private Task<ResponseDto<T>?> SendAsync<T>(RequestDto data) =>
-        _baseService.SendAsync<T>(ClientName, data);
+    private Task<ResponseDto<T>?> SendAsync<T>(RequestDto data)
+    {
+        return _baseService.SendAsync<T>(ClientName, data);
+    }
 }

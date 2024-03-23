@@ -35,17 +35,28 @@ internal static class WebApplicationBuilderExtensions
 
         services
             .AddScoped<IBaseService, BaseService>()
+            .AddScoped<IAuthService, AuthService>()
             .AddScoped<ICouponService, CouponService>();
 
-        services.AddControllersWithViews();
-        services.AddHttpContextAccessor();
-        services.AddHttpClient();
+        services
+            .AddHttpContextAccessor()
+            .AddHttpClient()
+            .AddControllersWithViews();
+
         services.AddHttpClient("CouponsApi", httpClient =>
         {
             string couponApiUrl = configuration["ServiceUrls:CouponApi"] ?? throw new KeyNotFoundException("Missing entry in appsettings");
             httpClient.BaseAddress = new Uri(couponApiUrl);
             httpClient.DefaultRequestHeaders.Add("Accept", MediaTypeNames.Application.Json);
         });
+
+        services.AddHttpClient("CouponsApi", httpClient =>
+        {
+            string authApiUrl = configuration["ServiceUrls:AuthApi"] ?? throw new KeyNotFoundException("Missing entry in appsettings");
+            httpClient.BaseAddress = new Uri(authApiUrl);
+            httpClient.DefaultRequestHeaders.Add("Accept", MediaTypeNames.Application.Json);
+        });
+
 
         return builder;
     }
