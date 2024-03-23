@@ -36,6 +36,8 @@ internal static class WebApplicationBuilderExtensions
                 .AddProblemDetails(static options => options.CustomizeProblemDetails = static ctx => ctx.ProblemDetails.Extensions.Clear());
         }
 
+        services.AddAuthorization();
+
         services.Configure<ApiJwtOptions>(configuration.GetSection("ApiJwtOptions"));
 
         services.AddDbContext<AppDbContext>(options =>
