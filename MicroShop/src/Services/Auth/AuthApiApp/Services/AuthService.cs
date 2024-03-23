@@ -1,4 +1,5 @@
-﻿using MicroShop.Services.Auth.AuthApiApp.Infrrastructure.Data;
+﻿using System.Runtime.InteropServices;
+using MicroShop.Services.Auth.AuthApiApp.Infrrastructure.Data;
 using MicroShop.Services.Auth.AuthApiApp.Models;
 using MicroShop.Services.Auth.AuthApiApp.Models.DataTransferObjects;
 using MicroShop.Services.Auth.AuthApiApp.Services.Contracts;
@@ -62,5 +63,23 @@ public sealed class AuthService(AppDbContext dbContext, UserManager<AppUser> use
 
         UserDto userDto = new(user);
         return ResponseDto.Ok(new LoginResponseDto(userDto, token));
+    }
+
+    /// <inheritdoc />
+    public async Task<bool> AssignRole(string email, string roleName)
+    {
+        string normalizedEmail = email.ToUpperInvariant();
+        AppUser? user = await dbContext.ApplicationUsers.FirstOrDefaultAsync(e => e.NormalizedEmail == normalizedEmail);
+        if (user is null)
+        {
+            return false;
+        }
+
+        if (!await _roleManager.RoleExistsAsync(roleName))
+        {
+            await _roleManager.CreateAsync(new AppRole { Name = roleName, NormalizedName = roleName.ToUpperInvariant() });
+        }
+        await userManager.AddToRoleAsync(user, roleName);
+        return false;
     }
 }

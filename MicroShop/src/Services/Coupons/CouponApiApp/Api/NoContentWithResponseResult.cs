@@ -10,16 +10,9 @@ namespace MicroShop.Services.Coupons.CouponApiApp.Api;
 
 public sealed class NoContentWithResponseResult(ResponseDto value) : IResult, IEndpointMetadataProvider, IStatusCodeHttpResult
 {
-    public static NoContentWithResponseResult Success()
-    {
-        object? value = default!;
-        return new NoContentWithResponseResult(new ResponseDto(value)); 
-    }
+    public static NoContentWithResponseResult Success() => new(ResponseDto.Ok()); 
 
-    public static NoContentWithResponseResult Failure(string? errorMessage)
-    {
-        return new NoContentWithResponseResult(new ResponseDto(null, false, errorMessage)); 
-    }
+    public static NoContentWithResponseResult Failure(string? errorMessage) => new(ResponseDto.Error(errorMessage ?? "Unknown error occurred")); 
 
     public ResponseDto Value { get; } = value;
 
