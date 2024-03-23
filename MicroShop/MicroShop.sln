@@ -20,13 +20,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Web.App", "src\FrontEnd\Web.App\MicroShop.Web.App.csproj", "{290C73DF-3AEF-45A1-9B37-56288E4C7FCA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Web.MvcApp", "src\FrontEnd\Web.MvcApp\MicroShop.Web.MvcApp.csproj", "{290C73DF-3AEF-45A1-9B37-56288E4C7FCA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Web.App.Tests", "test\FrontEnd\Web.App.Tests\MicroShop.Web.App.Tests.csproj", "{60941975-DCB0-49F1-9989-2305D104BF2F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Web.MvcApp.Tests", "test\FrontEnd\Web.MvcApp.Tests\MicroShop.Web.MvcApp.Tests.csproj", "{60941975-DCB0-49F1-9989-2305D104BF2F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Auth", "Auth", "{97F6B790-DA3B-4C78-81AC-387262A41322}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroShop.Services.Auth.AuthApiApp", "src\Services\Auth\AuthApiApp\MicroShop.Services.Auth.AuthApiApp.csproj", "{568BD3C0-20C9-44E8-BB47-CCD75A7553E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Services.Auth.AuthApiApp", "src\Services\Auth\AuthApiApp\MicroShop.Services.Auth.AuthApiApp.csproj", "{568BD3C0-20C9-44E8-BB47-CCD75A7553E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroShop.Services.Auth.AuthApiApp.Tests", "test\Services\Auth\AuthApiApp.Tests\MicroShop.Services.Auth.AuthApiApp.Tests.csproj", "{7FCE74E0-2023-4DAD-9A40-F72F19A0DF9D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,6 +52,10 @@ Global
 		{568BD3C0-20C9-44E8-BB47-CCD75A7553E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{568BD3C0-20C9-44E8-BB47-CCD75A7553E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{568BD3C0-20C9-44E8-BB47-CCD75A7553E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FCE74E0-2023-4DAD-9A40-F72F19A0DF9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FCE74E0-2023-4DAD-9A40-F72F19A0DF9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FCE74E0-2023-4DAD-9A40-F72F19A0DF9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FCE74E0-2023-4DAD-9A40-F72F19A0DF9D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -61,6 +67,7 @@ Global
 		{60941975-DCB0-49F1-9989-2305D104BF2F} = {A36D36EE-5EFA-4890-8F18-490C0F95D0A0}
 		{97F6B790-DA3B-4C78-81AC-387262A41322} = {D3911790-0739-4F98-B508-5228F0281946}
 		{568BD3C0-20C9-44E8-BB47-CCD75A7553E4} = {97F6B790-DA3B-4C78-81AC-387262A41322}
+		{7FCE74E0-2023-4DAD-9A40-F72F19A0DF9D} = {97F6B790-DA3B-4C78-81AC-387262A41322}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {037DE013-C257-46CE-BB74-5D52D8A5393F}
