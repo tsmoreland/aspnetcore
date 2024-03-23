@@ -1,4 +1,5 @@
-﻿using MicroShop.Services.Auth.AuthApiApp.Models.DataTransferObjects;
+﻿using Azure;
+using MicroShop.Services.Auth.AuthApiApp.Models.DataTransferObjects;
 using MicroShop.Services.Auth.AuthApiApp.Services.Contracts;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -50,6 +51,24 @@ internal static class AuthApiRouteGroupBuilderExtensions
             return response.Success
                 ? TypedResults.Ok(response)
                 : TypedResults.BadRequest(ResponseDto.Error<LoginResponseDto>("Username or password is incorrect.")); // intentionally vague
+        }
+    }
+
+    public static RouteGroupBuilder MapPostRoute(this RouteGroupBuilder builder)
+    {
+        builder
+            .MapPost("role", Handler)
+            .WithName("AssignRole")
+            .WithOpenApi();
+
+        return builder;
+
+        async Task<Results<Ok<ResponseDto>, NotFound<ResponseDto>>> Handler([FromBody] ChangeRoleDto model, [FromServices] IAuthService authService)
+        {
+            // TODO: validate model
+            return await authService.AssignRole(model.Email, model.RoleName)
+                ? TypedResults.Ok(ResponseDto.Ok())
+                : TypedResults.NotFound(ResponseDto.Error("User not found or unable to assign role"));
         }
     }
 }
