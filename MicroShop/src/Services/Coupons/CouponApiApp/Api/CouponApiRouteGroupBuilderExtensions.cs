@@ -33,12 +33,12 @@ internal static class CouponApiRouteGroupBuilderExtensions
                     await dbContext.SaveChangesAsync();
 
                     CouponDto result = new(coupon);
-                    return Results.Created((string?)null, new ResponseDto(result));
+                    return Results.Created((string?)null, ResponseDto.Ok(result));
                 }
                 catch (Exception)
                 {
                     // cheap out and blame the client for now, more precise exception handling would handle this better
-                    return Results.BadRequest(new ResponseDto<CouponDto>(null, false, "One or more properties of the provided data are invalid"));
+                    return Results.BadRequest(ResponseDto.Error<CouponDto>("One or more properties of the provided data are invalid"));
                 }
             })
             .WithName("AddCoupon")
@@ -74,8 +74,8 @@ internal static class CouponApiRouteGroupBuilderExtensions
                 .AsAsyncEnumerable()
                 .FirstOrDefaultAsync();
             return dto is not null
-                ? TypedResults.Ok(new ResponseDto<CouponDto>(dto))
-                : TypedResults.NotFound(new ResponseDto<CouponDto>(null, false, "Coupon matching id not found"));
+                ? TypedResults.Ok(ResponseDto.Ok(dto))
+                : TypedResults.NotFound(ResponseDto.Error<CouponDto>("Coupon matching id not found"));
         }
     }
 
@@ -95,8 +95,8 @@ internal static class CouponApiRouteGroupBuilderExtensions
                 .Select(c => new CouponDto(c))
                 .FirstOrDefaultAsync();
             return dto is not null
-                ? TypedResults.Ok(new ResponseDto<CouponDto>(dto))
-                : TypedResults.NotFound(new ResponseDto<CouponDto>(null, false, "Coupon matching id not found"));
+                ? TypedResults.Ok(ResponseDto.Ok(dto))
+                : TypedResults.NotFound(ResponseDto.Error<CouponDto>("Coupon matching id not found"));
         }
     }
 
@@ -112,13 +112,13 @@ internal static class CouponApiRouteGroupBuilderExtensions
                     await dbContext.SaveChangesAsync();
 
                     CouponDto result = new(coupon);
-                    return Results.Ok(new ResponseDto(result));
+                    return Results.Ok(ResponseDto.Ok(result));
 
                 }
                 catch (Exception)
                 {
                     // cheap out and blame the client for now, more precise exception handling would handle this better
-                    return Results.BadRequest(new ResponseDto<CouponDto>(null, false, "One or more properties of the provided data are invalid"));
+                    return Results.BadRequest(ResponseDto.Error<CouponDto>("One or more properties of the provided data are invalid"));
                 }
             })
             .WithName("UpdateCoupon")
@@ -140,7 +140,7 @@ internal static class CouponApiRouteGroupBuilderExtensions
                 catch (Exception)
                 {
                     // cheap out and blame the client for now, more precise exception handling would handle this better
-                    return Results.BadRequest(new ResponseDto<CouponDto>(null, false, "One or more properties of the provided data are invalid"));
+                    return Results.BadRequest(ResponseDto.Error<CouponDto>("One or more properties of the provided data are invalid"));
                 }
             })
             .WithName("DeleteCoupon")

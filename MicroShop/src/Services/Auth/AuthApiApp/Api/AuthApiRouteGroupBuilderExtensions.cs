@@ -63,7 +63,7 @@ internal static class AuthApiRouteGroupBuilderExtensions
 
         return builder;
 
-        async Task<Results<Ok<ResponseDto>, NotFound<ResponseDto>>> Handler([FromBody] ChangeRoleDto model, [FromServices] IAuthService authService)
+        static async Task<Results<Ok<ResponseDto>, NotFound<ResponseDto>>> Handler([FromBody] ChangeRoleDto model, [FromServices] IAuthService authService)
         {
             // TODO: validate model
             return await authService.AssignRole(model.Email, model.RoleName)
