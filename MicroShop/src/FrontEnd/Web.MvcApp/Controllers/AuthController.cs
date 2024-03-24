@@ -1,14 +1,17 @@
-﻿using System.Linq.Expressions;
-using System.Reflection.Metadata.Ecma335;
+﻿using System.Globalization;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using MicroShop.Web.MvcApp.Models;
 using MicroShop.Web.MvcApp.Models.Auth;
 using MicroShop.Web.MvcApp.Services.Contracts;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace MicroShop.Web.MvcApp.Controllers;
 
-public sealed class AuthController(IAuthService authService) : Controller
+public sealed class AuthController(IAuthService authService, ITokenProvider tokenProvider) : Controller
 {
 
     [HttpGet]
@@ -36,6 +39,8 @@ public sealed class AuthController(IAuthService authService) : Controller
         }
 
         LoginResponseDto loginResponse = response.Data;
+        await SignInUser(loginResponse);
+        tokenProvider.SetToken(loginResponse.Token);
         return RedirectToAction("Index", "Home");
 
     }
@@ -107,4 +112,32 @@ public sealed class AuthController(IAuthService authService) : Controller
         }
     }
 
+    private async Task SignInUser(LoginResponseDto model)
+    {
+        JwtSecurityTokenHandler handler = new();
+        JwtSecurityToken jwt = handler.ReadJwtToken(model.Token);
+        ClaimsIdentity identity = new(CookieAuthenticationDefaults.AuthenticationScheme);
+        Dictionary<string, string> claimsByType = jwt.Claims.ToDictionary(c => c.Type, c => c.Value);
+
+        if (claimsByType.TryGetValue(JwtRegisteredClaimNames.Email, out string? email))
+        {
+            identity.AddClaim(new Claim(JwtRegisteredClaimNames.Email, email));
+            identity.AddClaim(new Claim(ClaimTypes.Name, email));
+        }
+        TryAddClaim(identity, JwtRegisteredClaimNames.Sub, claimsByType);
+        TryAddClaim(identity, JwtRegisteredClaimNames.Name, claimsByType);
+
+
+        ClaimsPrincipal principal = new(identity);
+        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+        return;
+
+        static void TryAddClaim(ClaimsIdentity identity, string claimName, IReadOnlyDictionary<string, string> claimsByType)
+        {
+            if (claimsByType.TryGetValue(claimName, out string? value))
+            {
+                identity.AddClaim(new Claim(claimName, value));
+            }
+        }
+    }
 }

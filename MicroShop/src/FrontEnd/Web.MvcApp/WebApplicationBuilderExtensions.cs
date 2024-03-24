@@ -2,6 +2,7 @@
 using System.Security.Authentication;
 using MicroShop.Web.MvcApp.Services;
 using MicroShop.Web.MvcApp.Services.Contracts;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.ResponseCompression;
 
 namespace MicroShop.Web.MvcApp;
@@ -36,12 +37,22 @@ internal static class WebApplicationBuilderExtensions
         services
             .AddScoped<IBaseService, BaseService>()
             .AddScoped<IAuthService, AuthService>()
+            .AddScoped<ITokenProvider, TokenProvider>()
             .AddScoped<ICouponService, CouponService>();
 
         services
             .AddHttpContextAccessor()
             .AddHttpClient()
             .AddControllersWithViews();
+
+        services
+            .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(static options =>
+            {
+                options.ExpireTimeSpan = TimeSpan.FromHours(1);
+                options.LoginPath = "/auth/login";
+                options.AccessDeniedPath = "/auth/AccessDenied";
+            });
 
         services.AddHttpClient("CouponsApi", httpClient =>
         {
