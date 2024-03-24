@@ -1,3 +1,17 @@
-﻿namespace MicroShop.Web.MvcApp.Models.Auth;
+﻿using System.ComponentModel.DataAnnotations;
 
-public sealed record class LoginRequestDto(string UserName, string Password);
+namespace MicroShop.Web.MvcApp.Models.Auth;
+
+public sealed class LoginRequestDto(string username, string password)
+{
+    public LoginRequestDto()
+        : this(string.Empty, string.Empty)
+    {
+    }
+
+    [Required]
+    public string UserName { get; set; } = username ?? string.Empty;
+
+    [Required]
+    public string Password { get; set; } = password ?? string.Empty;
+}
