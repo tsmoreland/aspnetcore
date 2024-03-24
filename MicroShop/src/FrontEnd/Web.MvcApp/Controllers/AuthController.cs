@@ -85,9 +85,13 @@ public sealed class AuthController(IAuthService authService, ITokenProvider toke
 
     }
 
-    public IActionResult Logout()
+    [HttpPost]
+    public async Task<IActionResult> Logout()
     {
-        return View();
+        await HttpContext.SignOutAsync();
+        tokenProvider.ClearToken();
+
+        return RedirectToAction("Index", "Home");
     }
 
     private async Task SetRolelist(dynamic viewBag)
