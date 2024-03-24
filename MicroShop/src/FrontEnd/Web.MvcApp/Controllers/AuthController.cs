@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using System.Reflection.Metadata.Ecma335;
 using MicroShop.Web.MvcApp.Models;
 using MicroShop.Web.MvcApp.Models.Auth;
 using MicroShop.Web.MvcApp.Services.Contracts;
@@ -14,6 +15,29 @@ public sealed class AuthController(IAuthService authService) : Controller
     public IActionResult Login()
     {
         return View(new LoginRequestDto());
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Login(LoginRequestDto model)
+    {
+        const string errorMessage = "Unable to login username or password is incorrect";
+        if (ModelState.IsValid)
+        {
+            model.Password = string.Empty;
+            return View(model);
+        }
+
+        ResponseDto<LoginResponseDto>? response = await authService.Login(model);
+        if (response is not { Success: true, Data: not null })
+        {
+            ModelState.AddModelError(string.Empty, errorMessage);
+            model.Password = string.Empty;
+            return View(model);
+        }
+
+        LoginResponseDto loginResponse = response.Data;
+        return RedirectToAction("Index", "Home");
+
     }
 
     [HttpGet]
@@ -36,7 +60,7 @@ public sealed class AuthController(IAuthService authService) : Controller
         if (response?.Success != true || response.Data is null)
         {
             await SetRolelist(ViewBag);
-            TempData["error"] = "Unable to register";
+            ModelState.AddModelError(string.Empty, "Unable to register");
             return View(model);
         }
         UserDto user = response.Data;
@@ -44,13 +68,13 @@ public sealed class AuthController(IAuthService authService) : Controller
         ResponseDto? assignResponse = await authService.AssignRole(new ChangeRoleDto(model.Email, model.Role ?? string.Empty)); // let auth service handle empty string
         if (response is { Success: true })
         {
-            TempData["success"] = "Registration Successful";
+            ModelState.AddModelError(string.Empty, "Registration Successful");
             return RedirectToAction(nameof(Login));
         }
         else
         {
             await SetRolelist(ViewBag);
-            TempData["error"] = "An error occurred assigning role";
+            ModelState.AddModelError(string.Empty,"An error occurred assigning role");
             return View(model);
         }
 
@@ -82,6 +106,5 @@ public sealed class AuthController(IAuthService authService) : Controller
             }
         }
     }
-
 
 }
