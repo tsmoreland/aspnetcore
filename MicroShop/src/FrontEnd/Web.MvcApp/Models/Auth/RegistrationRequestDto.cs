@@ -2,13 +2,35 @@
 
 namespace MicroShop.Web.MvcApp.Models.Auth;
 
-public sealed record class RegistrationRequestDto(
-    [property: EmailAddress] string Email,
-    [property: MinLength(2), MaxLength(10)] string Name,
-    [property: Phone] string PhoneNumber,
-    [property: MinLength(12)] string Password,
-    string ConfirmPassword) : IValidatableObject
+public sealed class RegistrationRequestDto(string email, string name, string phoneNumber, string password, string confirmPassword, string? role) : IValidatableObject
 {
+    public RegistrationRequestDto()
+        : this(string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, null)
+    {
+    }
+
+    [Required]
+    [EmailAddress]
+    public string Email { get; set; } = email;
+
+    [Required]
+    [MinLength(2)]
+    [MaxLength(10)]
+    public string Name { get; set; } = name;
+
+    [Phone]
+    public string PhoneNumber { get; set; } = phoneNumber;
+
+    [Required]
+    [MinLength(12)]
+    public string Password { get; set; } = password;
+
+    [Required]
+    [MinLength(12)]
+    public string ConfirmPassword { get; set; } = confirmPassword;
+
+    public string? Role { get; set; } = role;
+
     /// <inheritdoc />
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
