@@ -26,6 +26,13 @@ public sealed class AuthService(IBaseService baseService) : IAuthService
         return SendAsync(new RequestDto(ApiType.Post, "/api/auth/role", request, string.Empty));
     }
 
+    /// <inheritdoc />
+    public Task<ResponseDto<IEnumerable<string>>?> GetRoles()
+    {
+        // TODO: add to auth api
+        return Task.FromResult<ResponseDto<IEnumerable<string>>?>(ResponseDto.Ok<IEnumerable<string>>(["ADMIN", "CUSTOMER"]));
+    }
+
     private Task<ResponseDto<T>?> SendAsync<T>(RequestDto data)
     {
         return baseService.SendAsync<T>(ClientName, data);

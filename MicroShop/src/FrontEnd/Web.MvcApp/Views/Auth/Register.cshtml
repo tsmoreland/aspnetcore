@@ -23,6 +23,10 @@
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="col-12 col-md-6 offset-md-3 pb-2">
+                <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm Password..." />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+            <div class="col-12 col-md-6 offset-md-3 pb-2">
                 <select asp-for="Role" class="form-select" asp-items="@ViewBag.RoleList">
                     <option disabled selected>--Select Role--</option>
                 </select>

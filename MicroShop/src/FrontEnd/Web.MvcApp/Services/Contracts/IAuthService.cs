@@ -8,4 +8,5 @@ public interface IAuthService
     Task<ResponseDto<UserDto>?> Register(RegistrationRequestDto request);
     Task<ResponseDto<LoginResponseDto>?> Login(LoginRequestDto request);
     Task<ResponseDto?> AssignRole(ChangeRoleDto request);
+    Task<ResponseDto<IEnumerable<string>>?> GetRoles();
 }
