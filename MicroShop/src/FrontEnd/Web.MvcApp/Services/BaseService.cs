@@ -7,12 +7,12 @@ using MicroShop.Web.MvcApp.Services.Contracts;
 
 namespace MicroShop.Web.MvcApp.Services;
 
-public sealed class BaseService(IHttpClientFactory clientFactory) : IBaseService 
+public sealed class BaseService(IHttpClientFactory clientFactory, ITokenProvider tokenProvider) : IBaseService 
 {
     private readonly IHttpClientFactory _clientFactory = clientFactory ?? throw new ArgumentNullException(nameof(clientFactory));
 
     /// <inheritdoc />
-    public async Task<ResponseDto<TResponse>?> SendAsync<TResponse>(string clientName, RequestDto request)
+    public async Task<ResponseDto<TResponse>?> SendAsync<TResponse>(string clientName, RequestDto request, bool includeAuthorization = true)
     {
         (HttpClient client, HttpRequestMessage message) = SetupRequest(clientName, request.ApiType, request.Url);
 
@@ -25,7 +25,7 @@ public sealed class BaseService(IHttpClientFactory clientFactory) : IBaseService
     }
 
     /// <inheritdoc />
-    public async Task<ResponseDto<TResponse>?> SendAsync<TRequest, TResponse>(string clientName, RequestDto<TRequest> request)
+    public async Task<ResponseDto<TResponse>?> SendAsync<TRequest, TResponse>(string clientName, RequestDto<TRequest> request, bool includeAuthorization = true)
     {
         (HttpClient client, HttpRequestMessage message) = SetupRequest(clientName, request.ApiType, request.Url);
 
@@ -39,7 +39,7 @@ public sealed class BaseService(IHttpClientFactory clientFactory) : IBaseService
     }
 
     /// <inheritdoc />
-    public Task<ResponseDto?> SendAsync(string clientName, RequestDto request)
+    public Task<ResponseDto?> SendAsync(string clientName, RequestDto request, bool includeAuthorization = true)
     {
         (HttpClient client, HttpRequestMessage message) = SetupRequest(clientName, request.ApiType, request.Url);
         if (request.Data is not null)
@@ -50,12 +50,11 @@ public sealed class BaseService(IHttpClientFactory clientFactory) : IBaseService
         return SendRequestAsync(client, message);
     }
 
-    private (HttpClient Client, HttpRequestMessage Message) SetupRequest(string clientName, ApiType apiType, string url)
+    private (HttpClient Client, HttpRequestMessage Message) SetupRequest(string clientName, ApiType apiType, string url, bool includeAuthorization = true)
     {
         HttpClient client = _clientFactory.CreateClient(clientName);
         HttpRequestMessage message = new()
         {
-            // token (pending)
             RequestUri = url.StartsWith("http", StringComparison.OrdinalIgnoreCase) ? new Uri(url) : new Uri(url, UriKind.Relative),
             Method = apiType switch
             {
@@ -65,6 +64,10 @@ public sealed class BaseService(IHttpClientFactory clientFactory) : IBaseService
                 _ => HttpMethod.Get,
             }
         };
+        if (includeAuthorization && tokenProvider.GetToken() is {} token)
+        {
+            message.Headers.Add("Authorization", $"Bearer {token}");
+        }
 
         return (client, message);
     }

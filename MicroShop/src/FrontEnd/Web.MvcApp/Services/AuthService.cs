@@ -23,7 +23,7 @@ public sealed class AuthService(IBaseService baseService) : IAuthService
     /// <inheritdoc />
     public Task<ResponseDto?> AssignRole(ChangeRoleDto request)
     {
-        return SendAsync(new RequestDto(ApiType.Post, "/api/auth/role", request, string.Empty));
+        return SendAsync(new RequestDto(ApiType.Post, "/api/auth/role", request, string.Empty), true);
     }
 
     /// <inheritdoc />
@@ -38,8 +38,8 @@ public sealed class AuthService(IBaseService baseService) : IAuthService
         return baseService.SendAsync<T>(ClientName, data);
     }
 
-    private Task<ResponseDto?> SendAsync(RequestDto data)
+    private Task<ResponseDto?> SendAsync(RequestDto data, bool includeAuthorization = false)
     {
-        return baseService.SendAsync(ClientName, data);
+        return baseService.SendAsync(ClientName, data, includeAuthorization);
     }
 }

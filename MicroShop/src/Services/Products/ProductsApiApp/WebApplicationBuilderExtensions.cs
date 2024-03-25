@@ -1,14 +1,11 @@
 ﻿using System.Security.Authentication;
 using System.Text;
-using MicroShop.Services.Coupons.CouponApiApp.Infrastructure.Data;
-using MicroShop.Services.Coupons.CouponApiApp.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.ResponseCompression;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
-namespace MicroShop.Services.Coupons.CouponApiApp;
+namespace MicroShop.Services.Products.ProductsApiApp;
 
 internal static class WebApplicationBuilderExtensions
 {
@@ -37,8 +34,7 @@ internal static class WebApplicationBuilderExtensions
                 .AddProblemDetails(static options => options.CustomizeProblemDetails = static ctx => ctx.ProblemDetails.Extensions.Clear());
         }
 
-        services.AddDbContext<AppDbContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("AppConnection"), sqlOptions => sqlOptions.MigrationsAssembly(typeof(Coupon).Assembly.ToString())));
+        // configure SQL Server Here
 
         services
             .AddEndpointsApiExplorer()
@@ -104,5 +100,4 @@ internal static class WebApplicationBuilderExtensions
 
         return builder;
     }
-
 }
