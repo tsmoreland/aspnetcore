@@ -41,7 +41,7 @@ internal static class CouponApiRouteGroupBuilderExtensions
                     return Results.BadRequest(ResponseDto.Error<CouponDto>("One or more properties of the provided data are invalid"));
                 }
             })
-            .RequireAuthorization()
+            .RequireAuthorization("ADMIN")
             .WithName("AddCoupon")
             .WithOpenApi();
         return builder;
@@ -125,7 +125,7 @@ internal static class CouponApiRouteGroupBuilderExtensions
                     return Results.BadRequest(ResponseDto.Error<CouponDto>("One or more properties of the provided data are invalid"));
                 }
             })
-            .RequireAuthorization()
+            .RequireAuthorization("ADMIN")
             .WithName("UpdateCoupon")
             .WithOpenApi();
         return builder;
@@ -148,7 +148,7 @@ internal static class CouponApiRouteGroupBuilderExtensions
                     return Results.BadRequest(ResponseDto.Error<CouponDto>("One or more properties of the provided data are invalid"));
                 }
             })
-            .RequireAuthorization()
+            .RequireAuthorization("ADMIN")
             .WithName("DeleteCoupon")
             .WithOpenApi();
 
