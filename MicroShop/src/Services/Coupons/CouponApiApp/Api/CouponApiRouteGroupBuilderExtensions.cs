@@ -41,6 +41,7 @@ internal static class CouponApiRouteGroupBuilderExtensions
                     return Results.BadRequest(ResponseDto.Error<CouponDto>("One or more properties of the provided data are invalid"));
                 }
             })
+            .RequireAuthorization()
             .WithName("AddCoupon")
             .WithOpenApi();
         return builder;
@@ -53,6 +54,7 @@ internal static class CouponApiRouteGroupBuilderExtensions
                 Results.Ok(new ResponseDto<IEnumerable<CouponDto>>(await dbContext.Coupons.AsNoTracking()
                     .Select(c => new CouponDto(c))
                     .ToListAsync())))
+            .RequireAuthorization()
             .WithName("GetAllCoupons")
             .WithOpenApi();
         return builder;
@@ -62,6 +64,7 @@ internal static class CouponApiRouteGroupBuilderExtensions
     {
         builder
             .MapGet("/{id:int}", Handler)
+            .RequireAuthorization()
             .WithName("GetCouponById")
             .WithOpenApi();
         return builder;
@@ -83,6 +86,7 @@ internal static class CouponApiRouteGroupBuilderExtensions
     {
         builder
             .MapGet("/codes/{code}", Handler)
+            .RequireAuthorization()
             .WithName("GetCouponByCode")
             .WithOpenApi();
         return builder;
@@ -121,6 +125,7 @@ internal static class CouponApiRouteGroupBuilderExtensions
                     return Results.BadRequest(ResponseDto.Error<CouponDto>("One or more properties of the provided data are invalid"));
                 }
             })
+            .RequireAuthorization()
             .WithName("UpdateCoupon")
             .WithOpenApi();
         return builder;
@@ -143,6 +148,7 @@ internal static class CouponApiRouteGroupBuilderExtensions
                     return Results.BadRequest(ResponseDto.Error<CouponDto>("One or more properties of the provided data are invalid"));
                 }
             })
+            .RequireAuthorization()
             .WithName("DeleteCoupon")
             .WithOpenApi();
 

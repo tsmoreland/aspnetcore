@@ -1,8 +1,11 @@
 ﻿using System.Security.Authentication;
+using System.Text;
 using MicroShop.Services.Coupons.CouponApiApp.Infrastructure.Data;
 using MicroShop.Services.Coupons.CouponApiApp.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace MicroShop.Services.Coupons.CouponApiApp;
 
@@ -48,10 +51,31 @@ internal static class WebApplicationBuilderExtensions
             .Configure<BrotliCompressionProviderOptions>(static options => options.Level = System.IO.Compression.CompressionLevel.Optimal);
 
         services
-            .AddAuthorizationBuilder();
+            .AddAuthorization();
 
         services
-            .AddAuthentication();
+            .AddAuthentication(static options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                string issuer = configuration["ApiJwtOptions:Issuer"] ?? string.Empty;
+                string audience = configuration["ApiJwtOptions:Audience"] ?? string.Empty;
+                byte[] secret = Encoding.UTF8.GetBytes(configuration["ApiJwtOptions:Secret"] ?? string.Empty);
+
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(secret),
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidIssuer = issuer,
+                    ValidAudience = audience,
+                };
+
+            });
 
         return builder;
     }
