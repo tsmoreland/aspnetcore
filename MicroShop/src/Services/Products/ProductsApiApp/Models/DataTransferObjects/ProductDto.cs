@@ -11,15 +11,23 @@ public sealed class ProductDto(int productId, string name, double price, string?
 
     [Required]
     public int ProductId { get; set; } = productId;
+
     [Required]
+    [MaxLength(200)]
     public string Name { get; set; } = name;
+
     [Required]
     [Range(1, 1000)]
     public double Price { get; set; } = price;
 
+    [MaxLength(500)]
     public string? Description { get; set; } = description;
+
     [Required]
+    [MaxLength(200)]
     public string CategoryName { get; set; } = categoryName;
-    [Required]
-    public string ImageUrl { get; set; } = imageUrl;
+
+    [MaxLength(200)]
+    public string? ImageUrl { get; set; } = imageUrl;
+
 }
