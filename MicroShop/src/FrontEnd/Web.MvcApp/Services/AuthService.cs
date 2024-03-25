@@ -11,19 +11,19 @@ public sealed class AuthService(IBaseService baseService) : IAuthService
     /// <inheritdoc />
     public Task<ResponseDto<UserDto>?> Register(RegistrationRequestDto request)
     {
-        return SendAsync<UserDto>(new RequestDto(ApiType.Post, "/api/auth/register", request, string.Empty));
+        return SendAsync<UserDto>(new RequestDto(ApiType.Post, "/api/auth/register", request));
     }
 
     /// <inheritdoc />
     public Task<ResponseDto<LoginResponseDto>?> Login(LoginRequestDto request)
     {
-        return SendAsync<LoginResponseDto>(new RequestDto(ApiType.Post, "/api/auth/login", request, string.Empty));
+        return SendAsync<LoginResponseDto>(new RequestDto(ApiType.Post, "/api/auth/login", request));
     }
 
     /// <inheritdoc />
     public Task<ResponseDto?> AssignRole(ChangeRoleDto request)
     {
-        return SendAsync(new RequestDto(ApiType.Post, "/api/auth/role", request, string.Empty), true);
+        return SendAsync(new RequestDto(ApiType.Post, "/api/auth/role", request), true);
     }
 
     /// <inheritdoc />
