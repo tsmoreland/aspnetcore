@@ -54,7 +54,9 @@ public sealed class AuthService(AppDbContext dbContext, UserManager<AppUser> use
             return ResponseDto.Error<LoginResponseDto>("user not found");
         }
 
-        string token = tokenGenerator.GenerateToken(user);
+        IList<string> roles = await userManager.GetRolesAsync(user);
+
+        string token = tokenGenerator.GenerateToken(user, roles);
         bool isValid = await userManager.CheckPasswordAsync(user, password);
         if (!isValid)
         {

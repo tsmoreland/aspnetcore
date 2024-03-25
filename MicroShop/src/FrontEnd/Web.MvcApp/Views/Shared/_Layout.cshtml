@@ -51,7 +51,7 @@
                         {
                             <li class="nav-item">
                                 <form method="post" asp-controller="Auth" asp-action="Logout">
-                                    <button class="btn btn-link navbar-btn nav-link" type="submit">Logout</button>
+                                    <button class="btn btn-link navbar-btn nav-link" type="submit">Logout @User.Identity?.Name</button>
                                 </form>
                             </li>
                         }

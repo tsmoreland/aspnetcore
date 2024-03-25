@@ -13,7 +13,7 @@ public sealed class JwtTokenGenerator(IOptions<ApiJwtOptions> options) : IJwtTok
     private readonly ApiJwtOptions _options = options.Value;
 
     /// <inheritdoc />
-    public string GenerateToken(AppUser user)
+    public string GenerateToken(AppUser user, IEnumerable<string> roles)
     {
         JwtSecurityTokenHandler handler = new();
         byte[] secret = Encoding.UTF8.GetBytes(_options.Secret);
@@ -23,6 +23,7 @@ public sealed class JwtTokenGenerator(IOptions<ApiJwtOptions> options) : IJwtTok
             new Claim(JwtRegisteredClaimNames.Sub, user.Id),
             new Claim(JwtRegisteredClaimNames.Name, user.UserName ?? string.Empty),
         ];
+        claims.AddRange(roles.Select(r => new Claim(ClaimTypes.Role, r)));
 
         SecurityTokenDescriptor tokenDescriptor = new()
         {

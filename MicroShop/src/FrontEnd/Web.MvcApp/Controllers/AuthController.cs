@@ -65,10 +65,9 @@ public sealed class AuthController(IAuthService authService, ITokenProvider toke
         if (response?.Success != true || response.Data is null)
         {
             await SetRolelist(ViewBag);
-            ModelState.AddModelError(string.Empty, "Unable to register");
+            ModelState.AddModelError(string.Empty, response?.ErrorMessage ?? "Unable to register");
             return View(model);
         }
-        UserDto user = response.Data;
 
         ResponseDto? assignResponse = await authService.AssignRole(new ChangeRoleDto(model.Email, model.Role ?? string.Empty)); // let auth service handle empty string
         if (response is { Success: true })
@@ -79,7 +78,7 @@ public sealed class AuthController(IAuthService authService, ITokenProvider toke
         else
         {
             await SetRolelist(ViewBag);
-            ModelState.AddModelError(string.Empty,"An error occurred assigning role");
+            ModelState.AddModelError(string.Empty, assignResponse?.ErrorMessage ?? "An error occurred assigning role");
             return View(model);
         }
 
@@ -121,25 +120,34 @@ public sealed class AuthController(IAuthService authService, ITokenProvider toke
         JwtSecurityTokenHandler handler = new();
         JwtSecurityToken jwt = handler.ReadJwtToken(model.Token);
         ClaimsIdentity identity = new(CookieAuthenticationDefaults.AuthenticationScheme);
-        Dictionary<string, string> claimsByType = jwt.Claims.ToDictionary(c => c.Type, c => c.Value);
+        Dictionary<string, List<string>> claimsByType = jwt.Claims.GroupBy(c => c.Type).ToDictionary(g => g.Key, g => g.Select(pair => pair.Value).ToList());
 
-        if (claimsByType.TryGetValue(JwtRegisteredClaimNames.Email, out string? email))
+        if (claimsByType.TryGetValue(JwtRegisteredClaimNames.Email, out List<string>? emailValues))
         {
+            string email = emailValues.First();
             identity.AddClaim(new Claim(JwtRegisteredClaimNames.Email, email));
             identity.AddClaim(new Claim(ClaimTypes.Name, email));
         }
         TryAddClaim(identity, JwtRegisteredClaimNames.Sub, claimsByType);
         TryAddClaim(identity, JwtRegisteredClaimNames.Name, claimsByType);
+        if (claimsByType.TryGetValue(ClaimTypes.Role, out List<string>? roles))
+        {
+            foreach (string role in roles)
+            {
+                identity.AddClaim(new Claim(ClaimTypes.Role, role));
+            }
+        }
 
 
         ClaimsPrincipal principal = new(identity);
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
         return;
 
-        static void TryAddClaim(ClaimsIdentity identity, string claimName, IReadOnlyDictionary<string, string> claimsByType)
+        static void TryAddClaim(ClaimsIdentity identity, string claimName, IReadOnlyDictionary<string, List<string>> claimsByType)
         {
-            if (claimsByType.TryGetValue(claimName, out string? value))
+            if (claimsByType.TryGetValue(claimName, out List<string>? values))
             {
+                string value = values.First();
                 identity.AddClaim(new Claim(claimName, value));
             }
         }
