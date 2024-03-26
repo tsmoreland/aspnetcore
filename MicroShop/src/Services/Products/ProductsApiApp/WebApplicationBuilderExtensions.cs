@@ -1,7 +1,10 @@
 ﻿using System.Security.Authentication;
 using System.Text;
+using MicroShop.Services.Products.ProductsApiApp.Infrastructure.Data;
+using MicroShop.Services.Products.ProductsApiApp.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -34,7 +37,8 @@ internal static class WebApplicationBuilderExtensions
                 .AddProblemDetails(static options => options.CustomizeProblemDetails = static ctx => ctx.ProblemDetails.Extensions.Clear());
         }
 
-        // configure SQL Server Here
+        services.AddDbContext<AppDbContext>(options =>
+            options.UseSqlServer(configuration.GetConnectionString("AppConnection"), sqlOptions => sqlOptions.MigrationsAssembly(typeof(Product).Assembly.ToString())));
 
         services
             .AddEndpointsApiExplorer()

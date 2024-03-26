@@ -2,15 +2,20 @@
 
 namespace MicroShop.Services.Products.ProductsApiApp.Models.DataTransferObjects;
 
-public sealed class ProductDto(int productId, string name, double price, string? description, string categoryName, string? imageUrl)
+public sealed class ProductDto(int id, string name, double price, string? description, string categoryName, string? imageUrl)
 {
     public ProductDto()
         : this(0, string.Empty, 0.0, null, string.Empty, null)
     {
     }
 
+    public ProductDto(Product product)
+        : this(product.Id, product.Name, product.Price, product.Description, product.CategoryName, product.ImageUrl)
+    {
+    }
+
     [Required]
-    public int ProductId { get; set; } = productId;
+    public int Id { get; set; } = id;
 
     [Required]
     [MaxLength(200)]
@@ -30,4 +35,5 @@ public sealed class ProductDto(int productId, string name, double price, string?
     [MaxLength(200)]
     public string? ImageUrl { get; set; } = imageUrl;
 
+    public Product ToProduct() => new(Id, Name, Price, Description, CategoryName, ImageUrl);
 }
