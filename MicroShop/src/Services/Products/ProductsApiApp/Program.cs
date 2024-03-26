@@ -1,4 +1,6 @@
 using MicroShop.Services.Products.ProductsApiApp;
+using MicroShop.Services.Products.ProductsApiApp.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()
@@ -46,12 +48,10 @@ return;
 static async Task ApplyMigrations(IServiceProvider services)
 {
     using IServiceScope scope = services.CreateScope();
-    /*
     AppDbContext dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     if ((await dbContext.Database.GetPendingMigrationsAsync()).Any())
     {
         await dbContext.Database.MigrateAsync();
     }
-    */
     await ValueTask.CompletedTask;
 }
