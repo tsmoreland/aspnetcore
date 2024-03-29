@@ -59,7 +59,7 @@ public sealed class ProductController(IProductService productService) : Controll
         if (response?.Success is true)
         {
             TempData["success"] = "Product updated successfully";
-            return RedirectToAction(nameof(ProductIndex));
+            return RedirectToAction(nameof(Index));
         }
 
         TempData["error"] = response?.ErrorMessage;

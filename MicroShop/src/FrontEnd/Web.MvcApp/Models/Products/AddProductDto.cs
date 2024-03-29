@@ -2,10 +2,10 @@
 
 namespace MicroShop.Web.MvcApp.Models.Products;
 
-public sealed class AddProductDto(string name, double price, string? description, string categoryName, string? imageUrl)
+public sealed class AddProductDto(string name, double price, string? description, string categoryName, string? imageUrl, string? imageLocalPath)
 {
     public AddProductDto()
-        : this(string.Empty, 0.0, null, string.Empty, null)
+        : this(string.Empty, 0.0, null, string.Empty, null, null)
     {
     }
 
@@ -26,4 +26,10 @@ public sealed class AddProductDto(string name, double price, string? description
 
     [MaxLength(200)]
     public string? ImageUrl { get; set; } = imageUrl;
+
+    [MaxLength(260)]
+    public string? ImageLocalPath { get; set; } = imageLocalPath;
+
+    [FileExtensions(Extensions = "jpg,png")]
+    public IFormFile? Image { get; set; }
 }

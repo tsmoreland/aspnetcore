@@ -12,12 +12,11 @@ internal static class ProductsApiRouteGroupBuilderExtensions
     public static RouteGroupBuilder MapProductsApi(this RouteGroupBuilder builder)
     {
         return builder
-            .MapPost()
+            .MapAddProduct()
             .MapGetAllProducts()
             .MapGetProductById()
-            .MapGetProductByCode()
-            .MapPut()
-            .MapDelete()
+            .MapUpdateProduct()
+            .MapDeleteProduct()
             .WithTags("Products");
     }
 
@@ -82,40 +81,18 @@ internal static class ProductsApiRouteGroupBuilderExtensions
         }
     }
 
-    private static RouteGroupBuilder MapGetProductByCode(this RouteGroupBuilder builder)
-    {
-        builder
-            .MapGet("/codes/{code}", Handler)
-            .RequireAuthorization()
-            .WithName("GetProductByCode")
-            .WithOpenApi();
-        return builder;
-
-        async Task<Results<Ok<ResponseDto<ProductDto>>, NotFound<ResponseDto<ProductDto>>>> Handler([FromServices] AppDbContext dbContext, [FromRoute] string code)
-        {
-            string normalizedCode = (code ?? string.Empty).ToUpperInvariant();
-            ProductDto? dto = await dbContext.Products.AsNoTracking()
-                .Where(c => c.NormalizedCode == normalizedCode)
-                .Select(c => new ProductDto(c))
-                .FirstOrDefaultAsync();
-            return dto is not null
-                ? TypedResults.Ok(ResponseDto.Ok(dto))
-                : TypedResults.NotFound(ResponseDto.Error<ProductDto>("Product matching id not found"));
-        }
-    }
-
-    private static RouteGroupBuilder MapPut(this RouteGroupBuilder builder)
+    private static RouteGroupBuilder MapUpdateProduct(this RouteGroupBuilder builder)
     {
         builder
             .MapPut("/{id:int}", async ([FromRoute] int id, [FromBody] AddOrEditProductDto data, [FromServices] AppDbContext dbContext) =>
             {
                 try
                 {
-                    Product coupon = data.ToExistingProduct(id);
-                    dbContext.Products.Update(coupon);
+                    Product product = data.ToProduct(id);
+                    dbContext.Products.Update(product);
                     await dbContext.SaveChangesAsync();
 
-                    ProductDto result = new(coupon);
+                    ProductDto result = new(product);
                     return Results.Ok(ResponseDto.Ok(result));
 
                 }
@@ -131,7 +108,7 @@ internal static class ProductsApiRouteGroupBuilderExtensions
         return builder;
     }
 
-    private static RouteGroupBuilder MapDelete(this RouteGroupBuilder builder)
+    private static RouteGroupBuilder MapDeleteProduct(this RouteGroupBuilder builder)
     {
         builder
             .MapDelete("/{id:int}", async ([FromRoute] int id, [FromServices] AppDbContext dbContext) =>
