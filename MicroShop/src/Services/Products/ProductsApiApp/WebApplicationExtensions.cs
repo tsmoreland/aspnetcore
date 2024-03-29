@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using MicroShop.Services.Products.ProductsApiApp.Api;
+using Serilog;
 
 namespace MicroShop.Services.Products.ProductsApiApp;
 
@@ -21,7 +22,7 @@ internal static class WebApplicationExtensions
         app.UseRouting();
         app.UseAuthorization();
 
-        app.MapGroup("/api/products"); //.MapProductsApi();
+        app.MapGroup("/api/products").MapProductsApi();
 
         return app;
     }
