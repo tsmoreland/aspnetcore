@@ -41,11 +41,7 @@ public sealed class CouponController(ICouponService couponService) : Controller
             TempData["success"] = "Coupon Created Successfully";
             return RedirectToAction(nameof(Index));
         }
-        else
-        {
-            TempData["error"] = response?.ErrorMessage;
-        }
-
+        TempData["error"] = response?.ErrorMessage;
         return View(coupon);
     }
 
@@ -57,10 +53,7 @@ public sealed class CouponController(ICouponService couponService) : Controller
         {
             return View(response.Data);
         }
-        else
-        {
-            TempData["error"] = response?.ErrorMessage;
-        }
+        TempData["error"] = response?.ErrorMessage;
 
         return NotFound();
     }
@@ -74,10 +67,7 @@ public sealed class CouponController(ICouponService couponService) : Controller
             TempData["success"] = "Coupon deleted successfully.";
             return RedirectToAction(nameof(Index));
         }
-        else
-        {
-            TempData["error"] = response?.ErrorMessage;
-        }
+        TempData["error"] = response?.ErrorMessage;
         return View(coupon);
     }
 }

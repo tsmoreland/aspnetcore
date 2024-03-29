@@ -17,12 +17,15 @@ public sealed class ProductService(IBaseService baseService) : IProductService
         await SendAsync<IEnumerable<ProductDto>>(new RequestDto("/api/products", null));
 
     /// <inheritdoc />
-    public async Task<ResponseDto<ProductDto>?> AddProduct(AddOrEditProductDto data) =>
+    public async Task<ResponseDto<ProductDto>?> AddProduct(AddProductDto data) =>
         await SendAsync<ProductDto>(new RequestDto(ApiType.Post, "/api/products", data));
 
     /// <inheritdoc />
-    public async Task<ResponseDto<ProductDto>?> EditProduct(int id, AddOrEditProductDto data) =>
-        await SendAsync<ProductDto>(new RequestDto(ApiType.Put, $"/api/products/{id}", data));
+    public async Task<ResponseDto<ProductDto>?> UpdateProduct(ProductDto data)
+    {
+        AddProductDto editData = new(data.Name, data.Price, data.Description, data.CategoryName, data.ImageUrl);
+        return await SendAsync<ProductDto>(new RequestDto(ApiType.Put, $"/api/products/{data.Id}", editData));
+    }
 
     /// <inheritdoc />
     public async Task<ResponseDto<ProductDto>?> DeleteProduct(int id) =>

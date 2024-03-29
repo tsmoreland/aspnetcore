@@ -2,9 +2,9 @@
 
 namespace MicroShop.Web.MvcApp.Models.Products;
 
-public sealed class AddOrEditProductDto(string name, double price, string? description, string categoryName, string? imageUrl)
+public sealed class AddProductDto(string name, double price, string? description, string categoryName, string? imageUrl)
 {
-    public AddOrEditProductDto()
+    public AddProductDto()
         : this(string.Empty, 0.0, null, string.Empty, null)
     {
     }
