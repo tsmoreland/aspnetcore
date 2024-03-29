@@ -2,8 +2,7 @@
 
 namespace MicroShop.Services.Products.ProductsApiApp.Models.DataTransferObjects;
 
-public sealed record class ProductDto(
-    [property: Required] int Id,
+public sealed record class AddOrEditProductDto(
     [property: Required, MaxLength(200)] string Name,
     [property: Required, Range(1, 1000)] double Price,
     [property: MaxLength(500)] string? Description,
@@ -12,10 +11,12 @@ public sealed record class ProductDto(
     [property: MaxLength(260)] string? ImageLocalPath,
     IFormFile? Image = null)
 {
-    public ProductDto(Product product)
-        : this(product.Id, product.Name, product.Price, product.Description, product.CategoryName, product.ImageUrl, product.ImageLocalPath)
+    public AddOrEditProductDto(Product product)
+        : this(product.Name, product.Price, product.Description, product.CategoryName, product.ImageUrl, product.ImageLocalPath)
     {
     }
 
-    public Product ToProduct() => new(Id, Name, Price, Description, CategoryName, ImageUrl, ImageLocalPath);
+    public Product ToProduct(int id) => new(id, Name, Price, Description, CategoryName, ImageUrl, ImageLocalPath);
+
+    public Product ToNewProduct() => new(0, Name, Price, Description, CategoryName, ImageUrl, ImageLocalPath);
 }

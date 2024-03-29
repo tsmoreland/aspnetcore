@@ -7,12 +7,10 @@ namespace MicroShop.Web.MvcApp.Controllers;
 
 public sealed class CouponController(ICouponService couponService) : Controller
 {
-    private readonly ICouponService _couponService = couponService;
-
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        ResponseDto<IEnumerable<CouponDto>>? response = await _couponService.GetCoupons();
+        ResponseDto<IEnumerable<CouponDto>>? response = await couponService.GetCoupons();
         if (response?.Success is not true || response?.Data is null)
         {
             TempData["error"] = response?.ErrorMessage;
@@ -37,32 +35,25 @@ public sealed class CouponController(ICouponService couponService) : Controller
             return View(coupon);
         }
 
-        ResponseDto<CouponDto>? response = await _couponService.AddCoupon(coupon);
+        ResponseDto<CouponDto>? response = await couponService.AddCoupon(coupon);
         if (response?.Success is true)
         {
             TempData["success"] = "Coupon Created Successfully";
             return RedirectToAction(nameof(Index));
         }
-        else
-        {
-            TempData["error"] = response?.ErrorMessage;
-        }
-
+        TempData["error"] = response?.ErrorMessage;
         return View(coupon);
     }
 
     [HttpGet]
     public async Task<IActionResult> Delete(int couponId)
     {
-        ResponseDto<CouponDto>? response = await _couponService.GetCouponById(couponId);
+        ResponseDto<CouponDto>? response = await couponService.GetCouponById(couponId);
         if (response is { Success: true, Data: not null })
         {
             return View(response.Data);
         }
-        else
-        {
-            TempData["error"] = response?.ErrorMessage;
-        }
+        TempData["error"] = response?.ErrorMessage;
 
         return NotFound();
     }
@@ -70,16 +61,13 @@ public sealed class CouponController(ICouponService couponService) : Controller
     [HttpPost]
     public async Task<IActionResult> Delete(CouponDto coupon)
     {
-        ResponseDto<CouponDto>? response = await _couponService.DeleteCoupon(coupon.Id);
+        ResponseDto<CouponDto>? response = await couponService.DeleteCoupon(coupon.Id);
         if (response?.Success is true)
         {
             TempData["success"] = "Coupon deleted successfully.";
             return RedirectToAction(nameof(Index));
         }
-        else
-        {
-            TempData["error"] = response?.ErrorMessage;
-        }
+        TempData["error"] = response?.ErrorMessage;
         return View(coupon);
     }
 }

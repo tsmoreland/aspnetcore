@@ -5,7 +5,7 @@ public sealed class Product
     private string _name;
     private string _categoryName;
 
-    public Product(int id, string name, double price, string? description, string categoryName, string? imageUrl)
+    public Product(int id, string name, double price, string? description, string categoryName, string? imageUrl, string? imageLocalPath)
     {
         Id = id;
         _name = name;
@@ -15,11 +15,13 @@ public sealed class Product
         Price = price;
         Description = description;
         ImageUrl = imageUrl;
+        ImageLocalPath = imageLocalPath;
     }
 
-    public Product(string name, double price, string? description, string categoryName, string? imageUrl)
-        : this(0, name, price, description, categoryName, imageUrl)
+    public Product(string name, double price, string? description, string categoryName, string? imageUrl, string? imageLocalPath)
+        : this(0, name, price, description, categoryName, imageUrl, imageLocalPath)
     {
+        ImageLocalPath = imageLocalPath;
     }
 
     public int Id { get; set; } 
@@ -30,6 +32,7 @@ public sealed class Product
     public string CategoryName { get => _categoryName; set => SetCategoryName(value); } 
     public string NormalizedCategoryName { get; private set; }
     public string? ImageUrl { get; set; } 
+    public string? ImageLocalPath { get; set; }
 
     private string SetName(string? value)
     {

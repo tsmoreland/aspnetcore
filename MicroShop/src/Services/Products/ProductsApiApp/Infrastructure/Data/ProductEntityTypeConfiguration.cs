@@ -41,6 +41,8 @@ public sealed class ProductEntityTypeConfiguration : IEntityTypeConfiguration<Pr
         builder.Property(p => p.ImageUrl)
             .HasMaxLength(200)
             .IsUnicode();
-
+        builder.Property(p => p.ImageLocalPath)
+            .HasMaxLength(260)
+            .IsUnicode();
     }
 }

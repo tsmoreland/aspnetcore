@@ -12,7 +12,7 @@ internal static class CouponApiRouteGroupBuilderExtensions
     public static RouteGroupBuilder MapCouponsApi(this RouteGroupBuilder builder)
     {
         return builder
-            .MapPost()
+            .MapAddCoupon()
             .MapGetAllCoupons()
             .MapGetCouponById()
             .MapGetCouponByCode()
@@ -21,7 +21,7 @@ internal static class CouponApiRouteGroupBuilderExtensions
             .WithTags("Coupons");
     }
 
-    private static RouteGroupBuilder MapPost(this RouteGroupBuilder builder)
+    private static RouteGroupBuilder MapAddCoupon(this RouteGroupBuilder builder)
     {
         builder
             .MapPost("/", async ([FromBody] AddOrEditCouponDto data, [FromServices] AppDbContext dbContext) =>
