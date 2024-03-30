@@ -45,6 +45,8 @@ public class ImageFileService<TFileSystem>(IHostEnvironment environment) : IImag
         {
             TFileSystem.FileDelete(path);
         }
+
+        return ValueTask.CompletedTask;
     }
 
     /// <inheritdoc />
@@ -95,9 +97,4 @@ public class ImageFileService<TFileSystem>(IHostEnvironment environment) : IImag
         }
 
     }
-}
-
-public sealed class ImageFileService(IHostEnvironment environment) : ImageFileService<FileSystem>(environment)
-{
-
 }

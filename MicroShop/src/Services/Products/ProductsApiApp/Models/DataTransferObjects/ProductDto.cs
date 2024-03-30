@@ -9,8 +9,7 @@ public sealed record class ProductDto(
     [property: MaxLength(500)] string? Description,
     [property: Required, MaxLength(200)] string CategoryName,
     [property: MaxLength(200)] string? ImageUrl,
-    [property: MaxLength(260)] string? ImageLocalPath,
-    IFormFile? Image = null)
+    [property: MaxLength(260)] string? ImageLocalPath)
 {
     public ProductDto(Product product)
         : this(product.Id, product.Name, product.Price, product.Description, product.CategoryName, product.ImageUrl, product.ImageLocalPath)
