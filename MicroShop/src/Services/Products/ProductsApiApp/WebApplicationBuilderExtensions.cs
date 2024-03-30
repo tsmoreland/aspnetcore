@@ -2,6 +2,8 @@
 using System.Text;
 using MicroShop.Services.Products.ProductsApiApp.Infrastructure.Data;
 using MicroShop.Services.Products.ProductsApiApp.Models;
+using MicroShop.Services.Products.ProductsApiApp.Services;
+using MicroShop.Services.Products.ProductsApiApp.Services.Contracts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
@@ -39,6 +41,8 @@ internal static class WebApplicationBuilderExtensions
 
         services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("AppConnection"), sqlOptions => sqlOptions.MigrationsAssembly(typeof(Product).Assembly.ToString())));
+
+        services.AddControllers();
 
         services
             .AddEndpointsApiExplorer()
@@ -101,6 +105,8 @@ internal static class WebApplicationBuilderExtensions
                 };
 
             });
+
+        services.AddScoped<IImageFileService, ImageFileService<FileSystem>>();
 
         return builder;
     }

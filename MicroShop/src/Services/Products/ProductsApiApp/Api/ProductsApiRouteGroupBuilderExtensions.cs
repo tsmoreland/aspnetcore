@@ -11,19 +11,23 @@ internal static class ProductsApiRouteGroupBuilderExtensions
 {
     public static RouteGroupBuilder MapProductsApi(this RouteGroupBuilder builder)
     {
+        // Map Add and Update aren't binding correctly at present, both would need [FromForm] for multi-part/form-data to handle the image
+        // but that isn't binding correctly due to missing FormDataConverter, as of yet I can see no way to add a custom one to handle it
         return builder
-            .MapAddProduct()
+            //.MapAddProduct()
             .MapGetAllProducts()
             .MapGetProductById()
-            .MapUpdateProduct()
+            //.MapUpdateProduct()
             .MapDeleteProduct()
-            .WithTags("Products");
+            .WithTags("Product");
     }
 
+#pragma warning disable IDE0051 // Remove unused private members
     private static RouteGroupBuilder MapAddProduct(this RouteGroupBuilder builder)
+#pragma warning restore IDE0051 // Remove unused private members
     {
         builder
-            .MapPost("/", async ([FromBody] AddOrEditProductDto data, [FromServices] AppDbContext dbContext) =>
+            .MapPost("/", async ([FromForm] AddOrEditProductDto data, [FromServices] AppDbContext dbContext) =>
             {
                 try
                 {
@@ -81,13 +85,15 @@ internal static class ProductsApiRouteGroupBuilderExtensions
         }
     }
 
+#pragma warning disable IDE0051 // Remove unused private members
     private static RouteGroupBuilder MapUpdateProduct(this RouteGroupBuilder builder)
+#pragma warning restore IDE0051 // Remove unused private members
     {
         builder
-            .MapPut("/{id:int}", async ([FromRoute] int id, [FromBody] AddOrEditProductDto data, [FromServices] AppDbContext dbContext) =>
+            .MapPut("/{id:int}", async ([FromRoute] int id, [FromForm] AddOrEditProductDto data, [FromServices] AppDbContext dbContext) =>
             {
                 try
-                {
+                {                  
                     Product product = data.ToProduct(id);
                     dbContext.Products.Update(product);
                     await dbContext.SaveChangesAsync();
@@ -125,7 +131,7 @@ internal static class ProductsApiRouteGroupBuilderExtensions
                     return Results.BadRequest(ResponseDto.Error<ProductDto>("One or more properties of the provided data are invalid"));
                 }
             })
-            .RequireAuthorization("ADMIN")
+            //.RequireAuthorization("ADMIN")
             .WithName("DeleteProduct")
             .WithOpenApi();
 
