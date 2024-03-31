@@ -131,7 +131,7 @@ internal static class ProductsApiRouteGroupBuilderExtensions
                     return Results.BadRequest(ResponseDto.Error<ProductDto>("One or more properties of the provided data are invalid"));
                 }
             })
-            //.RequireAuthorization("ADMIN")
+            .RequireAuthorization("ADMIN")
             .WithName("DeleteProduct")
             .WithOpenApi();
 

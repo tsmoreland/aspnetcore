@@ -4,6 +4,7 @@ using MicroShop.Services.Products.ProductsApiApp.Models;
 using MicroShop.Services.Products.ProductsApiApp.Models.DataTransferObjects;
 using MicroShop.Services.Products.ProductsApiApp.Services;
 using MicroShop.Services.Products.ProductsApiApp.Services.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MicroShop.Services.Products.ProductsApiApp.Controllers;
@@ -13,6 +14,7 @@ namespace MicroShop.Services.Products.ProductsApiApp.Controllers;
 public class ProductController(AppDbContext dbContext, IImageFileService fileService, ILogger<ProductController> logger) : ControllerBase
 {
     [HttpPost]
+    [Authorize("ADMIN")]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(typeof(ResponseDto<ProductDto>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ResponseDto<ProductDto>), StatusCodes.Status400BadRequest)]
@@ -45,6 +47,7 @@ public class ProductController(AppDbContext dbContext, IImageFileService fileSer
     }
 
     [HttpPut("{id}")]
+    [Authorize("ADMIN")]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(typeof(ResponseDto<ProductDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResponseDto<ProductDto>), StatusCodes.Status404NotFound)]
