@@ -59,20 +59,17 @@ internal static class WebApplicationBuilderExtensions
         {
             string couponApiUrl = configuration["ServiceUrls:CouponApi"] ?? throw new KeyNotFoundException("Missing entry in appsettings");
             httpClient.BaseAddress = new Uri(couponApiUrl);
-            httpClient.DefaultRequestHeaders.Add("Accept", MediaTypeNames.Application.Json);
         });
 
         services.AddHttpClient("AuthApi", httpClient =>
         {
             string authApiUrl = configuration["ServiceUrls:AuthApi"] ?? throw new KeyNotFoundException("Missing entry in appsettings");
             httpClient.BaseAddress = new Uri(authApiUrl);
-            httpClient.DefaultRequestHeaders.Add("Accept", MediaTypeNames.Application.Json);
         });
         services.AddHttpClient("ProductsApi", httpClient =>
         {
             string productsApiUrl = configuration["ServiceUrls:ProductsApi"] ?? throw new KeyNotFoundException("Missing entry in appsettings");
             httpClient.BaseAddress = new Uri(productsApiUrl);
-            httpClient.DefaultRequestHeaders.Add("Accept", MediaTypeNames.Application.Json);
         });
 
 
