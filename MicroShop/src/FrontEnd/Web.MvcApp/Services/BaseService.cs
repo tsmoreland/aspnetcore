@@ -12,45 +12,31 @@ public sealed class BaseService(IHttpClientFactory clientFactory, ITokenProvider
     private readonly IHttpClientFactory _clientFactory = clientFactory ?? throw new ArgumentNullException(nameof(clientFactory));
 
     /// <inheritdoc />
-    public async Task<ResponseDto<TResponse>?> SendAsync<TResponse>(string clientName, RequestDto request, bool includeAuthorization = true)
+    public async Task<ResponseDto<TResponse>?> SendAsync<TResponse>(string clientName, RequestDto request, SupportedContentType contentType = SupportedContentType.ApplicationJson, bool includeAuthorization = true)
     {
-        (HttpClient client, HttpRequestMessage message) = SetupRequest(clientName, request.ApiType, request.Url);
+        (HttpClient client, HttpRequestMessage message) = SetupRequest(clientName, request.ApiType, request.Url, includeAuthorization, contentType);
 
-        if (request.Data is not null)
-        {
-            // not very efficient, but it'll do for now
-            message.Content = new StringContent(JsonSerializer.Serialize(request.Data), Encoding.UTF8, MediaTypeNames.Application.Json);
-        }
+        message.Content = contentType.BuildHttpContent(request.Data);
         return await SendRequestAsync<TResponse>(client, message);
     }
 
     /// <inheritdoc />
-    public async Task<ResponseDto<TResponse>?> SendAsync<TRequest, TResponse>(string clientName, RequestDto<TRequest> request, bool includeAuthorization = true)
+    public async Task<ResponseDto<TResponse>?> SendAsync<TRequest, TResponse>(string clientName, RequestDto<TRequest> request, SupportedContentType contentType = SupportedContentType.ApplicationJson, bool includeAuthorization = true)
     {
-        (HttpClient client, HttpRequestMessage message) = SetupRequest(clientName, request.ApiType, request.Url);
-
-        if (request.Data is not null)
-        {
-            // not very efficient, but it'll do for now
-            message.Content = new StringContent(JsonSerializer.Serialize(request.Data), Encoding.UTF8, MediaTypeNames.Application.Json);
-        }
-
+        (HttpClient client, HttpRequestMessage message) = SetupRequest(clientName, request.ApiType, request.Url, includeAuthorization, contentType);
+        message.Content = contentType.BuildHttpContent(request.Data);
         return await SendRequestAsync<TResponse>(client, message);
     }
 
     /// <inheritdoc />
-    public Task<ResponseDto?> SendAsync(string clientName, RequestDto request, bool includeAuthorization = true)
+    public Task<ResponseDto?> SendAsync(string clientName, RequestDto request, SupportedContentType contentType = SupportedContentType.ApplicationJson, bool includeAuthorization = true)
     {
-        (HttpClient client, HttpRequestMessage message) = SetupRequest(clientName, request.ApiType, request.Url);
-        if (request.Data is not null)
-        {
-            // not very efficient, but it'll do for now
-            message.Content = new StringContent(JsonSerializer.Serialize(request.Data), Encoding.UTF8, MediaTypeNames.Application.Json);
-        }
+        (HttpClient client, HttpRequestMessage message) = SetupRequest(clientName, request.ApiType, request.Url, includeAuthorization, contentType);
+        message.Content = contentType.BuildHttpContent(request.Data);
         return SendRequestAsync(client, message);
     }
 
-    private (HttpClient Client, HttpRequestMessage Message) SetupRequest(string clientName, ApiType apiType, string url, bool includeAuthorization = true)
+    private (HttpClient Client, HttpRequestMessage Message) SetupRequest(string clientName, ApiType apiType, string url, bool includeAuthorization, SupportedContentType contentType)
     {
         HttpClient client = _clientFactory.CreateClient(clientName);
         HttpRequestMessage message = new()
@@ -68,6 +54,7 @@ public sealed class BaseService(IHttpClientFactory clientFactory, ITokenProvider
         {
             message.Headers.Add("Authorization", $"Bearer {token}");
         }
+        message.Headers.Add("Accept", contentType.ToAcceptMediaTypeName());
 
         return (client, message);
     }

@@ -40,6 +40,6 @@ public sealed class AuthService(IBaseService baseService) : IAuthService
 
     private Task<ResponseDto?> SendAsync(RequestDto data, bool includeAuthorization = false)
     {
-        return baseService.SendAsync(ClientName, data, includeAuthorization);
+        return baseService.SendAsync(ClientName, data, SupportedContentType.ApplicationJson, includeAuthorization);
     }
 }
