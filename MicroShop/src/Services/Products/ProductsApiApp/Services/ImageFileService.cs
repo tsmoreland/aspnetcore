@@ -96,6 +96,5 @@ public class ImageFileService<TFileSystem>(IHostEnvironment environment) : IImag
         {
             TFileSystem.FileDelete(path);
         }
-
     }
 }
