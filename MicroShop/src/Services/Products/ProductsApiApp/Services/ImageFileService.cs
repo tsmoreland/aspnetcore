@@ -26,6 +26,7 @@ public class ImageFileService<TFileSystem>(IHostEnvironment environment) : IImag
 
         await using Stream output = TFileSystem.OpenStream(path, FileMode.Create);
         await file.CopyToAsync(output);
+        product.ImageLocalPath = path;
     }
 
     /// <inheritdoc />
@@ -67,7 +68,7 @@ public class ImageFileService<TFileSystem>(IHostEnvironment environment) : IImag
     private string GenerateFilename(string providedFilename)
     {
         string extension = TFileSystem.GetExtension(providedFilename);
-        return Path.Combine(_contentRootPath, "Images", $"{Guid.NewGuid():N}.{extension}");
+        return Path.Combine(_contentRootPath, "Images", $"{Guid.NewGuid():N}{extension}");
     }
     private bool IsImageAllowed(string path)
     {
@@ -86,7 +87,7 @@ public class ImageFileService<TFileSystem>(IHostEnvironment environment) : IImag
     private static bool IsExtensionAllowed(string path)
     {
         string extension = TFileSystem.GetExtension(path).ToUpperInvariant();
-        return extension is "JPG" or "PNG";
+        return extension is ".JPG" or ".PNG";
     }
 
     private static void RemoveFileIfExists(string path)
