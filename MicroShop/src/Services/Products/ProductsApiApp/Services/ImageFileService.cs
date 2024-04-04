@@ -11,18 +11,17 @@ public class ImageFileService<TFileSystem>(IHostEnvironment environment) : IImag
     /// <inheritdoc />
     public async ValueTask AddImage(IFileStreamSource file, Product product, bool replaceExisting = true)
     {
-        string? path = product.ImageLocalPath;
-        if (path is not { Length: > 0 })
-        {
-            path = GenerateFilename(file.FileName);
-        }
+        string? originalPath = product.ImageLocalPath;
+        string path = product.ImageLocalPath is not { Length: > 0 }
+            ? GenerateFilename(file.FileName)
+            : GenerateFilename(TFileSystem.GetFileName(product.ImageLocalPath));
 
         if (!IsImageAllowed(path))
         {
             return;
         }
         EnsureImagesPathExist();
-        RemoveFileIfExists(path);
+        RemoveFileIfExists(originalPath);
 
         await using Stream output = TFileSystem.OpenStream(path, FileMode.Create);
         await file.CopyToAsync(output);
@@ -90,9 +89,9 @@ public class ImageFileService<TFileSystem>(IHostEnvironment environment) : IImag
         return extension is ".JPG" or ".PNG";
     }
 
-    private static void RemoveFileIfExists(string path)
+    private static void RemoveFileIfExists(string? path)
     {
-        if (TFileSystem.FileExists(path))
+        if (path is { Length: > 0 } && TFileSystem.FileExists(path))
         {
             TFileSystem.FileDelete(path);
         }

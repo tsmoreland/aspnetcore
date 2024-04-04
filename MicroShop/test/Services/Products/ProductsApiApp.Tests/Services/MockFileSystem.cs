@@ -1,6 +1,5 @@
 ﻿using System.Collections.Concurrent;
 using MicroShop.Services.Products.ProductsApiApp.Services.Contracts;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Moq;
 
 namespace MicroShop.Services.Products.ProductsApiApp.Tests.Services;
@@ -58,6 +57,9 @@ public sealed class MockFileSystem : IFileSystem
 
     /// <inheritdoc />
     public static string GetFullPath(string path) => Instance.GetFullPath(path);
+
+    /// <inheritdoc />
+    public static string? GetFileName(string? path) => Instance.GetFileName(path);
 }
 
 public interface IMockFileSystemInstance
@@ -75,4 +77,6 @@ public interface IMockFileSystemInstance
     public string GetExtension(string filename);
 
     public string GetFullPath(string path);
+
+    public string? GetFileName(string? path);
 }

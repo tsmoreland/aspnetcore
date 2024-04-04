@@ -1,4 +1,6 @@
-﻿namespace MicroShop.Services.Products.ProductsApiApp.Services.Contracts;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace MicroShop.Services.Products.ProductsApiApp.Services.Contracts;
 
 public interface IFileSystem
 {
@@ -20,4 +22,8 @@ public interface IFileSystem
 
     /// <inheritdoc cref="Path.GetFullPath(string)"/>
     static abstract string GetFullPath(string path);
+
+    /// <inheritdoc cref="Path.GetFileName(string?)"/>
+    [return: NotNullIfNotNull(nameof(path))]
+    static abstract string? GetFileName(string? path);
 }
