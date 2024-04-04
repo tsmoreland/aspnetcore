@@ -1,4 +1,5 @@
-﻿using MicroShop.Services.Products.ProductsApiApp.Services.Contracts;
+﻿using System.Diagnostics.CodeAnalysis;
+using MicroShop.Services.Products.ProductsApiApp.Services.Contracts;
 
 namespace MicroShop.Services.Products.ProductsApiApp.Services;
 
@@ -24,4 +25,8 @@ public sealed class FileSystem : IFileSystem
 
     /// <inheritdoc />
     public static string GetFullPath(string path) => Path.GetFullPath(path);
+
+    /// <inheritdoc />
+    [return: NotNullIfNotNull(nameof(path))]
+    public static string? GetFileName(string? path) => Path.GetFileName(path);
 }

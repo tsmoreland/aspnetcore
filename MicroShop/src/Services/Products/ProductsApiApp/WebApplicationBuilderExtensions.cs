@@ -1,10 +1,12 @@
 ﻿using System.Security.Authentication;
 using System.Text;
+using System.Threading.RateLimiting;
 using MicroShop.Services.Products.ProductsApiApp.Infrastructure.Data;
 using MicroShop.Services.Products.ProductsApiApp.Models;
 using MicroShop.Services.Products.ProductsApiApp.Services;
 using MicroShop.Services.Products.ProductsApiApp.Services.Contracts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -39,8 +41,23 @@ internal static class WebApplicationBuilderExtensions
                 .AddProblemDetails(static options => options.CustomizeProblemDetails = static ctx => ctx.ProblemDetails.Extensions.Clear());
         }
 
-        services.AddDbContext<AppDbContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("AppConnection"), sqlOptions => sqlOptions.MigrationsAssembly(typeof(Product).Assembly.ToString())));
+        services
+            .AddDbContextFactory<AppDbContext>(dbOptions =>
+                dbOptions.UseSqlServer(configuration.GetConnectionString("AppConnection"), sqlOptions => sqlOptions.MigrationsAssembly(typeof(Product).Assembly.ToString())));
+        services
+            .AddScoped(static provider => provider.GetRequiredService<IDbContextFactory<AppDbContext>>().CreateDbContext());
+
+        services
+            .AddOptions()
+            .AddMemoryCache()
+            .AddRateLimiter(static _ => _.AddFixedWindowLimiter(policyName: "fixedWindow",
+                options =>
+                {
+                    options.PermitLimit = 500;
+                    options.Window = TimeSpan.FromSeconds(1);
+                    options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+                    options.QueueLimit = 5;
+                }));
 
         services.AddControllers();
 
@@ -80,6 +97,7 @@ internal static class WebApplicationBuilderExtensions
             .Configure<BrotliCompressionProviderOptions>(static options => options.Level = System.IO.Compression.CompressionLevel.Optimal);
 
         services
+            .AddHostedService<DatabaseMigrationBackgroundService>()
             .AddAuthorization();
 
         services

@@ -10,6 +10,7 @@ internal static class WebApplicationExtensions
         app.UseSerilogRequestLogging();
         app.UseResponseCompression();
         app.UseExceptionHandler();
+        app.UseRateLimiter();
 
         if (app.Environment.IsDevelopment())
         {

@@ -24,17 +24,14 @@ try
         .Build()
         .ConfigurePipeline();
 
-    await ApplyMigrations(app.Services);
     app.Run();
 }
-catch (Exception ex) when (ex.GetType().Name is not "StopTheHostException" )
+catch (HostAbortedException) when (args is ["--applicationName", _])
 {
-    if (ex is HostAbortedException && args is ["--applicationName", _])
-    {
-        return; // exception during EF Migration
-    }
-
-    // https://github.com/dotnet/runtime/issues/60600 for StopTheHostException
+    // expected during EF Core Migration
+}
+catch (Exception ex) when (ex is not HostAbortedException)
+{
     Log.Fatal(ex, "Unhandled exception");
 }
 finally
@@ -43,15 +40,3 @@ finally
     Log.CloseAndFlush();
 }
 
-return;
-
-static async Task ApplyMigrations(IServiceProvider services)
-{
-    using IServiceScope scope = services.CreateScope();
-    AppDbContext dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    if ((await dbContext.Database.GetPendingMigrationsAsync()).Any())
-    {
-        await dbContext.Database.MigrateAsync();
-    }
-    await ValueTask.CompletedTask;
-}

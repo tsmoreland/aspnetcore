@@ -58,7 +58,6 @@ internal static class ProductsApiRouteGroupBuilderExtensions
                 Results.Ok(new ResponseDto<IEnumerable<ProductDto>>(await dbContext.Products.AsNoTracking()
                     .Select(c => new ProductDto(c))
                     .ToListAsync())))
-            .RequireAuthorization()
             .WithName("GetAllProducts")
             .WithOpenApi();
         return builder;
@@ -67,14 +66,13 @@ internal static class ProductsApiRouteGroupBuilderExtensions
     private static RouteGroupBuilder MapGetProductsByCategory(this RouteGroupBuilder builder)
     {
         builder
-            .MapGet("/{category}", Handler)
-            .RequireAuthorization()
+            .MapGet("/{catagory}", Handler)
             .WithName("GetProductsByCategory")
             .WithOpenApi();
 
         return builder;
 
-        async Task<Ok<ResponseDto<IEnumerable<ProductDto>>>> Handler([FromServices] AppDbContext dbContext, [FromRoute] string catagory)
+        async Task<Ok<ResponseDto<IEnumerable<ProductDto>>>> Handler([FromRoute] string catagory, [FromServices] AppDbContext dbContext)
         {
             string normalizedCatagory = catagory.ToUpperInvariant();
             IEnumerable<ProductDto> products = await dbContext.Products.AsNoTracking()
@@ -89,7 +87,6 @@ internal static class ProductsApiRouteGroupBuilderExtensions
     {
         builder
             .MapGet("/{id:int}", Handler)
-            .RequireAuthorization()
             .WithName("GetProductById")
             .WithOpenApi();
         return builder;
