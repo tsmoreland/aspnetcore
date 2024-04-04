@@ -1,4 +1,6 @@
-﻿namespace MicroShop.Web.MvcApp.Models;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace MicroShop.Web.MvcApp.Models;
 
 public record class ResponseDto(bool Success = true, string? ErrorMessage = null)
 {

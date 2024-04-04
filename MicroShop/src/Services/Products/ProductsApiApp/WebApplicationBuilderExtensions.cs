@@ -41,8 +41,11 @@ internal static class WebApplicationBuilderExtensions
                 .AddProblemDetails(static options => options.CustomizeProblemDetails = static ctx => ctx.ProblemDetails.Extensions.Clear());
         }
 
-        services.AddDbContext<AppDbContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("AppConnection"), sqlOptions => sqlOptions.MigrationsAssembly(typeof(Product).Assembly.ToString())));
+        services
+            .AddDbContextFactory<AppDbContext>(dbOptions =>
+                dbOptions.UseSqlServer(configuration.GetConnectionString("AppConnection"), sqlOptions => sqlOptions.MigrationsAssembly(typeof(Product).Assembly.ToString())));
+        services
+            .AddScoped(static provider => provider.GetRequiredService<IDbContextFactory<AppDbContext>>().CreateDbContext());
 
         services
             .AddOptions()
@@ -94,6 +97,7 @@ internal static class WebApplicationBuilderExtensions
             .Configure<BrotliCompressionProviderOptions>(static options => options.Level = System.IO.Compression.CompressionLevel.Optimal);
 
         services
+            .AddHostedService<DatabaseMigrationBackgroundService>()
             .AddAuthorization();
 
         services

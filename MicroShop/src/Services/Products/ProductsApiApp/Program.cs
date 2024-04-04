@@ -24,7 +24,6 @@ try
         .Build()
         .ConfigurePipeline();
 
-    await ApplyMigrations(app.Services);
     app.Run();
 }
 catch (HostAbortedException) when (args is ["--applicationName", _])
@@ -41,15 +40,3 @@ finally
     Log.CloseAndFlush();
 }
 
-return;
-
-static async Task ApplyMigrations(IServiceProvider services)
-{
-    using IServiceScope scope = services.CreateScope();
-    AppDbContext dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    if ((await dbContext.Database.GetPendingMigrationsAsync()).Any())
-    {
-        await dbContext.Database.MigrateAsync();
-    }
-    await ValueTask.CompletedTask;
-}
