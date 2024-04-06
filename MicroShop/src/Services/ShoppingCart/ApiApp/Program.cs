@@ -1,4 +1,4 @@
-using MicroShop.Services.Products.ProductsApiApp;
+using MicroShop.Services.ShoppingCart.ApiApp;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()

@@ -34,9 +34,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Services.Coupons.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Products", "Products", "{F10EF27E-E8A8-4372-9D05-490AFF17F2C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroShop.Services.Products.ProductsApiApp", "src\Services\Products\ProductsApiApp\MicroShop.Services.Products.ProductsApiApp.csproj", "{19B99108-7E3A-48C0-A1F8-039120152AEE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Services.Products.ProductsApiApp", "src\Services\Products\ProductsApiApp\MicroShop.Services.Products.ProductsApiApp.csproj", "{19B99108-7E3A-48C0-A1F8-039120152AEE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroShop.Services.Products.ProductsApiApp.Tests", "test\Services\Products\ProductsApiApp.Tests\MicroShop.Services.Products.ProductsApiApp.Tests.csproj", "{B202FC77-C1ED-49F3-BF9D-30AAD4E71AED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Services.Products.ProductsApiApp.Tests", "test\Services\Products\ProductsApiApp.Tests\MicroShop.Services.Products.ProductsApiApp.Tests.csproj", "{B202FC77-C1ED-49F3-BF9D-30AAD4E71AED}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ShoppingCart", "ShoppingCart", "{7933FA0A-8B05-44CE-8B8C-CF581260C5BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroShop.Services.ShoppingCart.ApiApp", "src\Services\ShoppingCart\ApiApp\MicroShop.Services.ShoppingCart.ApiApp.csproj", "{59B506F6-5010-411C-8B2D-29F7D0E9ED91}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroShop.Services.ShoppingCart.ApiApp.Tests", "test\Services\ShoppingCart\ApiApp.Tests\MicroShop.Services.ShoppingCart.ApiApp.Tests.csproj", "{D133B3EE-9401-47F9-9625-E6C7018C2A2C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -76,6 +82,14 @@ Global
 		{B202FC77-C1ED-49F3-BF9D-30AAD4E71AED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B202FC77-C1ED-49F3-BF9D-30AAD4E71AED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B202FC77-C1ED-49F3-BF9D-30AAD4E71AED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59B506F6-5010-411C-8B2D-29F7D0E9ED91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59B506F6-5010-411C-8B2D-29F7D0E9ED91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59B506F6-5010-411C-8B2D-29F7D0E9ED91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59B506F6-5010-411C-8B2D-29F7D0E9ED91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D133B3EE-9401-47F9-9625-E6C7018C2A2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D133B3EE-9401-47F9-9625-E6C7018C2A2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D133B3EE-9401-47F9-9625-E6C7018C2A2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D133B3EE-9401-47F9-9625-E6C7018C2A2C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -92,6 +106,9 @@ Global
 		{F10EF27E-E8A8-4372-9D05-490AFF17F2C3} = {D3911790-0739-4F98-B508-5228F0281946}
 		{19B99108-7E3A-48C0-A1F8-039120152AEE} = {F10EF27E-E8A8-4372-9D05-490AFF17F2C3}
 		{B202FC77-C1ED-49F3-BF9D-30AAD4E71AED} = {F10EF27E-E8A8-4372-9D05-490AFF17F2C3}
+		{7933FA0A-8B05-44CE-8B8C-CF581260C5BF} = {D3911790-0739-4F98-B508-5228F0281946}
+		{59B506F6-5010-411C-8B2D-29F7D0E9ED91} = {7933FA0A-8B05-44CE-8B8C-CF581260C5BF}
+		{D133B3EE-9401-47F9-9625-E6C7018C2A2C} = {7933FA0A-8B05-44CE-8B8C-CF581260C5BF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {037DE013-C257-46CE-BB74-5D52D8A5393F}
