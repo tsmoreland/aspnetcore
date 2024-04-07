@@ -11,4 +11,6 @@ public sealed record class ProductDto(
     [property: MaxLength(200)] string? ImageUrl,
     [property: MaxLength(260)] string? ImageLocalPath)
 {
+
+    public static ProductDto Empty(int id) => new(id, string.Empty, 0, null, string.Empty, null, null);
 }

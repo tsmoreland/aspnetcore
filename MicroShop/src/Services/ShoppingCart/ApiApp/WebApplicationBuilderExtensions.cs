@@ -3,6 +3,7 @@ using System.Text;
 using System.Threading.RateLimiting;
 using MicroShop.Services.ShoppingCart.ApiApp.Infrastructure.Data;
 using MicroShop.Services.ShoppingCart.ApiApp.Services;
+using MicroShop.Services.ShoppingCart.ApiApp.Services.Contracts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.AspNetCore.ResponseCompression;
@@ -94,6 +95,7 @@ internal static class WebApplicationBuilderExtensions
 
         services
             .AddHostedService<DatabaseMigrationBackgroundService>()
+            .AddScoped<ICartService, CartService>()
             .AddAuthorization();
 
         services
@@ -117,7 +119,6 @@ internal static class WebApplicationBuilderExtensions
                     ValidIssuer = issuer,
                     ValidAudience = audience,
                 };
-
             });
 
         return builder;

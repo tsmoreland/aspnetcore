@@ -1,4 +1,5 @@
-﻿using MicroShop.Services.ShoppingCart.ApiApp.Models.DataTransferObjects;
+﻿using System.Diagnostics.CodeAnalysis;
+using MicroShop.Services.ShoppingCart.ApiApp.Models.DataTransferObjects;
 
 namespace MicroShop.Services.ShoppingCart.ApiApp.Models;
 
@@ -6,6 +7,7 @@ public sealed class CartDetails(int id, int headerId, CartHeader header, int pro
 {
     private ProductDto _productDto = product;
 
+    [SetsRequiredMembers]
     public CartDetails(CartHeader header, ProductDto product)
         : this(0, header.Id, header, product.Id, product)
     {
@@ -14,10 +16,17 @@ public sealed class CartDetails(int id, int headerId, CartHeader header, int pro
     /// <summary>
     /// For EF Core
     /// </summary>
-#   pragma warning disable IDE0051 // Remove unused private members
-    private CartDetails(int id, int headerId, int productId)
-#   pragma warning restore IDE0051 // Remove unused private members
+    [SetsRequiredMembers]
+    internal CartDetails(int id, int headerId, int productId)
         : this(id, headerId, null!, productId, null!)
+    {
+    }
+    /// <summary>
+    /// For EF Core
+    /// </summary>
+    [SetsRequiredMembers]
+    internal CartDetails(int headerId, int productId)
+        : this(0, headerId, productId)
     {
     }
 
