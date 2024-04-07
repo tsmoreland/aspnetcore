@@ -18,6 +18,7 @@ internal static class ProductsApiRouteGroupBuilderExtensions
             .MapGetAllProducts()
             .MapGetProductById()
             .MapGetProductsByCategory()
+            .MapGetProductsInIds()
             //.MapUpdateProduct()
             .MapDeleteProduct()
             .WithTags("Product");
@@ -101,6 +102,29 @@ internal static class ProductsApiRouteGroupBuilderExtensions
             return dto is not null
                 ? TypedResults.Ok(ResponseDto.Ok(dto))
                 : TypedResults.NotFound(ResponseDto.Error<ProductDto>("Product matching id not found"));
+        }
+    }
+
+    private static RouteGroupBuilder MapGetProductsInIds(this RouteGroupBuilder builder)
+    {
+        builder
+            .MapPost("/in", Handler)
+            .WithName("GetProductsInIds")
+            .WithOpenApi();
+
+        return builder;
+
+        Results<Ok<IAsyncEnumerable<ProductDto>>, BadRequest<IAsyncEnumerable<ProductDto>>> Handler([FromServices] AppDbContext dbContext, [FromBody] IReadOnlyList<int> ids)
+        {
+            if (ids.Count == 0)
+            {
+                return TypedResults.BadRequest(AsyncEnumerable.Empty<ProductDto>());
+            }
+            IAsyncEnumerable<ProductDto> products = dbContext.Products
+                .Where(p => ids.Contains(p.Id))
+                .Select(p => new ProductDto(p))
+                .AsAsyncEnumerable();
+            return TypedResults.Ok(products);
         }
     }
 

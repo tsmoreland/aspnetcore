@@ -5,4 +5,5 @@ public sealed record class CartItemDto(
     int ProductId,
     string ProductName,
     double Price,
-    string? ImageUrl);
+    string? ImageUrl,
+    int Count);

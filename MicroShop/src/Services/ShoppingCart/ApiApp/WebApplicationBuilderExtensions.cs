@@ -96,6 +96,7 @@ internal static class WebApplicationBuilderExtensions
         services
             .AddHostedService<DatabaseMigrationBackgroundService>()
             .AddScoped<ICartService, CartService>()
+            .AddScoped<IProductService, ProductService>()
             .AddAuthorization();
 
         services
@@ -120,6 +121,12 @@ internal static class WebApplicationBuilderExtensions
                     ValidAudience = audience,
                 };
             });
+
+        services.AddHttpClient("ProductsApi", httpClient =>
+        {
+            string productsApiUrl = configuration["ServiceUrls:ProductsApi"] ?? throw new KeyNotFoundException("Missing entry in appsettings");
+            httpClient.BaseAddress = new Uri(productsApiUrl);
+        });
 
         return builder;
     }

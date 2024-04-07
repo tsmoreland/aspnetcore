@@ -19,8 +19,8 @@ internal static class DtoMapper
     }
 
     public static CartItemDto ToCartItem(this CartDetailsDto details) =>
-        new(details.Id, details.Product.Id, details.Product.Name, details.Product.Price, details.Product.ImageUrl);
+        new(details.Id, details.Product.Id, details.Product.Name, details.Product.Price, details.Product.ImageUrl, details.Count);
 
     public static CartItemDto ToCartItem(this CartDetails details) =>
-        new(details.Id, details.Product.Id, details.Product.Name, details.Product.Price, details.Product.ImageUrl);
+        new(details.Id, details.Product.Id, details.Product.Name, details.Product.Price, details.Product.ImageUrl, details.Count);
 }
