@@ -71,7 +71,10 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         switch (e.Key)
         {
             case System.Windows.Input.Key.Left:
-                UpdateTimer(TimeSpan.FromSeconds(PeriodValueInSeconds));
+                if (_periodicChangeIsChecked)
+                {
+                    UpdateTimer(TimeSpan.FromSeconds(PeriodValueInSeconds));
+                }
                 _messageChannel.NotifyNavigationBackward();
                 break;
             case System.Windows.Input.Key.Escape:
@@ -81,7 +84,10 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                 break;
             case System.Windows.Input.Key.Right:
             default:
-                UpdateTimer(TimeSpan.FromSeconds(PeriodValueInSeconds));
+                if (_periodicChangeIsChecked)
+                {
+                    UpdateTimer(TimeSpan.FromSeconds(PeriodValueInSeconds));
+                }
                 _messageChannel.NotifyNavigationForward();
                 break;
         }
