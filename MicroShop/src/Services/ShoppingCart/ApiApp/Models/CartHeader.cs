@@ -1,4 +1,6 @@
-﻿namespace MicroShop.Services.ShoppingCart.ApiApp.Models;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace MicroShop.Services.ShoppingCart.ApiApp.Models;
 
 public sealed class CartHeader(int id, string? userId, string? couponCode, double discount, double cartTotal)
 {
@@ -9,6 +11,7 @@ public sealed class CartHeader(int id, string? userId, string? couponCode, doubl
     {
     }
 
+    [SetsRequiredMembers]
     public CartHeader(string? userId, string? couponCode, double discount, double cartTotal)
         : this(0, userId, couponCode, discount, cartTotal)
     {

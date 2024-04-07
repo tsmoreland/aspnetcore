@@ -48,7 +48,7 @@ public sealed class AuthService(AppDbContext dbContext, UserManager<AppUser> use
     public async Task<ResponseDto<LoginResponseDto>> Login(string username, string password)
     {
         string normalizedUsername = username.ToUpperInvariant();
-        AppUser? user = await dbContext.ApplicationUsers.FirstOrDefaultAsync(e => e.NormalizedUserName == username);
+        AppUser? user = await dbContext.ApplicationUsers.FirstOrDefaultAsync(e => e.NormalizedUserName == normalizedUsername);
         if (user is null)
         {
             return ResponseDto.Error<LoginResponseDto>("user not found");
