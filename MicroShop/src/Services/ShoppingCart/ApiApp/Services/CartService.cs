@@ -36,6 +36,57 @@ public sealed class CartService(AppDbContext dbContext, ILogger<CartService> log
         }
     }
 
+    /// <inheritdoc />
+    public async Task<ResponseDto> RemoveFromCart(string userId, int cartDetailsId, CancellationToken cancellationToken = default)
+    {
+        int headerId = await dbContext.CartDetails
+            .AsNoTracking()
+            .Where(e => e.Id == cartDetailsId)
+            .Select(e => e.HeaderId).FirstOrDefaultAsync(cancellationToken);
+        int count = await dbContext.CartDetails
+            .Include(e => e.Header)
+            .Where(e => e.Id == cartDetailsId && e.Header.UserId == userId)
+            .ExecuteDeleteAsync(cancellationToken);
+
+        logger.LogInformation("Deleted {Count} one details entry of {CartDetailsId} for {UserId}", count, cartDetailsId, userId);
+
+        if (await dbContext.CartDetails.Include(e => e.Header)
+                .CountAsync(e => e.HeaderId == headerId && e.Header.UserId == userId, cancellationToken) != 0)
+        {
+            return ResponseDto.Ok();
+        }
+
+        count = await dbContext.CartHeaders
+            .Where(e => e.Id == headerId && e.UserId == userId)
+            .ExecuteDeleteAsync(cancellationToken);
+        logger.LogInformation("Deleted {Count} one cart {CartHeaderId} for {UserId}", count, headerId, userId);
+        return ResponseDto.Ok();
+    }
+
+    /// <inheritdoc />
+    public async Task<ResponseDto<CartSummaryDto>> GetByUserId(string userId, CancellationToken cancellationToken = default)
+    {
+        CartHeader? header = await dbContext.CartHeaders.AsNoTracking().FirstOrDefaultAsync(e => e.UserId == userId, cancellationToken);
+        if (header is null)
+        {
+            return ResponseDto.Error<CartSummaryDto>("No cart found for user");
+        }
+
+        List<CartItemDto> items = await dbContext.CartDetails.AsNoTracking()
+            .Include(e => e.Header)
+            .Where(e => e.Header.UserId == userId && e.HeaderId == header.Id)
+            .Select(e => new { e.Id, e.ProductId })
+            .AsAsyncEnumerable()
+            .Select(p => new CartItemDto(p.Id, p.ProductId, string.Empty, 0.0, null))
+            .ToListAsync(cancellationToken);
+
+        // TODO: using product api get price, name and image url
+
+        const double cartTotal = 0.0; // calculate from items
+        CartSummaryDto summary = new(header.Id, header.CouponCode, header.Discount, cartTotal, items); 
+        return ResponseDto.Ok(summary);
+    }
+
     private async Task<ResponseDto<CartSummaryDto>> UpdateCart(int cartHeaderId, string userId, UpsertCartDto item, CancellationToken cancellationToken)
     {
         CartDetails? existingItem = await dbContext.CartDetails.Include(e => e.Header)

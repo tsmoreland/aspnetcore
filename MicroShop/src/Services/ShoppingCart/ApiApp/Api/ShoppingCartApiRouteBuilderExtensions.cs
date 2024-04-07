@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Security.Claims;
 using MicroShop.Services.ShoppingCart.ApiApp.Models.DataTransferObjects;
 using MicroShop.Services.ShoppingCart.ApiApp.Models.DataTransferObjects.Request;
 using MicroShop.Services.ShoppingCart.ApiApp.Models.DataTransferObjects.Response;
@@ -15,9 +16,7 @@ internal static class ShoppingCartApiRouteBuilderExtensions
     {
         return builder
             .MapUpsertCart()
-            .MapGetCartById()
-            .MapGetAllCarts()
-            .MapUpdateCartById()
+            .MapGetCartByUserId()
             .MapDeleteCartById();
     }
 
@@ -32,9 +31,7 @@ internal static class ShoppingCartApiRouteBuilderExtensions
 
         static async Task<Results<Ok<ResponseDto<CartSummaryDto>>, BadRequest<ResponseDto<CartSummaryDto>>>> Handler([FromBody] UpsertCartDto model, [FromServices] HttpContext context, [FromServices] ICartService cartService)
         {
-            Claim? claim = context.User.Claims.FirstOrDefault(c => c.Subject?.Name == JwtRegisteredClaimNames.Sub);
-            string? userId = claim?.Value;
-            if (userId is null)
+            if (!TryGetUserIdFromHttpContext(context, out string? userId))
             {
                 return TypedResults.BadRequest(ResponseDto.Error<CartSummaryDto>("wrong error response but error is forbidden"));
             }
@@ -45,20 +42,58 @@ internal static class ShoppingCartApiRouteBuilderExtensions
                 : TypedResults.BadRequest(summary);
         }
     }
-    private static RouteGroupBuilder MapGetCartById(this RouteGroupBuilder builder)
+    private static RouteGroupBuilder MapGetCartByUserId(this RouteGroupBuilder builder)
     {
+        builder
+            .MapGet("/", Handler)
+            .RequireAuthorization()
+            .WithName("GetCartByUserId")
+            .WithOpenApi();
+
         return builder;
-    }
-    private static RouteGroupBuilder MapGetAllCarts(this RouteGroupBuilder builder)
-    {
-        return builder;
-    }
-    private static RouteGroupBuilder MapUpdateCartById(this RouteGroupBuilder builder)
-    {
-        return builder;
+
+        static async Task<Results<Ok<ResponseDto<CartSummaryDto>>, NotFound<ResponseDto<CartSummaryDto>>, BadRequest<ResponseDto<CartSummaryDto>>>>
+            Handler([FromServices] HttpContext context, [FromServices] ICartService cartService)
+        {
+            if (!TryGetUserIdFromHttpContext(context, out string? userId))
+            {
+                return TypedResults.NotFound(ResponseDto.Error<CartSummaryDto>("no cart found for current user"));
+            }
+
+            ResponseDto<CartSummaryDto> summary = await cartService.GetByUserId(userId);
+            return summary.Success
+                ? TypedResults.Ok(summary)
+                : TypedResults.NotFound(summary);
+        }
     }
     private static RouteGroupBuilder MapDeleteCartById(this RouteGroupBuilder builder)
     {
+        builder
+            .MapPost("/{id}", Handler)
+            .RequireAuthorization()
+            .WithName("DeleteFromCart")
+            .WithOpenApi();
+
         return builder;
+
+        static async Task<Results<NoContent, BadRequest<ResponseDto>>> Handler([FromRoute] int id, [FromServices] HttpContext context, [FromServices] ICartService cartService)
+        {
+            if (!TryGetUserIdFromHttpContext(context, out string? userId))
+            {
+                return TypedResults.BadRequest(ResponseDto.Error("wrong error response but error is forbidden"));
+            }
+
+            ResponseDto result = await cartService.RemoveFromCart(userId, id);
+            return result.Success
+                ? TypedResults.NoContent()
+                : TypedResults.BadRequest(result);
+        }
+    }
+
+    private static bool TryGetUserIdFromHttpContext(HttpContext context, [NotNullWhen(true)] out string? userId)
+    {
+        Claim? claim = context.User.Claims.FirstOrDefault(c => c.Subject?.Name == JwtRegisteredClaimNames.Sub);
+        userId = claim?.Value;
+        return userId is not null;
     }
 }
