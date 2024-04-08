@@ -98,6 +98,7 @@ internal static class WebApplicationBuilderExtensions
             .AddScoped<ICartService, CartService>()
             .AddScoped<IProductService, ProductService>()
             .AddScoped<ICouponService, CouponService>()
+            .AddScoped<ITokenProvider, TokenProvider>()
             .AddAuthorization();
 
         services

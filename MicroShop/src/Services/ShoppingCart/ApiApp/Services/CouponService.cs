@@ -3,7 +3,7 @@ using MicroShop.Services.ShoppingCart.ApiApp.Services.Contracts;
 
 namespace MicroShop.Services.ShoppingCart.ApiApp.Services;
 
-public sealed class CouponService(IHttpClientFactory clientFactory, ILogger<CouponService> logger) : ICouponService
+public sealed class CouponService(IHttpClientFactory clientFactory, ITokenProvider tokenProvider, ILogger<CouponService> logger) : ICouponService
 {
 
     /// <inheritdoc />
@@ -66,7 +66,12 @@ public sealed class CouponService(IHttpClientFactory clientFactory, ILogger<Coup
     private HttpClient CreateClient()
     {
         HttpClient client = clientFactory.CreateClient("CouponsApi");
-        // TODO: need to add authorize header
+        // could maybe make this a lazy variable, but not sure it's called enough for that to be of much benefit
+        string? authorizationHeaderValue = tokenProvider.GetBearerToken();
+        if (authorizationHeaderValue is { Length: > 0 })
+        {
+            client.DefaultRequestHeaders.Add("Authorization", authorizationHeaderValue);
+        }
         return client;
     }
 }
