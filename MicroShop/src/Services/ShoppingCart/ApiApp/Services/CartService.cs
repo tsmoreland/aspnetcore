@@ -84,6 +84,49 @@ public sealed class CartService(IProductService productService, AppDbContext dbC
         return ResponseDto.Ok(summary);
     }
 
+    /// <inheritdoc />
+    public async Task<ResponseDto> ApplyCoupon(string userId, int cartHeaderId, string? couponCode, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            CartHeader? header = await dbContext.CartHeaders.FirstOrDefaultAsync(e => e.UserId == userId && e.Id == cartHeaderId, cancellationToken);
+            if (header is null)
+            {
+                return ResponseDto.Error("Not Found");
+            }
+
+            header.CouponCode = couponCode;
+            await dbContext.SaveChangesAsync(cancellationToken);
+            return ResponseDto.Ok();
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "An unexpected error occurred: {ErrorMessage}", ex.Message);
+            return ResponseDto.Error(ex.Message);
+        }
+    }
+    /// <inheritdoc />
+    public async Task<ResponseDto> RemoveCoupon(string userId, int cartHeaderId, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            CartHeader? header = await dbContext.CartHeaders.FirstOrDefaultAsync(e => e.UserId == userId && e.Id == cartHeaderId, cancellationToken);
+            if (header is null)
+            {
+                return ResponseDto.Error("Not Found");
+            }
+
+            header.CouponCode = null;
+            await dbContext.SaveChangesAsync(cancellationToken);
+            return ResponseDto.Ok();
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "An unexpected error occurred: {ErrorMessage}", ex.Message);
+            return ResponseDto.Error(ex.Message);
+        }
+    }
+
     private async Task<ResponseDto<CartSummaryDto>> UpdateCart(CartHeader header, string userId, UpsertCartDto item, CancellationToken cancellationToken)
     {
         CartDetails? existingItem = await dbContext.CartDetails.Include(e => e.Header)
