@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 namespace MicroShop.Services.ShoppingCart.ApiApp.Services;
 
-public sealed class CartService(IProductService productService, AppDbContext dbContext, ILogger<CartService> logger) : ICartService
+public sealed class CartService(IProductService productService, ICouponService couponService, AppDbContext dbContext, ILogger<CartService> logger) : ICartService
 {
     /// <inheritdoc/>
     public async Task<ResponseDto<CartSummaryDto>> Upsert(string userId, UpsertCartDto item, CancellationToken cancellationToken = default)
@@ -79,7 +79,9 @@ public sealed class CartService(IProductService productService, AppDbContext dbC
 
         List<CartItemDto> items = await GetCartItemsByUserId(userId, header.Id).ToListAsync(cancellationToken).ConfigureAwait(false);
 
-        double cartTotal = await UpdateCartItemsAndCalculateCartTotal(items, cancellationToken);
+
+        double cartTotal = await UpdateHeaderAndCartTotal(await UpdateCartItemsAndCalculateCartTotal(items, cancellationToken), header, cancellationToken)
+            .ConfigureAwait(false); // TODO: trim some these, 1 is good to have but this seems excessive
         CartSummaryDto summary = new(header.Id, header.CouponCode, header.Discount, cartTotal, items); 
         return ResponseDto.Ok(summary);
     }
@@ -144,6 +146,7 @@ public sealed class CartService(IProductService productService, AppDbContext dbC
         }
         List<CartItemDto> items = await GetCartItemsByUserId(userId, header.Id).ToListAsync(cancellationToken).ConfigureAwait(false);
         double cartTotal = await UpdateCartItemsAndCalculateCartTotal(items, cancellationToken).ConfigureAwait(false);
+        cartTotal = await UpdateHeaderAndCartTotal(cartTotal, header, cancellationToken).ConfigureAwait(false); // TODO: trim some these, 1 is good to have but this seems excessive
 
         return ResponseDto.Ok(new CartSummaryDto(header.Id, header.CouponCode, header.Discount, cartTotal, items));
     }
@@ -164,6 +167,7 @@ public sealed class CartService(IProductService productService, AppDbContext dbC
 
         return ResponseDto.Ok(new CartSummaryDto(header.Id, header.CouponCode, header.Discount, 0.0, [details.ToCartItem()]));
     }
+    // ReSharper disable once SuggestBaseTypeForParameter -- better performance to leave as is
     private async Task<double> UpdateCartItemsAndCalculateCartTotal(List<CartItemDto> items, CancellationToken cancellationToken = default)
     {
         ReadOnlyDictionary<int, ProductDto> products = (await productService
@@ -189,6 +193,20 @@ public sealed class CartService(IProductService productService, AppDbContext dbC
         }
 
         return items.Sum(i => i.Count * i.Price);
+    }
+    private async Task<double> UpdateHeaderAndCartTotal(double cartTotal, CartHeader header, CancellationToken cancellationToken = default)
+    {
+        CouponDto? couponDto = header.CouponCode is { Length: > 0 }
+            ? await couponService.GetCouponByCode(header.CouponCode, cancellationToken)
+            : null;
+        couponDto ??= CouponDto.Empty();
+        if (!(cartTotal > couponDto.MinimumAmount))
+        {
+            return cartTotal;
+        }
+
+        header.Discount = couponDto.DiscountAmount;
+        return cartTotal - header.Discount;
     }
     private IAsyncEnumerable<CartItemDto> GetCartItemsByUserId(string userId, int headerId)
     {

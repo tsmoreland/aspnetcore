@@ -63,6 +63,10 @@ public sealed class CouponService(IHttpClientFactory clientFactory, ILogger<Coup
     }
 
 
-    private HttpClient CreateClient() =>
-        clientFactory.CreateClient("CouponsApi");
+    private HttpClient CreateClient()
+    {
+        HttpClient client = clientFactory.CreateClient("CouponsApi");
+        // TODO: need to add authorize header
+        return client;
+    }
 }
