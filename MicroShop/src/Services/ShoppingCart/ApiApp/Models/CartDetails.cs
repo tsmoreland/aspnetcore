@@ -33,7 +33,7 @@ public sealed class CartDetails(int id, int headerId, CartHeader header, int pro
     public required int Id { get; init; } = id;
     public required int HeaderId { get; init; } = headerId;
 
-    public required CartHeader Header { get; init; } = header;
+    public CartHeader Header { get; init; } = header;
 
     public int ProductId { get; private set; } = productId;
 

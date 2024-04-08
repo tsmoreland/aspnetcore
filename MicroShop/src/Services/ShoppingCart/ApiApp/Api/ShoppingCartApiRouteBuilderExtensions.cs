@@ -17,6 +17,8 @@ internal static class ShoppingCartApiRouteBuilderExtensions
         return builder
             .MapUpsertCart()
             .MapGetCartByUserId()
+            .MapApplyCoupon()
+            .MapRemoveCoupon()
             .MapDeleteCartById();
     }
 
@@ -66,6 +68,56 @@ internal static class ShoppingCartApiRouteBuilderExtensions
                 : TypedResults.NotFound(summary);
         }
     }
+    private static RouteGroupBuilder MapApplyCoupon(this RouteGroupBuilder builder)
+    {
+        builder
+            .MapPost("/{cartHeaderId}/coupon", Handler)
+            .WithName("ApplyCoupon")
+            .WithOpenApi();
+
+        return builder;
+
+        static async Task<Results<Ok<ResponseDto>, NotFound<ResponseDto>, BadRequest<ResponseDto>>>
+            Handler([FromRoute] int cartHeaderId, [FromBody] string couponCode, [FromServices] HttpContext context, [FromServices] ICartService cartService)
+        {
+            if (!TryGetUserIdFromHttpContext(context, out string? userId))
+            {
+                return TypedResults.NotFound<ResponseDto>(ResponseDto.Error<ResponseDto>("user not found"));
+            }
+            if (couponCode is not { Length: > 0 })
+            {
+                return TypedResults.BadRequest<ResponseDto>(ResponseDto.Error<ResponseDto>("invalid coupon code"));
+            }
+
+            ResponseDto result = await cartService.ApplyCoupon(userId, cartHeaderId, couponCode);
+            return result.Success
+                ? TypedResults.Ok(result)
+                : TypedResults.BadRequest(result);
+        }
+    }
+    private static RouteGroupBuilder MapRemoveCoupon(this RouteGroupBuilder builder)
+    {
+        builder
+            .MapDelete("/{cartHeaderId}/coupon", Handler)
+            .WithName("ApplyCoupon")
+            .WithOpenApi();
+        return builder;
+
+        static async Task<Results<Ok<ResponseDto>, NotFound<ResponseDto>, BadRequest<ResponseDto>>>
+            Handler([FromRoute] int cartHeaderId, [FromServices] HttpContext context, [FromServices] ICartService cartService)
+        {
+            if (!TryGetUserIdFromHttpContext(context, out string? userId))
+            {
+                return TypedResults.NotFound(ResponseDto.Error("user not found"));
+            }
+
+            ResponseDto result = await cartService.RemoveCoupon(userId, cartHeaderId);
+            return result.Success
+                ? TypedResults.Ok(result)
+                : TypedResults.BadRequest(result);
+        }
+    }
+
     private static RouteGroupBuilder MapDeleteCartById(this RouteGroupBuilder builder)
     {
         builder
