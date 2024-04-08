@@ -97,6 +97,7 @@ internal static class WebApplicationBuilderExtensions
             .AddHostedService<DatabaseMigrationBackgroundService>()
             .AddScoped<ICartService, CartService>()
             .AddScoped<IProductService, ProductService>()
+            .AddScoped<ICouponService, CouponService>()
             .AddAuthorization();
 
         services
