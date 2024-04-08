@@ -31,7 +31,7 @@ internal static class ShoppingCartApiRouteBuilderExtensions
             .WithOpenApi();
         return builder;
 
-        static async Task<Results<Ok<ResponseDto<CartSummaryDto>>, BadRequest<ResponseDto<CartSummaryDto>>>> Handler([FromBody] UpsertCartDto model, [FromServices] HttpContext context, [FromServices] ICartService cartService)
+        static async Task<Results<Created<ResponseDto<CartSummaryDto>>, BadRequest<ResponseDto<CartSummaryDto>>>> Handler([FromBody] UpsertCartDto model, [FromServices] HttpContext context, [FromServices] ICartService cartService)
         {
             if (!TryGetUserIdFromHttpContext(context, out string? userId))
             {
@@ -40,7 +40,7 @@ internal static class ShoppingCartApiRouteBuilderExtensions
 
             ResponseDto<CartSummaryDto> summary = await cartService.Upsert(userId, model);
             return summary.Success
-                ? TypedResults.Ok(summary)
+                ? TypedResults.Created("/api/cart", summary)
                 : TypedResults.BadRequest(summary);
         }
     }
