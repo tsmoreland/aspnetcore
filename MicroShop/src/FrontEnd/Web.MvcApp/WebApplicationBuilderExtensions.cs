@@ -1,5 +1,4 @@
-﻿using System.Net.Mime;
-using System.Security.Authentication;
+﻿using System.Security.Authentication;
 using MicroShop.Web.MvcApp.Services;
 using MicroShop.Web.MvcApp.Services.Contracts;
 using Microsoft.AspNetCore.Authentication.Cookies;

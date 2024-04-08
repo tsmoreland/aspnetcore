@@ -5,4 +5,10 @@ public sealed record CartSummaryDto(
     string? CouponCode,
     double Discount,
     double CartTotal,
-    IEnumerable<CartItemDto> Details);
+    IEnumerable<CartItemDto> Details)
+{
+    public static CartSummaryDto CreateNew() =>
+        new(0, null, 0.0, 0.0, []);
+
+    public bool IsNewCart => Id is 0;
+}
