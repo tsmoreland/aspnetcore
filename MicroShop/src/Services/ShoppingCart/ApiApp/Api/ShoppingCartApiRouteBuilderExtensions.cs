@@ -31,7 +31,7 @@ internal static class ShoppingCartApiRouteBuilderExtensions
             .WithOpenApi();
         return builder;
 
-        static async Task<Results<Created<ResponseDto<CartSummaryDto>>, BadRequest<ResponseDto<CartSummaryDto>>>> Handler([FromBody] UpsertCartDto model, [FromServices] HttpContext context, [FromServices] ICartService cartService)
+        static async Task<Results<Created<ResponseDto<CartSummaryDto>>, BadRequest<ResponseDto<CartSummaryDto>>>> Handler([FromBody] UpsertCartDto model, HttpContext context, [FromServices] ICartService cartService)
         {
             if (!TryGetUserIdFromHttpContext(context, out string? userId))
             {
@@ -55,7 +55,7 @@ internal static class ShoppingCartApiRouteBuilderExtensions
         return builder;
 
         static async Task<Results<Ok<ResponseDto<CartSummaryDto>>, NotFound<ResponseDto<CartSummaryDto>>, BadRequest<ResponseDto<CartSummaryDto>>>>
-            Handler([FromServices] HttpContext context, [FromServices] ICartService cartService)
+            Handler(HttpContext context, [FromServices] ICartService cartService)
         {
             if (!TryGetUserIdFromHttpContext(context, out string? userId))
             {
@@ -78,7 +78,7 @@ internal static class ShoppingCartApiRouteBuilderExtensions
         return builder;
 
         static async Task<Results<Ok<ResponseDto>, NotFound<ResponseDto>, BadRequest<ResponseDto>>>
-            Handler([FromRoute] int cartHeaderId, [FromBody] string couponCode, [FromServices] HttpContext context, [FromServices] ICartService cartService)
+            Handler([FromRoute] int cartHeaderId, [FromBody] string couponCode, HttpContext context, [FromServices] ICartService cartService)
         {
             if (!TryGetUserIdFromHttpContext(context, out string? userId))
             {
@@ -99,12 +99,12 @@ internal static class ShoppingCartApiRouteBuilderExtensions
     {
         builder
             .MapDelete("/{cartHeaderId}/coupon", Handler)
-            .WithName("ApplyCoupon")
+            .WithName("RemoveCoupon")
             .WithOpenApi();
         return builder;
 
         static async Task<Results<Ok<ResponseDto>, NotFound<ResponseDto>, BadRequest<ResponseDto>>>
-            Handler([FromRoute] int cartHeaderId, [FromServices] HttpContext context, [FromServices] ICartService cartService)
+            Handler([FromRoute] int cartHeaderId, HttpContext context, [FromServices] ICartService cartService)
         {
             if (!TryGetUserIdFromHttpContext(context, out string? userId))
             {
@@ -128,7 +128,7 @@ internal static class ShoppingCartApiRouteBuilderExtensions
 
         return builder;
 
-        static async Task<Results<NoContent, BadRequest<ResponseDto>>> Handler([FromRoute] int id, [FromServices] HttpContext context, [FromServices] ICartService cartService)
+        static async Task<Results<NoContent, BadRequest<ResponseDto>>> Handler([FromRoute] int id, HttpContext context, [FromServices] ICartService cartService)
         {
             if (!TryGetUserIdFromHttpContext(context, out string? userId))
             {

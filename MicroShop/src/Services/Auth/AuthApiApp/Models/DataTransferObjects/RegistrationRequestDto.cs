@@ -4,7 +4,7 @@ namespace MicroShop.Services.Auth.AuthApiApp.Models.DataTransferObjects;
 
 public sealed record class RegistrationRequestDto(
     [property: EmailAddress] string Email,
-    [property: MinLength(2), MaxLength(10)] string Name,
+    [property: MinLength(2), MaxLength(200)] string Name,
     [property: Phone] string PhoneNumber,
     [property: MinLength(12)] string Password,
     string ConfirmPassword) : IValidatableObject
@@ -13,10 +13,10 @@ public sealed record class RegistrationRequestDto(
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
         List<ValidationResult> results = [];
-        Validator.TryValidateProperty(Email, validationContext, results);
-        Validator.TryValidateProperty(Name, validationContext, results);
-        Validator.TryValidateProperty(PhoneNumber, validationContext, results);
-        Validator.TryValidateProperty(Password, validationContext, results);
+        Validator.TryValidateProperty(Email, ContextForProperty(nameof(Email)), results);
+        Validator.TryValidateProperty(Name, ContextForProperty(nameof(Name)), results);
+        Validator.TryValidateProperty(PhoneNumber, ContextForProperty(nameof(PhoneNumber)), results);
+        Validator.TryValidateProperty(Password, ContextForProperty(nameof(Password)), results);
 
         if (Password != ConfirmPassword)
         {
@@ -24,5 +24,8 @@ public sealed record class RegistrationRequestDto(
         }
 
         return results;
+
+        ValidationContext ContextForProperty(string propertyName) =>
+            new(this, null, null) { MemberName = propertyName };
     }
 }
