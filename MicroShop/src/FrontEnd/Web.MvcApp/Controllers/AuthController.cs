@@ -24,7 +24,7 @@ public sealed class AuthController(IAuthService authService, ITokenProvider toke
     public async Task<IActionResult> Login(LoginRequestDto model)
     {
         const string errorMessage = "Unable to login username or password is incorrect";
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
             model.Password = string.Empty;
             return View(model);
@@ -55,7 +55,7 @@ public sealed class AuthController(IAuthService authService, ITokenProvider toke
     [HttpPost]
     public async Task<IActionResult> Register(RegistrationRequestDto model)
     {
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
             await SetRolelist(ViewBag);
             return View(model);
@@ -72,7 +72,6 @@ public sealed class AuthController(IAuthService authService, ITokenProvider toke
         ResponseDto? assignResponse = await authService.AssignRole(new ChangeRoleDto(model.Email, model.Role ?? string.Empty)); // let auth service handle empty string
         if (response is { Success: true })
         {
-            ModelState.AddModelError(string.Empty, "Registration Successful");
             return RedirectToAction(nameof(Login));
         }
         else

@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using MicroShop.Web.MvcApp.Models;
+using MicroShop.Web.MvcApp.Models.Cart;
 using MicroShop.Web.MvcApp.Models.Products;
 using MicroShop.Web.MvcApp.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
@@ -7,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MicroShop.Web.MvcApp.Controllers;
 
-public class HomeController(IProductService productService, ILogger<HomeController> logger) : Controller
+public class HomeController(IProductService productService, ICartService cartService, ILogger<HomeController> logger) : Controller
 {
     public async Task<IActionResult> Index()
     {
@@ -24,12 +25,32 @@ public class HomeController(IProductService productService, ILogger<HomeControll
         }
     }
 
+    [HttpGet]
     [Authorize]
+    public async Task<IActionResult> ProductDetails([FromQuery] int productId)
+    {
+        ResponseDto<ProductDto>? response = await productService.GetProductById(productId);
+        if (response is not { Success: true, Data: not null })
+        {
+            return NotFound();
+        }
+        return View(response.Data.ToAddToCart(1));
+    }
+
+    [Authorize("ADMIN")]
     [HttpPost]
     [ActionName("ProductDetails")]
-    public IActionResult ProductDetails(ProductDto productDto)
+    public async Task<IActionResult> ProductDetails(AddToCartDto addToCart)
     {
-        return View(productDto);
+        ResponseDto<CartSummaryDto>? response = await cartService.Upsert(addToCart.ToUpsert(1));
+        if (response is not { Success: true, Data: not null })
+        {
+            TempData["error"] = "Error occurred attempting to add item to cart, please try again";
+            return View(addToCart);
+        }
+
+        TempData["success"] = "Item has been added to the cart";
+        return RedirectToAction(nameof(Index));
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
