@@ -35,4 +35,6 @@ public sealed class ProductDto(int id, string name, double price, string? descri
 
     [FileExtensions(Extensions = "jpg,png")]
     public IFormFile? Image { get; set; }
+
+    public static ProductDto Empty() => new();
 }

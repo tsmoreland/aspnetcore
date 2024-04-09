@@ -37,7 +37,7 @@ public class HomeController(IProductService productService, ICartService cartSer
         return View(response.Data.ToAddToCart(1));
     }
 
-    [Authorize("ADMIN")]
+    [Authorize]
     [HttpPost]
     [ActionName("ProductDetails")]
     public async Task<IActionResult> ProductDetails(AddToCartDto addToCart)

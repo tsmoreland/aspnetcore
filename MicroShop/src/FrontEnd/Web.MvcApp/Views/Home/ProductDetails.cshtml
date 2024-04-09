@@ -1,29 +1,29 @@
 ﻿@model MicroShop.Web.MvcApp.Models.Cart.AddToCartDto
 
 <form method="post">
-    <input asp-for="Product.Id" hidden />
+    <input asp-for="ProductId" hidden />
     <div class=" pt-4">
         <div class="card container" style="border:1px solid #808080;">
             <div class="card-header bg-dark text-light row" style="border-radius: 0px;">
                 <div class="col-12 col-md-6">
-                    <h1 class="text-white">@Model.Product.Name</h1>
+                    <h1 class="text-white">@Model.ProductName</h1>
                 </div>
                 <div class="col-12 col-md-6 text-end">
-                    <h1 class="text-warning"> @($"{Model.Product.Price:c}")</h1>
+                    <h1 class="text-warning"> @($"{Model.ProductPrice:c}")</h1>
                 </div>
             </div>
             <div class="card-body">
                 <div class="container rounded p-2">
                     <div class="row">
                         <div class="col-12 col-lg-4 p-1 text-center">
-                            <img src="@Model.Product.ImageUrl" alt="@Model.Product.Description" style="border-radius:35px;" width="100%" class="rounded" />
+                            <img src="@Model.ProductImageUrl" alt="@Model.ProductDescription" style="border-radius:35px;" width="100%" class="rounded" />
                         </div>
                         <div class="col-12 col-lg-8">
                             <div class="row pl-3">
 
                                 <div class="col-12">
-                                    <span class="badge bg-primary text-success p-3 border">@Model.Product.CategoryName</span>
-                                    <p class="text-secondary pt-3">@Html.Raw(Model.Product.Description)</p>
+                                    <span class="badge bg-primary text-success p-3 border">@Model.CatagoryName</span>
+                                    <p class="text-secondary pt-3">@Html.Raw(Model.ProductDescription)</p>
                                 </div>
                             </div>
                             <div class="row mx-0">

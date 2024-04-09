@@ -11,9 +11,9 @@ internal static class Mapper
         new (headerId, product.Id, count);
 
     public static AddToCartDto ToAddToCart(this ProductDto product, int count) =>
-        new(product, count);
+        new(product.Id, product.Name, product.Description, product.CategoryName, product.Price, product.ImageUrl, count);
     public static UpsertCartDto ToUpsert(this AddToCartDto addToCartItem) =>
-        new (null, addToCartItem.Product.Id, addToCartItem.Count);
+        new (null, addToCartItem.ProductId, addToCartItem.Count);
     public static UpsertCartDto ToUpsert(this AddToCartDto addToCartItem, int headerId) =>
-        new (headerId, addToCartItem.Product.Id, addToCartItem.Count);
+        new (headerId, addToCartItem.ProductId, addToCartItem.Count);
 }
