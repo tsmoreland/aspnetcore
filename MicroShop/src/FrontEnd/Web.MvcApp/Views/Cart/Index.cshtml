@@ -1,0 +1,111 @@
+﻿@model MicroShop.Web.MvcApp.Models.Cart.CartSummaryDto
+
+@if(Model.Details.Any())
+{
+    <form method="post" asp-action="EmailCart">
+        <br />
+        <input asp-for="Id" hidden />
+        <div class="">
+            <div class="card border mt-4 container">
+                <div class="card-header bg-dark text-light ml-0 row ">
+                    <div class="col-6">
+                        <h3 class="text-success"><i class="bi bi-cart"></i> &nbsp; Shopping Cart</h3>
+                    </div>
+                    <div class="col-6 text-end">
+                        <a asp-action="Index" asp-controller="Home" class="btn btn-outline-warning mt-2 btn-sm">Continue Shopping</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class=" d-none d-lg-block">
+                        <div class="row text-info">
+                            <div class="col-lg-2">
+                            </div>
+                            <div class="col-lg-5">
+                                Product Details
+                            </div>
+                            <div class="col-lg-2">
+                                Price
+                            </div>
+                            <div class="col-lg-2">
+                                Count
+                            </div>
+                            <div class="col-lg-1">
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+
+                    @foreach(var item in Model.Details){
+                    <div class="row h-100">
+                        <div class="col-4 col-md-2 text-center py-2">
+                            @if (item.ImageUrl is not null)
+                            {
+                                <img src="@item.ImageUrl" alt="@Html.Raw(item.ProductDescription)" class="rounded" width="100%" />
+                            }
+                            else
+                            {
+                                @* Place Holder Image 64x64 *@
+                                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAAXNSR0IArs4c6QAABA5JREFUeF7tm79L+0AUwJ+buAjdOriok6PUoV0cFAUnUZBCEcRBWxE3RRw6WCiim4N2aouOorsIjjpUwT9AuhR/TKKLuPnl3ZfLN72mzSX37pI23yzaNn25z+e9e0karu/h4eE3FotBf38/RGn7+fmBj48P6KvX67/4z+joKAwODkbCwdfXFzw/PwMmvu/19fV3YGCAvREFCRweWb+/v/8KiMfjYP+gVytBZHx7e/snAGu/lyU4sbUI6FUJ7RLrKKDXJHSq6rYCekWC25TuKKDbJbjBI5+rgG6VIAMvLaDbJMjCexLQLRK8wHsWEHYJXuF9CQirBD/wvgWETYJfeCUBYZGgAq8sIGgJqvAkAoKSQAFPJsC0BCp4UgGmJFDCkwvQLYEaXosAXRJ0wGsTQC1BF7xWAVQSdMJrF6AqQTe8EQF+JZiANybAqwRT8EYFyEowCW9cgJsE0/CBCGgnIQj4wASIEvB1UM8lpX4VxgHq2HjWMXZQD2X/CxAfjurItFNM+5yP3BRwaniRaYKdQIOQYLQHyADK7EM5TY0J8ALmZV9VGUYE+AHy8x0/MrQLUAFR+a6sDK0CKAAoYnSSoU0A5cApY4kytAjQMWAdMbXcDOkaqNuttOyc11oBOuH5wKmPQTYFqAfWKaOUxyIRQDkg2VKmOqayAKqByILb96M4tpIAigH4AaeU4FtAGOApGqMvAWGCV5XgWUAY4VUkeBJABX91dQWLi4ts3BMTE3B5eQlDQ0NN7QCPtbKyAqlUCra3t11bhT3m2NgYXFxcAP4V+4UYU1oAFfz9/T0sLy/D4eEhLCwswNHREdzd3UG1Wm1ar4Tv7+zssP3cBIgxC4UC3N7ewtnZWZNYp5hSAqjgMRs4iHq9Dqenp22z2mg0YHV1FT4/P2FpaclVgFNMccztYroKoISXLetcLsdKH8uaTwF87/Hx0Zou+BlWCIo8OTlxnCr2se/u7rbEdL0ZooTnNzM4B2dmZqBSqUCtVmvpAVjOCFQsFmFra6sJDCXgtre3x3oIQk1NTbFe0S4mMqCs6+trVn1iTKNLZngFvLy8WJlEqPf3d9YDcNvc3ISNjQ3WwMSGhWWM4Cgum82y7MvEXF9fh9nZWZienpYTQJ15+2lKhMKMY1aOj4/Z6o2bm5smMPEsgFnEDs/PHE7TyinmwcEBPD09sSqYnJy0+orxZXOY8eHhYWsAONh8Pg/lcpmVfalUammOPNscDHdIJBJWI1WJ2SRAV+btRDgfMRs8g3xei2cFMbP21+l02uoBeCr1EjOTycDIyAjs7++z064lwOTSWftFy/z8fMs1gL1h4hRYW1tj/QA3fr3AzwLn5+eQTCaZBH5x5RZzfHwc5ubm2BNptnQ28ouno758/g/ddMYAkbq21AAAAABJRU5ErkJggg=="
+                                     alt="@Html.Raw(item.ProductDescription)" class="rounded" width="100%" />
+                            }
+                        </div>
+                        <div class="col-8 col-md-5">
+                            <h5>@item.ProductName</h5>
+                            <div style="font-size:11px;">@Html.Raw(item.ProductDescription)</div>
+                        </div>
+                        <div class="col-3 col-md-2 pt-md-4" style="font-size:11px;">
+                                <span style="font-size:17px;">@($"{item.Price:c}") </span>
+                        </div>
+                        <div class="col-3 col-md-2 pt-md-4" style="font-size:11px;">
+                            <span style="font-size:17px;"> @item.Count</span>
+                        </div>
+                        <div class="col-2 col-lg-1 p-0 pt-lg-4 text-center">
+                            <a asp-action="Remove" asp-route-cartDetailsId="@item.Id" class="btn btn-sm btn-danger">
+                                <i class="bi bi-trash-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                    }
+                    <hr />
+                    <div class="row">
+                        <div class="col-6">
+                            @if (string.IsNullOrEmpty(Model.CouponCode))
+                            {
+                                <span>Coupon:</span>
+                                <input asp-for="CouponCode" />
+                                <button type="submit" asp-action="ApplyCoupon" class="btn btn-sm btn-success"> Apply </button>
+                            }
+                            else
+                            {
+                                <span>Coupon:</span>
+                                <input asp-for="CouponCode" disabled/>
+                                <button type="submit" asp-action="RemoveCoupon" class="btn btn-sm btn-success"> Remove </button>
+                            }
+                        </div>
+                        <div class="col-6 text-end">
+                            <span class="text-danger" style="font-size:21px;">  Order Total : @($"{Model.CartTotal:c}") <br /></span>
+                            @if (Model.Discount > 0)
+                            {
+                                <span class="text-success"> Order Discount : @($"{Model.Discount:c}") </span>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer row">
+                    <div class="col-6 col-md-3 ">
+                        <button type="submit" class="btn btn-outline-danger form-control">Email Cart</button>
+                    </div>
+                    <div class="col-6 col-md-3 offset-md-6">
+                        <a asp-action="Checkout" class="btn btn-success form-control">Looks Good? </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+}
+else
+{
+    <div>
+        <p>Please add items to cart.</p>
+    </div>
+}

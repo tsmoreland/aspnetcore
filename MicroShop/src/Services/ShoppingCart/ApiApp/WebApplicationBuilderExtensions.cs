@@ -102,6 +102,7 @@ internal static class WebApplicationBuilderExtensions
             .AddAuthorization();
 
         services
+            .AddHttpContextAccessor()
             .AddAuthentication(static options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

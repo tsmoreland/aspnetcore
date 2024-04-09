@@ -79,7 +79,6 @@ public sealed class CartService(IProductService productService, ICouponService c
 
         List<CartItemDto> items = await GetCartItemsByUserId(userId, header.Id).ToListAsync(cancellationToken).ConfigureAwait(false);
 
-
         double cartTotal = await UpdateHeaderAndCartTotal(await UpdateCartItemsAndCalculateCartTotal(items, cancellationToken), header, cancellationToken)
             .ConfigureAwait(false); // TODO: trim some these, 1 is good to have but this seems excessive
         CartSummaryDto summary = new(header.Id, header.CouponCode, header.Discount, cartTotal, items); 
@@ -184,7 +183,7 @@ public sealed class CartService(IProductService productService, ICouponService c
                 missing.Add(items[i]);
                 continue;
             }
-            items[i] = items[i] with { ProductName = product.Name, Price = product.Price, ImageUrl = product.ImageUrl };
+            items[i] = items[i] with { ProductName = product.Name, Price = product.Price, ProductDescription = product.Description, ImageUrl = product.ImageUrl };
         }
         foreach (CartItemDto item in missing)
         {
@@ -215,7 +214,7 @@ public sealed class CartService(IProductService productService, ICouponService c
             .Where(e => e.Header.UserId == userId && e.HeaderId == headerId)
             .Select(e => new { e.Id, e.ProductId, e.Count })
             .AsAsyncEnumerable()
-            .Select(p => new CartItemDto(p.Id, p.ProductId, string.Empty, 0.0, null, p.Count));
+            .Select(p => new CartItemDto(p.Id, p.ProductId, string.Empty, null, 0.0, null, p.Count));
     }
 
 }

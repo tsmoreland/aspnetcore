@@ -1,4 +1,4 @@
-﻿namespace MicroShop.Services.ShoppingCart.ApiApp.Models.DataTransferObjects.Response;
+﻿namespace MicroShop.Web.MvcApp.Models.Cart;
 
 public sealed record class CartItemDto(
     int Id,

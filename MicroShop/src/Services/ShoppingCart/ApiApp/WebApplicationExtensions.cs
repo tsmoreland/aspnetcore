@@ -23,7 +23,6 @@ internal static class WebApplicationExtensions
         app.UseRouting();
         app.UseAuthorization();
 
-        app.MapControllers();
         app.MapGroup("/api/cart").MapShoppingCartApi();
 
         return app;
