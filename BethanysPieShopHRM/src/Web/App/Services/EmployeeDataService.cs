@@ -30,7 +30,7 @@ public sealed class EmployeeDataService : IEmployeeDataService
                 DateTime expiration = await _localStorage.GetItemAsync<DateTime>(LocalStorageContants.EmployeesListExpirationKey);
                 if (expiration > DateTime.UtcNow && await _localStorage.ContainKeyAsync(LocalStorageContants.EmployeesListKey))
                 {
-                    return await _localStorage.GetItemAsync<List<Employee>>(LocalStorageContants.EmployeesListKey);
+                    return await _localStorage.GetItemAsync<List<Employee>>(LocalStorageContants.EmployeesListKey) ?? [];
                 }
             }
         }
