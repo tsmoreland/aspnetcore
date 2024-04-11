@@ -3,22 +3,16 @@ using BethanysPieShopHRM.Shared.Domain;
 
 namespace BethanysPieShopHRM.Web.App.Services;
 
-public sealed class CountryDataService : ICountryDataService
+public sealed class CountryDataService(HttpClient httpClient) : ICountryDataService
 {
-    private readonly HttpClient _httpClient;
-    private readonly JsonSerializerOptions _caseSensitiveOptions;
-
-    public CountryDataService(HttpClient httpClient)
-    {
-        _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
-        _caseSensitiveOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-    }
+    private readonly HttpClient _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+    private readonly JsonSerializerOptions _caseSensitiveOptions = new() { PropertyNameCaseInsensitive = true };
 
     /// <inheritdoc />
     public async Task<IEnumerable<Country>> GetAllCountries()
     {
         Stream response = await _httpClient.GetStreamAsync("api/country");
-        List<Country> countries = (await JsonSerializer.DeserializeAsync<IEnumerable<Country>>(response, _caseSensitiveOptions) ?? Array.Empty<Country>()).ToList();
+        List<Country> countries = (await JsonSerializer.DeserializeAsync<IEnumerable<Country>>(response, _caseSensitiveOptions) ?? []).ToList();
         return countries;
     }
 

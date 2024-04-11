@@ -6,18 +6,11 @@ using Blazored.LocalStorage;
 
 namespace BethanysPieShopHRM.Web.App.Services;
 
-public sealed class EmployeeDataService : IEmployeeDataService
+public sealed class EmployeeDataService(HttpClient httpClient, ILocalStorageService localStorage) : IEmployeeDataService
 {
-    private readonly HttpClient _httpClient;
-    private readonly ILocalStorageService _localStorage;
-    private readonly JsonSerializerOptions _caseSensitiveOptions;
-
-    public EmployeeDataService(HttpClient httpClient, ILocalStorageService localStorage)
-    {
-        _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
-        _localStorage = localStorage ?? throw new ArgumentNullException(nameof(localStorage));
-        _caseSensitiveOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-    }
+    private readonly HttpClient _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+    private readonly ILocalStorageService _localStorage = localStorage ?? throw new ArgumentNullException(nameof(localStorage));
+    private readonly JsonSerializerOptions _caseSensitiveOptions = new() { PropertyNameCaseInsensitive = true };
 
     /// <inheritdoc />
     public async Task<IEnumerable<Employee>> GetAllEmployees(bool refreshRequired = false)
@@ -36,7 +29,7 @@ public sealed class EmployeeDataService : IEmployeeDataService
         }
 
         Stream response = await _httpClient.GetStreamAsync("api/employee");
-        List<Employee> employees = (await JsonSerializer.DeserializeAsync<IEnumerable<Employee>>(response, _caseSensitiveOptions) ?? Array.Empty<Employee>()).ToList();
+        List<Employee> employees = (await JsonSerializer.DeserializeAsync<IEnumerable<Employee>>(response, _caseSensitiveOptions) ?? []).ToList();
 
         await _localStorage.SetItemAsync(LocalStorageContants.EmployeesListKey, employees);
         await _localStorage.SetItemAsync(LocalStorageContants.EmployeesListExpirationKey, DateTime.UtcNow.AddMinutes(1));
