@@ -8,22 +8,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BethanysPieShop.MVC.App.Controllers;
 
-public sealed class CategoryController : Controller
+public sealed class CategoryController(ICategoryRepository repository, ILogger<CategoryController> logger) : Controller
 {
-    private readonly ICategoryRepository _repository;
-    private readonly ILogger<CategoryController> _logger;
-
-    /// <inheritdoc />
-    public CategoryController(ICategoryRepository repository, ILogger<CategoryController> logger)
-    {
-        _repository = repository;
-        _logger = logger;
-    }
-
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        ListViewModel model = new(await _repository.GetSummaries(CategoriesOrder.Name, false).ToListAsync());
+        ListViewModel model = new(await repository.GetSummaries(CategoriesOrder.Name, false).ToListAsync());
         return View(model);
     }
 
@@ -33,7 +23,7 @@ public sealed class CategoryController : Controller
         const int pageSize = 10;
         pageNumber ??= 1;
 
-        Page<CategorySummary> page = await _repository.GetSummaryPage(new PageRequest<CategoriesOrder>(pageNumber.Value, pageSize, CategoriesOrder.Name, false), default);
+        Page<CategorySummary> page = await repository.GetSummaryPage(new PageRequest<CategoriesOrder>(pageNumber.Value, pageSize, CategoriesOrder.Name, false), default);
         return View(page);
     }
 
@@ -47,7 +37,7 @@ public sealed class CategoryController : Controller
         ViewData["SortDirection"] = !descending;
 
         CategoriesOrder orderBy = CategoriesOrderFactory.FromString(sortBy);
-        Page<CategorySummary> page = await _repository.GetSummaryPage(new PageRequest<CategoriesOrder>(pageNumber.Value, pageSize, orderBy, descending), default);
+        Page<CategorySummary> page = await repository.GetSummaryPage(new PageRequest<CategoriesOrder>(pageNumber.Value, pageSize, orderBy, descending), default);
         return View(page);
     }
 
@@ -55,7 +45,7 @@ public sealed class CategoryController : Controller
     [HttpGet]
     public async Task<IActionResult> Details(Guid id)
     {
-        Category? model = await _repository.FindById(id, default);
+        Category? model = await repository.FindById(id, default);
         return View(model);
     }
 
@@ -77,8 +67,8 @@ public sealed class CategoryController : Controller
         try
         {
             Category category = new(model.Name, model.Description) { DateAdded = model.DateAdded };
-            await _repository.Add(category, default);
-            await _repository.SaveChanges(default);
+            await repository.Add(category, default);
+            await repository.SaveChanges(default);
             return RedirectToAction(nameof(Index));
         }
         catch (FluentValidation.ValidationException ex)
@@ -90,7 +80,7 @@ public sealed class CategoryController : Controller
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "An error occurred adding category");
+            logger.LogError(ex, "An error occurred adding category");
             ModelState.AddModelError("", "Error occurred adding the category");
         }
 
@@ -100,7 +90,7 @@ public sealed class CategoryController : Controller
     [HttpGet]
     public async Task<IActionResult> Edit([FromRoute] Guid id)
     {
-        Category category = await _repository.FindById(id, default) ?? throw new ArgumentException("The category to update cannot be found");
+        Category category = await repository.FindById(id, default) ?? throw new ArgumentException("The category to update cannot be found");
         return View(new EditViewModel {Id = category.Id, Name = category.Name, Description = category.Description});
     }
 
@@ -111,8 +101,8 @@ public sealed class CategoryController : Controller
         {
             if (ModelState.IsValid)
             {
-                await _repository.Update(model.Id, model.Name, model.Description);
-                await _repository.SaveChanges(default);
+                await repository.Update(model.Id, model.Name, model.Description);
+                await repository.SaveChanges(default);
                 return RedirectToAction(nameof(Index));
             }
             return BadRequest();
@@ -126,7 +116,7 @@ public sealed class CategoryController : Controller
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "An error occurred adding category");
+            logger.LogError(ex, "An error occurred adding category");
             ModelState.AddModelError("", "Error occurred adding the category");
         }
         return View(model);
@@ -135,7 +125,7 @@ public sealed class CategoryController : Controller
     [HttpGet]
     public async Task<IActionResult> Delete(Guid id)
     {
-        Category? category = await _repository.FindById(id, default);
+        Category? category = await repository.FindById(id, default);
         return View(category);
     }
 
@@ -148,7 +138,7 @@ public sealed class CategoryController : Controller
             return View();
         }
 
-        Category? category = await _repository.FindById(id.Value, default);
+        Category? category = await repository.FindById(id.Value, default);
         if (category is null)
         {
             ViewData["ErrorMessage"] = "Deleting the category failed, invalid ID!";
@@ -156,8 +146,8 @@ public sealed class CategoryController : Controller
         }
         try
         {
-            await _repository.Delete(id.Value, default);
-            await _repository.SaveChanges(default);
+            await repository.Delete(id.Value, default);
+            await repository.SaveChanges(default);
             TempData["CategoryDeleted"] = "Category deleted successfully";
             return RedirectToAction(nameof(Index));
         }
@@ -166,6 +156,6 @@ public sealed class CategoryController : Controller
             ViewData["ErrorMessage"] = $"Deleting the category failed, please try again! Error: {ex.Message}";
         }
 
-        return View(await _repository.FindById(id.Value, default));
+        return View(await repository.FindById(id.Value, default));
     }
 }
