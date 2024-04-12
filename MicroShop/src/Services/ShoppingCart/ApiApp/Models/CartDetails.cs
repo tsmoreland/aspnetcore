@@ -3,13 +3,13 @@ using MicroShop.Services.ShoppingCart.ApiApp.Models.DataTransferObjects;
 
 namespace MicroShop.Services.ShoppingCart.ApiApp.Models;
 
-public sealed class CartDetails(int id, int headerId, CartHeader header, int productId, ProductDto product)
+public sealed class CartDetails(int id, int headerId, CartHeader header, int productId, ProductDto product, int count)
 {
     private ProductDto _productDto = product;
 
     [SetsRequiredMembers]
-    public CartDetails(CartHeader header, ProductDto product)
-        : this(0, header.Id, header, product.Id, product)
+    public CartDetails(CartHeader header, ProductDto product, int count)
+        : this(0, header.Id, header, product.Id, product, count)
     {
     }
 
@@ -17,16 +17,16 @@ public sealed class CartDetails(int id, int headerId, CartHeader header, int pro
     /// For EF Core
     /// </summary>
     [SetsRequiredMembers]
-    internal CartDetails(int id, int headerId, int productId)
-        : this(id, headerId, null!, productId, null!)
+    internal CartDetails(int id, int headerId, int productId, int count)
+        : this(id, headerId, null!, productId, null!, count)
     {
     }
     /// <summary>
     /// For EF Core
     /// </summary>
     [SetsRequiredMembers]
-    internal CartDetails(int headerId, int productId)
-        : this(0, headerId, productId)
+    internal CartDetails(int headerId, int productId, int count)
+        : this(0, headerId, productId, count)
     {
     }
 
@@ -47,5 +47,5 @@ public sealed class CartDetails(int id, int headerId, CartHeader header, int pro
         }
     }
 
-    public int Count { get; set; }
+    public int Count { get; set; } = count;
 }
