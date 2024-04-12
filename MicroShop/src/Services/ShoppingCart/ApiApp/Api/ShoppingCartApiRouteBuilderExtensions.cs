@@ -1,12 +1,13 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using MicroShop.Services.ShoppingCart.ApiApp.Models.DataTransferObjects;
 using MicroShop.Services.ShoppingCart.ApiApp.Models.DataTransferObjects.Request;
 using MicroShop.Services.ShoppingCart.ApiApp.Models.DataTransferObjects.Response;
 using MicroShop.Services.ShoppingCart.ApiApp.Services.Contracts;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace MicroShop.Services.ShoppingCart.ApiApp.Api;
 
@@ -33,6 +34,11 @@ internal static class ShoppingCartApiRouteBuilderExtensions
 
         static async Task<Results<Created<ResponseDto<CartSummaryDto>>, BadRequest<ResponseDto<CartSummaryDto>>>> Handler([FromBody] UpsertCartDto model, HttpContext context, [FromServices] ICartService cartService)
         {
+            string? token = await context.GetTokenAsync("access_token");
+            if (token is not null)
+            {
+            }
+
             if (!TryGetUserIdFromHttpContext(context, out string? userId))
             {
                 return TypedResults.BadRequest(ResponseDto.Error<CartSummaryDto>("wrong error response but error is forbidden"));
@@ -144,7 +150,8 @@ internal static class ShoppingCartApiRouteBuilderExtensions
 
     private static bool TryGetUserIdFromHttpContext(HttpContext context, [NotNullWhen(true)] out string? userId)
     {
-        Claim? claim = context.User.Claims.FirstOrDefault(c => c.Subject?.Name == JwtRegisteredClaimNames.Sub);
+        const string nameIdentiferClaim = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier";
+        Claim? claim = context.User.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub) ?? context.User.Claims.FirstOrDefault(c => c.Type == nameIdentiferClaim);
         userId = claim?.Value;
         return userId is not null;
     }

@@ -10,7 +10,7 @@ public sealed class ProductService(IHttpClientFactory clientFactory, ILogger<Pro
     /// <inheritdoc />
     public async IAsyncEnumerable<ProductDto> GetProductsInIds(IEnumerable<int> ids, [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        IEnumerable<ProductDto> products;
+        IAsyncEnumerable<ProductDto>? collection = null;
         try
         {
             ReadOnlyCollection<int> idCollection = ids.ToList().AsReadOnly();
@@ -26,13 +26,12 @@ public sealed class ProductService(IHttpClientFactory clientFactory, ILogger<Pro
                 yield break;
             }
 
-            ResponseDto<IEnumerable<ProductDto>>? responseData = await response.Content.ReadFromJsonAsync<ResponseDto<IEnumerable<ProductDto>>>(cancellationToken);
-            if (responseData is not { Success: true, Data: not null })
+            collection = await response.Content.ReadFromJsonAsync<IAsyncEnumerable<ProductDto>>(cancellationToken);
+            if (collection is null)
             {
-                logger.LogError("API responded with successful status but unsuccessful result: {ErrorMessage}", responseData?.ErrorMessage ?? "Unknown Error");
+                logger.LogError("API responded with empty collection");
                 yield break;
             }
-            products = responseData.Data;
         }
         catch (Exception ex)
         {
@@ -41,13 +40,13 @@ public sealed class ProductService(IHttpClientFactory clientFactory, ILogger<Pro
 
         }
 
-        foreach (ProductDto productDto in products)
+        await foreach (ProductDto product in collection)
         {
             if (cancellationToken.IsCancellationRequested)
             {
                 yield break;
             }
-            yield return productDto;
+            yield return product;
         }
     }
 

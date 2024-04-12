@@ -17,9 +17,7 @@ public sealed class CartService(IProductService productService, ICouponService c
     {
         try
         {
-            CartHeader? header = item.HeaderId is not null
-                ? await dbContext.CartHeaders.AsNoTracking().FirstOrDefaultAsync(e => e.Id == item.HeaderId && e.UserId == userId, default).ConfigureAwait(false)
-                : null;
+            CartHeader? header = await dbContext.CartHeaders.AsNoTracking().FirstOrDefaultAsync(e => e.UserId == userId, default).ConfigureAwait(false);
             if (header is null)
             {
                 return await CreateCart(userId, item, cancellationToken);
@@ -134,7 +132,7 @@ public sealed class CartService(IProductService productService, ICouponService c
             .FirstOrDefaultAsync(e => e.ProductId == item.ProductId && e.Header.UserId == userId, cancellationToken).ConfigureAwait(false);
         if (existingItem is null)
         {
-            CartDetails details = new(header.Id, item.ProductId);
+            CartDetails details = new(header.Id, item.ProductId, item.Count);
             dbContext.CartDetails.Add(details);
             await dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
@@ -160,8 +158,10 @@ public sealed class CartService(IProductService productService, ICouponService c
         await dbContext.SaveChangesAsync(cancellationToken);
 
         // save header first because we want the id, may need to remove transaction for this
-        CartDetails details = new(header, ProductDto.Empty(item.ProductId));
+        CartDetails details = new(header, ProductDto.Empty(item.ProductId), item.Count);
         dbContext.CartDetails.Add(details);
+        await dbContext.SaveChangesAsync(cancellationToken);
+
         await transaction.CommitAsync(cancellationToken);
 
         return ResponseDto.Ok(new CartSummaryDto(header.Id, header.CouponCode, header.Discount, 0.0, [details.ToCartItem()]));

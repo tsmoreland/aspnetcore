@@ -3,22 +3,16 @@ using BethanysPieShopHRM.Shared.Domain;
 
 namespace BethanysPieShopHRM.Web.App.Services;
 
-public sealed class JobCategoryDataService : IJobCategoryDataService
+public sealed class JobCategoryDataService(HttpClient httpClient) : IJobCategoryDataService
 {
-    private readonly HttpClient _httpClient;
-    private readonly JsonSerializerOptions _caseSensitiveOptions;
-
-    public JobCategoryDataService(HttpClient httpClient)
-    {
-        _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
-        _caseSensitiveOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-    }
+    private readonly HttpClient _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+    private readonly JsonSerializerOptions _caseSensitiveOptions = new() { PropertyNameCaseInsensitive = true };
 
     /// <inheritdoc />
     public async Task<IEnumerable<JobCategory>> GetAllJobCatagories()
     {
         Stream response = await _httpClient.GetStreamAsync("api/jobcategory");
-        List<JobCategory> catagories = (await JsonSerializer.DeserializeAsync<IEnumerable<JobCategory>>(response, _caseSensitiveOptions) ?? Array.Empty<JobCategory>()).ToList();
+        List<JobCategory> catagories = (await JsonSerializer.DeserializeAsync<IEnumerable<JobCategory>>(response, _caseSensitiveOptions) ?? []).ToList();
         return catagories;
     }
 

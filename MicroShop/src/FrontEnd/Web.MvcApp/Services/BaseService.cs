@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Net.Http.Headers;
 using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
@@ -52,7 +53,7 @@ public sealed class BaseService(IHttpClientFactory clientFactory, ITokenProvider
         };
         if (includeAuthorization && tokenProvider.GetToken() is {} token)
         {
-            message.Headers.Add("Authorization", $"Bearer {token}");
+            message.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
         message.Headers.Add("Accept", contentType.ToAcceptMediaTypeName());
 

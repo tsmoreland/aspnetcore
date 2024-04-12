@@ -1,6 +1,6 @@
 ﻿<!DOCTYPE html>
 
-<html>
+<html lang="en">
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Bethany&#039s Pie Shop</title>
@@ -29,7 +29,7 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
 
-                    <div class="collapsne navbar-collapse" id="navbarCollapse">
+                    <div class="collapse navbar-collapse" id="navbarCollapse">
                         <ul class="nav navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" data-bs-toggle="dropdown" id="nav-dropdown" aria-expanded="false">Pies</a>
@@ -38,10 +38,10 @@
                                         <a asp-controller="Pie" asp-action="Index" class="dropdown-item">View all</a>
                                     </li>
                                     <li>
-                                        <a asp-controller="Pie" asp-action="IndexPaging" class="dropdown-item">View all paged</a>
+                                        <a asp-controller="Pie" asp-action="Paged" class="dropdown-item">View all paged</a>
                                     </li>
                                     <li>
-                                        <a asp-controller="Pie" asp-action="IndexPagingSorting" class="dropdown-item">View all paged and sorted</a>
+                                        <a asp-controller="Pie" asp-action="PagedAndSorted" class="dropdown-item">View all paged and sorted</a>
                                     </li>
                                     <li>
                                         <a asp-controller="Pie" asp-action="Search" class="dropdown-item">Search pies</a>
@@ -57,19 +57,23 @@
                                     <li>
                                         <a asp-controller="Category" asp-action="Index" class="dropdown-item">View all</a>
                                     </li>
+                                @*
                                     <li>
                                         <a asp-controller="Category" asp-action="BulkEdit" class="dropdown-item">Bulk edit</a>
                                     </li>
+                                    *@
                                 </ul>
                             </li>
 
+                                @*
                             <li class="nav-item">
                                 <a asp-controller="Order" asp-action="Index" class="nav-link">
                                     Orders
                                 </a>
                             </li>
+                                *@
                         </ul>
-                        
+
                     </div>
                 </div>
             </nav>

@@ -35,36 +35,37 @@
                     </div>
                     <hr />
 
-                    @foreach(var item in Model.Details){
-                    <div class="row h-100">
-                        <div class="col-4 col-md-2 text-center py-2">
-                            @if (item.ImageUrl is not null)
-                            {
-                                <img src="@item.ImageUrl" alt="@Html.Raw(item.ProductDescription)" class="rounded" width="100%" />
-                            }
-                            else
-                            {
-                                @* Place Holder Image 64x64 *@
-                                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAAXNSR0IArs4c6QAABA5JREFUeF7tm79L+0AUwJ+buAjdOriok6PUoV0cFAUnUZBCEcRBWxE3RRw6WCiim4N2aouOorsIjjpUwT9AuhR/TKKLuPnl3ZfLN72mzSX37pI23yzaNn25z+e9e0karu/h4eE3FotBf38/RGn7+fmBj48P6KvX67/4z+joKAwODkbCwdfXFzw/PwMmvu/19fV3YGCAvREFCRweWb+/v/8KiMfjYP+gVytBZHx7e/snAGu/lyU4sbUI6FUJ7RLrKKDXJHSq6rYCekWC25TuKKDbJbjBI5+rgG6VIAMvLaDbJMjCexLQLRK8wHsWEHYJXuF9CQirBD/wvgWETYJfeCUBYZGgAq8sIGgJqvAkAoKSQAFPJsC0BCp4UgGmJFDCkwvQLYEaXosAXRJ0wGsTQC1BF7xWAVQSdMJrF6AqQTe8EQF+JZiANybAqwRT8EYFyEowCW9cgJsE0/CBCGgnIQj4wASIEvB1UM8lpX4VxgHq2HjWMXZQD2X/CxAfjurItFNM+5yP3BRwaniRaYKdQIOQYLQHyADK7EM5TY0J8ALmZV9VGUYE+AHy8x0/MrQLUAFR+a6sDK0CKAAoYnSSoU0A5cApY4kytAjQMWAdMbXcDOkaqNuttOyc11oBOuH5wKmPQTYFqAfWKaOUxyIRQDkg2VKmOqayAKqByILb96M4tpIAigH4AaeU4FtAGOApGqMvAWGCV5XgWUAY4VUkeBJABX91dQWLi4ts3BMTE3B5eQlDQ0NN7QCPtbKyAqlUCra3t11bhT3m2NgYXFxcAP4V+4UYU1oAFfz9/T0sLy/D4eEhLCwswNHREdzd3UG1Wm1ar4Tv7+zssP3cBIgxC4UC3N7ewtnZWZNYp5hSAqjgMRs4iHq9Dqenp22z2mg0YHV1FT4/P2FpaclVgFNMccztYroKoISXLetcLsdKH8uaTwF87/Hx0Zou+BlWCIo8OTlxnCr2se/u7rbEdL0ZooTnNzM4B2dmZqBSqUCtVmvpAVjOCFQsFmFra6sJDCXgtre3x3oIQk1NTbFe0S4mMqCs6+trVn1iTKNLZngFvLy8WJlEqPf3d9YDcNvc3ISNjQ3WwMSGhWWM4Cgum82y7MvEXF9fh9nZWZienpYTQJ15+2lKhMKMY1aOj4/Z6o2bm5smMPEsgFnEDs/PHE7TyinmwcEBPD09sSqYnJy0+orxZXOY8eHhYWsAONh8Pg/lcpmVfalUammOPNscDHdIJBJWI1WJ2SRAV+btRDgfMRs8g3xei2cFMbP21+l02uoBeCr1EjOTycDIyAjs7++z064lwOTSWftFy/z8fMs1gL1h4hRYW1tj/QA3fr3AzwLn5+eQTCaZBH5x5RZzfHwc5ubm2BNptnQ28ouno758/g/ddMYAkbq21AAAAABJRU5ErkJggg=="
-                                     alt="@Html.Raw(item.ProductDescription)" class="rounded" width="100%" />
-                            }
+                    @foreach(var item in Model.Details)
+                    {
+                        <div class="row h-100">
+                            <div class="col-4 col-md-2 text-center py-2">
+                                @if (item.ImageUrl is not null)
+                                {
+                                    <img src="@item.ImageUrl" alt="@Html.Raw(item.ProductDescription)" class="rounded" width="100%" />
+                                }
+                                else
+                                {
+                                    @* Place Holder Image 64x64 *@
+                                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAAXNSR0IArs4c6QAABA5JREFUeF7tm79L+0AUwJ+buAjdOriok6PUoV0cFAUnUZBCEcRBWxE3RRw6WCiim4N2aouOorsIjjpUwT9AuhR/TKKLuPnl3ZfLN72mzSX37pI23yzaNn25z+e9e0karu/h4eE3FotBf38/RGn7+fmBj48P6KvX67/4z+joKAwODkbCwdfXFzw/PwMmvu/19fV3YGCAvREFCRweWb+/v/8KiMfjYP+gVytBZHx7e/snAGu/lyU4sbUI6FUJ7RLrKKDXJHSq6rYCekWC25TuKKDbJbjBI5+rgG6VIAMvLaDbJMjCexLQLRK8wHsWEHYJXuF9CQirBD/wvgWETYJfeCUBYZGgAq8sIGgJqvAkAoKSQAFPJsC0BCp4UgGmJFDCkwvQLYEaXosAXRJ0wGsTQC1BF7xWAVQSdMJrF6AqQTe8EQF+JZiANybAqwRT8EYFyEowCW9cgJsE0/CBCGgnIQj4wASIEvB1UM8lpX4VxgHq2HjWMXZQD2X/CxAfjurItFNM+5yP3BRwaniRaYKdQIOQYLQHyADK7EM5TY0J8ALmZV9VGUYE+AHy8x0/MrQLUAFR+a6sDK0CKAAoYnSSoU0A5cApY4kytAjQMWAdMbXcDOkaqNuttOyc11oBOuH5wKmPQTYFqAfWKaOUxyIRQDkg2VKmOqayAKqByILb96M4tpIAigH4AaeU4FtAGOApGqMvAWGCV5XgWUAY4VUkeBJABX91dQWLi4ts3BMTE3B5eQlDQ0NN7QCPtbKyAqlUCra3t11bhT3m2NgYXFxcAP4V+4UYU1oAFfz9/T0sLy/D4eEhLCwswNHREdzd3UG1Wm1ar4Tv7+zssP3cBIgxC4UC3N7ewtnZWZNYp5hSAqjgMRs4iHq9Dqenp22z2mg0YHV1FT4/P2FpaclVgFNMccztYroKoISXLetcLsdKH8uaTwF87/Hx0Zou+BlWCIo8OTlxnCr2se/u7rbEdL0ZooTnNzM4B2dmZqBSqUCtVmvpAVjOCFQsFmFra6sJDCXgtre3x3oIQk1NTbFe0S4mMqCs6+trVn1iTKNLZngFvLy8WJlEqPf3d9YDcNvc3ISNjQ3WwMSGhWWM4Cgum82y7MvEXF9fh9nZWZienpYTQJ15+2lKhMKMY1aOj4/Z6o2bm5smMPEsgFnEDs/PHE7TyinmwcEBPD09sSqYnJy0+orxZXOY8eHhYWsAONh8Pg/lcpmVfalUammOPNscDHdIJBJWI1WJ2SRAV+btRDgfMRs8g3xei2cFMbP21+l02uoBeCr1EjOTycDIyAjs7++z064lwOTSWftFy/z8fMs1gL1h4hRYW1tj/QA3fr3AzwLn5+eQTCaZBH5x5RZzfHwc5ubm2BNptnQ28ouno758/g/ddMYAkbq21AAAAABJRU5ErkJggg=="
+                                         alt="@Html.Raw(item.ProductDescription)" class="rounded" width="100%" />
+                                }
+                            </div>
+                            <div class="col-8 col-md-5">
+                                <h5>@item.ProductName</h5>
+                                <div style="font-size:11px;">@Html.Raw(item.ProductDescription)</div>
+                            </div>
+                            <div class="col-3 col-md-2 pt-md-4" style="font-size:11px;">
+                                    <span style="font-size:17px;">@($"{item.Price:c}") </span>
+                            </div>
+                            <div class="col-3 col-md-2 pt-md-4" style="font-size:11px;">
+                                <span style="font-size:17px;"> @item.Count</span>
+                            </div>
+                            <div class="col-2 col-lg-1 p-0 pt-lg-4 text-center">
+                                <a asp-action="Remove" asp-route-cartDetailsId="@item.Id" class="btn btn-sm btn-danger">
+                                    <i class="bi bi-trash-fill"></i>
+                                </a>
+                            </div>
                         </div>
-                        <div class="col-8 col-md-5">
-                            <h5>@item.ProductName</h5>
-                            <div style="font-size:11px;">@Html.Raw(item.ProductDescription)</div>
-                        </div>
-                        <div class="col-3 col-md-2 pt-md-4" style="font-size:11px;">
-                                <span style="font-size:17px;">@($"{item.Price:c}") </span>
-                        </div>
-                        <div class="col-3 col-md-2 pt-md-4" style="font-size:11px;">
-                            <span style="font-size:17px;"> @item.Count</span>
-                        </div>
-                        <div class="col-2 col-lg-1 p-0 pt-lg-4 text-center">
-                            <a asp-action="Remove" asp-route-cartDetailsId="@item.Id" class="btn btn-sm btn-danger">
-                                <i class="bi bi-trash-fill"></i>
-                            </a>
-                        </div>
-                    </div>
                     }
                     <hr />
                     <div class="row">
