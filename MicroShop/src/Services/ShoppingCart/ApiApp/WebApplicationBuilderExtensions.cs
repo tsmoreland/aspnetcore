@@ -1,6 +1,7 @@
 ﻿using System.Security.Authentication;
 using System.Text;
 using System.Threading.RateLimiting;
+using MicroShop.Services.ShoppingCart.ApiApp.Infrastructure.Auth;
 using MicroShop.Services.ShoppingCart.ApiApp.Infrastructure.Data;
 using MicroShop.Services.ShoppingCart.ApiApp.Services;
 using MicroShop.Services.ShoppingCart.ApiApp.Services.Contracts;
@@ -95,6 +96,7 @@ internal static class WebApplicationBuilderExtensions
 
         services
             .AddHostedService<DatabaseMigrationBackgroundService>()
+            .AddScoped<ApiAuthenticationHttpClientHandler>()
             .AddScoped<ICartService, CartService>()
             .AddScoped<IProductService, ProductService>()
             .AddScoped<ICouponService, CouponService>()
@@ -125,17 +127,21 @@ internal static class WebApplicationBuilderExtensions
                 };
             });
 
-        services.AddHttpClient("CouponsApi", httpClient =>
-        {
-            string couponApiUrl = configuration["ServiceUrls:CouponApi"] ?? throw new KeyNotFoundException("Missing entry in appsettings");
-            httpClient.BaseAddress = new Uri(couponApiUrl);
-        });
+        services
+            .AddHttpClient("CouponsApi", httpClient =>
+            {
+                string couponApiUrl = configuration["ServiceUrls:CouponApi"] ?? throw new KeyNotFoundException("Missing entry in appsettings");
+                httpClient.BaseAddress = new Uri(couponApiUrl);
+            })
+            .AddHttpMessageHandler<ApiAuthenticationHttpClientHandler>();
 
-        services.AddHttpClient("ProductsApi", httpClient =>
-        {
-            string productsApiUrl = configuration["ServiceUrls:ProductsApi"] ?? throw new KeyNotFoundException("Missing entry in appsettings");
-            httpClient.BaseAddress = new Uri(productsApiUrl);
-        });
+        services
+            .AddHttpClient("ProductsApi", httpClient =>
+            {
+                string productsApiUrl = configuration["ServiceUrls:ProductsApi"] ?? throw new KeyNotFoundException("Missing entry in appsettings");
+                httpClient.BaseAddress = new Uri(productsApiUrl);
+            })
+            .AddHttpMessageHandler<ApiAuthenticationHttpClientHandler>();
 
         return builder;
     }
