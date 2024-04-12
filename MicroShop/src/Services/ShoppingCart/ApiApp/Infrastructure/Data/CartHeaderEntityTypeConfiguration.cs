@@ -16,10 +16,8 @@ public sealed class CartHeaderEntityTypeConfiguration : IEntityTypeConfiguration
         builder.Property(p => p.CouponCode)
             .HasField("_couponCode")
             .UsePropertyAccessMode(PropertyAccessMode.Field)
-            .IsRequired()
             .HasMaxLength(200);
         builder.Property(p => p.NormalizedCouponCode)
-            .IsRequired()
             .HasMaxLength(200);
 
         builder.Ignore(e => e.Discount);
