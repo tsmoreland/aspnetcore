@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MicroShop.Web.MvcApp.Controllers;
 
+[Authorize]
 public sealed class CartController(ICartService cartService) : Controller
 {
     [HttpGet]
-    [Authorize]
     public async Task<IActionResult> Index()
     {
         return View(await GetCartForCurrentUser());
@@ -20,18 +20,57 @@ public sealed class CartController(ICartService cartService) : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    public IActionResult Remove()
+    [HttpGet("{cartDetailsId}"]
+    public async Task<IActionResult> Remove([FromQuery] int cartDetailsId)
     {
+        if (!ModelState.IsValid)
+        {
+            TempData["error"] = "Invalid Request";
+            return RedirectToAction(nameof(Index));
+        }
+
+        ResponseDto? response = await cartService.RemoveFromCart(cartDetailsId);
+        if (response?.Success is true)
+        {
+            TempData["success"] = "Item removed from cart";
+            return RedirectToAction(nameof(Index));
+        }
+
+        TempData["error"] = "Unable to remove from cart";
         return RedirectToAction(nameof(Index));
     }
 
-    public IActionResult ApplyCoupon()
+    [HttpPost]
+    public async Task<IActionResult> ApplyCoupon(ApplyCouponDto model)
     {
+        if (!ModelState.IsValid)
+        {
+            TempData["error"] = "Invalid Request";
+            return RedirectToAction(nameof(Index));
+        }
+
+        ResponseDto? response = await cartService.ApplyCoupon(model.CartHeaderId, model.CouponCode);
+        if (response?.Success is not true)
+        {
+            TempData["error"] = "Unable to update cart";
+            return RedirectToAction(nameof(Index));
+        }
+
+        TempData["success"] = "Cart updated";
         return RedirectToAction(nameof(Index));
     }
 
-    public IActionResult RemoveCoupon()
+    [HttpGet]
+    public async Task<IActionResult> RemoveCoupon(int cartDetailsId)
     {
+        ResponseDto? response = await cartService.RemoveCoupon(cartDetailsId);
+        if (response?.Success is not true)
+        {
+            TempData["error"] = "Unable to update cart";
+            return RedirectToAction(nameof(Index));
+        }
+
+        TempData["success"] = "Cart updated";
         return RedirectToAction(nameof(Index));
     }
 

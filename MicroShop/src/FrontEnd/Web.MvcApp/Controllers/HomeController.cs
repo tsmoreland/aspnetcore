@@ -42,7 +42,7 @@ public class HomeController(IProductService productService, ICartService cartSer
     [ActionName("ProductDetails")]
     public async Task<IActionResult> ProductDetails(AddToCartDto addToCart)
     {
-        ResponseDto<CartSummaryDto>? response = await cartService.Upsert(addToCart.ToUpsert(1));
+        ResponseDto<CartSummaryDto>? response = await cartService.Upsert(addToCart.ToUpsert());
         if (response is not { Success: true, Data: not null })
         {
             TempData["error"] = "Error occurred attempting to add item to cart, please try again";
