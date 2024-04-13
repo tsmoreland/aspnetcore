@@ -20,10 +20,10 @@ public sealed class CartController(ICartService cartService) : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    [HttpGet("{cartDetailsId}"]
-    public async Task<IActionResult> Remove([FromQuery] int cartDetailsId)
+    [HttpPost]
+    public async Task<IActionResult> Remove([FromForm] int cartDetailsId)
     {
-        if (!ModelState.IsValid)
+        if (cartDetailsId <= 0)
         {
             TempData["error"] = "Invalid Request";
             return RedirectToAction(nameof(Index));
