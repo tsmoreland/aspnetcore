@@ -82,6 +82,7 @@ internal static class ShoppingCartApiRouteBuilderExtensions
             .RequireAuthorization()
             .WithName("EmailCart")
             .WithOpenApi();
+        return builder;
 
         static async Task<Results<Ok<ResponseDto>, NotFound<ResponseDto>, BadRequest<ResponseDto>>> Handler(HttpContext context, [FromServices] ICartService cartService)
         {
