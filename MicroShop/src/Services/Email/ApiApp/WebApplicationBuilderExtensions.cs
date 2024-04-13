@@ -2,6 +2,7 @@
 using System.Text;
 using System.Threading.RateLimiting;
 using MicroShop.Services.Email.ApiApp.Infrastructure.Data;
+using MicroShop.Services.Email.ApiApp.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.AspNetCore.ResponseCompression;
@@ -114,6 +115,9 @@ internal static class WebApplicationBuilderExtensions
                     ValidAudience = audience,
                 };
             });
+
+        services
+            .AddHostedService<DatabaseMigrationBackgroundService>();
 
         return builder;
     }
