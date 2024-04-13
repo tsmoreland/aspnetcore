@@ -22,6 +22,10 @@ public sealed class CartService(IBaseService baseService) : ICartService
         await SendAsync<CartSummaryDto>(new RequestDto($"/api/cart", null));
 
     /// <inheritdoc />
+    public async Task<ResponseDto?> EmailCartToCurrentUser(CancellationToken cancellationToken = default) => 
+        await SendAsync(new RequestDto(ApiType.Post, $"/api/cart/email", null));
+
+    /// <inheritdoc />
     public async Task<ResponseDto?> ApplyCoupon(int cartHeaderId, string? couponCode, CancellationToken cancellationToken = default) =>
         await SendAsync(new RequestDto($"/api/cart/{cartHeaderId}/coupon", couponCode));
 

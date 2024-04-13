@@ -15,8 +15,17 @@ public sealed class CartController(ICartService cartService) : Controller
         return View(await GetCartForCurrentUser());
     }
 
-    public IActionResult EmailCart()
+    [HttpPost]
+    public async Task<IActionResult> EmailCart()
     {
+        ResponseDto? response = await cartService.EmailCartToCurrentUser();
+        if (response?.Success is true)
+        {
+            TempData["success"] = "Email will be procesed and sent soon";
+            return RedirectToAction(nameof(Index));
+        }
+
+        TempData["error"] = "Unable to e-mail cart at this time.";
         return RedirectToAction(nameof(Index));
     }
 
