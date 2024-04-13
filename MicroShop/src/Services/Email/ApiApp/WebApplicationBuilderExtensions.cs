@@ -1,9 +1,11 @@
 ﻿using System.Security.Authentication;
 using System.Text;
 using System.Threading.RateLimiting;
+using MicroShop.Services.Email.ApiApp.Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -35,6 +37,12 @@ internal static class WebApplicationBuilderExtensions
             services
                 .AddProblemDetails(static options => options.CustomizeProblemDetails = static ctx => ctx.ProblemDetails.Extensions.Clear());
         }
+
+        services
+            .AddDbContextFactory<AppDbContext>(dbOptions =>
+                dbOptions.UseSqlServer(configuration.GetConnectionString("AppConnection"), sqlOptions => sqlOptions.MigrationsAssembly(typeof(AppDbContext).Assembly.ToString())));
+        services
+            .AddScoped(static provider => provider.GetRequiredService<IDbContextFactory<AppDbContext>>().CreateDbContext());
 
         services
             .AddOptions()
