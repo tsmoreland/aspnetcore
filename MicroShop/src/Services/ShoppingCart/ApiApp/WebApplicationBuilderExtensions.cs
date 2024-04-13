@@ -1,6 +1,7 @@
 ﻿using System.Security.Authentication;
 using System.Text;
 using System.Threading.RateLimiting;
+using MicroShop.Integrations.MessageBus;
 using MicroShop.Services.ShoppingCart.ApiApp.Infrastructure.Auth;
 using MicroShop.Services.ShoppingCart.ApiApp.Infrastructure.Data;
 using MicroShop.Services.ShoppingCart.ApiApp.Services;
@@ -96,6 +97,7 @@ internal static class WebApplicationBuilderExtensions
 
         services
             .AddHostedService<DatabaseMigrationBackgroundService>()
+            .AddMessageBus(configuration)
             .AddScoped<ApiAuthenticationHttpClientHandler>()
             .AddScoped<ICartService, CartService>()
             .AddScoped<IProductService, ProductService>()
