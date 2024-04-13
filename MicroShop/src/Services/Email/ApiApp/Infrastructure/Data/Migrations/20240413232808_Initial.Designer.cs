@@ -9,10 +9,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace MicroShop.Services.Email.ApiApp.Migrations
+namespace MicroShop.Services.Email.ApiApp.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240413232541_Initial")]
+    [Migration("20240413232808_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
