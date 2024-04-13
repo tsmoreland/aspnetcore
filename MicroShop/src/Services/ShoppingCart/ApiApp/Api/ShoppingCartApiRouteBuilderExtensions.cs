@@ -18,6 +18,7 @@ internal static class ShoppingCartApiRouteBuilderExtensions
         return builder
             .MapUpsertCart()
             .MapGetCartByUserId()
+            .MapEmailCart()
             .MapApplyCoupon()
             .MapRemoveCoupon()
             .MapDeleteCartById();
