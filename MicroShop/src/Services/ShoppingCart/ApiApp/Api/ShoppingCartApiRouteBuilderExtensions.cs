@@ -74,6 +74,28 @@ internal static class ShoppingCartApiRouteBuilderExtensions
                 : TypedResults.NotFound(summary);
         }
     }
+    private static RouteGroupBuilder MapEmailCart(this RouteGroupBuilder builder)
+    {
+        builder
+            .MapPost("/email", Handler)
+            .RequireAuthorization()
+            .WithName("EmailCart")
+            .WithOpenApi();
+
+        static async Task<Results<Ok<ResponseDto>, NotFound<ResponseDto>, BadRequest<ResponseDto>>> Handler(HttpContext context, [FromServices] ICartService cartService)
+        {
+            if (!TryGetUserIdFromHttpContext(context, out string? userId))
+            {
+                return TypedResults.NotFound<ResponseDto>(ResponseDto.Error<ResponseDto>("user not found"));
+            }
+
+            ResponseDto result = await cartService.EmailCart(userId);
+            return result.Success
+                ? TypedResults.Ok(result)
+                : TypedResults.BadRequest(result);
+
+        }
+    }
     private static RouteGroupBuilder MapApplyCoupon(this RouteGroupBuilder builder)
     {
         builder

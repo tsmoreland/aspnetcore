@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FrontEnd", "FrontEnd", "{A3
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateway", "Gateway", "{73AA0371-6266-4053-BF61-F8053A09FD71}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integration", "Integration", "{36458C57-593E-41C9-ACD2-62E1C179C067}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integrations", "Integrations", "{36458C57-593E-41C9-ACD2-62E1C179C067}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{D3911790-0739-4F98-B508-5228F0281946}"
 EndProject
@@ -40,9 +40,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Services.Products
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ShoppingCart", "ShoppingCart", "{7933FA0A-8B05-44CE-8B8C-CF581260C5BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroShop.Services.ShoppingCart.ApiApp", "src\Services\ShoppingCart\ApiApp\MicroShop.Services.ShoppingCart.ApiApp.csproj", "{59B506F6-5010-411C-8B2D-29F7D0E9ED91}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Services.ShoppingCart.ApiApp", "src\Services\ShoppingCart\ApiApp\MicroShop.Services.ShoppingCart.ApiApp.csproj", "{59B506F6-5010-411C-8B2D-29F7D0E9ED91}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroShop.Services.ShoppingCart.ApiApp.Tests", "test\Services\ShoppingCart\ApiApp.Tests\MicroShop.Services.ShoppingCart.ApiApp.Tests.csproj", "{D133B3EE-9401-47F9-9625-E6C7018C2A2C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Services.ShoppingCart.ApiApp.Tests", "test\Services\ShoppingCart\ApiApp.Tests\MicroShop.Services.ShoppingCart.ApiApp.Tests.csproj", "{D133B3EE-9401-47F9-9625-E6C7018C2A2C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Integrations.MessageBus.Abstractions", "src\Integrations\MessageBus.Abstractions\MicroShop.Integrations.MessageBus.Abstractions.csproj", "{BDF84132-A0A5-4088-AD0A-C78D7353A429}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Integrations.MessageBus.AzureMessageBus", "src\Integrations\MessageBus.AzureMessageBus\MicroShop.Integrations.MessageBus.AzureMessageBus.csproj", "{AA5116D2-0F81-45ED-8361-8C30621C3C6A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroShop.Integrations.MessageBus", "src\Integrations\MessageBus\MicroShop.Integrations.MessageBus.csproj", "{C4292E48-D89E-4DAF-9765-4A5DD9996407}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -90,6 +96,18 @@ Global
 		{D133B3EE-9401-47F9-9625-E6C7018C2A2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D133B3EE-9401-47F9-9625-E6C7018C2A2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D133B3EE-9401-47F9-9625-E6C7018C2A2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDF84132-A0A5-4088-AD0A-C78D7353A429}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDF84132-A0A5-4088-AD0A-C78D7353A429}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDF84132-A0A5-4088-AD0A-C78D7353A429}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDF84132-A0A5-4088-AD0A-C78D7353A429}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA5116D2-0F81-45ED-8361-8C30621C3C6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA5116D2-0F81-45ED-8361-8C30621C3C6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA5116D2-0F81-45ED-8361-8C30621C3C6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA5116D2-0F81-45ED-8361-8C30621C3C6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4292E48-D89E-4DAF-9765-4A5DD9996407}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4292E48-D89E-4DAF-9765-4A5DD9996407}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4292E48-D89E-4DAF-9765-4A5DD9996407}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4292E48-D89E-4DAF-9765-4A5DD9996407}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -109,6 +127,9 @@ Global
 		{7933FA0A-8B05-44CE-8B8C-CF581260C5BF} = {D3911790-0739-4F98-B508-5228F0281946}
 		{59B506F6-5010-411C-8B2D-29F7D0E9ED91} = {7933FA0A-8B05-44CE-8B8C-CF581260C5BF}
 		{D133B3EE-9401-47F9-9625-E6C7018C2A2C} = {7933FA0A-8B05-44CE-8B8C-CF581260C5BF}
+		{BDF84132-A0A5-4088-AD0A-C78D7353A429} = {36458C57-593E-41C9-ACD2-62E1C179C067}
+		{AA5116D2-0F81-45ED-8361-8C30621C3C6A} = {36458C57-593E-41C9-ACD2-62E1C179C067}
+		{C4292E48-D89E-4DAF-9765-4A5DD9996407} = {36458C57-593E-41C9-ACD2-62E1C179C067}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {037DE013-C257-46CE-BB74-5D52D8A5393F}
