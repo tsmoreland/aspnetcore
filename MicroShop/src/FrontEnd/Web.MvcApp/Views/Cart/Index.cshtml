@@ -61,9 +61,10 @@
                                 <span style="font-size:17px;"> @item.Count</span>
                             </div>
                             <div class="col-2 col-lg-1 p-0 pt-lg-4 text-center">
-                                <a asp-action="Remove" asp-route-cartDetailsId="@item.Id" class="btn btn-sm btn-danger">
+                                <input type="hidden" value="@item.Id" name="CartDetailsId"/>
+                                <button type="submit" asp-action="Remove" class="btn btn-link">
                                     <i class="bi bi-trash-fill"></i>
-                                </a>
+                                </button>
                             </div>
                         </div>
                     }

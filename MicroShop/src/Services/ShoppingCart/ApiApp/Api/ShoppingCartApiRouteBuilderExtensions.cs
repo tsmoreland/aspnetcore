@@ -127,14 +127,14 @@ internal static class ShoppingCartApiRouteBuilderExtensions
     private static RouteGroupBuilder MapDeleteCartById(this RouteGroupBuilder builder)
     {
         builder
-            .MapPost("/{id}", Handler)
+            .MapDelete("/{id}", Handler)
             .RequireAuthorization()
             .WithName("DeleteFromCart")
             .WithOpenApi();
 
         return builder;
 
-        static async Task<Results<NoContent, BadRequest<ResponseDto>>> Handler([FromRoute] int id, HttpContext context, [FromServices] ICartService cartService)
+        static async Task<Results<NoContentWithResponseResult, BadRequest<ResponseDto>>> Handler([FromRoute] int id, HttpContext context, [FromServices] ICartService cartService)
         {
             if (!TryGetUserIdFromHttpContext(context, out string? userId))
             {
@@ -143,7 +143,7 @@ internal static class ShoppingCartApiRouteBuilderExtensions
 
             ResponseDto result = await cartService.RemoveFromCart(userId, id);
             return result.Success
-                ? TypedResults.NoContent()
+                ? NoContentWithResponseResult.Success()
                 : TypedResults.BadRequest(result);
         }
     }
