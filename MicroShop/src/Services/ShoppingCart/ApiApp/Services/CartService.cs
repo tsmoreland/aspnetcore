@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using MicroShop.Integrations.MessageBus.Abstractions;
 using MicroShop.Services.ShoppingCart.ApiApp.Infrastructure.Data;
 using MicroShop.Services.ShoppingCart.ApiApp.Models;
 using MicroShop.Services.ShoppingCart.ApiApp.Models.DataTransferObjects;
@@ -10,7 +11,13 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 namespace MicroShop.Services.ShoppingCart.ApiApp.Services;
 
-public sealed class CartService(IProductService productService, ICouponService couponService, AppDbContext dbContext, ILogger<CartService> logger) : ICartService
+public sealed class CartService(
+    IProductService productService,
+    ICouponService couponService,
+    IMessageBus messageBus,
+    AppDbContext dbContext,
+    ILogger<CartService> logger)
+    : ICartService
 {
     /// <inheritdoc/>
     public async Task<ResponseDto<CartSummaryDto>> Upsert(string userId, UpsertCartDto item, CancellationToken cancellationToken = default)
@@ -81,6 +88,30 @@ public sealed class CartService(IProductService productService, ICouponService c
             .ConfigureAwait(false); // TODO: trim some these, 1 is good to have but this seems excessive
         CartSummaryDto summary = new(header.Id, header.CouponCode, header.Discount, cartTotal, items); 
         return ResponseDto.Ok(summary);
+    }
+
+    /// <inheritdoc />
+    public async Task<ResponseDto> EmailCart(string userId, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            ResponseDto<CartSummaryDto> cartResponse = await GetByUserId(userId, cancellationToken);
+            if (!cartResponse.Success || cartResponse.Data is null)
+            {
+                return ResponseDto.Error(cartResponse.ErrorMessage ?? "No cart found for user");
+            }
+
+            CartSummaryDto cart = cartResponse.Data;
+
+            // TODO: move queue name to appsettings
+            await messageBus.PublishMessage("emailshoppingcart", cart);
+            return ResponseDto.Ok();
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "An error occurred e-mailing the cart");
+            return ResponseDto.Error(ex.Message);
+        }
     }
 
     /// <inheritdoc />
