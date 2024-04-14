@@ -48,7 +48,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Integrations.Mess
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Integrations.MessageBus.AzureMessageBus", "src\Integrations\MessageBus.AzureMessageBus\MicroShop.Integrations.MessageBus.AzureMessageBus.csproj", "{AA5116D2-0F81-45ED-8361-8C30621C3C6A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroShop.Integrations.MessageBus", "src\Integrations\MessageBus\MicroShop.Integrations.MessageBus.csproj", "{C4292E48-D89E-4DAF-9765-4A5DD9996407}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Integrations.MessageBus", "src\Integrations\MessageBus\MicroShop.Integrations.MessageBus.csproj", "{C4292E48-D89E-4DAF-9765-4A5DD9996407}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Email", "Email", "{79157682-EADC-4C8F-AEC2-FDB4580C92A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroShop.Services.Email.ApiApp", "src\Services\Email\ApiApp\MicroShop.Services.Email.ApiApp.csproj", "{6110A503-05A9-44C9-9BE1-882393926FF0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroShop.Services.Email.ApiApp.Tests", "test\Services\Email\ApiApp.Tests\MicroShop.Services.Email.ApiApp.Tests.csproj", "{E422F2F5-7C9A-48E6-8CDD-1EF7A1919F6B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -108,6 +114,14 @@ Global
 		{C4292E48-D89E-4DAF-9765-4A5DD9996407}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4292E48-D89E-4DAF-9765-4A5DD9996407}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4292E48-D89E-4DAF-9765-4A5DD9996407}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6110A503-05A9-44C9-9BE1-882393926FF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6110A503-05A9-44C9-9BE1-882393926FF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6110A503-05A9-44C9-9BE1-882393926FF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6110A503-05A9-44C9-9BE1-882393926FF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E422F2F5-7C9A-48E6-8CDD-1EF7A1919F6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E422F2F5-7C9A-48E6-8CDD-1EF7A1919F6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E422F2F5-7C9A-48E6-8CDD-1EF7A1919F6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E422F2F5-7C9A-48E6-8CDD-1EF7A1919F6B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -130,6 +144,9 @@ Global
 		{BDF84132-A0A5-4088-AD0A-C78D7353A429} = {36458C57-593E-41C9-ACD2-62E1C179C067}
 		{AA5116D2-0F81-45ED-8361-8C30621C3C6A} = {36458C57-593E-41C9-ACD2-62E1C179C067}
 		{C4292E48-D89E-4DAF-9765-4A5DD9996407} = {36458C57-593E-41C9-ACD2-62E1C179C067}
+		{79157682-EADC-4C8F-AEC2-FDB4580C92A8} = {D3911790-0739-4F98-B508-5228F0281946}
+		{6110A503-05A9-44C9-9BE1-882393926FF0} = {79157682-EADC-4C8F-AEC2-FDB4580C92A8}
+		{E422F2F5-7C9A-48E6-8CDD-1EF7A1919F6B} = {79157682-EADC-4C8F-AEC2-FDB4580C92A8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {037DE013-C257-46CE-BB74-5D52D8A5393F}
