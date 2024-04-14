@@ -104,7 +104,7 @@ public sealed class CartService(
             CartSummaryDto cart = cartResponse.Data;
 
             // TODO: move queue name to appsettings
-            await messageBus.PublishMessage("emailshoppingcart", new { name, emailAddress, message = cart });
+            await messageBus.PublishMessage("emailshoppingcart", new { name, emailAddress, content = cart });
             return ResponseDto.Ok();
         }
         catch (Exception ex)
