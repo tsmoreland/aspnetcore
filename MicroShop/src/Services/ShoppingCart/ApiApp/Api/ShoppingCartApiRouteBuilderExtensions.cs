@@ -35,11 +35,6 @@ internal static class ShoppingCartApiRouteBuilderExtensions
 
         static async Task<Results<Created<ResponseDto<CartSummaryDto>>, BadRequest<ResponseDto<CartSummaryDto>>>> Handler([FromBody] UpsertCartDto model, HttpContext context, [FromServices] ICartService cartService)
         {
-            string? token = await context.GetTokenAsync("access_token");
-            if (token is not null)
-            {
-            }
-
             if (!TryGetUserIdFromHttpContext(context, out string? userId))
             {
                 return TypedResults.BadRequest(ResponseDto.Error<CartSummaryDto>("wrong error response but error is forbidden"));
@@ -86,12 +81,12 @@ internal static class ShoppingCartApiRouteBuilderExtensions
 
         static async Task<Results<Ok<ResponseDto>, NotFound<ResponseDto>, BadRequest<ResponseDto>>> Handler(HttpContext context, [FromServices] ICartService cartService)
         {
-            if (!TryGetUserIdFromHttpContext(context, out string? userId))
+            if (!TryGetUserDetailsFromHttpContext(context, out string? userId, out string? name, out string? emailAddress))
             {
                 return TypedResults.NotFound<ResponseDto>(ResponseDto.Error<ResponseDto>("user not found"));
             }
 
-            ResponseDto result = await cartService.EmailCart(userId);
+            ResponseDto result = await cartService.EmailCart(userId, name, emailAddress);
             return result.Success
                 ? TypedResults.Ok(result)
                 : TypedResults.BadRequest(result);
@@ -178,5 +173,36 @@ internal static class ShoppingCartApiRouteBuilderExtensions
         Claim? claim = context.User.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub) ?? context.User.Claims.FirstOrDefault(c => c.Type == nameIdentiferClaim);
         userId = claim?.Value;
         return userId is not null;
+    }
+
+    private static bool TryGetUserDetailsFromHttpContext(HttpContext context, [NotNullWhen(true)] out string? userId, [NotNullWhen(true)] out string? name, [NotNullWhen(true)] out string? emailAddress)
+    {
+        userId = null;
+        name = null;
+        emailAddress = null;
+
+        const string nameIdentiferClaim = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier";
+        const string emailClaim = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress";
+
+        string[] requiredClaims = [nameIdentiferClaim, emailClaim, JwtRegisteredClaimNames.Name];
+
+        IEnumerable<Claim> claims = context.User.Claims.Where(c => requiredClaims.Contains(c.Type));
+        foreach (Claim match in claims)
+        {
+            switch (match.Type)
+            {
+                case nameIdentiferClaim:
+                    userId = match.Value;
+                    break;
+                case emailClaim:
+                    emailAddress = match.Value;
+                    break;
+                case JwtRegisteredClaimNames.Name:
+                    name = match.Value;
+                    break;
+            }
+        }
+
+        return userId is not null && name is not null && emailAddress is not null;
     }
 }

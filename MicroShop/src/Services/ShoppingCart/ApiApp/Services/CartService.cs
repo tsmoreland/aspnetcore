@@ -91,7 +91,7 @@ public sealed class CartService(
     }
 
     /// <inheritdoc />
-    public async Task<ResponseDto> EmailCart(string userId, CancellationToken cancellationToken = default)
+    public async Task<ResponseDto> EmailCart(string userId, string name, string emailAddress, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -104,7 +104,7 @@ public sealed class CartService(
             CartSummaryDto cart = cartResponse.Data;
 
             // TODO: move queue name to appsettings
-            await messageBus.PublishMessage("emailshoppingcart", cart);
+            await messageBus.PublishMessage("emailshoppingcart", new { name, emailAddress, message = cart });
             return ResponseDto.Ok();
         }
         catch (Exception ex)
