@@ -1,4 +1,5 @@
-﻿using MicroShop.Web.MvcApp.Models;
+﻿using System.Security.Claims;
+using MicroShop.Web.MvcApp.Models;
 using MicroShop.Web.MvcApp.Models.Cart;
 using MicroShop.Web.MvcApp.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
@@ -83,9 +84,33 @@ public sealed class CartController(ICartService cartService) : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    public IActionResult Checkout()
+    [HttpGet]
+    public async Task<IActionResult> Checkout(HttpContext context)
     {
+        string? name = context.User.Identity?.Name;
+        string? email = context.User.FindFirstValue(ClaimTypes.Email);
+
+        if (name is { Length: > 0 } && email is { Length: > 0 })
+        {
+            return View(new CheckoutDto(name, email, await GetCartForCurrentUser()));
+        }
+
+        TempData["error"] = "user not found";
         return RedirectToAction(nameof(Index));
+
+    }
+
+    public async Task<IActionResult> Checkout(CheckoutDto model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        await Task.Delay(1).ConfigureAwait(false); // temporary
+
+        TempData["success"] = "Order submitted successfully.";
+        return RedirectToAction("Index");
     }
 
     private async Task<CartSummaryDto> GetCartForCurrentUser()
