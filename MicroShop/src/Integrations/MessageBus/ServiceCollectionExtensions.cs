@@ -2,6 +2,7 @@
 using MicroShop.Integrations.MessageBus.AzureMessageBus;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace MicroShop.Integrations.MessageBus;
 

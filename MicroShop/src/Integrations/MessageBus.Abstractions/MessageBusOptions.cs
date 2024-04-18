@@ -2,7 +2,8 @@
 
 public class MessageBusOptions
 {
-    public static readonly string SectionName = "MessageBus";
-
     public MessageBusType BusType { get; set; } = MessageBusType.Azure;
+
+    public string QueueName { get; set; } = string.Empty;
 }
+
