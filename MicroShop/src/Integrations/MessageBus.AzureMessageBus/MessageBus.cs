@@ -5,7 +5,7 @@ using Microsoft.Extensions.Options;
 
 namespace MicroShop.Integrations.MessageBus.AzureMessageBus;
 
-public sealed class MessageBus(IOptions<MessageBusOptions> options) : IMessageBus
+public sealed class MessageBus(IOptions<AzureMessageBusOptions> options) : IMessageBus
 {
     private readonly string _connectionString = options.Value.ConnectionString;
 

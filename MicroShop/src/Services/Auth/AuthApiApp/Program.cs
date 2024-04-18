@@ -23,10 +23,7 @@ try
     WebApplication app = builder
         .Build()
         .ConfigurePipeline();
-
-    await ApplyMigrations(app.Services);
-    await app.RunAsync();
-}
+await ApplyMigrations(app.Services); await app.RunAsync(); }
 catch (HostAbortedException) when (args is ["--applicationName", _])
 {
     // expected during EF Core Migration
