@@ -8,6 +8,7 @@ using MicroShop.Services.ShoppingCart.ApiApp.Models.DataTransferObjects.Response
 using MicroShop.Services.ShoppingCart.ApiApp.Services.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Options;
 
 namespace MicroShop.Services.ShoppingCart.ApiApp.Services;
 
@@ -15,10 +16,14 @@ public sealed class CartService(
     IProductService productService,
     ICouponService couponService,
     IMessageBus messageBus,
+    IOptions<MessageBusOptions> options,
     AppDbContext dbContext,
     ILogger<CartService> logger)
     : ICartService
 {
+
+    private readonly MessageBusOptions _options = options.Value;
+
     /// <inheritdoc/>
     public async Task<ResponseDto<CartSummaryDto>> Upsert(string userId, UpsertCartDto item, CancellationToken cancellationToken = default)
     {
@@ -95,16 +100,13 @@ public sealed class CartService(
     {
         try
         {
-            ResponseDto<CartSummaryDto> cartResponse = await GetByUserId(userId, cancellationToken);
-            if (!cartResponse.Success || cartResponse.Data is null)
+            (CartSummaryDto? cart, bool success, string? errorMessage) = await GetByUserId(userId, cancellationToken);
+            if (!success || cart is null)
             {
-                return ResponseDto.Error(cartResponse.ErrorMessage ?? "No cart found for user");
+                return ResponseDto.Error(errorMessage ?? "No cart found for user");
             }
 
-            CartSummaryDto cart = cartResponse.Data;
-
-            // TODO: move queue name to appsettings
-            await messageBus.PublishMessage("emailshoppingcart", new { name, emailAddress, content = cart });
+            await messageBus.PublishMessage(_options.QueueName, new { name, emailAddress, content = cart });
             return ResponseDto.Ok();
         }
         catch (Exception ex)

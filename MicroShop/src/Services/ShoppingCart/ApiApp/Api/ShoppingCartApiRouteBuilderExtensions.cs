@@ -5,7 +5,6 @@ using MicroShop.Services.ShoppingCart.ApiApp.Models.DataTransferObjects;
 using MicroShop.Services.ShoppingCart.ApiApp.Models.DataTransferObjects.Request;
 using MicroShop.Services.ShoppingCart.ApiApp.Models.DataTransferObjects.Response;
 using MicroShop.Services.ShoppingCart.ApiApp.Services.Contracts;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
