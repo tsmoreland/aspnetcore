@@ -2,5 +2,5 @@
 
 public interface IMessageHandler
 {
-    ValueTask HandleMessage(BinaryData messageBody);
+    ValueTask HandleMessage(MessageType messageType, BinaryData messageBody);
 }

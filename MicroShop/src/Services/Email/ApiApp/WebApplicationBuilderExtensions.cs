@@ -119,7 +119,7 @@ internal static class WebApplicationBuilderExtensions
 
         services
             .AddHostedService<DatabaseMigrationBackgroundService>()
-            .AddMessageConsumer<InboxMessageHandler>(configuration);
+            .AddMessageConsumer<MessageHandler>(configuration);
 
         return builder;
     }

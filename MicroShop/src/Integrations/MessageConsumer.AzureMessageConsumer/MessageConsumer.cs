@@ -11,26 +11,37 @@ public sealed class MessageConsumer : IHostedService, IAsyncDisposable
 {
     private readonly IMessageHandler _handler;
     private readonly ILogger<MessageConsumer> _logger;
-    private readonly ServiceBusProcessor _processor;
+    // could potentially use 2 maps, 1 for processor by type and another for type by processor id - that would allow a single on message and on error method
+    private readonly IReadOnlyDictionary<MessageType, ServiceBusProcessor> _processors;
 
-    public MessageConsumer(IMessageHandler handler, IOptions<AzureMessageBusOptions> options, ILogger<MessageConsumer> logger)
+    public MessageConsumer(IMessageHandler handler,  IOptions<MessageConsumerOptions> options, IOptions<AzureMessageBusOptions> azureOptions, ILogger<MessageConsumer> logger)
     {
         _handler = handler;
         _logger = logger;
-        AzureMessageBusOptions optionsValue = options.Value;
+        AzureMessageBusOptions optionsValue = azureOptions.Value;
         ServiceBusClient client = new(optionsValue.ConnectionString);
-        _processor = client.CreateProcessor(optionsValue.QueueName);
 
+        _processors = options.Value.Queues
+            .Select(q => new { q.Type, Processor = client.CreateProcessor(q.Name) })
+            .ToDictionary(pair => pair.Type, pair => pair.Processor);
     }
 
-    private async Task OnMessageRecieved(ProcessMessageEventArgs eventArgs)
+    private async Task OnCartMessageRecieved(ProcessMessageEventArgs eventArgs)
+    {
+        await OnMessageRecieved(MessageType.ShoppingCart, eventArgs);
+    }
+    private async Task OnRegisterMessageRecieved(ProcessMessageEventArgs eventArgs)
+    {
+        await OnMessageRecieved(MessageType.RegisterUser, eventArgs);
+    }
+    private async Task OnMessageRecieved(MessageType messageType, ProcessMessageEventArgs eventArgs)
     {
         string content = Encoding.UTF8.GetString(eventArgs.Message.Body);
         _ = content;
 
         try
         {
-            await _handler.HandleMessage(eventArgs.Message.Body);
+            await _handler.HandleMessage(messageType, eventArgs.Message.Body);
             await eventArgs.CompleteMessageAsync(eventArgs.Message);
         }
         catch (Exception ex)
@@ -47,26 +58,59 @@ public sealed class MessageConsumer : IHostedService, IAsyncDisposable
     /// <inheritdoc />
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        _processor.ProcessMessageAsync += OnMessageRecieved;
-        _processor.ProcessErrorAsync += OnErrorReceived;
-        await _processor.StartProcessingAsync(cancellationToken);
+        foreach ((MessageType type, ServiceBusProcessor processor) in _processors)
+        {
+            switch (type)
+            {
+                case MessageType.ShoppingCart:
+                    processor.ProcessMessageAsync += OnCartMessageRecieved;
+                    break;
+                case MessageType.RegisterUser:
+                    processor.ProcessMessageAsync += OnRegisterMessageRecieved;
+                    break;
+                case MessageType.None:
+                default:
+                    this._logger.LogWarning("Unrecognized or unsupported message type {MessageType}", type);
+                    break;
+            }
+            processor.ProcessErrorAsync += OnErrorReceived;
+            await processor.StartProcessingAsync(cancellationToken);
+        }
+
     }
 
     /// <inheritdoc />
     public async Task StopAsync(CancellationToken cancellationToken)
     {
-        try
+        foreach ((MessageType type, ServiceBusProcessor processor) in _processors)
         {
-            await _processor.StopProcessingAsync(cancellationToken);
-        }
-        finally
-        {
-            _processor.ProcessMessageAsync -= OnMessageRecieved;
-            _processor.ProcessErrorAsync -= OnErrorReceived;
+            try
+            {
+                await processor.StopProcessingAsync(cancellationToken);
+            }
+            finally
+            {
+                switch (type)
+                {
+                    case MessageType.ShoppingCart:
+                        processor.ProcessMessageAsync -= OnCartMessageRecieved;
+                        break;
+                    case MessageType.RegisterUser:
+                        processor.ProcessMessageAsync -= OnRegisterMessageRecieved;
+                        break;
+                    case MessageType.None:
+                    default:
+                        this._logger.LogWarning("Unrecognized or unsupported message type {MessageType}", type);
+                        break;
+                }
+                processor.ProcessErrorAsync -= OnErrorReceived;
+            }
         }
     }
 
     /// <inheritdoc />
-    public async ValueTask DisposeAsync() =>
-        await _processor.DisposeAsync();
+    public async ValueTask DisposeAsync()
+    {
+        await Task.WhenAll(_processors.Values.Select(p => p.DisposeAsync().AsTask()));
+    }
 }

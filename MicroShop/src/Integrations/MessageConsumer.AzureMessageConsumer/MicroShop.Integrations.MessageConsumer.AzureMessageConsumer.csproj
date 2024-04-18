@@ -15,13 +15,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MessageConsumer.Abstractions\MicroShop.Integrations.MessageConsumer.Abstractions.csproj" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Microsoft.Extensions.Hosting.Abstractions">
-      <HintPath>C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App\8.0.4\Microsoft.Extensions.Hosting.Abstractions.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\MessageConsumer.Abstractions\MicroShop.Integrations.MessageConsumer.Abstractions.csproj" />
   </ItemGroup>
 
 </Project>
