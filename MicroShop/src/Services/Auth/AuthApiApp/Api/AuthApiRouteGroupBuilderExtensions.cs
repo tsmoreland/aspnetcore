@@ -1,8 +1,10 @@
 ﻿using Azure;
+using MicroShop.Integrations.MessageBus.Abstractions;
 using MicroShop.Services.Auth.AuthApiApp.Models.DataTransferObjects;
 using MicroShop.Services.Auth.AuthApiApp.Services.Contracts;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace MicroShop.Services.Auth.AuthApiApp.Api;
 
@@ -24,15 +26,23 @@ internal static class AuthApiRouteGroupBuilderExtensions
 
         return builder;
 
-        static async Task<Results<Ok<ResponseDto<UserDto>>, BadRequest<ResponseDto<UserDto>>>> Handler([FromBody] RegistrationRequestDto model, [FromServices] IAuthService authService)
+        static async Task<Results<Ok<ResponseDto<UserDto>>, BadRequest<ResponseDto<UserDto>>>> Handler(
+            [FromBody] RegistrationRequestDto model,
+            [FromServices] IAuthService authService,
+            [FromServices] IMessageBus messageBus,
+            [FromServices] IOptions<MessageBusOptions> options)
         {
             // TODO: validate using FluentValidation as there isn't an available validator by default yet
             ResponseDto<UserDto> response = await authService.Register(model.Email, model.Name, model.PhoneNumber, model.Password);
+
+            if (!response.Success)
+            {
+                return TypedResults.BadRequest(ResponseDto.Error<UserDto>("Unable to register, one or more fields are invalid."));  // intentionally vague;
+            }
             // auth service should log underlying errors as we won't be specific with the failure here to prevent attacks attempting to identify existing users
 
-            return response.Success
-                ? TypedResults.Ok(response)
-                : TypedResults.BadRequest(ResponseDto.Error<UserDto>("Unable to register, one or more fields are invalid."));  // intentionally vague
+            await messageBus.PublishMessage(options.Value.QueueName, model.Email);
+            return TypedResults.Ok(response);
         }
     }
 

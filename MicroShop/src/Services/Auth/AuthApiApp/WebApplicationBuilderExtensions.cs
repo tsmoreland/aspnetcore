@@ -1,4 +1,5 @@
 ﻿using System.Security.Authentication;
+using MicroShop.Integrations.MessageBus;
 using MicroShop.Services.Auth.AuthApiApp.Infrrastructure.Data;
 using MicroShop.Services.Auth.AuthApiApp.Models;
 using MicroShop.Services.Auth.AuthApiApp.Services;
@@ -67,6 +68,7 @@ internal static class WebApplicationBuilderExtensions
 
         services
             .AddScoped<IJwtTokenGenerator, JwtTokenGenerator>()
+            .AddMessageBus(configuration)
             .AddScoped<IAuthService, AuthService>();
 
         return builder;
