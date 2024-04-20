@@ -17,8 +17,8 @@ public sealed class OrderHeaderEntityTypeConfiguration : IEntityTypeConfiguratio
         builder.Property(e => e.Discount);
         builder.Property(e => e.OrderTotal).IsRequired();
 
-        builder.OwnsMany(e => e.Items)
-            .WithOwner(e => e.Header)
+        builder.HasMany(e => e.Items)
+            .WithOne(e => e.Header)
             .HasForeignKey(e => e.HeaderId);
     }
 }

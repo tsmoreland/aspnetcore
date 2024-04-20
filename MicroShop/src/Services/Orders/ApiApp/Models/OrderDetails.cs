@@ -1,6 +1,4 @@
-﻿using MicroShop.Services.Orders.ApiApp.Models.DataTransferObjects.Responses;
-
-namespace MicroShop.Services.Orders.ApiApp.Models;
+﻿namespace MicroShop.Services.Orders.ApiApp.Models;
 
 public sealed class OrderDetails
 {
