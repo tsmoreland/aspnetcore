@@ -22,12 +22,12 @@ public sealed class OrderDetails
     }
 
 
-    public int Id { get; init; }
+    public int Id { get; private init; }
     public int HeaderId { get; private init; }
     public OrderHeader? Header { get; private init; }
     public int ProductId { get; private init; }
     public string ProductName { get; private init; }
     public double Price { get; private init; }
-    public int Count { get; init; }
+    public int Count { get; private init; }
 
 }
