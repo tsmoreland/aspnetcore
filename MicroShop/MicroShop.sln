@@ -56,15 +56,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Services.Email.Ap
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Services.Email.ApiApp.Tests", "test\Services\Email\ApiApp.Tests\MicroShop.Services.Email.ApiApp.Tests.csproj", "{E422F2F5-7C9A-48E6-8CDD-1EF7A1919F6B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroShop.Integrations.MessageConsumer.Abstractions", "src\Integrations\MessageConsumer.Abstractions\MicroShop.Integrations.MessageConsumer.Abstractions.csproj", "{344CE295-02C8-4C8D-984F-B04A6DEAE739}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Integrations.MessageConsumer.Abstractions", "src\Integrations\MessageConsumer.Abstractions\MicroShop.Integrations.MessageConsumer.Abstractions.csproj", "{344CE295-02C8-4C8D-984F-B04A6DEAE739}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroShop.Integrations.MessageConsumer.AzureMessageConsumer", "src\Integrations\MessageConsumer.AzureMessageConsumer\MicroShop.Integrations.MessageConsumer.AzureMessageConsumer.csproj", "{3BB6AFF4-5B35-4986-8E14-9B1E7348CB1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Integrations.MessageConsumer.AzureMessageConsumer", "src\Integrations\MessageConsumer.AzureMessageConsumer\MicroShop.Integrations.MessageConsumer.AzureMessageConsumer.csproj", "{3BB6AFF4-5B35-4986-8E14-9B1E7348CB1B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroShop.Integrations.MessageConsumer", "src\Integrations\MessageConsumer\MicroShop.Integrations.MessageConsumer.csproj", "{09D07150-D57B-4D22-997D-D0B75CA90A3B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Integrations.MessageConsumer", "src\Integrations\MessageConsumer\MicroShop.Integrations.MessageConsumer.csproj", "{09D07150-D57B-4D22-997D-D0B75CA90A3B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MessageBus", "MessageBus", "{887B8A9F-413A-42FD-ACD5-D571F8E1886B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MessageConsumer", "MessageConsumer", "{DAEEA0D4-2EE9-4163-8299-82B24F301FCF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Orders", "Orders", "{C5BC23B7-255E-461F-99EB-C4181389FA59}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroShop.Services.Orders.ApiApp", "src\Services\Orders\ApiApp\MicroShop.Services.Orders.ApiApp.csproj", "{C6FA1580-8E65-4EF0-803E-59D89DC71043}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroShop.Services.Orders.ApiApp.Tests", "test\Services\Orders\ApiApp.Tests\MicroShop.Services.Orders.ApiApp.Tests.csproj", "{4B3570F3-A3F3-4D42-945C-1E5A6A0B76BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -144,6 +150,14 @@ Global
 		{09D07150-D57B-4D22-997D-D0B75CA90A3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09D07150-D57B-4D22-997D-D0B75CA90A3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09D07150-D57B-4D22-997D-D0B75CA90A3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6FA1580-8E65-4EF0-803E-59D89DC71043}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6FA1580-8E65-4EF0-803E-59D89DC71043}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6FA1580-8E65-4EF0-803E-59D89DC71043}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6FA1580-8E65-4EF0-803E-59D89DC71043}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B3570F3-A3F3-4D42-945C-1E5A6A0B76BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B3570F3-A3F3-4D42-945C-1E5A6A0B76BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B3570F3-A3F3-4D42-945C-1E5A6A0B76BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B3570F3-A3F3-4D42-945C-1E5A6A0B76BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -174,6 +188,9 @@ Global
 		{09D07150-D57B-4D22-997D-D0B75CA90A3B} = {DAEEA0D4-2EE9-4163-8299-82B24F301FCF}
 		{887B8A9F-413A-42FD-ACD5-D571F8E1886B} = {36458C57-593E-41C9-ACD2-62E1C179C067}
 		{DAEEA0D4-2EE9-4163-8299-82B24F301FCF} = {36458C57-593E-41C9-ACD2-62E1C179C067}
+		{C5BC23B7-255E-461F-99EB-C4181389FA59} = {D3911790-0739-4F98-B508-5228F0281946}
+		{C6FA1580-8E65-4EF0-803E-59D89DC71043} = {C5BC23B7-255E-461F-99EB-C4181389FA59}
+		{4B3570F3-A3F3-4D42-945C-1E5A6A0B76BC} = {C5BC23B7-255E-461F-99EB-C4181389FA59}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {037DE013-C257-46CE-BB74-5D52D8A5393F}
