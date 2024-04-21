@@ -2,14 +2,8 @@
 
 public sealed record OrderSummaryDto(
     int Id,
+    OrderStatus Status,
     string? CouponCode,
     double Discount,
     double OrderTotal,
     IEnumerable<OrderItemDto> Details);
-
-public sealed record class OrderItemDto(
-    int Id,
-    int ProductId,
-    string ProductName,
-    double Price,
-    int Count);

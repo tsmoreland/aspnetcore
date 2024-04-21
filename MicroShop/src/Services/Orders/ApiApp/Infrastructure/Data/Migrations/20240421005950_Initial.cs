@@ -12,7 +12,7 @@ namespace MicroShop.Services.Orders.ApiApp.Infrastructure.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "OrderHeader",
+                name: "OrderHeaders",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -21,15 +21,16 @@ namespace MicroShop.Services.Orders.ApiApp.Infrastructure.Data.Migrations
                     CouponCode = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     Discount = table.Column<double>(type: "float", nullable: false),
                     OrderTotal = table.Column<double>(type: "float", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    EmailAddress = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
                     OrderTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PaymentIntentId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    StripeSessionId = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    PaymentIntentId = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    StripeSessionId = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderHeader", x => x.Id);
+                    table.PrimaryKey("PK_OrderHeaders", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -48,9 +49,9 @@ namespace MicroShop.Services.Orders.ApiApp.Infrastructure.Data.Migrations
                 {
                     table.PrimaryKey("PK_OrderDetails", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OrderDetails_OrderHeader_HeaderId",
+                        name: "FK_OrderDetails_OrderHeaders_HeaderId",
                         column: x => x.HeaderId,
-                        principalTable: "OrderHeader",
+                        principalTable: "OrderHeaders",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -68,7 +69,7 @@ namespace MicroShop.Services.Orders.ApiApp.Infrastructure.Data.Migrations
                 name: "OrderDetails");
 
             migrationBuilder.DropTable(
-                name: "OrderHeader");
+                name: "OrderHeaders");
         }
     }
 }

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MicroShop.Services.Orders.ApiApp.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240420233219_Initial")]
+    [Migration("20240421005950_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -76,11 +76,13 @@ namespace MicroShop.Services.Orders.ApiApp.Infrastructure.Data.Migrations
 
                     b.Property<string>("EmailAddress")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<DateTime>("OrderTime")
                         .HasColumnType("datetime2");
@@ -89,10 +91,15 @@ namespace MicroShop.Services.Orders.ApiApp.Infrastructure.Data.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("PaymentIntentId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<string>("StripeSessionId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("UserId")
                         .HasMaxLength(450)
@@ -101,7 +108,7 @@ namespace MicroShop.Services.Orders.ApiApp.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OrderHeader");
+                    b.ToTable("OrderHeaders");
                 });
 
             modelBuilder.Entity("MicroShop.Services.Orders.ApiApp.Models.OrderDetails", b =>

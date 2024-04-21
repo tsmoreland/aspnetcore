@@ -17,7 +17,7 @@ internal static class DtoModelMapper
 
     public static OrderSummaryDto ToSummary(this OrderHeader order)
     {
-        return new OrderSummaryDto(order.Id, order.CouponCode, order.Discount, order.OrderTotal, order.Items.Select(ToDto).ToHashSet());
+        return new OrderSummaryDto(order.Id, order.Status, order.CouponCode, order.Discount, order.OrderTotal, order.Items.Select(ToDto).ToHashSet());
 
         static OrderItemDto ToDto(OrderDetails details) =>
             new(details.Id, details.ProductId, details.ProductName, details.Price, details.Count);
