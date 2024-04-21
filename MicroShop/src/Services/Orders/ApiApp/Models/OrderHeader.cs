@@ -28,6 +28,14 @@ public sealed class OrderHeader
         StripeSessionId = stripeSessionId;
     }
 
+    public static OrderHeader CreateOrder<T>(string userId, string? couponCode, double discount, double orderTotal, string name, string emailAddress, IEnumerable<T> items, Func<OrderHeader, T, OrderDetails> builder)
+    {
+        OrderHeader header = new(userId, couponCode, discount, orderTotal, name, emailAddress, []);
+        header.Items = items.Select(i => builder(header, i)).ToHashSet();
+        return header;
+    }
+
+
     public int Id { get; private init; }
     public string? UserId { get; private init; }
     public string? CouponCode { get; init; }
