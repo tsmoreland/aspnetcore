@@ -8,7 +8,6 @@ public sealed class OrderDetails
         Header = header;
     }
 
-
     private OrderDetails(int id, int headerId, int productId, string productName, double price, int count)
     {
         Id = id;
@@ -28,4 +27,5 @@ public sealed class OrderDetails
     public double Price { get; private init; }
     public int Count { get; private init; }
 
+    
 }
