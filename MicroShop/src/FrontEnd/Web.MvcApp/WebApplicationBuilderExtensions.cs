@@ -39,6 +39,7 @@ internal static class WebApplicationBuilderExtensions
             .AddScoped<ITokenProvider, TokenProvider>()
             .AddScoped<ICouponService, CouponService>()
             .AddScoped<ICartService, CartService>()
+            .AddScoped<IOrderService, OrderService>()
             .AddScoped<IProductService, ProductService>();
 
         services
@@ -75,6 +76,11 @@ internal static class WebApplicationBuilderExtensions
         {
             string shoppingCartApiUrl = configuration["ServiceUrls:ShoppingCartApi"] ?? throw new KeyNotFoundException("Missing entry in appsettings");
             httpClient.BaseAddress = new Uri(shoppingCartApiUrl);
+        });
+        services.AddHttpClient("OrdersApi", httpClient =>
+        {
+            string ordersUrl = configuration["ServiceUrls:OrdersApi"] ?? throw new KeyNotFoundException("Missing entry in appsettings");
+            httpClient.BaseAddress = new Uri(ordersUrl);
         });
 
 

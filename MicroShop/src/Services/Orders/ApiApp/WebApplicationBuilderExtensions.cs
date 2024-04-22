@@ -117,6 +117,12 @@ internal static class WebApplicationBuilderExtensions
                 };
             });
 
+        services.AddHttpClient("ProductsApi", httpClient =>
+        {
+            string productsApiUrl = configuration["ServiceUrls:ProductsApi"] ?? throw new KeyNotFoundException("Missing entry in appsettings");
+            httpClient.BaseAddress = new Uri(productsApiUrl);
+        });
+
         return builder;
     }
 }
