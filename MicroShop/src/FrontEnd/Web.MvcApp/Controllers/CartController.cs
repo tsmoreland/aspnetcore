@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using MicroShop.Web.MvcApp.Models;
 using MicroShop.Web.MvcApp.Models.Cart;
+using MicroShop.Web.MvcApp.Models.Orders;
 using MicroShop.Web.MvcApp.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace MicroShop.Web.MvcApp.Controllers;
 
 [Authorize]
-public sealed class CartController(ICartService cartService) : Controller
+public sealed class CartController(ICartService cartService, IOrderService orderService) : Controller
 {
     [HttpGet]
     public async Task<IActionResult> Index()
@@ -100,6 +101,7 @@ public sealed class CartController(ICartService cartService) : Controller
 
     }
 
+    [HttpPost]
     public async Task<IActionResult> Checkout(CheckoutDto model)
     {
         if (!ModelState.IsValid)
@@ -107,10 +109,20 @@ public sealed class CartController(ICartService cartService) : Controller
             return View(model);
         }
 
-        await Task.Delay(1).ConfigureAwait(false); // temporary
+        CreateOrderDto order = model.ToCreateOrder();
+
+        ResponseDto<OrderSummaryDto>? response = await orderService.Create(order);
+        if (response?.Success != true)
+        {
+            TempData["error"] = "Errors and warnings must be addressed");
+            return View(model);
+        }
+
+        // get stripe session and redirect to place order (art
 
         TempData["success"] = "Order submitted successfully.";
-        return RedirectToAction("Index");
+
+        return View(model);
     }
 
     private async Task<CartSummaryDto> GetCartForCurrentUser()
