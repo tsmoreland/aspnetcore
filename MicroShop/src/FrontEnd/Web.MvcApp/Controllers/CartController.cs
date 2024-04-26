@@ -125,6 +125,12 @@ public sealed class CartController(ICartService cartService, IOrderService order
         return View(model);
     }
 
+    [HttpGet("orders/{orderId}")]
+    public IActionResult Confirmation(int orderId)
+    {
+        return View(orderId);
+    }
+
     private async Task<CartSummaryDto> GetCartForCurrentUser()
     {
         ResponseDto<CartSummaryDto>? responseModel = await cartService.GetCartForCurrentUser();
