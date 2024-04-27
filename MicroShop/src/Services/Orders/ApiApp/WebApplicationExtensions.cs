@@ -1,5 +1,6 @@
 ﻿using MicroShop.Services.Orders.ApiApp.Api.Commands;
 using Serilog;
+using Stripe;
 
 namespace MicroShop.Services.Orders.ApiApp;
 
@@ -18,6 +19,8 @@ internal static class WebApplicationExtensions
             app.UseSwaggerUI();
         }
 
+        StripeConfiguration.ApiKey = app.Configuration["Stripe::SecretKey"];
+
         app.UseHttpsRedirection();
         app.UseAuthentication();
         app.UseRouting();
@@ -35,6 +38,12 @@ internal static class WebApplicationExtensions
             .RequireAuthorization()
             .WithOpenApi()
             .WithName(nameof(CreateOrder));
+
+        group
+            .MapPost("stripeSession", CreateStripeSession.Handle)
+            .RequireAuthorization()
+            .WithOpenApi()
+            .WithName(nameof(CreateStripeSession));
 
         return app;
     }
