@@ -1,8 +1,11 @@
-﻿using MicroShop.Services.Orders.ApiApp.Models.DataTransferObjects.Requests;
+﻿using System.Net;
+using MicroShop.Services.Orders.ApiApp.Models.DataTransferObjects.Requests;
+using MicroShop.Services.Orders.ApiApp.Models.DataTransferObjects.Responses;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Stripe.Checkout;
-using Stripe;
-using Microsoft.Extensions.Primitives;
+using MicroShop.Services.Orders.ApiApp.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace MicroShop.Services.Orders.ApiApp.Api.Commands;
 
@@ -13,28 +16,70 @@ internal sealed class CreateStripeSession
         public const string Payment = "payment";
     }
 
-    public static async Task<IResult> Handle([FromBody] StripeRequestDto request, [FromServices] IConfiguration configuration)
+
+    public static async Task<Results<Ok<ResponseDto<StripeResponseDto>>, StatusCodeWithResponseResult<StripeResponseDto>>>
+        Handle([FromBody] StripeRequestDto request, [FromServices] IConfiguration configuration, [FromServices] AppDbContext dbContext)
     {
-        StripeConfiguration.ApiKey = configuration["StripeApiKey"];
-        SessionCreateOptions options = new()
+        try
         {
-            SuccessUrl = request.ApprovedUrl.ToString(),
-            CancelUrl = request.CancelUrl.ToString(),
-            LineItems = [],
-            Mode = SessionModes.Payment,
-        };
+            List<SessionLineItemOptions> lineItems = request.Order.Details
+                .Select(i => new SessionLineItemOptions
+                {
+                    PriceData = new SessionLineItemPriceDataOptions
+                    {
+                        UnitAmount = ConvertToPenceOrCents(i.Price),
+                        Currency = "gbp",
+                        ProductData = new SessionLineItemPriceDataProductDataOptions
+                        {
+                            Name = i.ProductName,
+                        }
+                    },
+                    Quantity = i.Count,
+                })
+                .ToList();
 
-        // TODO: move this to a separate factory, it's beyond the scope of this API handler
-        throw new NotImplementedException();
 
+            SessionCreateOptions options = new()
+            {
+                SuccessUrl = request.ApprovedUrl.ToString(),
+                CancelUrl = request.CancelUrl.ToString(),
+                LineItems = lineItems,
+                Mode = SessionModes.Payment,
+            };
+
+            SessionService sessionService = new();
+            Session session = await sessionService.CreateAsync(options);
+
+            // Consider the use of mediator to fire this off to somewhere else
+            ResponseDto dbResult = await UpdateOrderWithStripeSessionId(request.Order.Id, session.Id, dbContext);
+            if (!dbResult.Success)
+            {
+                return new StatusCodeWithResponseResult<StripeResponseDto>(HttpStatusCode.InternalServerError, ResponseDto.Error<StripeResponseDto>(dbResult.ErrorMessage ?? "Uknown"));
+            }
+
+            return TypedResults.Ok(ResponseDto.Ok(new StripeResponseDto(session.Url)));
+        }
+        catch (Exception ex)
+        {
+            return new StatusCodeWithResponseResult<StripeResponseDto>(HttpStatusCode.InternalServerError, ResponseDto.Error<StripeResponseDto>(ex.Message));
+        }
+
+        static long ConvertToPenceOrCents(double price) => (long)price * 100; // 100 pence in a pound or cents in a dollar
     }
 
-}
-
-public sealed class StripeSessionOptions
-{
-    internal const string SectionName = nameof(StripeSessionOptions);
-
-    public string ApiKey { get; set; } = string.Empty;
-
+    private static async Task<ResponseDto> UpdateOrderWithStripeSessionId(int orderId, string stripeSessionId, AppDbContext dbContext)
+    {
+        try
+        {
+            await dbContext.OrderHeaders
+                .Where(i => i.Id == orderId)
+                .ExecuteUpdateAsync(setters => setters
+                    .SetProperty(p => p.StripeSessionId, stripeSessionId));
+            return ResponseDto.Ok();
+        }
+        catch (Exception ex)
+        {
+            return ResponseDto.Error(ex.Message);
+        }
+    }
 }
