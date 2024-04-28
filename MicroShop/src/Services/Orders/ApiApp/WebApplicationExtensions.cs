@@ -40,7 +40,7 @@ internal static class WebApplicationExtensions
             .WithName(nameof(CreateOrder));
 
         group
-            .MapPost("stripeSession", CreateStripeSession.Handle)
+            .MapPost("stripe", CreateStripeSession.Handle)
             .RequireAuthorization()
             .WithOpenApi()
             .WithName(nameof(CreateStripeSession));

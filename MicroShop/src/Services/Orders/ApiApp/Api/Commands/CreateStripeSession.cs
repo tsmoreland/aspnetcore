@@ -18,7 +18,7 @@ internal sealed class CreateStripeSession
 
 
     public static async Task<Results<Ok<ResponseDto<StripeResponseDto>>, StatusCodeWithResponseResult<StripeResponseDto>>>
-        Handle([FromBody] StripeRequestDto request, [FromServices] IConfiguration configuration, [FromServices] AppDbContext dbContext)
+        Handle([FromBody] StripeRequestDto request, [FromServices] AppDbContext dbContext)
     {
         try
         {
@@ -54,7 +54,7 @@ internal sealed class CreateStripeSession
             ResponseDto dbResult = await UpdateOrderWithStripeSessionId(request.Order.Id, session.Id, dbContext);
             if (!dbResult.Success)
             {
-                return new StatusCodeWithResponseResult<StripeResponseDto>(HttpStatusCode.InternalServerError, ResponseDto.Error<StripeResponseDto>(dbResult.ErrorMessage ?? "Uknown"));
+                return new StatusCodeWithResponseResult<StripeResponseDto>(HttpStatusCode.InternalServerError, ResponseDto.Error<StripeResponseDto>(dbResult.ErrorMessage ?? "Unknown"));
             }
 
             return TypedResults.Ok(ResponseDto.Ok(new StripeResponseDto(session.Url)));

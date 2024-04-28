@@ -23,7 +23,7 @@ public sealed class CartController(ICartService cartService, IOrderService order
         ResponseDto? response = await cartService.EmailCartToCurrentUser();
         if (response?.Success is true)
         {
-            TempData["success"] = "Email will be procesed and sent soon";
+            TempData["success"] = "Email will be processed and sent soon";
             return RedirectToAction(nameof(Index));
         }
 
@@ -111,19 +111,37 @@ public sealed class CartController(ICartService cartService, IOrderService order
 
         CreateOrderDto order = model.ToCreateOrder();
 
-        ResponseDto<OrderSummaryDto>? response = await orderService.Create(order);
+        ResponseDto<OrderSummaryDto>? response = await orderService.CreateOrder(order);
         if (response?.Success != true)
         {
-            TempData["error"] = "Errors and warnings must be addressed");
+            TempData["error"] = "Errors and warnings must be addressed";
             return View(model);
         }
 
         // get stripe session and redirect to place order (art
+        ResponseDto<StripeResponseDto>? stripeResponse = await orderService.CreateStripeSession(BuildStripeRequest(response.Data!));
+        if (stripeResponse?.Success != true)
+        {
+            // TODO: if this fails we need to cancel the order or allow for it to be remembered and payment retried.  It may be enough to update checkout dto with order id
+            TempData["error"] = "Errors and warnings must be addressed";
+            return View(model);
+        }
 
-        TempData["success"] = "Order submitted successfully.";
+        Response.Headers.Append("Location", stripeResponse.Data!.StripeSessionUrl);
+        return new StatusCodeResult(StatusCodes.Status303SeeOther);
 
-        return View(model);
+        StripeRequest BuildStripeRequest(OrderSummaryDto orderSummary)
+        {
+            int orderId = orderSummary.Id;
+            string domain = $"{Request.Scheme}://{Request.Host.Value}";
+
+            string approvedUrl = $"{domain}/cart/confirmation?orderId={orderId}";
+            string cancelUrl = $"{domain}/cart/checkout";
+
+            return new StripeRequest(new Uri(approvedUrl), new Uri(cancelUrl), orderSummary);
+        }
     }
+
 
     [HttpGet("orders/{orderId}")]
     public IActionResult Confirmation(int orderId)

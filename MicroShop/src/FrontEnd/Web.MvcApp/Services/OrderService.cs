@@ -9,9 +9,12 @@ public sealed class OrderService(IBaseService baseService) : IOrderService
     private const string ClientName = "OrderApi";
 
     /// <inheritdoc />
-    public async Task<ResponseDto<OrderSummaryDto>?> Create(CreateOrderDto model, CancellationToken cancellationToken = default) =>
+    public async Task<ResponseDto<OrderSummaryDto>?> CreateOrder(CreateOrderDto model, CancellationToken cancellationToken = default) =>
         await SendAsync<OrderSummaryDto>(new RequestDto(ApiType.Post, "/api/orders", model));
 
+    /// <inheritdoc />
+    public async Task<ResponseDto<StripeResponseDto>?> CreateStripeSession(StripeRequest model, CancellationToken cancellationToken = default) => 
+        await SendAsync<StripeResponseDto>(new RequestDto(ApiType.Post, "/api/orders/stripe", model));
+
     private Task<ResponseDto<T>?> SendAsync<T>(RequestDto data) => baseService.SendAsync<T>(ClientName, data);
-    private Task<ResponseDto?> SendAsync(RequestDto data) => baseService.SendAsync(ClientName, data);
 }
