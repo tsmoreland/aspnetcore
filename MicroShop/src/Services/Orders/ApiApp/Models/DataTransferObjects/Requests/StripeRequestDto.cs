@@ -2,4 +2,4 @@
 
 namespace MicroShop.Services.Orders.ApiApp.Models.DataTransferObjects.Requests;
 
-public sealed record class StripeRequestDto(string SessionId, Uri SessionUrl, Uri ApprovedUrl, Uri CancelUrl, OrderSummaryDto Order);
+public sealed record class StripeRequestDto(Uri ApprovedUrl, Uri CancelUrl, OrderSummaryDto Order);
