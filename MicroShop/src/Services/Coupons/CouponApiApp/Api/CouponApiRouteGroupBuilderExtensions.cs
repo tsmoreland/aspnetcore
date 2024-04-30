@@ -1,9 +1,11 @@
-﻿using MicroShop.Services.Coupons.CouponApiApp.Infrastructure.Data;
-using MicroShop.Services.Coupons.CouponApiApp.Models;
+﻿using System.Globalization;
+using MicroShop.Services.Coupons.CouponApiApp.Infrastructure.Data;
 using MicroShop.Services.Coupons.CouponApiApp.Models.DataTransferObjects;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Stripe;
+using Coupon = MicroShop.Services.Coupons.CouponApiApp.Models.Coupon;
 
 namespace MicroShop.Services.Coupons.CouponApiApp.Api;
 
@@ -31,6 +33,18 @@ internal static class CouponApiRouteGroupBuilderExtensions
                     Coupon coupon = data.ToNewCoupon();
                     dbContext.Coupons.Add(coupon);
                     await dbContext.SaveChangesAsync();
+
+                    CouponCreateOptions options = new()
+                    {
+                        AmountOff = (long)data.DiscountAmount * 100, // converting from $ or GBP to cents or pence
+                        Name = data.Code,
+                        Id = coupon.Id.ToString(CultureInfo.InvariantCulture),
+                        Currency = "gbp", // should come from config or definitions class
+                        Duration = "repeating", // again from dto via enum and some mapper that maps enum to string
+                        DurationInMonths = 3, // and once again - use the dto
+                    }; 
+                    CouponService couponService = new();
+                    await couponService.CreateAsync(options);
 
                     CouponDto result = new(coupon);
                     return Results.Created((string?)null, ResponseDto.Ok(result));
@@ -140,6 +154,10 @@ internal static class CouponApiRouteGroupBuilderExtensions
                 {
                     int deleted = await dbContext.Coupons.Where(c => c.Id == id).ExecuteDeleteAsync();
                     _ = deleted; // may want to log this
+
+                    CouponService couponService = new();
+                    await couponService.DeleteAsync(id.ToString(CultureInfo.InvariantCulture));
+
                     return NoContentWithResponseResult.Success();
                 }
                 catch (Exception)
