@@ -26,35 +26,7 @@ internal static class CouponApiRouteGroupBuilderExtensions
     private static RouteGroupBuilder MapAddCoupon(this RouteGroupBuilder builder)
     {
         builder
-            .MapPost("/", async ([FromBody] AddOrEditCouponDto data, [FromServices] AppDbContext dbContext) =>
-            {
-                try
-                {
-                    Coupon coupon = data.ToNewCoupon();
-                    dbContext.Coupons.Add(coupon);
-                    await dbContext.SaveChangesAsync();
-
-                    CouponCreateOptions options = new()
-                    {
-                        AmountOff = (long)data.DiscountAmount * 100, // converting from $ or GBP to cents or pence
-                        Name = data.Code,
-                        Id = coupon.Id.ToString(CultureInfo.InvariantCulture),
-                        Currency = "gbp", // should come from config or definitions class
-                        Duration = "repeating", // again from dto via enum and some mapper that maps enum to string
-                        DurationInMonths = 3, // and once again - use the dto
-                    }; 
-                    CouponService couponService = new();
-                    await couponService.CreateAsync(options);
-
-                    CouponDto result = new(coupon);
-                    return Results.Created((string?)null, ResponseDto.Ok(result));
-                }
-                catch (Exception)
-                {
-                    // cheap out and blame the client for now, more precise exception handling would handle this better
-                    return Results.BadRequest(ResponseDto.Error<CouponDto>("One or more properties of the provided data are invalid"));
-                }
-            })
+            .MapPost("/", static ([FromBody] AddOrEditCouponDto data, [FromServices] AddCouponHandler handler) => handler.Handle(data))
             .RequireAuthorization("ADMIN")
             .WithName("AddCoupon")
             .WithOpenApi();
