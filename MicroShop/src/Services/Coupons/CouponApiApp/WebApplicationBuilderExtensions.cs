@@ -1,5 +1,6 @@
 ﻿using System.Security.Authentication;
 using System.Text;
+using MicroShop.Services.Coupons.CouponApiApp.Api;
 using MicroShop.Services.Coupons.CouponApiApp.Infrastructure.Data;
 using MicroShop.Services.Coupons.CouponApiApp.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -102,7 +103,14 @@ internal static class WebApplicationBuilderExtensions
 
             });
 
+        services.AddApiHandlers();
+
         return builder;
     }
 
+    private static IServiceCollection AddApiHandlers(this IServiceCollection services)
+    {
+        return services
+            .AddScoped<AddCouponHandler>();
+    }
 }
