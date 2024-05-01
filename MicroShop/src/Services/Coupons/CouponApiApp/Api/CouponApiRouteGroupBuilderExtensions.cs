@@ -26,7 +26,7 @@ internal static class CouponApiRouteGroupBuilderExtensions
     private static RouteGroupBuilder MapAddCoupon(this RouteGroupBuilder builder)
     {
         builder
-            .MapPost("/", ([FromBody] AddOrEditCouponDto data, [FromServices] AddCouponHandler handler) => handler.Handle(data))
+            .MapPost("/", static ([FromBody] AddOrEditCouponDto data, [FromServices] AddCouponHandler handler) => handler.Handle(data))
             .RequireAuthorization("ADMIN")
             .WithName("AddCoupon")
             .WithOpenApi();
