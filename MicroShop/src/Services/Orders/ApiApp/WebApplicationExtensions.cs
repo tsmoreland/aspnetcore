@@ -1,4 +1,11 @@
-﻿using MicroShop.Services.Orders.ApiApp.Api.Commands;
+﻿using System.Net;
+using MicroShop.Services.Orders.ApiApp.Api;
+using MicroShop.Services.Orders.ApiApp.Api.Commands;
+using MicroShop.Services.Orders.ApiApp.Api.Queries;
+using MicroShop.Services.Orders.ApiApp.Models;
+using MicroShop.Services.Orders.ApiApp.Models.DataTransferObjects.Responses;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using Stripe;
 
@@ -45,6 +52,16 @@ internal static class WebApplicationExtensions
             .WithOpenApi()
             .WithName(nameof(CreateStripeSession));
 
+        group
+            .MapGet("{orderId}", async Task<Results<Ok<ResponseDto<OrderStatusDto>>, NotFound<ResponseDto<OrderStatusDto>>>>
+                ([FromRoute] int orderId, [FromServices] GetOrderStatusApiHandler handler) =>
+                {
+                    OrderHeader? order = await handler.Handle(orderId);
+
+                    return order is not null
+                        ? TypedResults.Ok(ResponseDto.Ok(new OrderStatusDto(order)))
+                        : TypedResults.NotFound(ResponseDto.Error<OrderStatusDto>("order not found"));
+                });
         return app;
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Security.Authentication;
 using System.Text;
 using System.Threading.RateLimiting;
+using MicroShop.Services.Orders.ApiApp.Api.Queries;
 using MicroShop.Services.Orders.ApiApp.Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.RateLimiting;
@@ -119,9 +120,11 @@ internal static class WebApplicationBuilderExtensions
 
         services.AddHttpClient("ProductsApi", httpClient =>
         {
-            string productsApiUrl = configuration["ServiceUrls:ProductsApi"] ?? throw new KeyNotFoundException("Missing entry in appsettings");
+            string productsApiUrl = configuration["ServiceUrls:ProductsApi"] ?? throw new KeyNotFoundException("Missing entry in app settings");
             httpClient.BaseAddress = new Uri(productsApiUrl);
         });
+
+        services.AddScoped<GetOrderStatusApiHandler>();
 
         return builder;
     }

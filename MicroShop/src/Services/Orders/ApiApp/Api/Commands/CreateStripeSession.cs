@@ -47,6 +47,11 @@ internal sealed class CreateStripeSession
                 Mode = SessionModes.Payment,
             };
 
+            if (request.Order.Discount > 0.0)
+            {
+                options.Discounts = [ new SessionDiscountOptions { Coupon = request.Order.CouponCode, } ];
+            }
+
             SessionService sessionService = new();
             Session session = await sessionService.CreateAsync(options);
 

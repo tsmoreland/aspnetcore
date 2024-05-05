@@ -65,4 +65,15 @@ public sealed class OrderHeader
         Status = status;
         return true;
     }
+
+    public void SetPaymentIntentIdIfPending(string paymentIntentId)
+    {
+        if (Status != OrderStatus.Pending || PaymentIntentId is { Length: > 0 } || paymentIntentId is not { Length: > 0 }) 
+        {
+            return;
+        }
+
+        PaymentIntentId = paymentIntentId;
+        Status = OrderStatus.Approved;
+    }
 }
