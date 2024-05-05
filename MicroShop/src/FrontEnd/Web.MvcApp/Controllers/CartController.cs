@@ -144,8 +144,15 @@ public sealed class CartController(ICartService cartService, IOrderService order
 
 
     [HttpGet("orders/{orderId}")]
-    public IActionResult Confirmation(int orderId)
+    public async Task<IActionResult> Confirmation(int orderId)
     {
+        ResponseDto<OrderStatusDto>? orderStatus = await orderService.GetOrderStatus(orderId);
+        if (orderStatus?.Success != true || orderStatus?.Data?.Status != OrderStatus.Approved)
+        {
+            // TODO redirect to error page specific to order status, to allow for payment to continue or be cancelled
+            return View(orderId);
+        }
+
         return View(orderId);
     }
 

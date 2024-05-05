@@ -7,4 +7,5 @@ public interface IOrderService
 {
     Task<ResponseDto<OrderSummaryDto>?> CreateOrder(CreateOrderDto model, CancellationToken cancellationToken = default);
     Task<ResponseDto<StripeResponseDto>?> CreateStripeSession(StripeRequest request, CancellationToken cancellationToken = default);
+    Task<ResponseDto<OrderStatusDto>?> GetOrderStatus(int orderId, CancellationToken cancellationToken = default);
 }
