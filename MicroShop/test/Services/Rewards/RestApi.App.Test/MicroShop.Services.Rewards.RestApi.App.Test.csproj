@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\src\Services\Products\ProductsApiApp\MicroShop.Services.Products.ProductsApiApp.csproj" />
+    <ProjectReference Include="..\..\..\..\src\Services\Rewards\RestApi.App\MicroShop.Services.Rewards.RestApi.App.csproj" />
   </ItemGroup>
 
   <ItemGroup>
