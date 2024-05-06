@@ -1,8 +1,8 @@
-﻿using Microshop.Services.Rewards.RestApi.App.Models;
+﻿using MicroShop.Services.Rewards.RestApi.App.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Microshop.Services.Rewards.RestApi.App.Infrastructure.Data;
+namespace MicroShop.Services.Rewards.RestApi.App.Infrastructure.Data;
 
 public sealed class RewardEntityTypeConfiguration : IEntityTypeConfiguration<Reward>
 {

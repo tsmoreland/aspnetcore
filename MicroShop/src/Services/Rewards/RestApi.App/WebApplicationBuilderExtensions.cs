@@ -1,7 +1,7 @@
 ﻿using System.Security.Authentication;
 using System.Text;
 using System.Threading.RateLimiting;
-using Microshop.Services.Rewards.RestApi.App.Infrastructure.Data;
+using MicroShop.Services.Rewards.RestApi.App.Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.AspNetCore.ResponseCompression;
@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
-namespace Microshop.Services.Rewards.RestApi.App;
+namespace MicroShop.Services.Rewards.RestApi.App;
 
 internal static class WebApplicationBuilderExtensions
 {

@@ -1,4 +1,4 @@
-using Microshop.Services.Rewards.RestApi.App;
+using MicroShop.Services.Rewards.RestApi.App;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()

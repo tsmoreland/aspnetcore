@@ -1,6 +1,6 @@
 ﻿using Serilog;
 
-namespace Microshop.Services.Rewards.RestApi.App;
+namespace MicroShop.Services.Rewards.RestApi.App;
 
 internal static class WebApplicationExtensions
 {

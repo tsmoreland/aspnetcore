@@ -1,7 +1,7 @@
-﻿using Microshop.Services.Rewards.RestApi.App.Models;
+﻿using MicroShop.Services.Rewards.RestApi.App.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Microshop.Services.Rewards.RestApi.App.Infrastructure.Data;
+namespace MicroShop.Services.Rewards.RestApi.App.Infrastructure.Data;
 
 public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {

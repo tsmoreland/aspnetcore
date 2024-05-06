@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Microshop.Services.Rewards.RestApi.App.Infrastructure.Data.Migrations
+namespace MicroShop.Services.Rewards.RestApi.App.Infrastructure.Data.Migrations
 {
     /// <inheritdoc />
     public partial class Initial : Migration

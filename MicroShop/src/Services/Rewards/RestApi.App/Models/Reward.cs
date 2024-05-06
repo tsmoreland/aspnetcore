@@ -1,4 +1,4 @@
-﻿namespace Microshop.Services.Rewards.RestApi.App.Models;
+﻿namespace MicroShop.Services.Rewards.RestApi.App.Models;
 
 public sealed class Reward
 {
