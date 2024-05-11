@@ -1,6 +1,7 @@
 ﻿using System.Security.Authentication;
 using System.Text;
 using System.Threading.RateLimiting;
+using MicroShop.Integrations.MessageBus;
 using MicroShop.Services.Orders.ApiApp.Api.Queries;
 using MicroShop.Services.Orders.ApiApp.Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -123,6 +124,8 @@ internal static class WebApplicationBuilderExtensions
             string productsApiUrl = configuration["ServiceUrls:ProductsApi"] ?? throw new KeyNotFoundException("Missing entry in app settings");
             httpClient.BaseAddress = new Uri(productsApiUrl);
         });
+
+        services.AddMessageBus(configuration);
 
         services.AddScoped<GetOrderStatusApiHandler>();
 

@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using MicroShop.Services.Orders.ApiApp.Extensions;
 using MicroShop.Services.Orders.ApiApp.Models.DataTransferObjects.Requests;
 using MicroShop.Services.Orders.ApiApp.Models.DataTransferObjects.Responses;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -6,6 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 using Stripe.Checkout;
 using MicroShop.Services.Orders.ApiApp.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using MicroShop.Integrations.MessageBus.AzureMessageBus;
+using Microsoft.Extensions.Options;
+using MicroShop.Integrations.MessageBus.Abstractions;
+using MicroShop.Services.Orders.ApiApp.Models.DataTransferObjects.Notifications;
 
 namespace MicroShop.Services.Orders.ApiApp.Api.Commands;
 
@@ -18,10 +23,16 @@ internal sealed class CreateStripeSession
 
 
     public static async Task<Results<Ok<ResponseDto<StripeResponseDto>>, StatusCodeWithResponseResult<StripeResponseDto>>>
-        Handle([FromBody] StripeRequestDto request, [FromServices] AppDbContext dbContext)
+        Handle([FromBody] StripeRequestDto request, HttpContext httpContext, [FromServices] AppDbContext dbContext, [FromServices] IMessageBus messageBus, [FromServices] IOptions<MessageBusOptions> messageBusOptions)
     {
         try
         {
+            if (!httpContext.TryGetUserIdFromHttpContext(out string? userId))
+            {
+                return new StatusCodeWithResponseResult<StripeResponseDto>(HttpStatusCode.Unauthorized, ResponseDto.Error<StripeResponseDto>("Not authorized"));
+            }
+
+            int reardsValue = (int)ConvertToPenceOrCents(request.Order.OrderTotal) / 100;
             List<SessionLineItemOptions> lineItems = request.Order.Details
                 .Select(i => new SessionLineItemOptions
                 {
@@ -62,6 +73,10 @@ internal sealed class CreateStripeSession
                 return new StatusCodeWithResponseResult<StripeResponseDto>(HttpStatusCode.InternalServerError, ResponseDto.Error<StripeResponseDto>(dbResult.ErrorMessage ?? "Unknown"));
             }
 
+            RewardsDto dto = new(userId, reardsValue, request.Order.Id);
+            await SendNotification(dto, messageBus, messageBusOptions.Value);
+
+
             return TypedResults.Ok(ResponseDto.Ok(new StripeResponseDto(session.Url)));
         }
         catch (Exception ex)
@@ -86,5 +101,10 @@ internal sealed class CreateStripeSession
         {
             return ResponseDto.Error(ex.Message);
         }
+    }
+    private static async ValueTask SendNotification<T>(T dto, IMessageBus messageBus, MessageBusOptions messageBusOptions)
+    {
+        // we could accept a logger and log errors here as well or just let them bubble up
+        await messageBus.PublishMessage(messageBusOptions.TopicName, dto);
     }
 }
