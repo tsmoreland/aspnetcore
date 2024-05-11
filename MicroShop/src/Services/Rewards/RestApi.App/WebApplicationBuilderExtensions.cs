@@ -1,6 +1,7 @@
 ﻿using System.Security.Authentication;
 using System.Text;
 using System.Threading.RateLimiting;
+using MicroShop.Integrations.MessageConsumer;
 using MicroShop.Services.Rewards.RestApi.App.Infrastructure.Data;
 using MicroShop.Services.Rewards.RestApi.App.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -119,6 +120,7 @@ internal static class WebApplicationBuilderExtensions
             });
 
         services.AddHostedService<DatabaseMigrationBackgroundService>();
+        services.AddTopicConsumer<SubscriptionHandler>(configuration);
 
         return builder;
     }

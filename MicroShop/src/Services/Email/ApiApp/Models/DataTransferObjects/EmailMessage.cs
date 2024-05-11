@@ -8,10 +8,10 @@ public sealed class EmailMessage
     public string EmailAddress { get; set; } = string.Empty;
     public CartSummaryDto Content { get; set; } = CartSummaryDto.Empty();
 
-    public EmailLogEntry ToLogEntry()
+    public EmailLogEntry ToLogCartEntry()
     {
         StringBuilder builder = new();
-        builder.Append("""
+        builder.Append($"""
             <br/>
             Total: {Content.CartTotal}<br/>
             <ul>
@@ -29,4 +29,5 @@ public sealed class EmailMessage
 
         return new EmailLogEntry(EmailAddress, builder.ToString(), DateTime.UtcNow);
     }
+
 }

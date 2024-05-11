@@ -18,4 +18,16 @@ public static class ServiceCollectionExtensions
             _ => services
         };
     }
+
+    public static IServiceCollection AddTopicConsumer<TSubscriptionHandler>(this IServiceCollection services, IConfiguration configuration)
+        where TSubscriptionHandler : class, ISubscriptionHandler
+    {
+        MessageConsumerOptions? options = configuration.GetRequiredSection("TopicConsumer").Get<MessageConsumerOptions>();
+        services.AddSingleton<ISubscriptionHandler, TSubscriptionHandler>();
+        return options?.BusType switch
+        {
+            MessageBusType.Azure => services.AddAzureTopicConsumer(configuration),
+            _ => services
+        };
+    }
 }

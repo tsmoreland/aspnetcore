@@ -21,4 +21,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Integrations\MessageConsumer\MicroShop.Integrations.MessageConsumer.csproj" />
+  </ItemGroup>
+
 </Project>
