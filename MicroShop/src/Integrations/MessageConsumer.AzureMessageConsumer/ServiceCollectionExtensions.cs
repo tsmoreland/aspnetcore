@@ -12,4 +12,12 @@ public static class ServiceCollectionExtensions
 
         return services;
     }
+
+    public static IServiceCollection AddAzureTopicConsumer(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<AzureMessageBusOptions>(configuration.GetSection("AzureMessageBus"));
+        services.AddHostedService<TopicConsumer>();
+
+        return services;
+    }
 }
