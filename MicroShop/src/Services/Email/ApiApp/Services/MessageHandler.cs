@@ -26,20 +26,20 @@ public sealed class MessageHandler(IDbContextFactory<AppDbContext> dbContextFact
         }
     }
 
-    public async ValueTask HandleShoppingCartMessage(BinaryData messageBody)
+    private async ValueTask HandleShoppingCartMessage(BinaryData messageBody)
     {
         await using Stream bodyStream = messageBody.ToStream();
         EmailMessage email = await JsonSerializer.DeserializeAsync<EmailMessage>(bodyStream) ?? throw new JsonException("Unable to deserialize message content");
 
         logger.LogInformation("Email Received {Name} {Email} {CartTotal}", email.Name, email.EmailAddress, email.Content.CartTotal);
 
-        EmailLogEntry logEntry = email.ToLogEntry();
+        EmailLogEntry logEntry = email.ToLogCartEntry();
         await using AppDbContext dbContext = await dbContextFactory.CreateDbContextAsync();
         dbContext.EmailLogs.Add(logEntry);
         await dbContext.SaveChangesAsync();
     }
 
-    public async ValueTask HandleRegisterUserMessage(BinaryData messageBody)
+    private async ValueTask HandleRegisterUserMessage(BinaryData messageBody)
     {
         await using Stream bodyStream = messageBody.ToStream();
         string emailAddress = await JsonSerializer.DeserializeAsync<string>(bodyStream) ?? throw new JsonException("Unable to deserialize message content");
