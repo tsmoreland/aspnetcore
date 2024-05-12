@@ -49,6 +49,7 @@ internal static class WebApplicationBuilderExtensions
 
 
         services
+            .AddMediatR(static options => options.RegisterServicesFromAssembly(typeof(Program).Assembly));
             .AddOptions()
             .AddMemoryCache()
             .AddRateLimiter(static _ => _.AddFixedWindowLimiter(policyName: "fixedWindow",

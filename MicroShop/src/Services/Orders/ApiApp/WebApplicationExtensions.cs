@@ -1,7 +1,13 @@
 ﻿using System.Net;
+using System.Security.Claims;
+using Azure;
+using MediatR;
 using MicroShop.Services.Orders.ApiApp.Api;
 using MicroShop.Services.Orders.ApiApp.Api.Commands;
 using MicroShop.Services.Orders.ApiApp.Api.Queries;
+using MicroShop.Services.Orders.ApiApp.Extensions;
+using MicroShop.Services.Orders.ApiApp.Features.Queries.GetOrders;
+using MicroShop.Services.Orders.ApiApp.Features.Queries.GetOrdersByUserId;
 using MicroShop.Services.Orders.ApiApp.Models;
 using MicroShop.Services.Orders.ApiApp.Models.DataTransferObjects.Responses;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -53,7 +59,7 @@ internal static class WebApplicationExtensions
             .WithName(nameof(CreateStripeSession));
 
         group
-            .MapGet("{orderId}", async Task<Results<Ok<ResponseDto<OrderStatusDto>>, NotFound<ResponseDto<OrderStatusDto>>>>
+            .MapGet("{orderId:int}", async Task<Results<Ok<ResponseDto<OrderStatusDto>>, NotFound<ResponseDto<OrderStatusDto>>>>
                 ([FromRoute] int orderId, [FromServices] GetOrderStatusApiHandler handler) =>
                 {
                     OrderHeader? order = await handler.Handle(orderId);
@@ -61,7 +67,52 @@ internal static class WebApplicationExtensions
                     return order is not null
                         ? TypedResults.Ok(ResponseDto.Ok(new OrderStatusDto(order)))
                         : TypedResults.NotFound(ResponseDto.Error<OrderStatusDto>("order not found"));
-                });
+                })
+            .RequireAuthorization("ADMIN")
+            .WithName("GetByOrderId")
+            .WithOpenApi();
+
+        group
+            .MapGet("{userId}", ([FromRoute] string userId, [FromServices] IMediator mediator) =>
+            {
+                IAsyncEnumerable<OrderStatusDto> data = mediator.CreateStream(new GetOrdersByUserIdRequest(userId))
+                    .Select(o => new OrderStatusDto(o));
+                return Results.Ok(ResponseDto.Ok(data));
+            })
+            .RequireAuthorization("ADMIN")
+            .WithName("GetOrdersByUserId")
+            .WithOpenApi();
+
+        group
+            .MapGet("", (HttpContext httpContext, [FromServices] IMediator mediator) =>
+            {
+                ClaimsIdentity? identity = httpContext.User.Identities.FirstOrDefault();
+                string? role = identity?.Claims.FirstOrDefault(x => x.Type == "role")?.Value;
+
+                IAsyncEnumerable<OrderStatusDto> data;
+
+                if (role == "ADMIN")
+                {
+                    data = mediator.CreateStream(new GetOrdersRequest()).Select(o => new OrderStatusDto(o));
+                }
+                else if (!httpContext.TryGetUserIdFromHttpContext(out string? userId))
+                {
+                    data = mediator.CreateStream(new GetOrdersByUserIdRequest(userId))
+                        .Select(o => new OrderStatusDto(o));
+                }
+                else
+                {
+                    data = AsyncEnumerable.Empty<OrderStatusDto>(); 
+                }
+
+                return Results.Ok(ResponseDto.Ok(data));
+
+            })
+            .RequireAuthorization()
+            .WithName("GetOrders")
+            .WithOpenApi();
+
+
         return app;
     }
 }
