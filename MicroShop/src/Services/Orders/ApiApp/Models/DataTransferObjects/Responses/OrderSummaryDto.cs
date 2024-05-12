@@ -6,4 +6,10 @@ public sealed record OrderSummaryDto(
     string? CouponCode,
     double Discount,
     double OrderTotal,
-    IEnumerable<OrderItemDto> Details);
+    IEnumerable<OrderItemDto> Details)
+{
+    public OrderSummaryDto(OrderHeader order)
+        : this(order.Id, order.Status, order.CouponCode, order.Discount, order.OrderTotal, order.Items.Select(li => new OrderItemDto(li)))
+    {
+    }
+}

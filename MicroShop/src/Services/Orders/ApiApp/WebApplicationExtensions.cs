@@ -1,11 +1,8 @@
-﻿using System.Net;
-using System.Security.Claims;
-using Azure;
+﻿using System.Security.Claims;
 using MediatR;
-using MicroShop.Services.Orders.ApiApp.Api;
 using MicroShop.Services.Orders.ApiApp.Api.Commands;
-using MicroShop.Services.Orders.ApiApp.Api.Queries;
 using MicroShop.Services.Orders.ApiApp.Extensions;
+using MicroShop.Services.Orders.ApiApp.Features.Queries.GetOrderDetailsById;
 using MicroShop.Services.Orders.ApiApp.Features.Queries.GetOrders;
 using MicroShop.Services.Orders.ApiApp.Features.Queries.GetOrdersByUserId;
 using MicroShop.Services.Orders.ApiApp.Models;
@@ -59,16 +56,27 @@ internal static class WebApplicationExtensions
             .WithName(nameof(CreateStripeSession));
 
         group
-            .MapGet("{orderId:int}", async Task<Results<Ok<ResponseDto<OrderStatusDto>>, NotFound<ResponseDto<OrderStatusDto>>>>
-                ([FromRoute] int orderId, [FromServices] GetOrderStatusApiHandler handler) =>
+            .MapGet("{orderId:int}", async Task<Results<Ok<ResponseDto<OrderSummaryDto>>, NotFound<ResponseDto<OrderSummaryDto>>>>
+                ([FromRoute] int orderId, HttpContext httpContext, [FromServices] IMediator mediator) =>
                 {
-                    OrderHeader? order = await handler.Handle(orderId);
+                    ClaimsIdentity? identity = httpContext.User.Identities.FirstOrDefault();
+                    string? role = identity?.Claims.FirstOrDefault(x => x.Type == "role")?.Value;
+                    string? userId = null;
+                    if (role is not "ADMIN")
+                    {
+                        if (!httpContext.TryGetUserIdFromHttpContext(out userId))
+                        {
+                            // Replace with 401 eventually
+                            return TypedResults.NotFound(ResponseDto.Error<OrderSummaryDto>("order not found"));
+                        }
+                    }
 
+                    OrderHeader? order = await mediator.Send(new GetOrderDetailsByIdRequest(orderId, userId));
                     return order is not null
-                        ? TypedResults.Ok(ResponseDto.Ok(new OrderStatusDto(order)))
-                        : TypedResults.NotFound(ResponseDto.Error<OrderStatusDto>("order not found"));
+                        ? TypedResults.Ok(ResponseDto.Ok(new OrderSummaryDto(order)))
+                        : TypedResults.NotFound(ResponseDto.Error<OrderSummaryDto>("order not found"));
                 })
-            .RequireAuthorization("ADMIN")
+            .RequireAuthorization()
             .WithName("GetByOrderId")
             .WithOpenApi();
 

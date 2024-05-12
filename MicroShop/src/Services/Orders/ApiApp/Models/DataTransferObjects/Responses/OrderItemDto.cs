@@ -5,4 +5,10 @@ public sealed record class OrderItemDto(
     int ProductId,
     string ProductName,
     double Price,
-    int Count);
+    int Count)
+{
+    public OrderItemDto(OrderDetails details)
+        : this(details.Id, details.ProductId, details.ProductName, details.Price, details.Count)
+    {
+    }
+}

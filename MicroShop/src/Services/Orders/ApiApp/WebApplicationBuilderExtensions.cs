@@ -2,7 +2,6 @@
 using System.Text;
 using System.Threading.RateLimiting;
 using MicroShop.Integrations.MessageBus;
-using MicroShop.Services.Orders.ApiApp.Api.Queries;
 using MicroShop.Services.Orders.ApiApp.Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.RateLimiting;
@@ -49,7 +48,7 @@ internal static class WebApplicationBuilderExtensions
 
 
         services
-            .AddMediatR(static options => options.RegisterServicesFromAssembly(typeof(Program).Assembly));
+            .AddMediatR(static options => options.RegisterServicesFromAssembly(typeof(Program).Assembly))
             .AddOptions()
             .AddMemoryCache()
             .AddRateLimiter(static _ => _.AddFixedWindowLimiter(policyName: "fixedWindow",
@@ -127,8 +126,6 @@ internal static class WebApplicationBuilderExtensions
         });
 
         services.AddMessageBus(configuration);
-
-        services.AddScoped<GetOrderStatusApiHandler>();
 
         return builder;
     }
