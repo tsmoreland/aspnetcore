@@ -6,6 +6,7 @@ using MicroShop.Services.Orders.ApiApp.Features.Queries.GetOrderDetailsById;
 using MicroShop.Services.Orders.ApiApp.Features.Queries.GetOrders;
 using MicroShop.Services.Orders.ApiApp.Features.Queries.GetOrdersByUserId;
 using MicroShop.Services.Orders.ApiApp.Models;
+using MicroShop.Services.Orders.ApiApp.Models.DataTransferObjects.Requests;
 using MicroShop.Services.Orders.ApiApp.Models.DataTransferObjects.Responses;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -103,23 +104,31 @@ internal static class WebApplicationExtensions
                 {
                     data = mediator.CreateStream(new GetOrdersRequest()).Select(o => new OrderStatusDto(o));
                 }
-                else if (!httpContext.TryGetUserIdFromHttpContext(out string? userId))
+                else if (httpContext.TryGetUserIdFromHttpContext(out string? userId))
                 {
                     data = mediator.CreateStream(new GetOrdersByUserIdRequest(userId))
                         .Select(o => new OrderStatusDto(o));
                 }
                 else
                 {
-                    data = AsyncEnumerable.Empty<OrderStatusDto>(); 
+                    data = AsyncEnumerable.Empty<OrderStatusDto>();
                 }
 
                 return Results.Ok(ResponseDto.Ok(data));
 
             })
-            .RequireAuthorization()
+            .RequireAuthorization("ADMIN")
             .WithName("GetOrders")
             .WithOpenApi();
 
+        group
+            .MapPut("{orderId:int}/status", ([FromBody] OrderUpdateStatus status, [FromServices] IMediator mediator) =>
+            {
+
+            })
+            .RequireAuthorization("ADMIN")
+            .WithName("UpdateOrderStatus")
+            .WithOpenApi();
 
         return app;
     }

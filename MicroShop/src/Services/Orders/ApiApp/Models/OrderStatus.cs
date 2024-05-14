@@ -8,4 +8,5 @@ public enum OrderStatus
     WaitingToShip,
     Shipping,
     Complete,
+    Cancelled,
 }
