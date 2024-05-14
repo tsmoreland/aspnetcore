@@ -52,18 +52,62 @@ public sealed class OrderHeader
 
     public HashSet<OrderDetails> Items { get; private set; } = [];
 
-    public bool TryUpdateStatus(OrderStatus status)
+    public bool CanUpdateStatus(OrderStatus status)
     {
-        int newValue = (int)status;
-        int currentValue = (int)Status;
+        return CanUpdateStatus(status, Status);
+    }
 
-        if (newValue <= currentValue)
+    public static bool CanUpdateStatus(OrderStatus newStatus, OrderStatus currentStatus)
+    {
+        // consider state pattern here
+
+        return newStatus switch
+        {
+            OrderStatus.Cancelled => currentStatus != OrderStatus.WaitingToShip &&
+                                     currentStatus != OrderStatus.Shipping && currentStatus != OrderStatus.Complete &&
+                                     currentStatus != OrderStatus.Cancelled,
+            OrderStatus.Approved => currentStatus == OrderStatus.Pending,
+            OrderStatus.Processing => currentStatus == OrderStatus.Approved,
+            OrderStatus.WaitingToShip => currentStatus == OrderStatus.Processing,
+            OrderStatus.Shipping => currentStatus == OrderStatus.WaitingToShip,
+            OrderStatus.Complete => currentStatus == OrderStatus.Shipping,
+            OrderStatus.Pending => false,
+            _ => false
+        };
+    }
+
+    public bool TrySetStripeDetails(string stripeSessionId, string paymentIntentId)
+    {
+        // can't set to empty and can't set if already set
+        if (stripeSessionId is not { Length: > 0 } || StripeSessionId is not { Length: > 0 })
+        {
+            return false;
+        }
+
+        StripeSessionId = stripeSessionId;
+        PaymentIntentId = paymentIntentId;
+        if (CanUpdateStatus(OrderStatus.Approved))
+        {
+            Status = OrderStatus.Approved;
+        }
+        return true;
+    }
+
+    public bool TryUpdateOrderStatus(OrderStatus status)
+    {
+        if (!CanUpdateStatus(status))
         {
             return false;
         }
 
         Status = status;
         return true;
+    }
+
+
+    public bool RefundRequiredOnCancel()
+    {
+        return (int)Status >= (int)OrderStatus.Approved;
     }
 
     public void SetPaymentIntentIdIfPending(string paymentIntentId)
