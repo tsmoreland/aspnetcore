@@ -29,10 +29,10 @@ function loadDataTable(status) {
             { data: 'status', "width": "10%" },
             { data: 'orderTotal', "width": "10%" },
             {
-                data: 'orderHeaderId',
+                data: 'id',
                 "render": function (data) {
                     return `<div class="w-75 btn-group" role="group">
-                    <a href="/order/orderDetail?orderId=${data}" class="btn btn-primary mx-2"><i class="bi bi-pencil-square"></i></a>
+                    <a href="/order/detail?orderId=${data}" class="btn btn-primary mx-2"><i class="bi bi-pencil-square"></i></a>
                     </div>`
                 },
                 "width": "10%"
