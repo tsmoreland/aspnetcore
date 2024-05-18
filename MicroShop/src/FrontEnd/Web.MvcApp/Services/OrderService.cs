@@ -21,8 +21,10 @@ public sealed class OrderService(IBaseService baseService) : IOrderService
         await SendAsync<OrderStatusDto>(new RequestDto($"/api/orders/{orderId}"));
 
     /// <inheritdoc />
-    public async Task<ResponseDto<IAsyncEnumerable<OrderStatusDto>>?> GetOrderStatus(CancellationToken cancellationToken = default) =>
-        await SendAsync<IAsyncEnumerable<OrderStatusDto>>(new RequestDto($"/api/orders"));
+    public async Task<ResponseDto<IAsyncEnumerable<OrderStatusDto>>?> GetOrderStatus(string? userId = null, CancellationToken cancellationToken = default) =>
+        userId is { Length: > 0 }
+            ? await SendAsync<IAsyncEnumerable<OrderStatusDto>>(new RequestDto($"/api/orders/{userId}"))
+            : await SendAsync<IAsyncEnumerable<OrderStatusDto>>(new RequestDto($"/api/orders"));
 
     /// <inheritdoc />
     public async Task<ResponseDto?> UpdateOrderStatus(int orderId, OrderUpdateStatus status, CancellationToken cancellationToken = default) =>

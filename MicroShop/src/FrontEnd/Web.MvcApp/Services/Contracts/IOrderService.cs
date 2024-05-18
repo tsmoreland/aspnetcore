@@ -8,6 +8,6 @@ public interface IOrderService
     Task<ResponseDto<OrderSummaryDto>?> CreateOrder(CreateOrderDto model, CancellationToken cancellationToken = default);
     Task<ResponseDto<StripeResponseDto>?> CreateStripeSession(StripeRequest request, CancellationToken cancellationToken = default);
     Task<ResponseDto<OrderStatusDto>?> GetOrderStatus(int orderId, CancellationToken cancellationToken = default);
-    Task<ResponseDto<IAsyncEnumerable<OrderStatusDto>>?> GetOrderStatus(CancellationToken cancellationToken = default);
+    Task<ResponseDto<IAsyncEnumerable<OrderStatusDto>>?> GetOrderStatus(string? userId = null, CancellationToken cancellationToken = default);
     Task<ResponseDto?> UpdateOrderStatus(int orderId, OrderUpdateStatus status, CancellationToken cancellationToken = default);
 }
