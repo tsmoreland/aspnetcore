@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MicroShop.Web.MvcApp.Controllers;
 
+/// <inheritdoc />
 public sealed class OrdersController(IOrderService orderService) : Controller
 {
     private const string AdminRole = "ADMIN";
@@ -27,10 +28,9 @@ public sealed class OrdersController(IOrderService orderService) : Controller
             userId = User.Claims.FirstOrDefault(u => u.Type == JwtRegisteredClaimNames.Sub)?.Value;
         }
 
-        ResponseDto<IAsyncEnumerable<OrderStatusDto>>? ordersResponse = await orderService.GetOrderStatus(userId);
+        ResponseDto<IAsyncEnumerable<OrderDto>>? ordersResponse = await orderService.GetOrders(userId);
         return ordersResponse?.Success is true
             ? Json(new { data = await ordersResponse.Data!.ToListAsync() })
             : Json(new { data = new List<OrderStatusDto>() });
-        }
     }
 }

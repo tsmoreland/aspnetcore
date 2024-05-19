@@ -17,14 +17,14 @@ public sealed class OrderService(IBaseService baseService) : IOrderService
         await SendAsync<StripeResponseDto>(new RequestDto(ApiType.Post, "/api/orders/stripe", model));
 
     /// <inheritdoc />
-    public async Task<ResponseDto<OrderStatusDto>?> GetOrderStatus(int orderId, CancellationToken cancellationToken = default) => 
-        await SendAsync<OrderStatusDto>(new RequestDto($"/api/orders/{orderId}"));
+    public async Task<ResponseDto<OrderSummaryDto>?> GetOrderSummary(int orderId, CancellationToken cancellationToken = default) => 
+        await SendAsync<OrderSummaryDto>(new RequestDto($"/api/orders/{orderId}/summary"));
 
     /// <inheritdoc />
-    public async Task<ResponseDto<IAsyncEnumerable<OrderStatusDto>>?> GetOrderStatus(string? userId = null, CancellationToken cancellationToken = default) =>
+    public async Task<ResponseDto<IAsyncEnumerable<OrderDto>>?> GetOrders(string? userId = null, CancellationToken cancellationToken = default) =>
         userId is { Length: > 0 }
-            ? await SendAsync<IAsyncEnumerable<OrderStatusDto>>(new RequestDto($"/api/orders/{userId}"))
-            : await SendAsync<IAsyncEnumerable<OrderStatusDto>>(new RequestDto($"/api/orders"));
+            ? await SendAsync<IAsyncEnumerable<OrderDto>>(new RequestDto($"/api/orders/{userId}"))
+            : await SendAsync<IAsyncEnumerable<OrderDto>>(new RequestDto($"/api/orders"));
 
     /// <inheritdoc />
     public async Task<ResponseDto?> UpdateOrderStatus(int orderId, OrderUpdateStatus status, CancellationToken cancellationToken = default) =>
