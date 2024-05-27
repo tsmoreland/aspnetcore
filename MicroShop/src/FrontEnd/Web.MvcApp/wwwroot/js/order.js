@@ -1,13 +1,13 @@
-﻿﻿var dataTable;
+﻿var dataTable;
 
 $(document).ready(function () {
-    var url = window.location.search;
+    const url = window.location.search;
     if (url.includes("approved")) {
         loadDataTable("approved");
     }
     else {
-        if (url.includes("readyforpickup")) {
-            loadDataTable("readyforpickup");
+        if (url.includes("processing")) {
+            loadDataTable("processing");
         }
         else {
             if (url.includes("cancelled")) {

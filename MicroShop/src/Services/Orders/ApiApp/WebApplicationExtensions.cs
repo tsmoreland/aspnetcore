@@ -2,6 +2,7 @@
 using MediatR;
 using MicroShop.Services.Orders.ApiApp.Api.Commands;
 using MicroShop.Services.Orders.ApiApp.Extensions;
+using MicroShop.Services.Orders.ApiApp.Features.Commands.UpdateOrderStatus;
 using MicroShop.Services.Orders.ApiApp.Features.Queries.GetOrderDetailsById;
 using MicroShop.Services.Orders.ApiApp.Features.Queries.GetOrders;
 using MicroShop.Services.Orders.ApiApp.Features.Queries.GetOrdersByUserId;
@@ -57,7 +58,7 @@ internal static class WebApplicationExtensions
             .WithName(nameof(CreateStripeSession));
 
         group
-            .MapGet("{orderId:int}", async Task<Results<Ok<ResponseDto<OrderSummaryDto>>, NotFound<ResponseDto<OrderSummaryDto>>>>
+            .MapGet("{orderId:int}/summary", async Task<Results<Ok<ResponseDto<OrderSummaryDto>>, NotFound<ResponseDto<OrderSummaryDto>>>>
                 ([FromRoute] int orderId, HttpContext httpContext, [FromServices] IMediator mediator) =>
                 {
                     ClaimsIdentity? identity = httpContext.User.Identities.FirstOrDefault();
@@ -76,6 +77,31 @@ internal static class WebApplicationExtensions
                     return order is not null
                         ? TypedResults.Ok(ResponseDto.Ok(new OrderSummaryDto(order)))
                         : TypedResults.NotFound(ResponseDto.Error<OrderSummaryDto>("order not found"));
+                })
+            .RequireAuthorization()
+            .WithName("GetByOrderSummaryId")
+            .WithOpenApi();
+
+        group
+            .MapGet("{orderId:int}", async Task<Results<Ok<ResponseDto<OrderDto>>, NotFound<ResponseDto<OrderDto>>>>
+                ([FromRoute] int orderId, HttpContext httpContext, [FromServices] IMediator mediator) =>
+                {
+                    ClaimsIdentity? identity = httpContext.User.Identities.FirstOrDefault();
+                    string? role = identity?.Claims.FirstOrDefault(x => x.Type == "role")?.Value;
+                    string? userId = null;
+                    if (role is not "ADMIN")
+                    {
+                        if (!httpContext.TryGetUserIdFromHttpContext(out userId))
+                        {
+                            // Replace with 401 eventually
+                            return TypedResults.NotFound(ResponseDto.Error<OrderDto>("order not found"));
+                        }
+                    }
+
+                    OrderHeader? order = await mediator.Send(new GetOrderDetailsByIdRequest(orderId, userId));
+                    return order is not null
+                        ? TypedResults.Ok(ResponseDto.Ok(new OrderDto(order)))
+                        : TypedResults.NotFound(ResponseDto.Error<OrderDto>("order not found"));
                 })
             .RequireAuthorization()
             .WithName("GetByOrderId")
@@ -122,9 +148,12 @@ internal static class WebApplicationExtensions
             .WithOpenApi();
 
         group
-            .MapPut("{orderId:int}/status", ([FromBody] OrderUpdateStatus status, [FromServices] IMediator mediator) =>
+            .MapPut("{orderId:int}/status", async Task<Results<Ok<ResponseDto>, BadRequest<ResponseDto>>> ([FromRoute] int orderId, [FromBody] OrderUpdateStatus status, [FromServices] IMediator mediator) =>
             {
-
+                ResponseDto response = await mediator.Send(new UpdateOrderStatusCommand(orderId, (OrderStatus)status));
+                return response.Success
+                    ? TypedResults.Ok(response)
+                    : TypedResults.BadRequest(response);
             })
             .RequireAuthorization("ADMIN")
             .WithName("UpdateOrderStatus")
