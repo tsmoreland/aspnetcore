@@ -79,6 +79,31 @@ internal static class WebApplicationExtensions
                         : TypedResults.NotFound(ResponseDto.Error<OrderSummaryDto>("order not found"));
                 })
             .RequireAuthorization()
+            .WithName("GetByOrderSummaryId")
+            .WithOpenApi();
+
+        group
+            .MapGet("{orderId:int}", async Task<Results<Ok<ResponseDto<OrderDto>>, NotFound<ResponseDto<OrderDto>>>>
+                ([FromRoute] int orderId, HttpContext httpContext, [FromServices] IMediator mediator) =>
+                {
+                    ClaimsIdentity? identity = httpContext.User.Identities.FirstOrDefault();
+                    string? role = identity?.Claims.FirstOrDefault(x => x.Type == "role")?.Value;
+                    string? userId = null;
+                    if (role is not "ADMIN")
+                    {
+                        if (!httpContext.TryGetUserIdFromHttpContext(out userId))
+                        {
+                            // Replace with 401 eventually
+                            return TypedResults.NotFound(ResponseDto.Error<OrderDto>("order not found"));
+                        }
+                    }
+
+                    OrderHeader? order = await mediator.Send(new GetOrderDetailsByIdRequest(orderId, userId));
+                    return order is not null
+                        ? TypedResults.Ok(ResponseDto.Ok(new OrderDto(order)))
+                        : TypedResults.NotFound(ResponseDto.Error<OrderDto>("order not found"));
+                })
+            .RequireAuthorization()
             .WithName("GetByOrderId")
             .WithOpenApi();
 
