@@ -27,7 +27,7 @@ try
     await ApplyMigrations(app.Services);
     app.Run();
 }
-catch (Exception ex) when (ex.GetType().Name is not "StopTheHostException" )
+catch (Exception ex) when (ex.GetType().Name is not "StopTheHostException")
 {
     if (ex is HostAbortedException && args is ["--applicationName", _])
     {

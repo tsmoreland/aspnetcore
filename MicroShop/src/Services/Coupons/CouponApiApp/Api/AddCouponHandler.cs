@@ -25,7 +25,7 @@ public sealed class AddCouponHandler(AppDbContext dbContext, ILogger<AddCouponHa
                 Currency = "gbp", // should come from config or definitions class
                 Duration = "repeating", // again from dto via enum and some mapper that maps enum to string
                 DurationInMonths = 3, // and once again - use the dto
-            }; 
+            };
             Stripe.CouponService couponService = new();
             await couponService.CreateAsync(options);
 

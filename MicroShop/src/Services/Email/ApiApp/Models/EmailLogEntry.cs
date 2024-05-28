@@ -29,7 +29,7 @@ public sealed class EmailLogEntry
         EmailSent = emailSent;
     }
 
-    public required int Id { get; init; } 
+    public required int Id { get; init; }
     public required string EmailAddress
     {
         get => _emailAddress;
@@ -39,7 +39,7 @@ public sealed class EmailLogEntry
             NormalizedEmailAddress = value.ToUpperInvariant();
         }
     }
-    public required string Message { get; init; } 
+    public required string Message { get; init; }
     public DateTime? EmailSent { get; private set; }
     public string NormalizedEmailAddress { get; private set; }
 

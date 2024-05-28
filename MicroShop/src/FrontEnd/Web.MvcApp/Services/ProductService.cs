@@ -13,8 +13,8 @@ public sealed class ProductService(IBaseService baseService) : IProductService
         await SendAsync<ProductDto>(new RequestDto($"/api/products/{id}", null));
 
     /// <inheritdoc />
-    public async Task<ResponseDto<IEnumerable<ProductDto>>?> GetProductsByCatagoryName(string catagoryName) => 
-        await SendAsync<IEnumerable<ProductDto>>(new RequestDto($"/api/products/{catagoryName}", null)); 
+    public async Task<ResponseDto<IEnumerable<ProductDto>>?> GetProductsByCatagoryName(string catagoryName) =>
+        await SendAsync<IEnumerable<ProductDto>>(new RequestDto($"/api/products/{catagoryName}", null));
 
     /// <inheritdoc />
     public async Task<ResponseDto<IEnumerable<ProductDto>>?> GetProducts() =>

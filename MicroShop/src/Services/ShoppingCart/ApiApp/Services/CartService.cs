@@ -91,7 +91,7 @@ public sealed class CartService(
 
         double cartTotal = await UpdateHeaderAndCartTotal(await UpdateCartItemsAndCalculateCartTotal(items, cancellationToken), header, cancellationToken)
             .ConfigureAwait(false); // TODO: trim some these, 1 is good to have but this seems excessive
-        CartSummaryDto summary = new(header.Id, header.CouponCode, header.Discount, cartTotal, items); 
+        CartSummaryDto summary = new(header.Id, header.CouponCode, header.Discount, cartTotal, items);
         return ResponseDto.Ok(summary);
     }
 

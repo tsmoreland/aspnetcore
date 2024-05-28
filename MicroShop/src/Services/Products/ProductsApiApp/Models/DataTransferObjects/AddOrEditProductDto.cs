@@ -28,7 +28,7 @@ public sealed record class AddOrEditProductDto
 
     [Required]
     [MaxLength(200)]
-    public string Name { get; set; }  
+    public string Name { get; set; }
 
     [Required]
     [Range(1, 1000)]

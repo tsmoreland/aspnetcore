@@ -7,7 +7,7 @@ public sealed class CartHeader(int id, string? userId, string? couponCode, doubl
     private string? _couponCode = couponCode;
 
     public CartHeader()
-        :this(0, null, null, 0.0, 0.0)
+        : this(0, null, null, 0.0, 0.0)
     {
     }
 

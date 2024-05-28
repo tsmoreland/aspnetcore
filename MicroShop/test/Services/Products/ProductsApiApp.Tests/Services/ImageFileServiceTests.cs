@@ -35,7 +35,7 @@ public sealed class ImageFileServiceTests
 
         Assert.Multiple(
             () => product.ImageLocalPath.Should().NotBeNull(),
-            () =>  product.ImageLocalPath.Should().Be(fullpath));
+            () => product.ImageLocalPath.Should().Be(fullpath));
 
         return;
 

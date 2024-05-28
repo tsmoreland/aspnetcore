@@ -136,7 +136,7 @@ internal static class ProductsApiRouteGroupBuilderExtensions
             .MapPut("/{id:int}", async ([FromRoute] int id, [FromForm] AddOrEditProductDto data, [FromServices] AppDbContext dbContext) =>
             {
                 try
-                {                  
+                {
                     Product product = data.ToProduct(id);
                     dbContext.Products.Update(product);
                     await dbContext.SaveChangesAsync();

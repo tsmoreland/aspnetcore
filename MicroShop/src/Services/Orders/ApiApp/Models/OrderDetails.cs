@@ -27,5 +27,5 @@ public sealed class OrderDetails
     public double Price { get; private init; }
     public int Count { get; private init; }
 
-    
+
 }

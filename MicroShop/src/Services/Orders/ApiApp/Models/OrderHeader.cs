@@ -46,7 +46,7 @@ public sealed class OrderHeader
     public string EmailAddress { get; private init; }
     public OrderStatus Status { get; private set; }
     public DateTime OrderTime { get; init; }
-    
+
     public string? PaymentIntentId { get; private set; }
     public string? StripeSessionId { get; private set; }
 
@@ -112,7 +112,7 @@ public sealed class OrderHeader
 
     public void SetPaymentIntentIdIfPending(string paymentIntentId)
     {
-        if (Status != OrderStatus.Pending || PaymentIntentId is { Length: > 0 } || paymentIntentId is not { Length: > 0 }) 
+        if (Status != OrderStatus.Pending || PaymentIntentId is { Length: > 0 } || paymentIntentId is not { Length: > 0 })
         {
             return;
         }
