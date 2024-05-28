@@ -1,6 +1,6 @@
 ﻿namespace MicroShop.Services.Auth.AuthApiApp.Models.DataTransferObjects;
 
-public record class ResponseDto(bool Success = true, string? ErrorMessage = null) 
+public record class ResponseDto(bool Success = true, string? ErrorMessage = null)
 {
     public static ResponseDto<T> Ok<T>(T value) => new(value, true, null);
     public static ResponseDto Ok() => new(true, null);

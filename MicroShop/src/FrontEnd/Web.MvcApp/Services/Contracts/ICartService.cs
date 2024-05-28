@@ -5,7 +5,7 @@ namespace MicroShop.Web.MvcApp.Services.Contracts;
 
 public interface ICartService
 {
-    Task<ResponseDto<CartSummaryDto>?> Upsert( UpsertCartDto item, CancellationToken cancellationToken = default);
+    Task<ResponseDto<CartSummaryDto>?> Upsert(UpsertCartDto item, CancellationToken cancellationToken = default);
     Task<ResponseDto?> RemoveFromCart(int cartDetailsId, CancellationToken cancellationToken = default);
     Task<ResponseDto<CartSummaryDto>?> GetCartForCurrentUser(CancellationToken cancellationToken = default);
     Task<ResponseDto?> EmailCartToCurrentUser(CancellationToken cancellationToken = default);

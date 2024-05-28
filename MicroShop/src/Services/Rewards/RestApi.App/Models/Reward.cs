@@ -18,7 +18,7 @@ public sealed class Reward
     }
 
     public int Id { get; private init; }
-    public string UserId { get; private init;  }
+    public string UserId { get; private init; }
     public DateTime EarnedDate { get; private init; }
     public int RewardPoints { get; private init; }
     public int OrderId { get; private init; }

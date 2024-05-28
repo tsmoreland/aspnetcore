@@ -24,7 +24,7 @@ public sealed class Coupon
     {
         get => _code;
         set => SetCode(value);
-    } 
+    }
     public double DiscountAmount { get; set; }
     public int MinimumAmount { get; set; }
 

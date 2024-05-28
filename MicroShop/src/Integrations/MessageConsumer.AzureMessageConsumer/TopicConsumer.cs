@@ -16,7 +16,7 @@ public sealed class TopicConsumer(ISubscriptionHandler handler, IOptions<TopicCo
 
     /// <inheritdoc />
     protected override IEnumerable<(TopicSubscriptionType Type, string Name)> GetTypesAndNamesFromOptions() =>
-        options.Value.Subscriptions.Select(static s => (s.Type, s.Name ));
+        options.Value.Subscriptions.Select(static s => (s.Type, s.Name));
 
     /// <inheritdoc />
     protected override void RegisterEvents(ServiceBusProcessor processor, TopicSubscriptionType type)

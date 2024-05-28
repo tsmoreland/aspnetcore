@@ -10,7 +10,7 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddMessageBus(this IServiceCollection services, IConfiguration configuration)
     {
-        MessageBusOptions? options = configuration.GetRequiredSection("MessageBus").Get<MessageBusOptions>();   
+        MessageBusOptions? options = configuration.GetRequiredSection("MessageBus").Get<MessageBusOptions>();
 
         return options?.BusType switch
         {

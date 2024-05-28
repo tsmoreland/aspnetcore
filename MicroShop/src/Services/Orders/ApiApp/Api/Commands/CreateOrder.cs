@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MicroShop.Services.Orders.ApiApp.Api.Commands;
 
-internal sealed class CreateOrder 
+internal sealed class CreateOrder
 {
     public static async Task<IResult> Handle([FromBody] CreateOrderDto model, HttpContext httpContext, [FromServices] AppDbContext dbContext, [FromServices] ILogger<CreateOrder> logger)
     {

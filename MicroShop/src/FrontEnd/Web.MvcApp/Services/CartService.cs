@@ -18,11 +18,11 @@ public sealed class CartService(IBaseService baseService) : ICartService
         await SendAsync(new RequestDto(ApiType.Delete, $"/api/cart/{cartDetailsId}", null));
 
     /// <inheritdoc />
-    public async Task<ResponseDto<CartSummaryDto>?> GetCartForCurrentUser(CancellationToken cancellationToken = default) => 
+    public async Task<ResponseDto<CartSummaryDto>?> GetCartForCurrentUser(CancellationToken cancellationToken = default) =>
         await SendAsync<CartSummaryDto>(new RequestDto($"/api/cart", null));
 
     /// <inheritdoc />
-    public async Task<ResponseDto?> EmailCartToCurrentUser(CancellationToken cancellationToken = default) => 
+    public async Task<ResponseDto?> EmailCartToCurrentUser(CancellationToken cancellationToken = default) =>
         await SendAsync(new RequestDto(ApiType.Post, $"/api/cart/email", null));
 
     /// <inheritdoc />

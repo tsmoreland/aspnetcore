@@ -10,14 +10,14 @@ namespace MicroShop.Services.Coupons.CouponApiApp.Api;
 
 public sealed class NoContentWithResponseResult(ResponseDto value) : IResult, IEndpointMetadataProvider, IStatusCodeHttpResult
 {
-    public static NoContentWithResponseResult Success() => new(ResponseDto.Ok()); 
+    public static NoContentWithResponseResult Success() => new(ResponseDto.Ok());
 
-    public static NoContentWithResponseResult Failure(string? errorMessage) => new(ResponseDto.Error(errorMessage ?? "Unknown error occurred")); 
+    public static NoContentWithResponseResult Failure(string? errorMessage) => new(ResponseDto.Error(errorMessage ?? "Unknown error occurred"));
 
     public ResponseDto Value { get; } = value;
 
     /// <inheritdoc />
-    public Task ExecuteAsync(HttpContext httpContext) 
+    public Task ExecuteAsync(HttpContext httpContext)
     {
         ArgumentNullException.ThrowIfNull(httpContext);
 
@@ -30,7 +30,7 @@ public sealed class NoContentWithResponseResult(ResponseDto value) : IResult, IE
     }
 
     /// <inheritdoc />
-    public static void PopulateMetadata(MethodInfo method, EndpointBuilder builder) 
+    public static void PopulateMetadata(MethodInfo method, EndpointBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(method);
         ArgumentNullException.ThrowIfNull(builder);

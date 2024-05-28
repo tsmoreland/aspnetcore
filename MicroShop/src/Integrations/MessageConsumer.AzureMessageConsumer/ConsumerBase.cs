@@ -34,7 +34,7 @@ public abstract class ConsumerBase<TMessageType>(IOptions<AzureMessageBusOptions
             processor.ProcessErrorAsync += OnErrorReceived;
             tasks.Add(processor.StartProcessingAsync(cancellationToken));
         }
-        await Task.WhenAll([..tasks]);
+        await Task.WhenAll([.. tasks]);
     }
 
     private Task OnErrorReceived(ProcessErrorEventArgs eventArgs)

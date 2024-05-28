@@ -8,7 +8,7 @@ using MicroShop.Web.MvcApp.Services.Contracts;
 
 namespace MicroShop.Web.MvcApp.Services;
 
-public sealed class BaseService(IHttpClientFactory clientFactory, ITokenProvider tokenProvider) : IBaseService 
+public sealed class BaseService(IHttpClientFactory clientFactory, ITokenProvider tokenProvider) : IBaseService
 {
     private readonly IHttpClientFactory _clientFactory = clientFactory ?? throw new ArgumentNullException(nameof(clientFactory));
 
@@ -51,7 +51,7 @@ public sealed class BaseService(IHttpClientFactory clientFactory, ITokenProvider
                 _ => HttpMethod.Get,
             }
         };
-        if (includeAuthorization && tokenProvider.GetToken() is {} token)
+        if (includeAuthorization && tokenProvider.GetToken() is { } token)
         {
             message.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }

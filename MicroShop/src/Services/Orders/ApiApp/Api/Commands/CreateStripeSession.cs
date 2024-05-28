@@ -1,17 +1,17 @@
 ﻿using System.Net;
+using MicroShop.Integrations.MessageBus.Abstractions;
+using MicroShop.Integrations.MessageBus.AzureMessageBus;
 using MicroShop.Services.Orders.ApiApp.Extensions;
+using MicroShop.Services.Orders.ApiApp.Infrastructure.Data;
+using MicroShop.Services.Orders.ApiApp.Models;
+using MicroShop.Services.Orders.ApiApp.Models.DataTransferObjects.Notifications;
 using MicroShop.Services.Orders.ApiApp.Models.DataTransferObjects.Requests;
 using MicroShop.Services.Orders.ApiApp.Models.DataTransferObjects.Responses;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Stripe.Checkout;
-using MicroShop.Services.Orders.ApiApp.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using MicroShop.Integrations.MessageBus.AzureMessageBus;
 using Microsoft.Extensions.Options;
-using MicroShop.Integrations.MessageBus.Abstractions;
-using MicroShop.Services.Orders.ApiApp.Models.DataTransferObjects.Notifications;
-using MicroShop.Services.Orders.ApiApp.Models;
+using Stripe.Checkout;
 
 namespace MicroShop.Services.Orders.ApiApp.Api.Commands;
 
@@ -67,7 +67,7 @@ internal sealed class CreateStripeSession
 
             if (request.Order.Discount > 0.0)
             {
-                options.Discounts = [ new SessionDiscountOptions { Coupon = request.Order.CouponCode, } ];
+                options.Discounts = [new SessionDiscountOptions { Coupon = request.Order.CouponCode, }];
             }
 
             SessionService sessionService = new();
@@ -100,7 +100,7 @@ internal sealed class CreateStripeSession
                 .Where(i => i.Id == orderId)
                 .ExecuteUpdateAsync(setters => setters
                     .SetProperty(p => p.StripeSessionId, stripeSessionId)
-                    .SetProperty(p => p.Status,  status)
+                    .SetProperty(p => p.Status, status)
                     .SetProperty(p => p.PaymentIntentId, paymentIntentId));
             return ResponseDto.Ok();
         }

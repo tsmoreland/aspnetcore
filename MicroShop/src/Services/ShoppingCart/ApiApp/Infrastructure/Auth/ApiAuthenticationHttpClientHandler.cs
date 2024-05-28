@@ -18,7 +18,7 @@ public sealed class ApiAuthenticationHttpClientHandler(IHttpContextAccessor http
         {
             request.Headers.Authorization = new AuthenticationHeaderValue(TokenType, token);
         }
-    
+
         return await base.SendAsync(request, cancellationToken);
     }
 }

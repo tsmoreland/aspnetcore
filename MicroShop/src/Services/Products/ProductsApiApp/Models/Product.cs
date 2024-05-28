@@ -24,14 +24,14 @@ public sealed class Product
         ImageLocalPath = imageLocalPath;
     }
 
-    public int Id { get; set; } 
-    public string Name { get => _name; set => SetName(value); } 
+    public int Id { get; set; }
+    public string Name { get => _name; set => SetName(value); }
     public string NormalizedName { get; private set; }
-    public double Price { get; set; } 
-    public string? Description { get; set; } 
-    public string CategoryName { get => _categoryName; set => SetCategoryName(value); } 
+    public double Price { get; set; }
+    public string? Description { get; set; }
+    public string CategoryName { get => _categoryName; set => SetCategoryName(value); }
     public string NormalizedCategoryName { get; private set; }
-    public string? ImageUrl { get; set; } 
+    public string? ImageUrl { get; set; }
     public string? ImageLocalPath { get; set; }
 
     private string SetName(string? value)

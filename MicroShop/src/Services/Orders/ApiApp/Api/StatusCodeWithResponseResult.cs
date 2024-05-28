@@ -18,7 +18,7 @@ public class StatusCodeWithResponseResult(HttpStatusCode statusCode, ResponseDto
     public ResponseDto Value { get; } = value;
 
     /// <inheritdoc />
-    public Task ExecuteAsync(HttpContext httpContext) 
+    public Task ExecuteAsync(HttpContext httpContext)
     {
         ArgumentNullException.ThrowIfNull(httpContext);
 
@@ -31,7 +31,7 @@ public class StatusCodeWithResponseResult(HttpStatusCode statusCode, ResponseDto
     }
 
     /// <inheritdoc />
-    public static void PopulateMetadata(MethodInfo method, EndpointBuilder builder) 
+    public static void PopulateMetadata(MethodInfo method, EndpointBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(method);
         ArgumentNullException.ThrowIfNull(builder);
@@ -40,5 +40,5 @@ public class StatusCodeWithResponseResult(HttpStatusCode statusCode, ResponseDto
     }
 
     /// <inheritdoc />
-    public int? StatusCode { get; } = (int) statusCode;
+    public int? StatusCode { get; } = (int)statusCode;
 }
