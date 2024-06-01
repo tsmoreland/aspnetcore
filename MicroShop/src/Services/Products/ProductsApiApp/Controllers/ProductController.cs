@@ -11,7 +11,8 @@ namespace MicroShop.Services.Products.ProductsApiApp.Controllers;
 
 [Route("api/product")]
 [ApiController]
-public class ProductController(AppDbContext dbContext, IImageFileService fileService, ILogger<ProductController> logger) : ControllerBase
+public class ProductController(AppDbContext dbContext, IImageFileService fileService, IWebHostEnvironment environment,
+    ILogger<ProductController> logger) : ControllerBase
 {
     [HttpPost]
     [Authorize("ADMIN")]
@@ -27,14 +28,30 @@ public class ProductController(AppDbContext dbContext, IImageFileService fileSer
 
         try
         {
+            string? originalFilename = model.Image?.FileName;
             Product product = model.ToNewProduct();
+
+            dbContext.Products.Add(product);
+            await dbContext.SaveChangesAsync();
+
             // TODO: tidy this up and shift a lot of it out of the controller (or in other cases out of the minimal api methods
             if (model.Image is not null)
             {
+                string contentFolder = Path.Combine(environment.WebRootPath, "products");
+                string filename = $"{product.Id}.{Path.GetExtension(originalFilename)}";
+                product.ImageLocalPath = Path.Combine(contentFolder, filename);
+
                 await fileService.AddImage(new FormFileStreamSource(model.Image), product, true);
+
+                string baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.Value}{HttpContext.Request.PathBase.Value}";
+                product.ImageUrl = $"{baseUrl}/products/{filename}";
+            }
+            else
+            {
+                product.ImageUrl = "https://placehold.co/600x400/blue/white";
             }
 
-            dbContext.Products.Add(product);
+            dbContext.Products.Update(product);
             await dbContext.SaveChangesAsync();
 
             return Ok(product);
@@ -46,7 +63,7 @@ public class ProductController(AppDbContext dbContext, IImageFileService fileSer
         }
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{id:int}")]
     [Authorize("ADMIN")]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(typeof(ResponseDto<ProductDto>), StatusCodes.Status200OK)]
