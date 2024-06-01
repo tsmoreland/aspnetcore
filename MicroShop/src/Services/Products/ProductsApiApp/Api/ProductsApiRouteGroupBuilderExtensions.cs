@@ -24,6 +24,7 @@ internal static class ProductsApiRouteGroupBuilderExtensions
             .WithTags("Product");
     }
 
+#if USE_MINIMAL_ADD_UPDATE
 #pragma warning disable IDE0051 // Remove unused private members
     private static RouteGroupBuilder MapAddProduct(this RouteGroupBuilder builder)
 #pragma warning restore IDE0051 // Remove unused private members
@@ -51,6 +52,7 @@ internal static class ProductsApiRouteGroupBuilderExtensions
             .WithOpenApi();
         return builder;
     }
+#endif
 
     private static RouteGroupBuilder MapGetAllProducts(this RouteGroupBuilder builder)
     {
@@ -128,6 +130,7 @@ internal static class ProductsApiRouteGroupBuilderExtensions
         }
     }
 
+#if USE_MINIMAL_ADD_UPDATE
 #pragma warning disable IDE0051 // Remove unused private members
     private static RouteGroupBuilder MapUpdateProduct(this RouteGroupBuilder builder)
 #pragma warning restore IDE0051 // Remove unused private members
@@ -156,6 +159,7 @@ internal static class ProductsApiRouteGroupBuilderExtensions
             .WithOpenApi();
         return builder;
     }
+#endif
 
     private static RouteGroupBuilder MapDeleteProduct(this RouteGroupBuilder builder)
     {
