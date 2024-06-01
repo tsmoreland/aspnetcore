@@ -29,7 +29,7 @@ public sealed class ProductController(IProductService productService) : Controll
     }
 
     [HttpPost]
-    [Authorize]
+    [Authorize("ADMIN")]
     public async Task<IActionResult> Create(AddProductDto product)
     {
         if (!ModelState.IsValid)
@@ -49,7 +49,7 @@ public sealed class ProductController(IProductService productService) : Controll
     }
 
     [HttpPost]
-    [Authorize]
+    [Authorize("ADMIN")]
     public async Task<IActionResult> Edit(ProductDto productDto)
     {
         if (!ModelState.IsValid)
