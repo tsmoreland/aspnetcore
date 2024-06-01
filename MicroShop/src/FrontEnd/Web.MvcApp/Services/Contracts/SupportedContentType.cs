@@ -45,8 +45,10 @@ internal static class SupportedContentTypeExtensions
 
         return contentType switch
         {
-            // not he most efficient way to build json content (stream may be preferable or one of the may AsJson like methods availble to HttpClient but this will do for now)
-            SupportedContentType.ApplicationJson => new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, MediaTypeNames.Application.Json),
+            // not he most efficient way to build json content (stream may be preferable or one of the many AsJson like
+            // methods available to HttpClient but this will do for now)
+            SupportedContentType.ApplicationJson => new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8,
+                MediaTypeNames.Application.Json),
             SupportedContentType.MultiPartForm => BuildFormContent(data),
             _ => throw new KeyNotFoundException("Unrecognized content type")
         };

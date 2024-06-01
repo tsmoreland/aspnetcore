@@ -10,31 +10,31 @@ public sealed class ProductDto(int id, string name, double price, string? descri
     }
 
     [Required]
-    public int Id { get; set; } = id;
+    public int Id { get; init; } = id;
 
     [Required]
     [MaxLength(200)]
-    public string Name { get; set; } = name;
+    public string Name { get; init; } = name;
 
     [Required]
     [Range(1, 1000)]
-    public double Price { get; set; } = price;
+    public double Price { get; init; } = price;
 
     [MaxLength(500)]
-    public string? Description { get; set; } = description;
+    public string? Description { get; init; } = description;
 
     [Required]
     [MaxLength(200)]
-    public string CategoryName { get; set; } = categoryName;
+    public string CategoryName { get; init; } = categoryName;
 
     [MaxLength(200)]
-    public string? ImageUrl { get; set; } = imageUrl;
+    public string? ImageUrl { get; init; } = imageUrl;
 
     [MaxLength(260)]
-    public string? ImageLocalPath { get; set; } = imageLocalPath;
+    public string? ImageLocalPath { get; init; } = imageLocalPath;
 
     [FileExtensions(Extensions = "jpg,png")]
-    public IFormFile? Image { get; set; }
+    public IFormFile? Image { get; init; }
 
     public static ProductDto Empty() => new();
 }

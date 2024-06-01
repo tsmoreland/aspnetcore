@@ -47,7 +47,8 @@ public sealed record class AddOrEditProductDto
     public IFormFile? Image { get; set; }
 
     // TODO: when updating don't change local path unless image changes
-    public Product ToProduct(int id) => new(id, Name, Price, Description, CategoryName, ImageUrl, string.Empty);
+    public Product ToProduct(int id, string imageLocalPath) =>
+        new(id, Name, Price, Description, CategoryName, ImageUrl, imageLocalPath);
 
-    public Product ToNewProduct() => new(0, Name, Price, Description, CategoryName, ImageUrl, string.Empty);
+    public Product ToNewProduct() => new(0, Name, Price, Description, CategoryName, null, null);
 }
