@@ -23,6 +23,8 @@ internal static class WebApplicationExtensions
         app.UseRouting();
         app.UseAuthorization();
 
+        app.UseStaticFiles();
+
         app.MapControllers();
         app.MapGroup("/api/products").MapProductsApi();
 
