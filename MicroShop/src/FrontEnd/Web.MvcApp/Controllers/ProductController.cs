@@ -1,6 +1,7 @@
 ﻿using MicroShop.Web.MvcApp.Models;
 using MicroShop.Web.MvcApp.Models.Products;
 using MicroShop.Web.MvcApp.Services.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MicroShop.Web.MvcApp.Controllers;
@@ -28,6 +29,7 @@ public sealed class ProductController(IProductService productService) : Controll
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<IActionResult> Create(AddProductDto product)
     {
         if (!ModelState.IsValid)
@@ -47,6 +49,7 @@ public sealed class ProductController(IProductService productService) : Controll
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<IActionResult> Edit(ProductDto productDto)
     {
         if (!ModelState.IsValid)
