@@ -12,7 +12,7 @@ public sealed class ProductController(IProductService productService) : Controll
     public async Task<IActionResult> Index()
     {
         ResponseDto<IEnumerable<ProductDto>>? response = await productService.GetProducts();
-        if (response?.Success is not true || response?.Data is null)
+        if (response?.Success is not true || response.Data is null)
         {
             TempData["error"] = response?.ErrorMessage;
             return View(new List<ProductDto>());
