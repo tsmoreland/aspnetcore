@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using MicroShop.Web.MvcApp.Validation;
 
 namespace MicroShop.Web.MvcApp.Models.Products;
 
@@ -34,6 +35,7 @@ public sealed class ProductDto(int id, string name, double price, string? descri
     public string? ImageLocalPath { get; init; } = imageLocalPath;
 
     [FileExtensions(Extensions = "jpg,png")]
+    [MaxFileSize(1)]
     public IFormFile? Image { get; init; }
 
     public static ProductDto Empty() => new();
