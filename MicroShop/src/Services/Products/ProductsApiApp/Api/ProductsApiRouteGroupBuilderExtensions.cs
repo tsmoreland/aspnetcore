@@ -1,4 +1,5 @@
-﻿using MicroShop.Services.Products.ProductsApiApp.Infrastructure.Data;
+﻿using System.Net;
+using MicroShop.Services.Products.ProductsApiApp.Infrastructure.Data;
 using MicroShop.Services.Products.ProductsApiApp.Models;
 using MicroShop.Services.Products.ProductsApiApp.Models.DataTransferObjects;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -77,9 +78,9 @@ internal static class ProductsApiRouteGroupBuilderExtensions
 
         async Task<Ok<ResponseDto<IEnumerable<ProductDto>>>> Handler([FromRoute] string catagory, [FromServices] AppDbContext dbContext)
         {
-            string normalizedCatagory = catagory.ToUpperInvariant();
+            string normalizedCategory = catagory.ToUpperInvariant();
             IEnumerable<ProductDto> products = await dbContext.Products.AsNoTracking()
-                .Where(e => e.NormalizedCategoryName == normalizedCatagory)
+                .Where(e => e.NormalizedCategoryName == normalizedCategory)
                 .Select(c => new ProductDto(c))
                 .ToListAsync();
             return TypedResults.Ok(ResponseDto.Ok(products));
@@ -164,12 +165,22 @@ internal static class ProductsApiRouteGroupBuilderExtensions
     private static RouteGroupBuilder MapDeleteProduct(this RouteGroupBuilder builder)
     {
         builder
-            .MapDelete("/{id:int}", async ([FromRoute] int id, [FromServices] AppDbContext dbContext) =>
+            .MapDelete("/{id:int}", async ([FromRoute] int id, [FromServices] AppDbContext dbContext, [FromServices] IWebHostEnvironment environment) =>
             {
                 try
                 {
-                    int deleted = await dbContext.Products.Where(c => c.Id == id).ExecuteDeleteAsync();
-                    _ = deleted; // may want to log this
+                    Product? product = await dbContext.Products.FindAsync([id]);
+                    if (product is not null)
+                    {
+                        if (product.ImageLocalPath is not { Length: > 0 } && File.Exists(product.ImageLocalPath))
+                        {
+                            File.Delete(product.ImageLocalPath);
+                        }
+
+                        dbContext.Products.Remove(product);
+                        await dbContext.SaveChangesAsync();
+                    }
+
                     return NoContentWithResponseResult.Success();
                 }
                 catch (Exception)
