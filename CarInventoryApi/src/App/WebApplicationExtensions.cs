@@ -1,7 +1,6 @@
 ﻿using Asp.Versioning.ApiExplorer;
 using Asp.Versioning.Builder;
 using CarInventory.App.Configuration;
-using CarInventory.App.RouteGroups;
 using CarInventory.Cars.Api;
 using Microsoft.OpenApi.Models;
 using Serilog;

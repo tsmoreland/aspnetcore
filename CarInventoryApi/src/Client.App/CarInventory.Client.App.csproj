@@ -27,7 +27,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Identity.Client" Version="4.59.1" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.61.2" />
   </ItemGroup>
 
 </Project>
