@@ -95,7 +95,7 @@ internal static class ShoppingCartApiRouteBuilderExtensions
     private static RouteGroupBuilder MapApplyCoupon(this RouteGroupBuilder builder)
     {
         builder
-            .MapPost("/{cartHeaderId}/coupon", Handler)
+            .MapPost("/{cartHeaderId:int}/coupon", Handler)
             .WithName("ApplyCoupon")
             .WithOpenApi();
 
@@ -122,7 +122,7 @@ internal static class ShoppingCartApiRouteBuilderExtensions
     private static RouteGroupBuilder MapRemoveCoupon(this RouteGroupBuilder builder)
     {
         builder
-            .MapDelete("/{cartHeaderId}/coupon", Handler)
+            .MapDelete("/{cartHeaderId:int}/coupon", Handler)
             .WithName("RemoveCoupon")
             .WithOpenApi();
         return builder;
@@ -145,7 +145,7 @@ internal static class ShoppingCartApiRouteBuilderExtensions
     private static RouteGroupBuilder MapDeleteCartById(this RouteGroupBuilder builder)
     {
         builder
-            .MapDelete("/{id}", Handler)
+            .MapDelete("/{id:int}", Handler)
             .RequireAuthorization()
             .WithName("DeleteFromCart")
             .WithOpenApi();
