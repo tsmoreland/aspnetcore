@@ -69,6 +69,7 @@ internal static class WebApplicationBuilderExtensions
         services
             .AddScoped<IJwtTokenGenerator, JwtTokenGenerator>()
             .AddMessageBus(configuration)
+            .Configure<RabbitConnectionSettings>(configuration.GetSection("RabbitMQConnection"))
             .AddScoped<IAuthService, AuthService>();
 
         return builder;
