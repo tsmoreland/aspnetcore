@@ -46,6 +46,7 @@ internal static class AuthApiRouteGroupBuilderExtensions
                 // should return 500 series error
                 return TypedResults.BadRequest<ResponseDto<UserDto>>(ResponseDto.Error<UserDto>("configuration error"));
             }
+            // TODO: change this to registration request
             messageSender.SendMessage(model.Email, queue.QueueName);
             return TypedResults.Ok(response);
         }

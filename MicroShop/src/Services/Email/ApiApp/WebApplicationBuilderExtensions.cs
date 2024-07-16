@@ -3,6 +3,7 @@ using System.Text;
 using System.Threading.RateLimiting;
 using MicroShop.Integrations.MessageConsumer;
 using MicroShop.Services.Email.ApiApp.Infrastructure.Data;
+using MicroShop.Services.Email.ApiApp.Models;
 using MicroShop.Services.Email.ApiApp.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.RateLimiting;
@@ -119,8 +120,8 @@ internal static class WebApplicationBuilderExtensions
 
         services
             .AddHostedService<DatabaseMigrationBackgroundService>()
-            .AddMessageConsumer<MessageHandler>(configuration);
-
-        return builder;
-    }
+            .Configure<RabbitConnectionSettings>(configuration.GetSection("RabbitMQConnection"))
+            .Configure<RabbitSettings>(configuration.GetSection("RabbitMessaging"))
+            .AddSingleton<MessageHandler>()
+            .AddHostedService<RabbitMqAuthConsumer>()
 }
