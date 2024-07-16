@@ -1,5 +1,6 @@
 ﻿using Azure;
 using MicroShop.Integrations.MessageBus.Abstractions;
+using MicroShop.Services.Auth.AuthApiApp.Models;
 using MicroShop.Services.Auth.AuthApiApp.Models.DataTransferObjects;
 using MicroShop.Services.Auth.AuthApiApp.Services.Contracts;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -29,8 +30,8 @@ internal static class AuthApiRouteGroupBuilderExtensions
         static async Task<Results<Ok<ResponseDto<UserDto>>, BadRequest<ResponseDto<UserDto>>>> Handler(
             [FromBody] RegistrationRequestDto model,
             [FromServices] IAuthService authService,
-            [FromServices] IMessageBus messageBus,
-            [FromServices] IOptions<MessageBusOptions> options)
+            [FromServices] IRabbitAuthSender messageSender,
+            [FromServices] IOptions<RabbitSettings> options)
         {
             // TODO: validate using FluentValidation as there isn't an available validator by default yet
             ResponseDto<UserDto> response = await authService.Register(model.Email, model.Name, model.PhoneNumber, model.Password);
@@ -40,8 +41,12 @@ internal static class AuthApiRouteGroupBuilderExtensions
                 return TypedResults.BadRequest(ResponseDto.Error<UserDto>("Unable to register, one or more fields are invalid."));  // intentionally vague;
             }
             // auth service should log underlying errors as we won't be specific with the failure here to prevent attacks attempting to identify existing users
-
-            await messageBus.PublishMessage(options.Value.QueueName, model.Email);
+            if (!options.Value.TryGetQueueByName("RegisterUser", out RabbitQueue? queue))
+            {
+                // should return 500 series error
+                return TypedResults.BadRequest<ResponseDto<UserDto>>(ResponseDto.Error<UserDto>("configuration error"));
+            }
+            messageSender.SendMessage(model.Email, queue.QueueName);
             return TypedResults.Ok(response);
         }
     }

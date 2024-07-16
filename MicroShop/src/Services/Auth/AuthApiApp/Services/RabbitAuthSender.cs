@@ -22,10 +22,10 @@ public sealed class RabbitAuthSender(IOptions<RabbitConnectionSettings> settings
     public void SendMessage<T>(T message, string queueName)
     {
         using IModel channel = _connection.CreateModel();
-        channel.QueueDeclare(queueName);
+        channel.QueueDeclare(queueName, durable: false, exclusive: false, autoDelete: false, arguments: new Dictionary<string, object>());
 
         byte[] body = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(message));
-        channel.BasicPublish(exchange: "", routingKey: queueName, body: body);
+        channel.BasicPublish(exchange: "", routingKey: queueName, body: body, basicProperties: null);
     }
 
     private void Dispose(bool disposing)

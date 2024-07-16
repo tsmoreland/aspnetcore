@@ -1,5 +1,4 @@
 ﻿using System.Security.Authentication;
-using MicroShop.Integrations.MessageBus;
 using MicroShop.Services.Auth.AuthApiApp.Infrrastructure.Data;
 using MicroShop.Services.Auth.AuthApiApp.Models;
 using MicroShop.Services.Auth.AuthApiApp.Services;
@@ -68,8 +67,9 @@ internal static class WebApplicationBuilderExtensions
 
         services
             .AddScoped<IJwtTokenGenerator, JwtTokenGenerator>()
-            .AddMessageBus(configuration)
             .Configure<RabbitConnectionSettings>(configuration.GetSection("RabbitMQConnection"))
+            .Configure<RabbitSettings>(configuration.GetSection("RabbitMessaging"))
+            .AddScoped<IRabbitAuthSender, RabbitAuthSender>()
             .AddScoped<IAuthService, AuthService>();
 
         return builder;
