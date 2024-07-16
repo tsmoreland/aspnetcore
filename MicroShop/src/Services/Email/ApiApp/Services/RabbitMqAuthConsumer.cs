@@ -13,36 +13,23 @@ public sealed class RabbitMqAuthConsumer(
     IOptions<RabbitConnectionSettings> connectionSettings,
     IOptions<RabbitSettings> settings,
     IDbContextFactory<AppDbContext> dbContextFactory, // replace with RepositoryFactory
-    ILogger<RabbitMqAuthConsumer> logger) : BackgroundService
+    ILogger<RabbitMqAuthConsumer> logger) : RabbitMqConsumer(connectionSettings, settings, logger)
 {
     private bool _disposed;
-    private readonly IConnection _connection =
-        new ConnectionFactory
-        {
-            HostName = connectionSettings.Value.Hostname,
-            UserName = connectionSettings.Value.Username,
-            Password = connectionSettings.Value.Password,
-        }.CreateConnection();
 
     /// <inheritdoc />
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         await Task.Delay(0, stoppingToken).ConfigureAwait(false);
-
-        if (!settings.Value.TryGetQueueByName("RegisterUser", out RabbitQueue? queue))
+        if (!CreateChannelForQueue("RegisterUser", out IModel? channel, out string? queueName))
         {
-            logger.LogError("RegisterUser queue not found in configuration");
             return;
         }
-
-        IModel channel = _connection.CreateModel();
-        // TODO: move these additional flags to RabbitQueue class.
-        channel.QueueDeclare(queue.QueueName, false, false, false, new Dictionary<string, object>());
 
         EventingBasicConsumer consumer = new(channel);
         consumer.Received += ConsumerReceived;
         stoppingToken.ThrowIfCancellationRequested();
-        channel.BasicConsume(queue.QueueName, false, consumer);
+        channel.BasicConsume(queueName, false, consumer);
 
         return;
 
@@ -70,7 +57,7 @@ public sealed class RabbitMqAuthConsumer(
         }
     }
 
-    private EmailLogEntry BuildEmail(string name, string emailAddress, string verifyLink)
+    private static EmailLogEntry BuildEmail(string name, string emailAddress, string verifyLink)
     {
         string body = $"""
             <br/>

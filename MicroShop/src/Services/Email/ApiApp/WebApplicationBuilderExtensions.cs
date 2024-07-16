@@ -1,7 +1,6 @@
 ﻿using System.Security.Authentication;
 using System.Text;
 using System.Threading.RateLimiting;
-using MicroShop.Integrations.MessageConsumer;
 using MicroShop.Services.Email.ApiApp.Infrastructure.Data;
 using MicroShop.Services.Email.ApiApp.Models;
 using MicroShop.Services.Email.ApiApp.Services;
