@@ -1,8 +1,8 @@
-﻿using System.Reflection.Metadata.Ecma335;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using MicroShop.Integrations.MessageConsumer.Abstractions;
+﻿using System.Text.Json;
+using MicroShop.Services.Email.ApiApp.Infrastructure.Data;
 using MicroShop.Services.Email.ApiApp.Models;
+using MicroShop.Services.Email.ApiApp.Models.DataTransferObjects;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -12,7 +12,7 @@ namespace MicroShop.Services.Email.ApiApp.Services;
 public sealed class RabbitMqAuthConsumer(
     IOptions<RabbitConnectionSettings> connectionSettings,
     IOptions<RabbitSettings> settings,
-    IMessageHandler messageHandler,
+    IDbContextFactory<AppDbContext> dbContextFactory, // replace with RepositoryFactory
     ILogger<RabbitMqAuthConsumer> logger) : BackgroundService
 {
     private bool _disposed;
@@ -41,23 +41,45 @@ public sealed class RabbitMqAuthConsumer(
 
         EventingBasicConsumer consumer = new(channel);
         consumer.Received += ConsumerReceived;
+        stoppingToken.ThrowIfCancellationRequested();
+        channel.BasicConsume(queue.QueueName, false, consumer);
 
-        while (!stoppingToken.IsCancellationRequested)
-        {
-
-        }
         return;
 
-        void ConsumerReceived(object? sender, BasicDeliverEventArgs e) 
+        void ConsumerReceived(object? sender, BasicDeliverEventArgs e)
         {
-            // TODO: changes this to registration dto, or an email object
-            string? email = JsonSerializer.Deserialize<string>(e.Body.ToArray());
-            if (email is null)
+            try
             {
-                return;
+                // TODO: changes this to registration dto, or an email object
+                UserRegisteredNotificationMessage? message = JsonSerializer.Deserialize<UserRegisteredNotificationMessage>(e.Body.ToArray());
+                if (message is null)
+                {
+                    return;
+                }
+
+                // use e-mail service here to send the e-mail
+                using AppDbContext dbContext = dbContextFactory.CreateDbContext();
+                EmailLogEntry entry = BuildEmail(message.Name, message.EmailAddress, message.VerifyUrl);
+                dbContext.Add(entry);
+                dbContext.SaveChanges();
             }
-            // use e-mail service here to send the e-mail
+            finally
+            {
+                channel.BasicAck(e.DeliveryTag, false);
+            }
         }
+    }
+
+    private EmailLogEntry BuildEmail(string name, string emailAddress, string verifyLink)
+    {
+        string body = $"""
+            <br/>
+            <h3>Welcome {name} <{emailAddress}!</h3>
+            <p>
+            Please verify your Email address <a href="{verifyLink}">here</a>.
+            </p>
+            """;
+        return new EmailLogEntry(emailAddress, body, DateTime.UtcNow);
     }
 
     public override void Dispose()

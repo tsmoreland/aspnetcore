@@ -123,5 +123,7 @@ internal static class WebApplicationBuilderExtensions
             .Configure<RabbitConnectionSettings>(configuration.GetSection("RabbitMQConnection"))
             .Configure<RabbitSettings>(configuration.GetSection("RabbitMessaging"))
             .AddSingleton<MessageHandler>()
-            .AddHostedService<RabbitMqAuthConsumer>()
+            .AddHostedService<RabbitMqAuthConsumer>();
+        return builder;
+    }
 }
