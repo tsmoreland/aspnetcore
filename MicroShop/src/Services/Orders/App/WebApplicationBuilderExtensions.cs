@@ -1,8 +1,10 @@
 ﻿using System.Security.Authentication;
 using System.Text;
 using System.Threading.RateLimiting;
-using MicroShop.Integrations.MessageBus;
 using MicroShop.Services.Orders.App.Infrastructure.Data;
+using MicroShop.Services.Orders.App.Models;
+using MicroShop.Services.Orders.App.Services;
+using MicroShop.Services.Orders.App.Services.Contracts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.AspNetCore.ResponseCompression;
@@ -125,7 +127,10 @@ internal static class WebApplicationBuilderExtensions
             httpClient.BaseAddress = new Uri(productsApiUrl);
         });
 
-        services.AddMessageBus(configuration);
+        services
+            .AddScoped<IRabbitMessageSender, RabbitMessageSender>()
+            .Configure<RabbitConnectionSettings>(configuration.GetSection("RabbitMQConnection"))
+            .Configure<RabbitExchange>(configuration.GetSection("RabbitExchange"));
 
         return builder;
     }
