@@ -13,36 +13,36 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{D3
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Coupons", "Coupons", "{9AA98A55-C84E-4C5B-8EDB-B0D9B45AC4EF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Services.Coupons.CouponApiApp", "src\Services\Coupons\CouponApiApp\MicroShop.Services.Coupons.CouponApiApp.csproj", "{248CC971-D53A-4A4B-99B6-198466E7EB23}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Services.Coupons.App", "src\Services\Coupons\App\MicroShop.Services.Coupons.App.csproj", "{248CC971-D53A-4A4B-99B6-198466E7EB23}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DC81005B-1733-466B-B28E-D44F3857C77B}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Web.MvcApp", "src\FrontEnd\Web.MvcApp\MicroShop.Web.MvcApp.csproj", "{290C73DF-3AEF-45A1-9B37-56288E4C7FCA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Web.Mvc.App", "src\FrontEnd\Web.Mvc.App\MicroShop.Web.Mvc.App.csproj", "{290C73DF-3AEF-45A1-9B37-56288E4C7FCA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Web.MvcApp.Tests", "test\FrontEnd\Web.MvcApp.Tests\MicroShop.Web.MvcApp.Tests.csproj", "{60941975-DCB0-49F1-9989-2305D104BF2F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Web.Mvc.App.Tests", "test\FrontEnd\Web.Mvc.App.Tests\MicroShop.Web.Mvc.App.Tests.csproj", "{60941975-DCB0-49F1-9989-2305D104BF2F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Auth", "Auth", "{97F6B790-DA3B-4C78-81AC-387262A41322}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Services.Auth.AuthApiApp", "src\Services\Auth\AuthApiApp\MicroShop.Services.Auth.AuthApiApp.csproj", "{568BD3C0-20C9-44E8-BB47-CCD75A7553E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Services.Auth.App", "src\Services\Auth\App\MicroShop.Services.Auth.App.csproj", "{568BD3C0-20C9-44E8-BB47-CCD75A7553E4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Services.Auth.AuthApiApp.Tests", "test\Services\Auth\AuthApiApp.Tests\MicroShop.Services.Auth.AuthApiApp.Tests.csproj", "{7FCE74E0-2023-4DAD-9A40-F72F19A0DF9D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Services.Auth.App.Tests", "test\Services\Auth\App.Tests\MicroShop.Services.Auth.App.Tests.csproj", "{7FCE74E0-2023-4DAD-9A40-F72F19A0DF9D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Services.Coupons.CouponsApiApp.Tests", "test\Services\Coupons\CouponsApiApp.Tests\MicroShop.Services.Coupons.CouponsApiApp.Tests.csproj", "{B0D264B0-C653-47F3-9739-8EDE30BA5297}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Services.Coupons.App.Tests", "test\Services\Coupons\App.Tests\MicroShop.Services.Coupons.App.Tests.csproj", "{B0D264B0-C653-47F3-9739-8EDE30BA5297}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Products", "Products", "{F10EF27E-E8A8-4372-9D05-490AFF17F2C3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Services.Products.ProductsApiApp", "src\Services\Products\ProductsApiApp\MicroShop.Services.Products.ProductsApiApp.csproj", "{19B99108-7E3A-48C0-A1F8-039120152AEE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Services.Products.App", "src\Services\Products\App\MicroShop.Services.Products.App.csproj", "{19B99108-7E3A-48C0-A1F8-039120152AEE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Services.Products.ProductsApiApp.Tests", "test\Services\Products\ProductsApiApp.Tests\MicroShop.Services.Products.ProductsApiApp.Tests.csproj", "{B202FC77-C1ED-49F3-BF9D-30AAD4E71AED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Services.Products.App.Tests", "test\Services\Products\App.Tests\MicroShop.Services.Products.App.Tests.csproj", "{B202FC77-C1ED-49F3-BF9D-30AAD4E71AED}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ShoppingCart", "ShoppingCart", "{7933FA0A-8B05-44CE-8B8C-CF581260C5BF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Services.ShoppingCart.ApiApp", "src\Services\ShoppingCart\ApiApp\MicroShop.Services.ShoppingCart.ApiApp.csproj", "{59B506F6-5010-411C-8B2D-29F7D0E9ED91}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Services.ShoppingCart.App", "src\Services\ShoppingCart\App\MicroShop.Services.ShoppingCart.App.csproj", "{59B506F6-5010-411C-8B2D-29F7D0E9ED91}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Services.ShoppingCart.ApiApp.Tests", "test\Services\ShoppingCart\ApiApp.Tests\MicroShop.Services.ShoppingCart.ApiApp.Tests.csproj", "{D133B3EE-9401-47F9-9625-E6C7018C2A2C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Services.ShoppingCart.App.Tests", "test\Services\ShoppingCart\App.Tests\MicroShop.Services.ShoppingCart.App.Tests.csproj", "{D133B3EE-9401-47F9-9625-E6C7018C2A2C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Integrations.MessageBus.Abstractions", "src\Integrations\MessageBus.Abstractions\MicroShop.Integrations.MessageBus.Abstractions.csproj", "{BDF84132-A0A5-4088-AD0A-C78D7353A429}"
 EndProject
@@ -52,9 +52,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Integrations.Mess
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Email", "Email", "{79157682-EADC-4C8F-AEC2-FDB4580C92A8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Services.Email.ApiApp", "src\Services\Email\ApiApp\MicroShop.Services.Email.ApiApp.csproj", "{6110A503-05A9-44C9-9BE1-882393926FF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Services.Email.App", "src\Services\Email\App\MicroShop.Services.Email.App.csproj", "{6110A503-05A9-44C9-9BE1-882393926FF0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Services.Email.ApiApp.Tests", "test\Services\Email\ApiApp.Tests\MicroShop.Services.Email.ApiApp.Tests.csproj", "{E422F2F5-7C9A-48E6-8CDD-1EF7A1919F6B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Services.Email.App.Tests", "test\Services\Email\App.Tests\MicroShop.Services.Email.App.Tests.csproj", "{E422F2F5-7C9A-48E6-8CDD-1EF7A1919F6B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Integrations.MessageConsumer.Abstractions", "src\Integrations\MessageConsumer.Abstractions\MicroShop.Integrations.MessageConsumer.Abstractions.csproj", "{344CE295-02C8-4C8D-984F-B04A6DEAE739}"
 EndProject
@@ -68,17 +68,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MessageConsumer", "MessageC
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Orders", "Orders", "{C5BC23B7-255E-461F-99EB-C4181389FA59}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Services.Orders.ApiApp", "src\Services\Orders\ApiApp\MicroShop.Services.Orders.ApiApp.csproj", "{C6FA1580-8E65-4EF0-803E-59D89DC71043}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Services.Orders.App", "src\Services\Orders\App\MicroShop.Services.Orders.App.csproj", "{C6FA1580-8E65-4EF0-803E-59D89DC71043}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Services.Orders.ApiApp.Tests", "test\Services\Orders\ApiApp.Tests\MicroShop.Services.Orders.ApiApp.Tests.csproj", "{4B3570F3-A3F3-4D42-945C-1E5A6A0B76BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Services.Orders.App.Tests", "test\Services\Orders\App.Tests\MicroShop.Services.Orders.App.Tests.csproj", "{4B3570F3-A3F3-4D42-945C-1E5A6A0B76BC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Rewards", "Rewards", "{CC45FAAF-7C44-4936-BCE4-21EA7AD7B484}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroShop.Services.Rewards.RestApi.App", "src\Services\Rewards\RestApi.App\MicroShop.Services.Rewards.RestApi.App.csproj", "{83CC2423-3895-4A63-9038-D05C93E4605F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Services.Rewards.App", "src\Services\Rewards\App\MicroShop.Services.Rewards.App.csproj", "{83CC2423-3895-4A63-9038-D05C93E4605F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroShop.Services.Rewards.RestApi.App.Test", "test\Services\Rewards\RestApi.App.Test\MicroShop.Services.Rewards.RestApi.App.Test.csproj", "{001E1B54-0359-4DDD-A8DE-7248D753E86F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Services.Rewards.App.Test", "test\Services\Rewards\App.Test\MicroShop.Services.Rewards.App.Test.csproj", "{001E1B54-0359-4DDD-A8DE-7248D753E86F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroShop.Gateway.App", "src\Gateway\App\MicroShop.Gateway.App.csproj", "{E609AA5F-7556-4922-A374-37E2542A785F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroShop.Gateway.App", "src\Gateway\App\MicroShop.Gateway.App.csproj", "{E609AA5F-7556-4922-A374-37E2542A785F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

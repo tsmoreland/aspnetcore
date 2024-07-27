@@ -1,0 +1,95 @@
+﻿@model MicroShop.Web.Mvc.App.Models.Cart.CheckoutDto
+
+<form method="post">
+    <input asp-for="Id" hidden />
+    <input asp-for="CouponCode" hidden />
+    <input asp-for="Discount" hidden />
+    <input asp-for="CartTotal" hidden />
+
+    <div class="border mt-2 p-4 rounded">
+        <div class="container row">
+            <div class="col-md-7 col-12">
+                <span style="font-size:25px;" class="text-warning mb-2">Order Summary</span>
+            </div>
+            <div class="col-md-5 col-12">
+                <a asp-action="Index" class="btn btn-outline-warning form-control">Back to Cart</a>
+            </div>
+            <br /><br /><br />
+            <hr />
+            <div class="col-7">
+                <div class="row pt-2">
+                    <div class="col-12 py-2">
+                        <input asp-for="Name" placeholder="full name..." class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="col-12 py-2">
+                        <input placeholder="email..." asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="col-12 pt-2">
+                        <label class="col-form-label">Order will be ready in 30minutes after placing order. If you place order when restaurant is closed it will be ready next day.</label>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-5">
+                <div class="card mt-2">
+                    <div class="card-body">
+                        <div class=" d-none d-lg-block">
+                            <div class="row text-danger">
+                                <div class="col-6">
+                                    Product Details
+                                </div>
+
+                                <div class="col-3">
+                                    Price
+                                </div>
+                                <div class="col-3">
+                                    Count
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        @foreach(var item in Model.Details)
+                        {
+                            <div class="row h-100">
+                                <div class="col-6">
+                                    <span style="font-size:20px">@item.ProductName</span>
+                                </div>
+
+                                <div class="col-3" style="font-size:11px;">
+                                        <span style="font-size:17px;"> @item.Price.ToString("c")</span>
+
+                                </div>
+                                <div class="col-3" style="font-size:11px;">
+                                        <span style="font-size:17px;"> @item.Count</span>
+                                </div>
+                            </div>
+                            <hr />
+                        }
+                        <div class="row">
+                            <div class="col-12 text-center pr-4 text-danger">
+                                Order Total :  @Model.CartTotal.ToString("c") <br />
+                                @if (Model.Discount > 0)
+                                {
+                                    <span class="text-success"> Order Discount :  @Model.Discount.ToString("c")</span>
+                                }
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+
+                            <div class="col-12 ">
+                                <button type="submit" class="btn btn-success form-control ">
+                                    <span>Place Order</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
