@@ -6,9 +6,7 @@ using RabbitMQ.Client;
 namespace MicroShop.Services.Email.App.Services;
 
 public abstract class RabbitMqConsumer(
-    IOptions<RabbitConnectionSettings> connectionSettings,
-    IOptions<RabbitSettings> settings,
-    ILogger logger) : BackgroundService
+    IOptions<RabbitConnectionSettings> connectionSettings, ILogger logger) : BackgroundService
 {
     private bool _connectionDisposed;
     protected ILogger Logger { get; } = logger;
@@ -21,19 +19,28 @@ public abstract class RabbitMqConsumer(
             Password = connectionSettings.Value.Password,
         }.CreateConnection();
 
-    protected bool CreateChannelForQueue(string name, [NotNullWhen(true)] out IModel? channel, [NotNullWhen(true)] out string? queueName)
+    protected bool CreateChannelForQueue(RabbitQueue queue, [NotNullWhen(true)] out IModel? channel)
     {
-        if (!settings.Value.TryGetQueueByName(name, out RabbitQueue? queue))
-        {
-            Logger.LogError("{Name} queue not found in configuration", name);
-            channel = null;
-            queueName = null;
-            return false;
-        }
-
         channel = _connection.CreateModel();
         channel.QueueDeclare(queue.QueueName, false, false, false, new Dictionary<string, object>());
-        queueName = queue.QueueName;
+        return true;
+    }
+
+    protected bool CreateChannelForExchange(RabbitExchange exchange, [NotNullWhen(true)] out IModel? channel, [NotNullWhen(true)] out string? queueName)
+    {
+        channel = _connection.CreateModel();
+        channel.ExchangeDeclare(exchange.ExchangeName, exchange.Type, exchange.Durable, false, new Dictionary<string, object>());
+        if (exchange.QueueName is { Length: > 0 })
+        {
+            channel.QueueDeclare(exchange.QueueName, exchange.Durable, false, false, new Dictionary<string, object>());
+            queueName = exchange.QueueName;
+        }
+        else
+        {
+            queueName = channel.QueueDeclare().QueueName; // Default name
+        }
+        channel.QueueBind(queueName, exchange.ExchangeName, string.Empty, new Dictionary<string, object>());
+
         return true;
     }
 

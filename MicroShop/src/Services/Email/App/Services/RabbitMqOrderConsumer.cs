@@ -8,21 +8,19 @@ using RabbitMQ.Client.Events;
 
 namespace MicroShop.Services.Email.App.Services;
 
-public sealed class RabbitMqShoppingCartConsumer(
+public sealed class RabbitMqOrderConsumer(
     IOptions<RabbitConnectionSettings> connectionSettings,
-    IOptionsMonitor<RabbitQueue> namedQueues,
+    IOptionsMonitor<RabbitExchange> namedExchanges,
     IEmailService emailService,
-    ILogger<RabbitMqShoppingCartConsumer> logger) : RabbitMqConsumer(connectionSettings, logger)
+    ILogger<RabbitMqAuthConsumer> logger) : RabbitMqConsumer(connectionSettings, logger)
 {
-
-    private readonly RabbitQueue _queue = namedQueues.Get("EmailShoppingCart");
-
+    private readonly RabbitExchange _exchange = namedExchanges.Get("OrderCreated");
 
     /// <inheritdoc />
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         await Task.Delay(0, stoppingToken).ConfigureAwait(false);
-        if (!CreateChannelForQueue(_queue, out IModel? channel))
+        if (!CreateChannelForExchange(_exchange, out IModel? channel, out string? queueName))
         {
             return;
         }
@@ -30,7 +28,7 @@ public sealed class RabbitMqShoppingCartConsumer(
         EventingBasicConsumer consumer = new(channel);
         consumer.Received += ConsumerReceived;
         stoppingToken.ThrowIfCancellationRequested();
-        channel.BasicConsume(_queue.QueueName, false, consumer);
+        channel.BasicConsume(queueName, false, consumer);
 
         return;
 
@@ -38,16 +36,13 @@ public sealed class RabbitMqShoppingCartConsumer(
         {
             try
             {
-
-                EmailMessage? emailMessage = JsonSerializer.Deserialize<EmailMessage>(e.Body.ToArray());
-                if (emailMessage is null)
+                RewardsDto? message = JsonSerializer.Deserialize<RewardsDto>(e.Body.Span);
+                if (message is null)
                 {
-                    Logger.LogError("Failed to parse email message from ShoppingCart queue");
                     return;
                 }
-
-                EmailLogEntry logEntry = emailMessage.ToLogCartEntry();
-                emailService.Log(logEntry);
+                // TODO: determine the e-mail address
+                emailService.Log(message.ToLogOrderCreatedEntry("root@127.0.0.1"));
             }
             finally
             {
