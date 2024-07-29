@@ -24,10 +24,8 @@
     <PackageReference Include="Stripe.net" Version="45.3.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
     <PackageReference Include="System.Linq.Async" Version="6.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Integrations\MessageBus\MicroShop.Integrations.MessageBus.csproj" />
+    <PackageReference Include="RabbitMQ.Client" Version="6.8.1" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
   </ItemGroup>
 
 </Project>

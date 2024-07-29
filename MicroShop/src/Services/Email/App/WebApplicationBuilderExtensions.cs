@@ -4,6 +4,7 @@ using System.Threading.RateLimiting;
 using MicroShop.Services.Email.App.Infrastructure.Data;
 using MicroShop.Services.Email.App.Models;
 using MicroShop.Services.Email.App.Services;
+using MicroShop.Services.Email.App.Services.Contracts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.AspNetCore.ResponseCompression;
@@ -117,10 +118,14 @@ internal static class WebApplicationBuilderExtensions
                 };
             });
 
+        IConfigurationSection rabbitMessaging = configuration.GetSection("RabbitMessaging");
         services
+            .AddSingleton<IEmailService, EmailService>()
             .AddHostedService<DatabaseMigrationBackgroundService>()
             .Configure<RabbitConnectionSettings>(configuration.GetSection("RabbitMQConnection"))
-            .Configure<RabbitSettings>(configuration.GetSection("RabbitMessaging"))
+            .Configure<RabbitQueue>("OrderCreated", rabbitMessaging)
+            .Configure<RabbitQueue>("RegisterUser", rabbitMessaging)
+            .AddHostedService<RabbitMqShoppingCartConsumer>()
             .AddHostedService<RabbitMqAuthConsumer>();
         return builder;
     }

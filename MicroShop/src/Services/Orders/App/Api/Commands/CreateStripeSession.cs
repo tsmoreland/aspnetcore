@@ -1,11 +1,11 @@
 ﻿using System.Net;
-using MicroShop.Integrations.MessageBus.Abstractions;
 using MicroShop.Services.Orders.App.Extensions;
 using MicroShop.Services.Orders.App.Infrastructure.Data;
 using MicroShop.Services.Orders.App.Models;
 using MicroShop.Services.Orders.App.Models.DataTransferObjects.Notifications;
 using MicroShop.Services.Orders.App.Models.DataTransferObjects.Requests;
 using MicroShop.Services.Orders.App.Models.DataTransferObjects.Responses;
+using MicroShop.Services.Orders.App.Services.Contracts;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +23,7 @@ internal sealed class CreateStripeSession
 
 
     public static async Task<Results<Ok<ResponseDto<StripeResponseDto>>, BadRequest<ResponseDto<StripeResponseDto>>, StatusCodeWithResponseResult<StripeResponseDto>>>
-        Handle([FromBody] StripeRequestDto request, HttpContext httpContext, [FromServices] AppDbContext dbContext, [FromServices] IMessageBus messageBus, [FromServices] IOptions<MessageBusOptions> messageBusOptions)
+        Handle([FromBody] StripeRequestDto request, HttpContext httpContext, [FromServices] AppDbContext dbContext, [FromServices] IRabbitMessageSender messageSender, [FromServices] IOptions<RabbitExchange> exchangeOptions)
     {
         try
         {
@@ -79,7 +79,7 @@ internal sealed class CreateStripeSession
             }
 
             RewardsDto dto = new(userId, reardsValue, request.Order.Id);
-            await SendNotification(dto, messageBus, messageBusOptions.Value);
+            messageSender.SendMessage(dto, exchangeOptions.Value);
 
             return TypedResults.Ok(ResponseDto.Ok(new StripeResponseDto(session.Url)));
         }
@@ -107,10 +107,5 @@ internal sealed class CreateStripeSession
         {
             return ResponseDto.Error(ex.Message);
         }
-    }
-    private static async ValueTask SendNotification<T>(T dto, IMessageBus messageBus, MessageBusOptions messageBusOptions)
-    {
-        // we could accept a logger and log errors here as well or just let them bubble up
-        await messageBus.PublishMessage(messageBusOptions.TopicName, dto);
     }
 }

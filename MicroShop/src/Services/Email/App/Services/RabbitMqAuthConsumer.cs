@@ -1,8 +1,7 @@
 ﻿using System.Text.Json;
-using MicroShop.Services.Email.App.Infrastructure.Data;
 using MicroShop.Services.Email.App.Models;
 using MicroShop.Services.Email.App.Models.DataTransferObjects;
-using Microsoft.EntityFrameworkCore;
+using MicroShop.Services.Email.App.Services.Contracts;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -11,15 +10,17 @@ namespace MicroShop.Services.Email.App.Services;
 
 public sealed class RabbitMqAuthConsumer(
     IOptions<RabbitConnectionSettings> connectionSettings,
-    IOptions<RabbitSettings> settings,
-    IDbContextFactory<AppDbContext> dbContextFactory, // replace with RepositoryFactory
-    ILogger<RabbitMqAuthConsumer> logger) : RabbitMqConsumer(connectionSettings, settings, logger)
+    IOptionsMonitor<RabbitQueue> namedQueues,
+    IEmailService emailService,
+    ILogger<RabbitMqAuthConsumer> logger) : RabbitMqConsumer(connectionSettings, logger)
 {
+    private readonly RabbitQueue _queue = namedQueues.Get("RegisterUser");
+
     /// <inheritdoc />
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         await Task.Delay(0, stoppingToken).ConfigureAwait(false);
-        if (!CreateChannelForQueue("RegisterUser", out IModel? channel, out string? queueName))
+        if (!CreateChannelForQueue(_queue, out IModel? channel))
         {
             return;
         }
@@ -27,7 +28,7 @@ public sealed class RabbitMqAuthConsumer(
         EventingBasicConsumer consumer = new(channel);
         consumer.Received += ConsumerReceived;
         stoppingToken.ThrowIfCancellationRequested();
-        channel.BasicConsume(queueName, false, consumer);
+        channel.BasicConsume(_queue.QueueName, false, consumer);
 
         return;
 
@@ -41,12 +42,9 @@ public sealed class RabbitMqAuthConsumer(
                 {
                     return;
                 }
-
-                // use e-mail service here to send the e-mail
-                using AppDbContext dbContext = dbContextFactory.CreateDbContext();
                 EmailLogEntry entry = BuildEmail(message.Name, message.EmailAddress, message.VerifyUrl);
-                dbContext.Add(entry);
-                dbContext.SaveChanges();
+
+                emailService.Log(entry);
             }
             finally
             {
@@ -66,5 +64,4 @@ public sealed class RabbitMqAuthConsumer(
             """;
         return new EmailLogEntry(emailAddress, body, DateTime.UtcNow);
     }
-
 }
