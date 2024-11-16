@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright © 2023 Terry Moreland
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
@@ -17,6 +17,7 @@ using BethanysPieShop.Admin.Infrastructure.Persistence.CachedRepositories;
 using BethanysPieShop.Admin.Infrastructure.Persistence.Configuration;
 using BethanysPieShop.Admin.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -28,6 +29,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
     {
         services
+            .AddMemoryCache()
             .AddPooledDbContextFactory<AdminDbContext>(options => SqlServerConfiguration.ConfigureOptionsForPool(options, configuration, environment))
             .AddScoped(provider => provider.GetRequiredService<IDbContextFactory<AdminDbContext>>().CreateDbContext());
 
@@ -37,16 +39,14 @@ public static class ServiceCollectionExtensions
             .AddScoped<PieRepository>();
 
         services
-            .AddScoped<ICategoryReadOnlyRepository>(p => p.GetRequiredService<CategoryRepository>())
-            .Decorate<ICategoryReadOnlyRepository, CachedCategoryRepository>()
-            .AddScoped<ICategoryRepository>(p => p.GetRequiredService<CategoryRepository>())
-            .Decorate<ICategoryRepository, CachedCategoryRepository>()
+            .AddScoped<CategoryRepository>()
+            .AddScoped<ICategoryRepository>(provider => new CachedCategoryRepository(provider.GetRequiredService<CategoryRepository>(), provider.GetRequiredService<IMemoryCache>()))
+            .AddScoped<ICategoryReadOnlyRepository>(provider => provider.GetRequiredService<ICategoryRepository>())
             .AddScoped<IOrderReadOnlyRepository>(p => p.GetRequiredService<OrderRepository>())
             .AddScoped<IOrderRepository>(p => p.GetRequiredService<OrderRepository>())
-            .AddScoped<IPieReadOnlyRepository>(p => p.GetRequiredService<PieRepository>())
-            .Decorate<IPieReadOnlyRepository, CachedPieRepository>()
-            .AddScoped<IPieRepository>(p => p.GetRequiredService<PieRepository>())
-            .Decorate<IPieRepository, CachedPieRepository>();
+            .AddScoped<PieRepository>()
+            .AddScoped<IPieRepository>(provider => new CachedPieRepository(provider.GetRequiredService<PieRepository>()))
+            .AddScoped<IPieReadOnlyRepository>(p => p.GetRequiredService<IPieRepository>());
 
         return services;
     }

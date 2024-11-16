@@ -1,16 +1,3 @@
-﻿//
-// Copyright © 2023 Terry Moreland
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
-// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
-// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
-
 using BethanysPieShop.Admin.Domain.Contracts;
 using BethanysPieShop.Admin.Domain.Models;
 using BethanysPieShop.Admin.Domain.Projections;
@@ -23,15 +10,10 @@ namespace BethanysPieShop.Admin.Infrastructure.Persistence.Repositories;
 
 [ReadOnlyRepository("BethanysPieShop.Admin.Domain.Models.Category", "BethanysPieShop.Admin.Domain.Projections.CategorySummary", "BethanysPieShop.Admin.Domain.ValueObjects.CategoriesOrder")]
 [WritableRepository("BethanysPieShop.Admin.Domain.Models.Category")]
-public sealed partial class CategoryRepository : ICategoryRepository, ICategoryReadOnlyRepository
+public sealed partial class CategoryRepository(AdminDbContext dbContext)
+    : ICategoryRepository, ICategoryReadOnlyRepository
 {
-    private readonly AdminDbContext _dbContext;
-    private DbSet<Category> Entities => _dbContext.Categories;
-
-    public CategoryRepository(AdminDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
+    private DbSet<Category> Entities => dbContext.Categories;
 
     /// <inheritdoc />
     public partial IAsyncEnumerable<Category> GetAll(CategoriesOrder orderBy, bool descending);
@@ -57,7 +39,7 @@ public sealed partial class CategoryRepository : ICategoryRepository, ICategoryR
     }
     private async ValueTask GetIncludesForFindTracked(Category entity, CancellationToken cancellationToken)
     {
-        await _dbContext.Entry(entity).Collection(e => e.Pies).LoadAsync(cancellationToken);
+        await dbContext.Entry(entity).Collection(e => e.Pies).LoadAsync(cancellationToken).ConfigureAwait(false);
     }
 
     /// <inheritdoc/>
@@ -69,12 +51,12 @@ public sealed partial class CategoryRepository : ICategoryRepository, ICategoryR
     /// <inheritdoc/>
     public async ValueTask Update(Guid id, string name, string? description, CancellationToken cancellationToken = default)
     {
-        Category category = await FindById(id, default) ?? throw new ArgumentException("category not found", nameof(id));
+        var category = await FindById(id, default).ConfigureAwait(false) ?? throw new ArgumentException("category not found", nameof(id));
         category.Name = name;
         category.Description = description;
         await ValidateUpdateOrThrow(category, cancellationToken).ConfigureAwait(false);
 
-        foreach (Pie pie in category.Pies)
+        foreach (var pie in category.Pies)
         {
             pie.Category = category; // trigger update to category name
         }
@@ -91,25 +73,24 @@ public sealed partial class CategoryRepository : ICategoryRepository, ICategoryR
 
     private async ValueTask ValidateAddOrThrow(Category entity, CancellationToken cancellationToken)
     {
-        if (await Entities.AsNoTracking().AnyAsync(e => e.Name == entity.Name, cancellationToken))
+        if (await Entities.AsNoTracking().AnyAsync(e => e.Name == entity.Name, cancellationToken).ConfigureAwait(false))
         {
             throw new ValidationException("Category with same name already exists",
-                new[] { new ValidationFailure("Name", "Category with same name already exists") });
+                [ new ValidationFailure("Name", "Category with same name already exists") ]);
         }
     }
     private async ValueTask ValidateUpdateOrThrow(Category entity, CancellationToken cancellationToken)
     {
-        if (await Entities.AsNoTracking().AnyAsync(e => e.Name == entity.Name && e.Id != entity.Id, cancellationToken))
+        if (await Entities.AsNoTracking().AnyAsync(e => e.Name == entity.Name && e.Id != entity.Id, cancellationToken).ConfigureAwait(false))
         {
             throw new ValidationException("Category with same name already exists",
-                new[] { new ValidationFailure("Name", "Category with same name already exists") });
+                [ new ValidationFailure("Name", "Category with same name already exists") ]);
         }
     }
 
     private async ValueTask<(bool allowed, string reason)> AllowsDelete(Guid id, CancellationToken cancellationToken)
     {
-        bool allowed = !await _dbContext.Pies.AsNoTracking().Where(e => e.CategoryId == id).AnyAsync(cancellationToken);
-
+        var allowed = !await dbContext.Pies.AsNoTracking().Where(e => e.CategoryId == id).AnyAsync(cancellationToken).ConfigureAwait(false);
         return (allowed, !allowed ? "Pies exist in this category.  Delete all the pies in this category before deleting the category" : string.Empty);
     }
 }

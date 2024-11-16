@@ -1,16 +1,3 @@
-﻿//
-// Copyright © 2023 Terry Moreland
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
-// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
-// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
-
 using BethanysPieShop.Admin.Domain.Contracts;
 using BethanysPieShop.Admin.Domain.Models;
 using BethanysPieShop.Admin.Domain.Projections;
@@ -21,15 +8,11 @@ namespace BethanysPieShop.Admin.Infrastructure.Persistence.Repositories;
 
 [ReadOnlyRepository("BethanysPieShop.Admin.Domain.Models.Order", "BethanysPieShop.Admin.Domain.Projections.OrderSummary", "BethanysPieShop.Admin.Domain.ValueObjects.OrdersOrder")]
 [WritableRepository("BethanysPieShop.Admin.Domain.Models.Order")]
-public sealed partial class OrderRepository : IOrderRepository, IOrderReadOnlyRepository
+public sealed partial class OrderRepository(AdminDbContext dbContext) : IOrderRepository, IOrderReadOnlyRepository
 {
-    private readonly AdminDbContext _dbContext;
-    private DbSet<Order> Entities => _dbContext.Orders;
-
-    public OrderRepository(AdminDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
+#pragma warning disable IDE0051 // Remove unused private members
+    private DbSet<Order> Entities => dbContext.Orders;
+#pragma warning restore IDE0051 // Remove unused private members
 
     /// <inheritdoc />
     public partial IAsyncEnumerable<Order> GetAll(OrdersOrder orderBy, bool descending);
@@ -43,6 +26,7 @@ public sealed partial class OrderRepository : IOrderRepository, IOrderReadOnlyRe
     /// <inheritdoc />
     public partial Task<Order?> FindById(Guid id, CancellationToken cancellationToken);
 
+#pragma warning disable IDE0051 // Remove unused private members
     private static IQueryable<OrderSummary> GetSummaries(IQueryable<Order> orders)
     {
         return orders
@@ -55,7 +39,8 @@ public sealed partial class OrderRepository : IOrderRepository, IOrderReadOnlyRe
     }
     private async ValueTask GetIncludesForFindTracked(Order entity, CancellationToken cancellationToken)
     {
-        await _dbContext.Entry(entity).Collection(e => e.OrderDetails).LoadAsync(cancellationToken);
+#pragma warning restore IDE0051 // Remove unused private members
+        await dbContext.Entry(entity).Collection(e => e.OrderDetails).LoadAsync(cancellationToken).ConfigureAwait(false);
     }
 
     /// <inheritdoc/>
@@ -73,17 +58,27 @@ public sealed partial class OrderRepository : IOrderRepository, IOrderReadOnlyRe
     /// <inheritdoc/>
     public partial ValueTask SaveChanges(CancellationToken cancellationToken);
 
+#pragma warning disable CA1822
+#pragma warning disable IDE0051 // Remove unused private members
     private ValueTask ValidateAddOrThrow(Order entity, CancellationToken cancellationToken)
     {
+        _ = entity;
+        _ = cancellationToken;
         return ValueTask.CompletedTask;
     }
     private ValueTask ValidateUpdateOrThrow(Order entity, CancellationToken cancellationToken)
     {
+        _ = entity;
+        _ = cancellationToken;
         return ValueTask.CompletedTask;
     }
 
     private ValueTask<(bool allowed, string reason)> AllowsDelete(Guid id, CancellationToken cancellationToken)
     {
+#pragma warning restore CA1822
+#pragma warning restore IDE0051 // Remove unused private members
+        _ = id;
+        _ = cancellationToken;
         return ValueTask.FromResult((true, string.Empty));
     }
 }

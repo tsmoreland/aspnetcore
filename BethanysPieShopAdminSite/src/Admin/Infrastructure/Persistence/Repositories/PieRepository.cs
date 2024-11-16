@@ -1,16 +1,3 @@
-﻿//
-// Copyright © 2023 Terry Moreland
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
-// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
-// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
-
 using BethanysPieShop.Admin.Domain.Contracts;
 using BethanysPieShop.Admin.Domain.Models;
 using BethanysPieShop.Admin.Domain.Projections;
@@ -21,15 +8,9 @@ namespace BethanysPieShop.Admin.Infrastructure.Persistence.Repositories;
 
 [ReadOnlyRepository("BethanysPieShop.Admin.Domain.Models.Pie", "BethanysPieShop.Admin.Domain.Projections.PieSummary", "BethanysPieShop.Admin.Domain.ValueObjects.PiesOrder")]
 [WritableRepository("BethanysPieShop.Admin.Domain.Models.Pie")]
-public sealed partial class PieRepository : IPieRepository, IPieReadOnlyRepository
+public sealed partial class PieRepository(AdminDbContext dbContext) : IPieRepository, IPieReadOnlyRepository
 {
-    private readonly AdminDbContext _dbContext;
-    private DbSet<Pie> Entities => _dbContext.Pies;
-
-    public PieRepository(AdminDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
+    private DbSet<Pie> Entities => dbContext.Pies;
 
     /// <inheritdoc />
     public partial IAsyncEnumerable<Pie> GetAll(PiesOrder orderBy, bool descending);
@@ -46,7 +27,7 @@ public sealed partial class PieRepository : IPieRepository, IPieReadOnlyReposito
     /// <inheritdoc />
     public IAsyncEnumerable<PieSummary> Search(string query, Guid? categoryId)
     {
-        IQueryable<Pie> queryable = Entities.AsNoTracking();
+        var queryable = Entities.AsNoTracking();
 
         if (query is { Length: > 0 })
         {
@@ -66,7 +47,7 @@ public sealed partial class PieRepository : IPieRepository, IPieReadOnlyReposito
     {
         ArgumentNullException.ThrowIfNull(entity);
         ArgumentNullException.ThrowIfNull(concurrencyToken);
-        _dbContext.Entry(entity).Property(nameof(Pie.ConcurrencyToken)).OriginalValue = concurrencyToken;
+        dbContext.Entry(entity).Property(nameof(Pie.ConcurrencyToken)).OriginalValue = concurrencyToken;
     }
 
     private static IQueryable<PieSummary> GetSummaries(IQueryable<Pie> pies)
@@ -81,7 +62,7 @@ public sealed partial class PieRepository : IPieRepository, IPieReadOnlyReposito
     }
     private async ValueTask GetIncludesForFindTracked(Pie entity, CancellationToken cancellationToken)
     {
-        await _dbContext.Entry(entity).Collection(e => e.Ingredients).LoadAsync(cancellationToken);
+        await dbContext.Entry(entity).Collection(e => e.Ingredients).LoadAsync(cancellationToken).ConfigureAwait(false);
     }
 
     /// <inheritdoc/>
@@ -99,6 +80,7 @@ public sealed partial class PieRepository : IPieRepository, IPieReadOnlyReposito
     /// <inheritdoc/>
     public partial ValueTask SaveChanges(CancellationToken cancellationToken);
 
+#pragma warning disable CA1822
     private static ValueTask ValidateAddOrThrow(Pie entity, CancellationToken cancellationToken)
     {
         return ValueTask.CompletedTask;
@@ -108,6 +90,7 @@ public sealed partial class PieRepository : IPieRepository, IPieReadOnlyReposito
         return ValueTask.CompletedTask;
     }
     private ValueTask<(bool allowed, string reason)> AllowsDelete(Guid id, CancellationToken cancellationToken)
+#pragma warning restore CA1822
     {
         return ValueTask.FromResult((true, string.Empty));
     }
