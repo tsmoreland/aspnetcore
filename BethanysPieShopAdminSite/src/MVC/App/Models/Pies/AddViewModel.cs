@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright © 2023 Terry Moreland
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
@@ -58,9 +58,11 @@ public sealed class AddViewModel
     public string? ImageUrl { get; set; }
 
     [Display(Name = "Is Pie of the Week")]
+    [Required]
     public bool IsPieOfTheWeek { get; set; }
 
     [Display(Name = "In Stock")]
+    [Required]
     public bool InStock { get; set; }
 
     public Guid CategoryId { get; set; }

@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright © 2023 Terry Moreland
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
@@ -46,7 +46,7 @@ public sealed class EditViewModel
     }
 
     [SetsRequiredMembers]
-    public EditViewModel(EditViewModel model,  IEnumerable<CategorySummary>? categories)
+    public EditViewModel(EditViewModel model, IEnumerable<CategorySummary>? categories)
         : this(categories)
     {
         ArgumentNullException.ThrowIfNull(model);
@@ -118,8 +118,8 @@ public sealed class EditViewModel
     // TODO: Move this logic to application layer, at least the use of the repositories, then this can be void
     public async ValueTask UpdateModel(IPieRepository pieRepository, ICategoryRepository categoryRepository, CancellationToken cancellationToken)
     {
-        Pie pie = await pieRepository.FindById(Id, cancellationToken).ConfigureAwait(false) ?? throw new KeyNotFoundException("Pie not found");
-        Category? category = CategoryId is not null
+        var pie = await pieRepository.FindById(Id, cancellationToken).ConfigureAwait(false) ?? throw new KeyNotFoundException("Pie not found");
+        var category = CategoryId is not null
             ? await categoryRepository.FindById(CategoryId.Value, cancellationToken).ConfigureAwait(false) ?? throw new KeyNotFoundException("category not found")
             : null;
 

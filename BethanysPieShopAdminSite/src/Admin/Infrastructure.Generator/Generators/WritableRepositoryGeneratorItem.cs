@@ -1,16 +1,3 @@
-﻿//
-// Copyright © 2023 Terry Moreland
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
-// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
-// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
-
 using Microsoft.CodeAnalysis;
 
 namespace BethanysPieShop.Admin.Infrastructure.Generator.Generators;
@@ -29,7 +16,7 @@ internal sealed record class WritableRepositoryGeneratorItem(string Namespace, s
             return null;
         }
 
-        string entityType = (string)attributeData.ConstructorArguments[0].Value!;
+        var entityType = (string)attributeData.ConstructorArguments[0].Value!;
 
         return new WritableRepositoryGeneratorItem(@namespace, className, entityType);
     }
@@ -65,14 +52,14 @@ internal sealed record class WritableRepositoryGeneratorItem(string Namespace, s
                 public async partial ValueTask Add({{EntityType}} entity, CancellationToken cancellationToken)
                 {
                     ArgumentNullException.ThrowIfNull(entity);
-                    await ValidateAddOrThrow(entity, cancellationToken);
+                    await ValidateAddOrThrow(entity, cancellationToken).ConfigureAwait(false);
                     Entities.Add(entity);
                 }
 
                 public async partial ValueTask Update({{EntityType}} entity, CancellationToken cancellationToken)
                 {
                     ArgumentNullException.ThrowIfNull(entity);
-                    await ValidateUpdateOrThrow(entity, cancellationToken);
+                    await ValidateUpdateOrThrow(entity, cancellationToken).ConfigureAwait(false);
                     Entities.Update(entity);
                 }
 
@@ -94,13 +81,13 @@ internal sealed record class WritableRepositoryGeneratorItem(string Namespace, s
 
                     {{EntityType}} entity = await Entities.FindAsync(new object[] { id }, cancellationToken) ??
                         throw new ArgumentException($"Entity matching {id} not found", nameof(id));
-                    await GetIncludesForFindTracked(entity, cancellationToken);
+                    await GetIncludesForFindTracked(entity, cancellationToken).ConfigureAwait(false);
                     Delete(entity);
                 }
 
                 public async partial ValueTask SaveChanges(CancellationToken cancellationToken)
                 {
-                    await _dbContext.SaveChangesAsync(cancellationToken);
+                    await dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
                 }
 
             """;
