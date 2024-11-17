@@ -27,5 +27,5 @@ builder.Services
 
     });
 
-await builder.Build().RunAsync();
+await builder.Build().RunAsync().ConfigureAwait(true);
 

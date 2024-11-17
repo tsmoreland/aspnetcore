@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
@@ -28,7 +28,7 @@ public partial class AuthenticationStatus
         }
 
         // prompt if the user is sure via a quick show pop up like component
-        bool confirmed = await JavaScript.InvokeAsync<bool>("window.confirm", "Are you sure?");
+        var confirmed = await JavaScript.InvokeAsync<bool>("window.confirm", "Are you sure?").ConfigureAwait(false);
         if (!confirmed)
         {
             context.PreventNavigation();

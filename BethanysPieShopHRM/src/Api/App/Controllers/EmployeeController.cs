@@ -1,4 +1,4 @@
-﻿using BethanysPieShopHRM.Api.App.Shared;
+using BethanysPieShopHRM.Api.App.Shared;
 using BethanysPieShopHRM.Shared.Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -47,23 +47,23 @@ public class EmployeeController(
         // handle image upload
         if (employee.ImageContent is not null)
         {
-            HttpContext? context = httpContextAccessor.HttpContext;
+            var context = httpContextAccessor.HttpContext;
             if (context is null)
             {
                 return new ObjectResult("Internal service error - context not found") { StatusCode = StatusCodes.Status500InternalServerError };
             }
 
-            string currentUrl = context.Request.Host.Value;
-            string imageName = employee.ImageName?.Replace("..", string.Empty).Trim() ?? string.Empty;
+            var currentUrl = context.Request.Host.Value;
+            var imageName = employee.ImageName?.Replace("..", string.Empty).Trim() ?? string.Empty;
             if (imageName is { Length: > 0 })
             {
-                string path = Path.GetFullPath($"{webHostEnvironment.WebRootPath}\\uploads\\{employee.ImageName}");
+                var path = Path.GetFullPath($"{webHostEnvironment.WebRootPath}\\uploads\\{employee.ImageName}");
                 if (!path.StartsWith(webHostEnvironment.WebRootPath))
                 {
                     return BadRequest();
                 }
 
-                using (FileStream fileStream = System.IO.File.Create(path))
+                using (var fileStream = System.IO.File.Create(path))
                 {
                     fileStream.Write(employee.ImageContent, 0, employee.ImageContent.Length);
                     fileStream.Close();
@@ -77,8 +77,7 @@ public class EmployeeController(
             }
         }
 
-
-        Employee createdEmployee = employeeRepository.AddEmployee(employee);
+        var createdEmployee = employeeRepository.AddEmployee(employee);
 
         return Created("employee", createdEmployee);
     }
@@ -101,7 +100,7 @@ public class EmployeeController(
             return BadRequest(ModelState);
         }
 
-        Employee? employeeToUpdate = employeeRepository.GetEmployeeById(employee.EmployeeId);
+        var employeeToUpdate = employeeRepository.GetEmployeeById(employee.EmployeeId);
 
         if (employeeToUpdate == null)
         {
@@ -121,7 +120,7 @@ public class EmployeeController(
             return BadRequest();
         }
 
-        Employee? employeeToDelete = employeeRepository.GetEmployeeById(id);
+        var employeeToDelete = employeeRepository.GetEmployeeById(id);
         if (employeeToDelete == null)
         {
             return NotFound();

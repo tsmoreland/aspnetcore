@@ -1,4 +1,5 @@
-﻿using BethanysPieShopHRM.Shared.Domain;
+using System.Globalization;
+using BethanysPieShopHRM.Shared.Domain;
 using BethanysPieShopHRM.Shared.Models;
 using BethanysPieShopHRM.Web.App.Services;
 using Microsoft.AspNetCore.Components;
@@ -20,12 +21,12 @@ public partial class EmployeeDetail
     /// <inheritdoc />
     protected override async Task OnInitializedAsync()
     {
-        Employee = await EmployeeDataService.GetEmployeeDetails(int.Parse(EmployeeId));
+        Employee = await EmployeeDataService.GetEmployeeDetails(int.Parse(EmployeeId, CultureInfo.InvariantCulture)).ConfigureAwait(false);
         if (Employee is { Longitude: not null, Latitude: not null })
         {
             MapMarkers =
             [
-                new(Employee.FullName, Employee.Longitude.Value, Employee.Latitude.Value, false),
+                new Marker(Employee.FullName, Employee.Longitude.Value, Employee.Latitude.Value, false),
             ];
         }
     }

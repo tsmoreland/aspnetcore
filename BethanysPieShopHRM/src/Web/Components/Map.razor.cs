@@ -1,4 +1,4 @@
-﻿using BethanysPieShopHRM.Shared.Models;
+using BethanysPieShopHRM.Shared.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -21,8 +21,8 @@ public partial class Map
     /// <inheritdoc />
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        List<Marker> markers = Markers ?? [];
+        var markers = Markers ?? [];
 
-        await JsRuntime.InvokeVoidAsync("deliveryMap.showOrUpdate", ElementId, markers);
+        await JsRuntime.InvokeVoidAsync("deliveryMap.showOrUpdate", ElementId, markers).ConfigureAwait(false);
     }
 }

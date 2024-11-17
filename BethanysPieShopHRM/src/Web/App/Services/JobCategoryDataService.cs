@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using BethanysPieShopHRM.Shared.Domain;
 
 namespace BethanysPieShopHRM.Web.App.Services;
@@ -11,8 +11,8 @@ public sealed class JobCategoryDataService(HttpClient httpClient) : IJobCategory
     /// <inheritdoc />
     public async Task<IEnumerable<JobCategory>> GetAllJobCatagories()
     {
-        Stream response = await _httpClient.GetStreamAsync("api/jobcategory");
-        List<JobCategory> catagories = (await JsonSerializer.DeserializeAsync<IEnumerable<JobCategory>>(response, _caseSensitiveOptions) ?? []).ToList();
+        var response = await _httpClient.GetStreamAsync("api/jobcategory").ConfigureAwait(false);
+        var catagories = (await JsonSerializer.DeserializeAsync<IEnumerable<JobCategory>>(response, _caseSensitiveOptions).ConfigureAwait(false) ?? []).ToList();
         return catagories;
     }
 
@@ -20,6 +20,7 @@ public sealed class JobCategoryDataService(HttpClient httpClient) : IJobCategory
     public async Task<JobCategory?> GetJobCatagoryById(int jobCatagoryId)
     {
         return await JsonSerializer
-            .DeserializeAsync<JobCategory>(await _httpClient.GetStreamAsync($"api/jobcategory/{jobCatagoryId}"), _caseSensitiveOptions);
+            .DeserializeAsync<JobCategory>(await _httpClient.GetStreamAsync($"api/jobcategory/{jobCatagoryId}").ConfigureAwait(false), _caseSensitiveOptions)
+            .ConfigureAwait(false);
     }
 }
