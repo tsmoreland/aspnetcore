@@ -45,7 +45,9 @@ public static class HealthChecksConfiguration
 
         bool authenticated = context.User.Identity?.IsAuthenticated == true;
         using MemoryStream memoryStream = new();
-        await using (Utf8JsonWriter jsonWriter = new(memoryStream, options))
+
+        Utf8JsonWriter jsonWriter = new(memoryStream, options);
+        await using (jsonWriter.ConfigureAwait(false))
         {
             jsonWriter.WriteStartObject();
             jsonWriter.WriteString("status", report.Status.ToString());
@@ -53,7 +55,7 @@ public static class HealthChecksConfiguration
             {
                 jsonWriter.WriteStartObject("results");
 
-                foreach (KeyValuePair<string, HealthReportEntry> healthReportEntry in report.Entries)
+                foreach (var healthReportEntry in report.Entries)
                 {
                     jsonWriter.WriteStartObject(healthReportEntry.Key.ToSnakeCase());
                     jsonWriter.WriteString("status",
@@ -67,7 +69,7 @@ public static class HealthChecksConfiguration
                     if (healthReportEntry.Value.Data.Any())
                     {
                         jsonWriter.WriteStartObject("data");
-                        foreach (KeyValuePair<string, object> item in healthReportEntry.Value.Data)
+                        foreach (var item in healthReportEntry.Value.Data)
                         {
                             jsonWriter.WritePropertyName(item.Key.ToSnakeCase());
 
@@ -86,7 +88,7 @@ public static class HealthChecksConfiguration
             jsonWriter.WriteEndObject();
         }
 
-        string response = Encoding.UTF8.GetString(memoryStream.ToArray());
-        await context.Response.WriteAsync(response);
+        var response = Encoding.UTF8.GetString(memoryStream.ToArray());
+        await context.Response.WriteAsync(response).ConfigureAwait(false);
     }
 }

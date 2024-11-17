@@ -10,8 +10,19 @@ public sealed class DatabaseHealthCheck(IDbContextFactory<CarsDbContext> dbConte
     /// <inheritdoc />
     public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
     {
-        await using CarsDbContext dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
-        bool isDbConnectable = await dbContext.Database.CanConnectAsync(cancellationToken);
+        var dbContextTask = _dbContextFactory.CreateDbContextAsync(cancellationToken);
+        CarsDbContext? dbContext = null;
+        var isDbConnectable = false;
+        // avoiding use of await using so we can use ConfigureAwait(false)
+        try
+        {
+            dbContext = await dbContextTask.ConfigureAwait(false);
+            isDbConnectable = await dbContext.Database.CanConnectAsync(cancellationToken).ConfigureAwait(false);
+        }
+        finally
+        {
+            if (dbContext is not null) await dbContext.DisposeAsync().ConfigureAwait(false);
+        }
 
         return isDbConnectable
             ? HealthCheckResult.Healthy()

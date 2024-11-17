@@ -1,4 +1,5 @@
-﻿using System.Net.Mime;
+﻿using System.Globalization;
+using System.Net.Mime;
 using CarInventory.Cars.Application.Features.Commands.Add;
 using CarInventory.Cars.Application.Features.Shared;
 using CarInventory.Cars.Domain.Contracts;
@@ -42,8 +43,8 @@ internal static class AddApiHandler
         {
             operation.OperationId = route.OperationId;
             operation.Description = description;
-            OpenApiResponse? response = operation.Responses
-                .FirstOrDefault(kvp => kvp.Key == StatusCodes.Status201Created.ToString()).Value;
+            var response = operation.Responses
+                .FirstOrDefault(kvp => kvp.Key == StatusCodes.Status201Created.ToString(CultureInfo.InvariantCulture)).Value;
             if (response is null)
             {
                 return operation;
@@ -63,8 +64,8 @@ internal static class AddApiHandler
     {
         try
         {
-            Car car = repository.Add(cmd.Make, cmd.Model, cmd.HorsePower, cmd.EngineType, cmd.FuelCapacityInLitres, cmd.NumberOfDoors, cmd.MpG);
-            await repository.SaveChanges(default);
+            var car = repository.Add(cmd.Make, cmd.Model, cmd.HorsePower, cmd.EngineType, cmd.FuelCapacityInLitres, cmd.NumberOfDoors, cmd.MpG);
+            await repository.SaveChanges(default).ConfigureAwait(false);
             // not sure of the route name here, check swagger
             return TypedResults.CreatedAtRoute(new CarDetails(car), nameof(RouteName.GetCarById), new { id = car.Id });
         }

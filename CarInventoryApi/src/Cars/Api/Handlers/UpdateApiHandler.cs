@@ -1,4 +1,5 @@
-﻿using System.Net.Mime;
+﻿using System.Globalization;
+using System.Net.Mime;
 using CarInventory.Cars.Application.Features.Commands.Update;
 using CarInventory.Cars.Application.Features.Shared;
 using CarInventory.Cars.Domain.Contracts;
@@ -45,7 +46,7 @@ internal static class UpdateApiHandler
             idParameter.In = ParameterLocation.Path;
 
             OpenApiResponse? response = operation.Responses
-                .FirstOrDefault(kvp => kvp.Key == StatusCodes.Status200OK.ToString()).Value;
+                .FirstOrDefault(kvp => kvp.Key == StatusCodes.Status200OK.ToString(CultureInfo.InvariantCulture)).Value;
             if (response is null)
             {
                 return operation;
@@ -67,7 +68,7 @@ internal static class UpdateApiHandler
             return TypedResults.NotFound();
         }
 
-        (int horsePower, decimal fuelCapacityInLitres, int numberOfDoors, decimal mpg) = command;
+        (var horsePower, var fuelCapacityInLitres, var numberOfDoors, var mpg) = command;
 
         try
         {

@@ -7,11 +7,11 @@ IConfiguration configuration = new ConfigurationBuilder()
     .AddUserSecrets(typeof(Program).Assembly)
     .Build();
 
-string clientId = configuration["AzureAd:ClientId"] ?? string.Empty;
-string clientSecret = configuration["AzureAd:ClientSecret"] ?? string.Empty;
-string tenantId = configuration["AzureAd:TenantId"] ?? string.Empty;
+var clientId = configuration["AzureAd:ClientId"] ?? string.Empty;
+var clientSecret = configuration["AzureAd:ClientSecret"] ?? string.Empty;
+var tenantId = configuration["AzureAd:TenantId"] ?? string.Empty;
 string[] scopes = [configuration["AzureAd:Scope"] ?? string.Empty];
-string instance = configuration["AzureAd:Instance"] ?? string.Empty;
+var instance = configuration["AzureAd:Instance"] ?? string.Empty;
 
 ConfidentialClientApplicationOptions options = new()
 {
@@ -22,17 +22,16 @@ ConfidentialClientApplicationOptions options = new()
 };
 
 
-IConfidentialClientApplication app = ConfidentialClientApplicationBuilder
+var app = ConfidentialClientApplicationBuilder
     .CreateWithApplicationOptions(options)
     .Build();
 
 try
 {
-    AuthenticationResult result = await app.AcquireTokenForClient(scopes).ExecuteAsync();
+    var result = await app.AcquireTokenForClient(scopes).ExecuteAsync().ConfigureAwait(false);
     Console.WriteLine("Authentication success");
     Console.WriteLine(result.AccessToken);
     Console.WriteLine($"Expires on {result.ExpiresOn}");
-
 }
 catch (Exception ex)
 {

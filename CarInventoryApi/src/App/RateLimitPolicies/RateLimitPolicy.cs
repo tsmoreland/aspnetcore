@@ -44,7 +44,7 @@ public sealed class RateLimitPolicy : IRateLimiterPolicy<string>
         }
 
         context.HttpContext.Response.StatusCode = StatusCodes.Status429TooManyRequests;
-        await context.HttpContext.Response.WriteAsJsonAsync(problem, cancellationToken);
+        await context.HttpContext.Response.WriteAsJsonAsync(problem, cancellationToken).ConfigureAwait(false);
 
         context.HttpContext.RequestServices.GetService<ILoggerFactory>()?
             .CreateLogger("Microsoft.AspNetCore.RateLimitingMiddleware")

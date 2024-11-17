@@ -24,7 +24,7 @@ public sealed class BadHttpRequestExceptionHandler : IExceptionHandler
             Detail = "One or more problems occurred with the request, please check parameters and try again",
             Instance = $"{httpContext.Request.Method} {httpContext.Request.Path}"
 
-        }, cancellationToken);
+        }, cancellationToken).ConfigureAwait(false);
         return true;
     }
 }
