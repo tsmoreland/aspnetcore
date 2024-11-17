@@ -1,4 +1,4 @@
-@CarInventoryApi_HostAddress = http://localhost:5032
+@CarInventoryApi_HostAddress = http://localhost:8201
 
 GET {{CarInventoryApi_HostAddress}}/weatherforecast/
 Accept: application/json
