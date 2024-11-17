@@ -1,4 +1,4 @@
-﻿using BethanysPieShopHRM.Shared.Domain;
+using BethanysPieShopHRM.Shared.Domain;
 using BethanysPieShopHRM.Web.App.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -37,15 +37,15 @@ public partial class EmployeeEdit
     protected override async Task OnInitializedAsync()
     {
         Saved = false;
-        Task<IEnumerable<Country>> countryTask = CountryDataService.GetAllCountries();
-        Task<IEnumerable<JobCategory>> jobCategoryTask = JobCategoryDataService.GetAllJobCatagories();
+        var countryTask = CountryDataService.GetAllCountries().ConfigureAwait(false);
+        var jobCategoryTask = JobCategoryDataService.GetAllJobCatagories().ConfigureAwait(false);
 
         Countries = (await countryTask).ToList();
         JobCategories = (await jobCategoryTask).ToList();
 
-        if (int.TryParse(EmployeeId, out int employeeId))
+        if (int.TryParse(EmployeeId, out var employeeId))
         {
-            Employee? existing = await EmployeeDataService.GetEmployeeDetails(employeeId);
+            var existing = await EmployeeDataService.GetEmployeeDetails(employeeId).ConfigureAwait(false);
 
             if (existing is not null)
             {
@@ -65,27 +65,31 @@ public partial class EmployeeEdit
     private Task OnValidSubmit()
     {
         Saved = false;
-         return Employee.EmployeeId == 0
-            ? AddAsync()
-            : UpdateAsync();
+        return Employee.EmployeeId == 0
+           ? AddAsync()
+           : UpdateAsync();
     }
 
     private async Task AddAsync()
     {
         if (_selectedFile is not null)
         {
-            IBrowserFile file = _selectedFile;
+            var file = _selectedFile;
             using MemoryStream memory = new();
-            await using (Stream fileStream = file.OpenReadStream())
+#pragma warning disable IDE0079 // Remove unnecessary suppression
+#pragma warning disable CA2007 // can't use ConfigureAwait, or we won't be able to access the stream
+            await using (var fileStream = file.OpenReadStream())
+#pragma warning restore CA2007
             {
-                await fileStream.CopyToAsync(memory);
+                await fileStream.CopyToAsync(memory).ConfigureAwait(false);
             }
+#pragma warning restore IDE0079 // Remove unnecessary suppression
 
             Employee.ImageName = file.Name;
             Employee.ImageContent = memory.ToArray();
         }
 
-        Employee? added = await EmployeeDataService.AddEmployee(Employee);
+        var added = await EmployeeDataService.AddEmployee(Employee).ConfigureAwait(false);
         if (added is not null)
         {
             StatusClass = "alert-success";
@@ -100,7 +104,7 @@ public partial class EmployeeEdit
     }
     private async Task UpdateAsync()
     {
-        await EmployeeDataService.UpdateEmployee(Employee);
+        await EmployeeDataService.UpdateEmployee(Employee).ConfigureAwait(false);
         StatusClass = "alert-success";
         Message = "Employee updated successfully";
         Saved = true;
@@ -114,7 +118,7 @@ public partial class EmployeeEdit
 
     private async Task OnDeleteClicked()
     {
-        await EmployeeDataService.DeleteEmployee(Employee.EmployeeId);
+        await EmployeeDataService.DeleteEmployee(Employee.EmployeeId).ConfigureAwait(false);
         StatusClass = "alert-success";
         Message = "Deleted Successfully";
         Saved = true;

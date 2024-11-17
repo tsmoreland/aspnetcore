@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using BethanysPieShopHRM.Shared.Domain;
 
 namespace BethanysPieShopHRM.Web.App.Services;
@@ -11,15 +11,15 @@ public sealed class CountryDataService(HttpClient httpClient) : ICountryDataServ
     /// <inheritdoc />
     public async Task<IEnumerable<Country>> GetAllCountries()
     {
-        Stream response = await _httpClient.GetStreamAsync("api/country");
-        List<Country> countries = (await JsonSerializer.DeserializeAsync<IEnumerable<Country>>(response, _caseSensitiveOptions) ?? []).ToList();
+        var response = await _httpClient.GetStreamAsync("api/country").ConfigureAwait(false);
+        var countries = (await JsonSerializer.DeserializeAsync<IEnumerable<Country>>(response, _caseSensitiveOptions).ConfigureAwait(false) ?? []).ToList();
         return countries;
     }
 
     /// <inheritdoc />
     public async Task<Country?> GetCountryuById(int countryId)
     {
-        Stream response = await _httpClient.GetStreamAsync($"api/country/{countryId}");
-        return await JsonSerializer.DeserializeAsync<Country>(response, _caseSensitiveOptions);
+        var response = await _httpClient.GetStreamAsync($"api/country/{countryId}").ConfigureAwait(false);
+        return await JsonSerializer.DeserializeAsync<Country>(response, _caseSensitiveOptions).ConfigureAwait(false);
     }
 }

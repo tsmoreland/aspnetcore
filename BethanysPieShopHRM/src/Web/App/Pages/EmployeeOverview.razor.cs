@@ -1,4 +1,4 @@
-﻿using BethanysPieShopHRM.Shared.Domain;
+using BethanysPieShopHRM.Shared.Domain;
 using BethanysPieShopHRM.Web.App.Services;
 using Microsoft.AspNetCore.Components;
 
@@ -8,7 +8,7 @@ public partial class EmployeeOverview
 {
     private Employee? _selectedEmployee;
 
-    public List<Employee>? Employees { get; set; } = default;
+    public List<Employee>? Employees { get; set; }
 
     public string Title { get; set; } = "Employee Overview";
 
@@ -25,7 +25,7 @@ public partial class EmployeeOverview
 
     public async Task LoadEmployeesAsync()
     {
-        Employees = (await EmployeeDataService.GetAllEmployees()).ToList();
+        Employees = (await EmployeeDataService.GetAllEmployees().ConfigureAwait(false)).ToList();
     }
 
     public void ShowQuickViewPopup(Employee selectedEmployee)
