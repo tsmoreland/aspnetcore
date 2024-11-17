@@ -1,4 +1,4 @@
-﻿using System.Net.Mime;
+using System.Net.Mime;
 using CarInventory.Cars.Domain.Contracts;
 using CarInventory.Cars.Domain.Models.Projections;
 using Microsoft.AspNetCore.Builder;
@@ -13,13 +13,13 @@ internal static class GetAllApiHandler
 {
     public static RouteGroupBuilder MapGetSummaries(this RouteGroupBuilder group, ref readonly CarsApiLinks links, params string[] authorizationPolicies)
     {
-        OpenApiLink route = links[RouteName.GetAllCars];
-        string? description = links.GetDescriptionByNameOrDefault(RouteName.GetAllCars);
+        var route = links[RouteName.GetAllCars];
+        var description = links.GetDescriptionByNameOrDefault(RouteName.GetAllCars);
         // TODO: change return type, this should return a summary response not the full details
 
         group
             .MapGet("/", static ([FromServices] ICarRepository repository) => Results.Ok(repository.GetCarSummaries()))
-            .RequireAuthorization(authorizationPolicies)
+            //.RequireAuthorization(authorizationPolicies)
             .WithName(nameof(RouteName.GetAllCars))
             .Produces<IAsyncEnumerable<CarSummary>>(contentType: MediaTypeNames.Application.Json)
             .WithOpenApi(operation =>

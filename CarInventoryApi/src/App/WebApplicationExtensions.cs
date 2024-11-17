@@ -1,10 +1,8 @@
-﻿using Asp.Versioning.ApiExplorer;
-using Asp.Versioning.Builder;
 using CarInventory.App.Configuration;
 using CarInventory.Cars.Api;
-using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.OpenApi;
+using Microsoft.Extensions.Options;
 using Serilog;
-using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
 namespace CarInventory.App;
@@ -19,8 +17,8 @@ public static class WebApplicationExtensions
 
         if (app.Environment.IsDevelopment())
         {
-            app.UseSwagger(ConfigureSwagger);
-            app.UseSwaggerUI(options => ConfigureSwaggerUserInterface(options, app.DescribeApiVersions()));
+            app.MapOpenApi("/api/{documentName}/openapi.json");
+            app.UseSwaggerUI(options => ConfigureSwaggerUserInterface(options, app));
         }
 
         app.UseHttpsRedirection();
@@ -32,8 +30,7 @@ public static class WebApplicationExtensions
         app.MapHealthChecks("/api/health", HealthChecksConfiguration.GetOptions())
             .AllowAnonymous();
 
-        IVersionedEndpointRouteBuilder routeBuilder = app.NewVersionedApi();
-        routeBuilder.MapGroup("/api/v{version:apiVersion}/cars")
+        app.MapGroup("/api/v{version}/cars")
             .MapCarsApi("/api/v1/cars",
                 addPolicies: ["application_admin"],
                 getPolicies: ["application_client"],
@@ -42,22 +39,14 @@ public static class WebApplicationExtensions
 
         return app;
     }
-    private static void ConfigureSwagger(SwaggerOptions options)
-    {
-        options.PreSerializeFilters.Add(static (swaggerDoc, httpReq) =>
-        {
-            swaggerDoc.Servers = 
-            [
-                new OpenApiServer { Url = $"{httpReq.Scheme}://{httpReq.Host.Value}" }
-            ];
-        });
-    }
 
-    private static void ConfigureSwaggerUserInterface(SwaggerUIOptions options, IEnumerable<ApiVersionDescription> apiVersions)
+    private static void ConfigureSwaggerUserInterface(SwaggerUIOptions options, WebApplication app)
     {
-        foreach (ApiVersionDescription description in apiVersions)
+        using var scope = app.Services.CreateScope();
+        var openApiOptions = scope.ServiceProvider.GetServices<IOptions<OpenApiOptions>>();
+        foreach (var apiOptions in openApiOptions.Select(o => o.Value))
         {
-            options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName);
+            options.SwaggerEndpoint($"/api/{apiOptions.DocumentName}/openApi.json", apiOptions.DocumentName);
         }
     }
 }
