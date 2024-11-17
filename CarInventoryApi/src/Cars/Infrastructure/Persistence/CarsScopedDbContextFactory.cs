@@ -10,7 +10,9 @@ public sealed class CarsScopedDbContextFactory(IDbContextFactory<CarsDbContext> 
 #pragma warning disable IDE0052
 #pragma warning disable IDE0051
 #pragma warning disable CS0414 // Field is assigned but its value is never used
+#pragma warning disable CA1823
     private readonly int _tenantId = DefaultTenantId; // unused at present but if in azure this would be retrieved via ITenant
+#pragma warning restore CA1823
 #pragma warning restore CS0414 // Field is assigned but its value is never used
 #pragma warning restore IDE0051
 #pragma warning restore IDE0052

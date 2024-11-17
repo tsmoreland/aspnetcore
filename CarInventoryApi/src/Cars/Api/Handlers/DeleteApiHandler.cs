@@ -43,7 +43,7 @@ internal static class DeleteApiHandler
 
     private static async Task<Results<NoContent, NotFound>> Delete([FromRoute] Guid id, [FromServices] ICarRepository repository)
     {
-        return await repository.DeleteCarById(id, default)
+        return await repository.DeleteCarById(id, default).ConfigureAwait(false)
             ? TypedResults.NoContent()
             : TypedResults.NotFound();
     }

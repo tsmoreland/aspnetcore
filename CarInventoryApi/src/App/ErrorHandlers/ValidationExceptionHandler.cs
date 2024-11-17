@@ -24,7 +24,7 @@ public class ValidationExceptionHandler : IExceptionHandler
             Detail = exception.Message,
             Instance = $"{httpContext.Request.Method} {httpContext.Request.Path}"
 
-        }, cancellationToken);
+        }, cancellationToken).ConfigureAwait(false);
         return true;
 
     }

@@ -43,7 +43,7 @@ internal static class GetByIdApiHandler
 
     private static async Task<Results<Ok<CarDetails>, NotFound>> GetById(Guid id, [FromServices] ICarRepository repository, CancellationToken cancellationToken)
     {
-        Car? car = await repository.GetCarById(id, cancellationToken);
+        var car = await repository.GetCarById(id, cancellationToken).ConfigureAwait(false);
         return car is not null
             ? TypedResults.Ok(new CarDetails(car))
             : TypedResults.NotFound();

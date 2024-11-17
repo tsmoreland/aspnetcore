@@ -12,7 +12,7 @@ public sealed class RemoveCommandHandler(ICarRepository repository, ILogger<Remo
     /// <inheritdoc />
     public async Task Handle(RemoveCommand request, CancellationToken cancellationToken)
     {
-        bool removed = await _repository.DeleteCarById(request.Id, cancellationToken);
+        var removed = await _repository.DeleteCarById(request.Id, cancellationToken).ConfigureAwait(false);
         if (!removed)
         {
             _logger.LogInformation("Car matching {Id} not found", request.Id);

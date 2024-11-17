@@ -46,7 +46,7 @@ public sealed class CarRepository(CarsDbContext dbContext) : ICarRepository
     /// <inheritdoc />
     public async Task<bool> DeleteCarById(Guid id, CancellationToken cancellationToken)
     {
-        Car? car = await _dbContext.Cars.FindAsync([id], cancellationToken);
+        var car = await _dbContext.Cars.FindAsync([id], cancellationToken).ConfigureAwait(false);
         if (car is null)
         {
             return false;
