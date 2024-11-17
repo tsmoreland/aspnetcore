@@ -1,9 +1,8 @@
-﻿using System.IO.Compression;
+using System.IO.Compression;
 using System.Security.Authentication;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
-using Asp.Versioning.ApiExplorer;
 using CarInventory.App.Configuration;
 using CarInventory.App.ErrorHandlers;
 using CarInventory.Cars.Application.Features.Commands.Add;
@@ -11,9 +10,7 @@ using CarInventory.Cars.Infrastructure;
 using CarInventory.Cars.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.ResponseCompression;
-using Microsoft.Extensions.Options;
 using Microsoft.Identity.Web;
-using Swashbuckle.AspNetCore.SwaggerGen;
 using AspNetCoreHttp = Microsoft.AspNetCore.Http;
 using AspNetCoreMvc = Microsoft.AspNetCore.Mvc;
 using SerializerContext = CarInventory.App.Configuration.SerializerContext;
@@ -24,9 +21,9 @@ public static class WebApplicationBuilderExtensions
 {
     public static WebApplicationBuilder Configure(this WebApplicationBuilder builder)
     {
-        IConfiguration configuration = builder.Configuration;
-        IServiceCollection services = builder.Services;
-        IHostEnvironment environment = builder.Environment;
+        var configuration = builder.Configuration;
+        var services = builder.Services;
+        var environment = builder.Environment;
 
         builder.WebHost
             .UseKestrel(static (ctx, options) =>
@@ -46,9 +43,18 @@ public static class WebApplicationBuilderExtensions
         if (environment.IsDevelopment())
         {
             services
-                .AddProblemDetails()
-                .AddSwaggerGen()
-                .AddTransient<IConfigureOptions<SwaggerGenOptions>>(provider => new SwaggerConfiguration(provider.GetRequiredService<IApiVersionDescriptionProvider>()));
+                .AddProblemDetails();
+
+            services
+                .AddOpenApi(options =>
+                {
+                    options.AddDocumentTransformer((doc, ctx, _) =>
+                    {
+                        doc.Info.Title = "Cars Inventory API";
+                        doc.Info.Version = "v1";
+                        return Task.CompletedTask;
+                    });
+                });
         }
         else
         {
@@ -56,8 +62,7 @@ public static class WebApplicationBuilderExtensions
                 .AddProblemDetails(static options => options.CustomizeProblemDetails = static ctx => ctx.ProblemDetails.Extensions.Clear());
         }
 
-        IHealthChecksBuilder healthChecksBuilder = services.AddHealthChecks();
-
+        var healthChecksBuilder = services.AddHealthChecks();
 
         services
             .AddAuthorizationBuilder()
@@ -73,13 +78,11 @@ public static class WebApplicationBuilderExtensions
         services
             .ConfigureJsonOptions()
             .AddRateLimiter(RateLimitConfiguration.Configure)
-            .AddEndpointsApiExplorer()
-            .AddVersioning()
+            //.AddEndpointsApiExplorer()
             .AddResponseCompressionWithBrotliAndGzip();
 
         services
             .AddInfrastructureServices(configuration, healthChecksBuilder, environment);
-
 
         return builder;
     }
@@ -93,22 +96,6 @@ public static class WebApplicationBuilderExtensions
                 options.EnableForHttps = true;
             })
             .Configure<BrotliCompressionProviderOptions>(static options => options.Level = CompressionLevel.Optimal);
-    }
-    private static IServiceCollection AddVersioning(this IServiceCollection services)
-    {
-        services
-            .AddApiVersioning(static options =>
-            {
-                options.DefaultApiVersion = new Asp.Versioning.ApiVersion(1);
-                options.ApiVersionReader = new Asp.Versioning.UrlSegmentApiVersionReader();
-            })
-            .AddApiExplorer(static options =>
-            {
-                options.GroupNameFormat = "'v'VVV";
-                options.FormatGroupName = (group, version) => $"{group} - {version}";
-                options.SubstituteApiVersionInUrl = true;
-            });
-        return services;
     }
     private static IServiceCollection ConfigureJsonOptions(this IServiceCollection services)
     {
