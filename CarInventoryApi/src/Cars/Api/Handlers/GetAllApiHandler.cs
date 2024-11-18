@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.OpenApi.Models;
 
 namespace CarInventory.Cars.Api.Handlers;
 
@@ -19,7 +18,7 @@ internal static class GetAllApiHandler
 
         group
             .MapGet("/", static ([FromServices] ICarRepository repository) => Results.Ok(repository.GetCarSummaries()))
-            //.RequireAuthorization(authorizationPolicies)
+            .RequireAuthorization(authorizationPolicies)
             .WithName(nameof(RouteName.GetAllCars))
             .Produces<IAsyncEnumerable<CarSummary>>(contentType: MediaTypeNames.Application.Json)
             .WithOpenApi(operation =>
