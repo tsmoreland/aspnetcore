@@ -17,7 +17,7 @@ namespace CarvedRock.Infrastructure.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.3")
+                .HasAnnotation("ProductVersion", "9.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -103,7 +103,8 @@ namespace CarvedRock.Infrastructure.Data.Migrations
                     b.Property<string>("ItemType")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(21)
+                        .HasColumnType("nvarchar(21)")
                         .HasDefaultValue("UncatagorizedItem")
                         .HasColumnName("item_type");
 

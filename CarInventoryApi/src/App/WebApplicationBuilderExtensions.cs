@@ -48,12 +48,10 @@ public static class WebApplicationBuilderExtensions
             services
                 .AddOpenApi(options =>
                 {
-                    options.AddDocumentTransformer((doc, ctx, _) =>
-                    {
-                        doc.Info.Title = "Cars Inventory API";
-                        doc.Info.Version = "v1";
-                        return Task.CompletedTask;
-                    });
+                    options
+                        .UseDocumentInfo("Cars Inventory API", "v1")
+                        .UseServerUrls("https://localhost")
+                        .UseJwtBearerAuthentication();
                 });
         }
         else
