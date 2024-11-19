@@ -29,8 +29,10 @@ internal static class OpenApiOptionsExtensions
         });
         options.AddOperationTransformer((operation, context, _) =>
         {
-            if (context.Description.ActionDescriptor.EndpointMetadata.OfType<IAuthorizeData>().Any()) 
+            if (context.Description.ActionDescriptor.EndpointMetadata.OfType<IAuthorizeData>().Any())
+            {
                 operation.Security = [new OpenApiSecurityRequirement() { [scheme] = [] }];
+            }
             return Task.CompletedTask;
         });
         return options;
