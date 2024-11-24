@@ -1,4 +1,4 @@
-﻿using System.Net.Http.Headers;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -7,19 +7,13 @@ using Microsoft.Extensions.Options;
 
 namespace FlightPlan.Api.App.Authentication;
 
-public sealed class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
+/// <inheritdoc />
+public sealed class BasicAuthenticationHandler(
+    IUserService userService,
+    IOptionsMonitor<AuthenticationSchemeOptions> options,
+    ILoggerFactory logger, UrlEncoder encoder) : AuthenticationHandler<AuthenticationSchemeOptions>(options, logger, encoder)
 {
-    private readonly IUserService _userService;
-
-    /// <inheritdoc />
-    public BasicAuthenticationHandler(
-        IUserService userService,
-        IOptionsMonitor<AuthenticationSchemeOptions> options,
-        ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock)
-        : base(options, logger, encoder, clock)
-    {
-        _userService = userService ?? throw new ArgumentNullException(nameof(userService));
-    }
+    private readonly IUserService _userService = userService ?? throw new ArgumentNullException(nameof(userService));
 
     /// <inheritdoc />
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
@@ -27,14 +21,20 @@ public sealed class BasicAuthenticationHandler : AuthenticationHandler<Authentic
         User? user;
         try
         {
-            AuthenticationHeaderValue authHeader = AuthenticationHeaderValue.Parse(Request.Headers["Authorization"]);
-            byte[] credentialBytes = Convert.FromBase64String(authHeader.Parameter ?? string.Empty);
-            string[] credentials = Encoding.UTF8.GetString(credentialBytes).Split(':', 2);
+            if (!Request.Headers.TryGetValue("Authorization", out var authorizationHeader))
+            {
+                Logger.LogError("missing Authorization header");
+                return AuthenticateResult.Fail("authorization header not provided");
+            }
 
-            string username = credentials[0];
-            string password = credentials[1];
+            var authHeader = AuthenticationHeaderValue.Parse(authorizationHeader.ToString());
+            var credentialBytes = Convert.FromBase64String(authHeader.Parameter ?? string.Empty);
+            var credentials = Encoding.UTF8.GetString(credentialBytes).Split(':', 2);
 
-            user = await _userService.Authenticate(username, password);
+            var username = credentials[0];
+            var password = credentials[1];
+
+            user = await _userService.Authenticate(username, password).ConfigureAwait(false);
         }
         catch (Exception ex)
         {
@@ -47,7 +47,7 @@ public sealed class BasicAuthenticationHandler : AuthenticationHandler<Authentic
             return AuthenticateResult.Fail("Invalid username or password");
         }
 
-        Claim[] claims = new[]
+        var claims = new[]
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim(ClaimTypes.Name, user.Username)

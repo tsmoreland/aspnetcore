@@ -14,6 +14,7 @@ public static class WebApplicationExtensions
         app.UseSerilogRequestLogging();
         app.UseResponseCompression();
         app.UseExceptionHandler();
+        app.UseStatus
 
         if (app.Environment.IsDevelopment())
         {
