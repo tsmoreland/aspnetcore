@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using FlightPlan.Application.Contracts.Persistence;
 using FlightPlan.Domain.Entities;
@@ -7,25 +7,21 @@ using MongoDB.Driver;
 
 namespace FlightPlan.Persistence.Repositories;
 
-public sealed class FlightPlanAsyncRepository : IFlightPlanAsyncRepository
+public sealed class FlightPlanAsyncRepository(NoSqlContext context) : IFlightPlanAsyncRepository
 {
-    private readonly NoSqlContext _context;
+    private readonly NoSqlContext _context = context ?? throw new ArgumentNullException(nameof(context));
     private const string CollectionName = "flight_plans";
-
-    public FlightPlanAsyncRepository(NoSqlContext context)
-    {
-        _context = context ?? throw new ArgumentNullException(nameof(context));
-    }
 
     /// <inheritdoc />
     public async IAsyncEnumerable<FlightPlanEntity> GetAll([EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        IMongoCollection<BsonDocument> collection = _context.GetCollection(CollectionName);
-        List<BsonDocument> documents = await collection
+        var collection = _context.GetCollection(CollectionName);
+        var documents = await collection
             .Find(_ => true)
-            .ToListAsync(cancellationToken);
+            .ToListAsync(cancellationToken)
+            .ConfigureAwait(false);
 
-        foreach (BsonDocument document in documents)
+        foreach (var document in documents)
         {
             yield return ToFlightPlanOrNull(document);
         }
@@ -34,9 +30,9 @@ public sealed class FlightPlanAsyncRepository : IFlightPlanAsyncRepository
     /// <inheritdoc />
     public async ValueTask<FlightPlanEntity?> GetById(string id, CancellationToken cancellationToken)
     {
-        IMongoCollection<BsonDocument> collection = _context.GetCollection(CollectionName);
-        FilterDefinition<BsonDocument> filter = GetFilterForId(id);
-        BsonDocument? document = (await collection.FindAsync(filter, cancellationToken: cancellationToken)).FirstOrDefault(cancellationToken);
+        var collection = _context.GetCollection(CollectionName);
+        var filter = GetFilterForId(id);
+        var document = (await collection.FindAsync(filter, cancellationToken: cancellationToken).ConfigureAwait(false)).FirstOrDefault(cancellationToken);
         return document is not null
             ? ToFlightPlanOrNull(document)
             : null;
@@ -45,8 +41,8 @@ public sealed class FlightPlanAsyncRepository : IFlightPlanAsyncRepository
     /// <inheritdoc />
     public async ValueTask<(string Id, TransactionResult Result)> Add(FlightPlanEntity entity, CancellationToken cancellationToken)
     {
-        IMongoCollection<BsonDocument> collection = _context.GetCollection(CollectionName);
-        string id = Guid.NewGuid().ToString("N");
+        var collection = _context.GetCollection(CollectionName);
+        var id = Guid.NewGuid().ToString("N");
         BsonDocument document = new()
         {
             { "flight_plan_id", id },
@@ -68,7 +64,7 @@ public sealed class FlightPlanAsyncRepository : IFlightPlanAsyncRepository
 
         try
         {
-            await collection.InsertOneAsync(document, cancellationToken: cancellationToken);
+            await collection.InsertOneAsync(document, cancellationToken: cancellationToken).ConfigureAwait(false);
             return document["_id"].IsObjectId
                 ? (id, TransactionResult.Success)
                 : (string.Empty, TransactionResult.BadRequest);
@@ -82,9 +78,9 @@ public sealed class FlightPlanAsyncRepository : IFlightPlanAsyncRepository
     /// <inheritdoc />
     public async ValueTask<TransactionResult> Update(string id, FlightPlanEntity entity, CancellationToken cancellationToken)
     {
-        IMongoCollection<BsonDocument> collection = _context.GetCollection(CollectionName);
-        FilterDefinition<BsonDocument> filter = GetFilterForId(id);
-        UpdateDefinition<BsonDocument> update = Builders<BsonDocument>.Update
+        var collection = _context.GetCollection(CollectionName);
+        var filter = GetFilterForId(id);
+        var update = Builders<BsonDocument>.Update
             .Set("flight_plan_id", entity.FlightPlanId)
             .Set("altitude", entity.Altitude)
             .Set("airspeed", entity.Airspeed)
@@ -101,7 +97,7 @@ public sealed class FlightPlanAsyncRepository : IFlightPlanAsyncRepository
             .Set("fuel_minutes", entity.FuelMinutes)
             .Set("number_onboard", entity.NumberOnBoard);
 
-        UpdateResult result = await collection.UpdateOneAsync(filter, update, cancellationToken: cancellationToken);
+        var result = await collection.UpdateOneAsync(filter, update, cancellationToken: cancellationToken).ConfigureAwait(false);
         if (result.MatchedCount == 0)
         {
             return TransactionResult.NotFound;
@@ -115,10 +111,10 @@ public sealed class FlightPlanAsyncRepository : IFlightPlanAsyncRepository
     /// <inheritdoc />
     public async ValueTask<TransactionResult> Delete(string id, CancellationToken cancellationToken)
     {
-        IMongoCollection<BsonDocument> collection = _context.GetCollection(CollectionName);
-        FilterDefinition<BsonDocument> filter = GetFilterForId(id);
+        var collection = _context.GetCollection(CollectionName);
+        var filter = GetFilterForId(id);
 
-        DeleteResult result = await collection.DeleteOneAsync(filter, cancellationToken: cancellationToken);
+        var result = await collection.DeleteOneAsync(filter, cancellationToken: cancellationToken).ConfigureAwait(false);
         return result.DeletedCount > 0
             ? TransactionResult.Success
             : TransactionResult.NotFound;
@@ -135,7 +131,7 @@ public sealed class FlightPlanAsyncRepository : IFlightPlanAsyncRepository
         return Builders<BsonDocument>.Filter.Eq("flight_plan_id", id);
     }
 
-    [return: NotNullIfNotNull("document")]
+    [return: NotNullIfNotNull(nameof(document))]
     private static FlightPlanEntity? ToFlightPlanOrNull(BsonDocument? document)
     {
         if (document == null)

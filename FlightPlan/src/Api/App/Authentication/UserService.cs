@@ -1,7 +1,11 @@
-﻿namespace FlightPlan.Api.App.Authentication;
+namespace FlightPlan.Api.App.Authentication;
 
+/// <inheritdoc/>
 public sealed class UserService : IUserService
 {
+    /// <summary>
+    /// Returns authenticated if <paramref name="username"/> and <paramref name="password"/> is valid; otherwise <see langword="null"/>
+    /// </summary>
     public Task<User?> Authenticate(string username, string password)
     {
         // TODO: rework this to rely on a backing store and require stronger passwords
