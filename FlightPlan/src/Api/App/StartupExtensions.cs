@@ -1,9 +1,7 @@
-using System.Reflection;
 using System.Text.Json.Serialization;
 using FlightPlan.Api.App.Authentication;
 using FlightPlan.Persistence;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.OpenApi.Models;
 using TSMoreland.Text.Json.NamingStrategies;
 using TSMoreland.Text.Json.NamingStrategies.Strategies;
 
@@ -29,6 +27,10 @@ internal static class StartupExtensions
 
         builder.Services
             .AddTransient<IUserService, UserService>()
+            .AddCors()
+            .AddPersistence(builder.Configuration);
+
+            /*
             .AddEndpointsApiExplorer()
             .AddSwaggerGen(options =>
             {
@@ -64,17 +66,15 @@ internal static class StartupExtensions
                 var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
             })
-            .AddCors()
-            .AddPersistence(builder.Configuration);
+            */
 
         builder.Services
             .AddAuthentication()
             .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentiation", null);
 
         // TODO: Use AddAuthorizationBuilder to register authorization services and construct policies
-        builder.Services.AddAuthorization(options =>
-        {
-        });
+        builder.Services.AddAuthorizationBuilder();
+        // .AddPolicy("<name>", policy => ...)
 
         return builder;
     }
@@ -84,7 +84,6 @@ internal static class StartupExtensions
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
-            app.UseSwagger();
             app.UseSwaggerUI(options =>
                 options.SwaggerEndpoint("/swagger/flightPlan/swagger.json", "Flight Plan API"));
         }

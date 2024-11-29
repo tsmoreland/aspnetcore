@@ -3,7 +3,6 @@ using FlightPlan.Application.Contracts.Persistence;
 using FlightPlan.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.Annotations;
 
 namespace FlightPlan.Api.App.Controllers;
 
@@ -26,8 +25,9 @@ public class FlightPlanController(IFlightPlanAsyncRepository repository) : Contr
     /// ConfigureAwait(false) isn't necessary because thea app runs without a synchronization content, it's here to silence a warning
     /// </remarks>
     [HttpGet(Name = "GetFlightPlans")]
-    [SwaggerResponse(StatusCodes.Status200OK, "successful retrieveal of flight plans", typeof(List<FlightPlanEntity>), contentTypes: MediaTypeNames.Application.Json)]
-    [SwaggerResponse(StatusCodes.Status204NoContent, "no flight plans found", contentTypes: MediaTypeNames.Application.Json)]
+    [Produces(MediaTypeNames.Application.Json, Type = typeof(List<FlightPlanEntity>))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<FlightPlanEntity>))]
+    //[SwaggerResponse(StatusCodes.Status204NoContent, "no flight plans found", contentTypes: MediaTypeNames.Application.Json)]
     public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {
         var items = await _repository.GetAll(cancellationToken).ToListAsync(cancellationToken).ConfigureAwait(false);
@@ -43,8 +43,8 @@ public class FlightPlanController(IFlightPlanAsyncRepository repository) : Contr
     /// <param name="cancellationToken">A cancellation token.</param>
     /// <returns></returns>
     [HttpGet("{id}", Name = "GetFlightPlanById")]
-    [SwaggerResponse(StatusCodes.Status200OK, "successful retrieveal of flight plan", typeof(FlightPlanEntity), contentTypes: MediaTypeNames.Application.Json)]
-    [SwaggerResponse(StatusCodes.Status404NotFound, "flight plan not found", contentTypes: MediaTypeNames.Application.Json)]
+    //[SwaggerResponse(StatusCodes.Status200OK, "successful retrieveal of flight plan", typeof(FlightPlanEntity), contentTypes: MediaTypeNames.Application.Json)]
+    //[SwaggerResponse(StatusCodes.Status404NotFound, "flight plan not found", contentTypes: MediaTypeNames.Application.Json)]
     public async Task<IActionResult> GetById([FromRoute] string id, CancellationToken cancellationToken)
     {
         var item = await _repository.GetById(id, cancellationToken).ConfigureAwait(false);
@@ -60,9 +60,9 @@ public class FlightPlanController(IFlightPlanAsyncRepository repository) : Contr
     /// <param name="cancellationToken">A cancellation token.</param>
     /// <returns></returns>
     [HttpPost(Name = "AddFlightPlan")]
-    [SwaggerResponse(StatusCodes.Status201Created, "new flight plan added", contentTypes: MediaTypeNames.Application.Json)]
-    [SwaggerResponse(StatusCodes.Status400BadRequest, "one or more problems found with request", contentTypes: MediaTypeNames.Application.Json)]
-    [SwaggerResponse(StatusCodes.Status500InternalServerError, "a problem occurred executing request", contentTypes: MediaTypeNames.Application.Json)]
+    //[SwaggerResponse(StatusCodes.Status201Created, "new flight plan added", contentTypes: MediaTypeNames.Application.Json)]
+    //[SwaggerResponse(StatusCodes.Status400BadRequest, "one or more problems found with request", contentTypes: MediaTypeNames.Application.Json)]
+    //[SwaggerResponse(StatusCodes.Status500InternalServerError, "a problem occurred executing request", contentTypes: MediaTypeNames.Application.Json)]
     public async Task<IActionResult> Add([FromBody] FlightPlanEntity flightPLan, CancellationToken cancellationToken)
     {
         var (id, result) = await _repository.Add(flightPLan, cancellationToken).ConfigureAwait(false);
@@ -83,10 +83,10 @@ public class FlightPlanController(IFlightPlanAsyncRepository repository) : Contr
     /// <param name="cancellationToken">A cancellation token.</param>
     /// <returns></returns>
     [HttpPut("{id}", Name = "UpdateFlightPlan")]
-    [SwaggerResponse(StatusCodes.Status200OK, "successful retrieveal and update of flight plan", typeof(FlightPlanEntity), contentTypes: MediaTypeNames.Application.Json)]
-    [SwaggerResponse(StatusCodes.Status400BadRequest, "one or more problems found with request", contentTypes: MediaTypeNames.Application.Json)]
-    [SwaggerResponse(StatusCodes.Status400BadRequest, "one or more problems found with request", contentTypes: MediaTypeNames.Application.Json)]
-    [SwaggerResponse(StatusCodes.Status500InternalServerError, "a problem occurred executing request", contentTypes: MediaTypeNames.Application.Json)]
+    //[SwaggerResponse(StatusCodes.Status200OK, "successful retrieveal and update of flight plan", typeof(FlightPlanEntity), contentTypes: MediaTypeNames.Application.Json)]
+    //[SwaggerResponse(StatusCodes.Status400BadRequest, "one or more problems found with request", contentTypes: MediaTypeNames.Application.Json)]
+    //[SwaggerResponse(StatusCodes.Status400BadRequest, "one or more problems found with request", contentTypes: MediaTypeNames.Application.Json)]
+    //[SwaggerResponse(StatusCodes.Status500InternalServerError, "a problem occurred executing request", contentTypes: MediaTypeNames.Application.Json)]
     public async Task<IActionResult> Update([FromRoute] string id, [FromBody] FlightPlanEntity flightPLan, CancellationToken cancellationToken)
     {
         var result = await _repository.Update(id, flightPLan, cancellationToken).ConfigureAwait(false);
@@ -106,10 +106,10 @@ public class FlightPlanController(IFlightPlanAsyncRepository repository) : Contr
     /// <param name="cancellationToken">A cancellation token.</param>
     /// <returns></returns>
     [HttpDelete("{id}", Name = "DeleteFlightPlan")]
-    [SwaggerResponse(StatusCodes.Status204NoContent, "flight plan removed", contentTypes: MediaTypeNames.Application.Json)]
-    [SwaggerResponse(StatusCodes.Status400BadRequest, "one or more problems found with request", contentTypes: MediaTypeNames.Application.Json)]
-    [SwaggerResponse(StatusCodes.Status400BadRequest, "one or more problems found with request", contentTypes: MediaTypeNames.Application.Json)]
-    [SwaggerResponse(StatusCodes.Status500InternalServerError, "a problem occurred executing request", contentTypes: MediaTypeNames.Application.Json)]
+    //[SwaggerResponse(StatusCodes.Status204NoContent, "flight plan removed", contentTypes: MediaTypeNames.Application.Json)]
+    //[SwaggerResponse(StatusCodes.Status400BadRequest, "one or more problems found with request", contentTypes: MediaTypeNames.Application.Json)]
+    //[SwaggerResponse(StatusCodes.Status400BadRequest, "one or more problems found with request", contentTypes: MediaTypeNames.Application.Json)]
+    //[SwaggerResponse(StatusCodes.Status500InternalServerError, "a problem occurred executing request", contentTypes: MediaTypeNames.Application.Json)]
     public async Task<IActionResult> Delete([FromRoute] string id, CancellationToken cancellationToken)
     {
         var result = await _repository.Delete(id, cancellationToken).ConfigureAwait(false);
