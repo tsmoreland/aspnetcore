@@ -76,7 +76,6 @@ public static class WebApplicationBuilderExtensions
         services
             .ConfigureJsonOptions()
             .AddRateLimiter(RateLimitConfiguration.Configure)
-            //.AddEndpointsApiExplorer()
             .AddResponseCompressionWithBrotliAndGzip();
 
         services
