@@ -16,7 +16,7 @@ try
         .Build()
         .Configure();
 
-    await app.RunAsync();
+    await app.RunAsync().ConfigureAwait(true);
 }
 catch (Exception ex) when (ex.GetType().Name is not "StopTheHostException")
 {
@@ -28,4 +28,3 @@ finally
     Log.Information("Shut down complete");
     Log.CloseAndFlush();
 }
-
