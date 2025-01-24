@@ -1,16 +1,3 @@
-﻿//
-// Copyright © 2023 Terry Moreland
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
-// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
-// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
-
 using System.Runtime.CompilerServices;
 using GloboTicket.Shop.Catalog.Domain.Contracts.Persistence;
 using GloboTicket.Shop.Catalog.Domain.Models;
@@ -43,9 +30,18 @@ public sealed class ConcertRepository : IConcertRepository, IReadOnlyConcertRepo
     /// <inheritdoc />
     public async ValueTask<Concert?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        return await _dbContext
-            .Concerts
-            .FirstOrDefaultAsync(e => e.ConcertId == id, cancellationToken);
+        try
+        {
+            return await _dbContext
+                .Concerts
+                .FirstOrDefaultAsync(e => e.ConcertId == id, cancellationToken)
+                .ConfigureAwait(false);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Unexpected error occurred");
+            throw;
+        }
     }
 
     /// <inheritdoc />
@@ -53,25 +49,26 @@ public sealed class ConcertRepository : IConcertRepository, IReadOnlyConcertRepo
     {
         return await query
            .ApplySpecifications(_dbContext.Concerts)
-           .FirstOrDefaultAsync(cancellationToken);
+           .FirstOrDefaultAsync(cancellationToken)
+           .ConfigureAwait(false);
     }
 
     /// <inheritdoc />
     public async ValueTask<TProjection?> GetProjectionByQueryAsync<TProjection>(IQuerySpecification<Concert, TProjection> query,
         CancellationToken cancellationToken = default)
     {
-        IQueryable<Concert> queryable = query.ApplySpecifications(_dbContext.Concerts);
-        return await query.ApplySelection(queryable).FirstOrDefaultAsync(cancellationToken);
+        var queryable = query.ApplySpecifications(_dbContext.Concerts);
+        return await query.ApplySelection(queryable).FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
     }
 
     /// <inheritdoc />
     public async IAsyncEnumerable<Concert> GetAll([EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        IAsyncEnumerable<Concert> enumerable = _dbContext.Concerts
+        var enumerable = _dbContext.Concerts
             .AsNoTracking()
             .AsAsyncEnumerable();
 
-        await foreach (Concert concert in enumerable.WithCancellation(cancellationToken))
+        await foreach (var concert in enumerable.WithCancellation(cancellationToken))
         {
             yield return concert;
         }
@@ -80,9 +77,9 @@ public sealed class ConcertRepository : IConcertRepository, IReadOnlyConcertRepo
     /// <inheritdoc />
     public async IAsyncEnumerable<TProjection> GetAll<TProjection>(ISelectorSpecification<Concert, TProjection> selector, [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        IAsyncEnumerable<TProjection> enumerable = selector.ProjectToAsyncEnumerable(_dbContext.Concerts.AsNoTracking(), _queryableToEnumerableConverter);
+        var enumerable = selector.ProjectToAsyncEnumerable(_dbContext.Concerts.AsNoTracking(), _queryableToEnumerableConverter);
 
-        await foreach (TProjection projection in enumerable.WithCancellation(cancellationToken))
+        await foreach (var projection in enumerable.WithCancellation(cancellationToken))
         {
             yield return projection;
         }
@@ -91,13 +88,13 @@ public sealed class ConcertRepository : IConcertRepository, IReadOnlyConcertRepo
     /// <inheritdoc />
     public async ValueTask<Page<Concert>> GetPage(IQuerySpecification<Concert> query, CancellationToken cancellationToken = default)
     {
-        IQueryable<Concert> source = query.ApplySpecifications(_dbContext.Concerts.AsNoTracking());
-        Task<int> countTask = source.CountAsync(cancellationToken);
-        Task<List<Concert>> itemsTask = query.ApplyPaging(source).AsAsyncEnumerable().ToListAsync(cancellationToken).AsTask();
-        await Task.WhenAll(countTask, itemsTask);
+        var source = query.ApplySpecifications(_dbContext.Concerts.AsNoTracking());
+        var countTask = source.CountAsync(cancellationToken);
+        var itemsTask = query.ApplyPaging(source).AsAsyncEnumerable().ToListAsync(cancellationToken).AsTask();
+        await Task.WhenAll(countTask, itemsTask).ConfigureAwait(false);
 
-        int count = countTask.Result;
-        List<Concert> items = itemsTask.Result;
+        var count = countTask.Result;
+        var items = itemsTask.Result;
 
         return new Page<Concert>(query.PageNumberOrZero, query.PageSizeOrZero, query.CalculateTotalPages(count), count, items.AsReadOnly());
     }
@@ -105,14 +102,14 @@ public sealed class ConcertRepository : IConcertRepository, IReadOnlyConcertRepo
     /// <inheritdoc />
     public async ValueTask<Page<TProjection>> GetPage<TProjection>(IQuerySpecification<Concert, TProjection> query, CancellationToken cancellationToken = default)
     {
-        IQueryable<Concert> source = query.ApplySpecifications(_dbContext.Concerts.AsNoTracking());
-        Task<int> countTask = source.CountAsync(cancellationToken);
-        Task<List<TProjection>> itemsTask = query.ApplySelection(query.ApplyPaging(source)).AsAsyncEnumerable().ToListAsync(cancellationToken).AsTask();
+        var source = query.ApplySpecifications(_dbContext.Concerts.AsNoTracking());
+        var countTask = source.CountAsync(cancellationToken);
+        var itemsTask = query.ApplySelection(query.ApplyPaging(source)).AsAsyncEnumerable().ToListAsync(cancellationToken).AsTask();
 
-        await Task.WhenAll(countTask, itemsTask);
+        await Task.WhenAll(countTask, itemsTask).ConfigureAwait(false);
 
-        int count = countTask.Result;
-        List<TProjection> items = itemsTask.Result;
+        var count = countTask.Result;
+        var items = itemsTask.Result;
 
         return new Page<TProjection>(query.PageNumberOrZero, query.PageSizeOrZero, query.CalculateTotalPages(count), count, items.AsReadOnly());
     }
@@ -120,7 +117,7 @@ public sealed class ConcertRepository : IConcertRepository, IReadOnlyConcertRepo
     /// <inheritdoc />
     public ValueTask<Concert?> FindByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        return _dbContext.Concerts.FindAsync(new object[] { id }, cancellationToken);
+        return _dbContext.Concerts.FindAsync([id], cancellationToken);
     }
 
     /// <inheritdoc />
@@ -144,7 +141,7 @@ public sealed class ConcertRepository : IConcertRepository, IReadOnlyConcertRepo
     /// <inheritdoc />
     public async ValueTask SaveChangesAsync(CancellationToken cancellationToken)
     {
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
 
     /// <inheritdoc />
